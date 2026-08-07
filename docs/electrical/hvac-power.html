@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>空調／工業動力配電計算書與 ACMP 單線圖｜V1.1.0</title>
+<style>
+  :root{
+    --ink:#1c2431; --paper:#f7f6f2; --line:#c9c2b4; --line-dark:#8a8272;
+    --accent:#1f5c4d; --accent2:#a6472f; --earth:#2e7d32; --panelbg:#ffffff;
+    --mono: 'Consolas','Menlo',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; line-height:1.6;}
+  header{padding:24px 24px 16px; border-bottom:3px solid var(--ink); display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;}
+  header h1{margin:0; font-size:1.35rem; letter-spacing:.02em;}
+  header .sub{color:#555; font-size:.83rem; margin-top:4px;}
+  header .badge{font-family:var(--mono); font-size:.7rem; background:var(--accent); color:#fff; padding:4px 10px; border-radius:2px; letter-spacing:.05em;}
+  nav{display:flex; gap:0; flex-wrap:wrap; border-bottom:1px solid var(--line-dark); background:#efece3; position:sticky; top:0; z-index:5;}
+  nav a{padding:11px 13px; font-size:.78rem; font-weight:600; color:#666; text-decoration:none; border-bottom:3px solid transparent;}
+  nav a:hover{color:var(--ink); border-bottom-color:var(--accent2); background:var(--paper);}
+  main{max-width:1500px; margin:0 auto; padding:22px 18px 80px;}
+  h2.section{font-size:1.05rem; margin:34px 0 12px; padding-bottom:6px; border-bottom:2px solid var(--ink); display:flex; align-items:center; gap:8px;}
+  h2.section .num{font-family:var(--mono); color:var(--accent2); font-size:.82rem;}
+  h3.sub{font-size:.92rem; margin:20px 0 8px; color:var(--accent);}
+  .tablewrap{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:.72rem; background:var(--panelbg); min-width:1300px;}
+  table.method{min-width:0;}
+  th,td{border:1px solid var(--line); padding:5px 5px; text-align:center; vertical-align:middle;}
+  th{background:var(--ink); color:#fff; font-weight:600; font-size:.64rem;}
+  td.left{text-align:left;}
+  tr.ydelta td{background:#fbf1ec;}
+  tr.excluded{opacity:.55;}
+  tr.excluded td{background:#f0efe9;}
+  .tag{display:inline-block; font-size:.62rem; font-family:var(--mono); padding:1px 5px; border-radius:2px; background:var(--accent2); color:#fff;}
+  .tag2{display:inline-block; font-size:.62rem; font-family:var(--mono); padding:1px 5px; border-radius:2px; background:#5b6b8c; color:#fff;}
+  .tagY{display:inline-block; font-size:.62rem; font-family:var(--mono); padding:1px 5px; border-radius:2px; background:#8a6d00; color:#fff;}
+  .note{font-size:.77rem; color:#777; margin-top:8px; line-height:1.7;}
+  .note b{color:var(--ink);}
+  .redbold{color:#c81e1e; font-weight:700;}
+  .diagram-wrap{background:#fff; border:1px solid var(--line); border-radius:3px; padding:10px; overflow-x:auto;}
+  svg{display:block; font-family:var(--mono);}
+  footer{max-width:1500px; margin:0 auto; padding:16px 18px 60px; font-size:.75rem; color:#888; border-top:1px solid var(--line);}
+  .methodbox{background:#fff; border:1px solid var(--line); border-radius:3px; padding:16px 18px; margin-bottom:22px;}
+  .formula{font-family:var(--mono); background:#f2f0ea; border-left:3px solid var(--accent); padding:8px 12px; margin:8px 0; font-size:.83rem; overflow-x:auto; white-space:pre-wrap;}
+  .example{background:#f7fbf7; border:1px dashed var(--earth); border-radius:3px; padding:12px 14px; margin:10px 0; font-size:.82rem;}
+  .example .title{font-weight:700; color:var(--earth); margin-bottom:6px;}
+  .example .step{margin:4px 0; font-family:var(--mono); font-size:.79rem;}
+  .keynote{background:#fff3f0; border:1.5px solid var(--accent2); border-radius:4px; padding:12px 16px; margin:16px 0; font-size:.84rem; color:var(--accent2); font-weight:700; line-height:1.8;}
+  .refbox{border-left:3px solid #5b6b8c; background:#f4f6fa; padding:8px 12px; margin:8px 0; font-size:.75rem; color:#3a4560; line-height:1.8;}
+  .refbox a{color:#2a5a94;}
+  .sopbox{background:#fff; border:1px solid var(--line); border-radius:3px; padding:14px 18px; margin:10px 0;}
+  .sopbox ol{margin:6px 0; padding-left:20px;}
+  .sopbox li{margin:6px 0; font-size:.84rem;}
+  .flagbox{background:#fdf6e3; border:1px solid #c9a227; border-radius:3px; padding:10px 14px; margin:10px 0; font-size:.77rem; color:#6b5510; line-height:1.7;}
+  .flagbox b{color:#8a6d00;}
+  .glossary{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; font-size:.77rem;}
+  @media(max-width:900px){.glossary{grid-template-columns:1fr 1fr;}}
+  .glossary div{background:#fff; border:1px solid var(--line); border-radius:3px; padding:8px 10px;}
+
+  /* --- interactive controls --- */
+  .settingsbar{display:flex; flex-wrap:wrap; gap:14px; background:#fff; border:1px solid var(--line); border-radius:3px; padding:14px 16px; margin-bottom:16px;}
+  .settingsbar .grp{display:flex; flex-direction:column; gap:4px; font-size:.76rem;}
+  .settingsbar label{font-weight:600; color:#555;}
+  .settingsbar select, .settingsbar input{font-size:.78rem; padding:4px 6px; border:1px solid var(--line-dark); border-radius:2px; font-family:inherit;}
+  .toolbar{display:flex; gap:10px; margin:10px 0; flex-wrap:wrap;}
+  button.btn{font-size:.78rem; padding:7px 14px; border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:3px; cursor:pointer; font-family:inherit; font-weight:600;}
+  button.btn.secondary{background:#fff; color:var(--accent); }
+  button.btn.danger{background:#fff; color:var(--accent2); border-color:var(--accent2); padding:3px 8px; font-size:.68rem;}
+  table td select, table td input[type=number], table td input[type=text]{width:100%; font-size:.7rem; padding:3px 2px; border:1px solid var(--line-dark); border-radius:2px; font-family:inherit;}
+  table td input[type=checkbox]{width:16px; height:16px;}
+  .metabar{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
+  .metacard{background:var(--panelbg); border:1px solid var(--line); border-radius:3px; padding:10px 14px; flex:1; min-width:150px;}
+  .metacard .label{font-size:.7rem; color:#888;}
+  .metacard .val{font-family:var(--mono); font-size:1.0rem; font-weight:700; color:var(--accent);}
+  .warncard .val{color:var(--accent2);}
+  .phasebar{display:flex; gap:10px; margin:10px 0;}
+  .phasebox{flex:1; background:#fff; border:1px solid var(--line); border-radius:3px; padding:10px; text-align:center;}
+  .phasebox .ph{font-weight:700; font-size:1.1rem;}
+  .phasebox .kva{font-family:var(--mono); font-size:.85rem; color:var(--accent);}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>空調／工業動力配電計算書 &amp; ACMP 空調主電盤單線圖　V1.1.0</h1>
+    <div class="sub">中央空調系統與一般工業動力系統｜互動式參數連動計算工具｜編製：李世權　編製日期：2026年8月</div>
+  </div>
+  <div class="badge">依用戶用電設備裝置規則估算・非正式送審圖說・供 study／verify 用</div>
+</header>
+
+<nav>
+  <a href="#secCalc">01 分路計算總表</a>
+  <a href="#secMain">02 總回路計算</a>
+  <a href="#secPhase">03 相平衡校核</a>
+  <a href="#secDiagram">04 ACMP 單線圖</a>
+  <a href="#secOverview">05 系統概述</a>
+  <a href="#secBasis">06 設計基準揭露</a>
+  <a href="#secSOP">07 計算方法SOP</a>
+  <a href="#secMSYD">08 MS／Y-Δ說明</a>
+  <a href="#secExample">09 情境應用實例</a>
+  <a href="#secRef">10 參考文獻</a>
+  <a href="#secVer">11 版本紀錄</a>
+</nav>
+
+<main>
+<div class="keynote">
+⚠ V1.1.0 設計基準：導線管新增 <b>EMT</b> 選項（與G.I.／GIP同屬金屬管，安培容量查表相同）；分路NFB AT改回 <b>DOL＝2.0×In、Y-Δ＝1.5×In</b>；主回路 <b>I_main＝In(最大負載)×1.5＋ΣIn(其餘)</b>，<b>AT_main＝AT(最大負載分路OCP)＋ΣIn(其餘負載全載電流)</b>；備援設備因主備互鎖不列入主回路加總，由「列入總電流與AT值計算」勾選欄逐列決定；主幹線含接地線；單相負載(FCU/控制箱/備用分路)掛載於380V/220V系統之AN/BN/CN，自動分配三相並校核不平衡度。
+</div>
+
+<h2 class="section"><span class="num">設定</span> 全案參數設定</h2>
+<div class="settingsbar">
+  <div class="grp"><label>導線絕緣材質</label>
+    <select id="setInsul">
+      <option value="1">90℃ XLPE（表16-6）</option>
+      <option value="0">60℃ 一般絕緣（表16-7）</option>
+    </select>
+  </div>
+  <div class="grp"><label>導線管材質</label>
+    <select id="setMaterial">
+      <option value="GIP">G.I. / GIP 厚金屬管</option>
+      <option value="EMT">EMT 薄金屬管</option>
+      <option value="PVC">PVC 管（僅60℃絕緣適用）</option>
+    </select>
+  </div>
+  <div class="grp"><label>分路 IC 啟斷容量 (kA)</label>
+    <input type="number" id="setBranchIC" value="22" step="1" style="width:70px">
+  </div>
+  <div class="grp"><label>假設變壓器容量 (kVA)</label>
+    <input type="number" id="setXfmrKVA" value="300" step="10" style="width:80px">
+  </div>
+  <div class="grp"><label>假設變壓器 %Z</label>
+    <input type="number" id="setXfmrZ" value="4" step="0.5" style="width:60px">
+  </div>
+</div>
+<div class="note">導線架(電纜架)選項暫緩開放，待您提供正確SSoT安培容量表格後再啟用。變壓器容量／%Z為假設值，僅供IC計算示範，正式設計請以台電資料或實際銘牌為準。</div>
+
+<!-- ============================================================ -->
+<section id="secCalc">
+<h2 class="section"><span class="num">01</span> 空調／工業動力分路計算總表</h2>
+<div class="toolbar">
+  <button class="btn" id="btnAddRow">＋ 新增分路列</button>
+  <button class="btn secondary" id="btnLoadDemo">載入範例（中央空調系統）</button>
+  <button class="btn secondary" id="btnClearAll">清空全部列</button>
+</div>
+<div class="tablewrap"><table id="eqTable">
+<thead>
+<tr>
+  <th style="width:34px">列入總電流與<br>AT值計算</th>
+  <th style="width:36px">編號</th>
+  <th style="width:170px">設備名稱</th>
+  <th style="width:150px">電壓／相別</th>
+  <th style="width:90px">容量 HP<br>／kVA</th>
+  <th style="width:60px">啟動<br>方式</th>
+  <th style="width:60px">滿載電流<br>In(A)</th>
+  <th style="width:80px">電磁開關<br>MS規格</th>
+  <th style="width:80px">積熱電驛<br>TR(A)</th>
+  <th style="width:55px">NFB<br>AT</th>
+  <th style="width:55px">NFB<br>AF</th>
+  <th style="width:45px">IC<br>(kA)</th>
+  <th style="width:120px">導線規格</th>
+  <th style="width:70px">接地線</th>
+  <th style="width:120px">管徑</th>
+  <th style="width:70px">相別<br>指定</th>
+  <th style="width:30px"></th>
+</tr>
+</thead>
+<tbody id="eqBody"></tbody>
+</table></div>
+<div class="note" id="calcNote">備註：每一列代表一個實際獨立分路（各自配置NFB／MS／TR／導線）。運轉與備援設備請拆成獨立列，備援列請取消勾選「列入總電流與AT值計算」（因主備互鎖，實務上不會同時運轉）。單相負載（FCU／控制箱／備用分路）預設掛載於380V/220V系統之N相，可於「相別指定」欄手動指定A/B/C相或維持自動分配。</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secMain">
+<h2 class="section"><span class="num">02</span> 總回路（主幹線／主NFB）計算</h2>
+<div class="metabar" id="mainMetaBar"></div>
+<div class="methodbox" id="mainCalcBox"></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secPhase">
+<h2 class="section"><span class="num">03</span> 相平衡校核（單相負載 AN／BN／CN 分配）</h2>
+<div class="phasebar" id="phaseBar"></div>
+<div class="methodbox" id="phaseCalcBox"></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secDiagram">
+<h2 class="section"><span class="num">04</span> ACMP (Air-Conditioning Main Panel 空調主電盤) 單線圖</h2>
+<div class="diagram-wrap"><div id="diagramContainer"></div></div>
+<div class="legend note">
+■ 深色框＝Y-Δ降壓啟動分路　□ 白框＝DOL全壓啟動分路　▭ 藍框＝非馬達連續負載　░ 灰階虛化＝未列入主回路計算（備援／未勾選）<br>
+單線圖依目前分路計算總表之列數與參數即時重繪。
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secOverview">
+<h2 class="section"><span class="num">05</span> 系統概述</h2>
+<div class="methodbox">
+<p>本計算書適用於<b>中央空調系統（Central Air-Conditioning System）</b>與<b>一般工業動力配電系統（Industrial Power Distribution）</b>之主電盤（ACMP, Air-Conditioning Main Panel／工業動力主配電盤）分路設計，可透過上方「分路計算總表」自由增減設備、切換電壓相別與絕緣／配管材質，計算結果與單線圖將即時連動。</p>
+<div class="tablewrap"><table class="method">
+<thead><tr><th>系統區塊</th><th>設備名稱</th><th>功能說明</th></tr></thead>
+<tbody>
+<tr><td class="left">冰水主機系統</td><td class="left">冰水主機 Chiller（螺旋式／離心式／往復式，氣冷或水冷）</td><td class="left">產生冰水，通常為系統最大單一馬達負載，容量大者須採Y-Δ降壓啟動</td></tr>
+<tr><td class="left">冰水側</td><td class="left">一次／二次側冰水泵浦 Primary／Secondary CHW Pump</td><td class="left">冰水循環，二次側常為變頻控制</td></tr>
+<tr><td class="left">冷卻水側</td><td class="left">冷卻水泵浦、冷卻水塔風扇</td><td class="left">冰水主機冷凝器散熱循環</td></tr>
+<tr><td class="left">空調末端</td><td class="left">AHU送風機、FCU(室內小型冷風機)、全熱交換機ERV</td><td class="left">樓層送風與新鮮空氣處理，FCU為單相小型負載</td></tr>
+<tr><td class="left">通風／排氣</td><td class="left">排風機、停車場排風機、廚房排油煙機</td><td class="left">機房、地下室、廚房排氣</td></tr>
+<tr><td class="left">給排水／消防</td><td class="left">加壓給水泵浦、污水泵浦、電動消防泵浦、Jockey Pump</td><td class="left">建築給排水與消防加壓系統動力</td></tr>
+<tr><td class="left">一般工業動力</td><td class="left">空壓機、真空泵浦、輸送機、攪拌機、離心機、製程泵浦等</td><td class="left">廠房製程用動力設備</td></tr>
+<tr><td class="left">監控</td><td class="left">DDC／PLC 控制箱電源</td><td class="left">空調自動控制系統（BA/DDC）電源，單相連續負載</td></tr>
+<tr><td class="left">維修備援</td><td class="left">單相備用分路 Spare Circuit</td><td class="left">供現場保養維修設備接用</td></tr>
+</tbody>
+</table></div>
+<p class="note">AHU (Air Handling Unit 空調箱)、FCU (Fan Coil Unit 室內小型冷風機)、ERV (Energy Recovery Ventilator 全熱交換機)、CHW (Chilled Water 冰水)、DDC (Direct Digital Control 直接數位控制)、BA (Building Automation 大樓自動化系統)。</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secBasis">
+<h2 class="section"><span class="num">06</span> 設計基準與資料來源優先順序（SSoT）</h2>
+<div class="methodbox">
+<p><b>法規依據：</b>依 世權技師 指定之「模式D」原則辦理：已上傳檔案優先，並標註出處；檔案未涵蓋處才以網路搜尋或既有知識補充，並標明「補充資料」與其來源，比對結果由技師本人核定採用與否。</p>
+
+<h3 class="sub">6.1 主回路計算公式（本版本確認基準）</h3>
+<div class="formula">
+主幹線導線安培容量基礎：
+  I_main = In(最大負載額定) × 1.5 ＋ ΣIn(其餘負載額定電流，不含最大負載本身)
+
+主開關 NFB AT：
+  AT_main = AT(最大負載分路過電流保護值，即該分路自身已算妥之AT) ＋ ΣIn(其餘負載與設備全載電流)
+
+備援設備（主備互鎖）不列入 I_main／AT_main 之加總，因實務上主備不會同時運轉；
+運轉與備援請拆成獨立列，並以「列入總電流與AT值計算」勾選欄逐列決定是否計入。
+</div>
+
+<h3 class="sub">6.2 分路 NFB AT／導線 Iw 計算基準</h3>
+<div class="formula">
+DOL 全壓啟動：AT ≈ 2.0 × In
+Y-Δ 降壓啟動：AT ≈ 1.5 × In（380V/440V系統&gt;50HP、220V系統&gt;15HP 強制採用，依第243條）
+導線安培容量：Iw ≥ 1.5 × In（不分DOL／Y-Δ，工程實務安全係數）
+Y-Δ 馬達側（6條線）相電流：Iφ ≈ 0.577 × In，Iw(馬達側) = 1.5 × Iφ
+非馬達連續負載：AT ≈ 1.5 × In（無2.0/1.5倍起動裕度概念，In由kVA/V直接換算）
+接地線：依表26-2，按分路NFB AT額定查表選定
+</div>
+
+<h3 class="sub">6.3 本次引用之上傳檔案與其提供內容</h3>
+<div class="tablewrap"><table class="method">
+<thead><tr><th>檔案</th><th>本計算書引用內容</th></tr></thead>
+<tbody>
+<tr><td class="left">03_NFB_配電設計準則.md</td><td class="left">NFB選用邏輯、馬達群總回路公式（AT_main=AT最大+ΣIn其餘）</td></tr>
+<tr><td class="left">04_ELB_配電設計準則.md</td><td class="left">漏電斷路器裝設場所與接線原則</td></tr>
+<tr><td class="left">05_導線_配電設計準則.md（新版）</td><td class="left">表16-6(90℃XLPE)、表16-7(60℃)安培容量表；GIP/EMT導線管管徑選用表(600V一般線、XLPE單芯線)；表26-1/26-2接地線線徑表</td></tr>
+<tr><td class="left">06_控制線_設計準則.md</td><td class="left">控制盤內控制線顏色、線徑、施工SOP</td></tr>
+<tr><td class="left">09_低壓馬達_配電設計準則.md</td><td class="left">單相110/220V、三相220/380/440V各馬力別滿載電流In、TR範圍、MS/Y-Δ型號</td></tr>
+<tr><td class="left">10_能源管理法_第15條.md</td><td class="left">馬達能效等級IE3/IE4適用門檻（&lt;75kW=IE3，75~200kW=IE4）</td></tr>
+<tr><td class="left">第_243_條-馬達啟動方式規則.md</td><td class="left">Y-Δ降壓啟動容量門檻、啟動電流≤3.5倍全載電流限制</td></tr>
+<tr><td class="left">用戶用電設備裝置規則_電工法規_.md</td><td class="left">第354~363條電纜架裝置規定（暫緩實作，待數值表確認）</td></tr>
+</tbody>
+</table></div>
+
+<h3 class="sub">6.4 已知資料缺口與簡化假設（請核定）</h3>
+<div class="flagbox">
+<b>1) 導線架(電纜架)：</b>法規條文(第354~363條)已內嵌本檔案知識庫，但安培容量與填充率之實際數值表(表360-1~3、361、362-1~4)僅有PDF連結，無內嵌數值，故本版本暫不開放導線架選項。<br>
+<b>2) 90℃ XLPE 導線管徑對照表僅列至100mm²：</b>超過100mm²之主幹線（如本案main若超過100mm²）採「40%佔積率公式法」現場估算，已於單線圖與主回路計算區標註為【補充估算】。<br>
+<b>3) 380V/220V(3φ4W)系統中性線：</b>系統為不平衡負載（單相FCU/控制箱掛載於AN/BN/CN）時，中性線可能承載電流，本版本主幹線中性線暫採與相線同尺寸設計（保守假設），並於第03節相平衡校核區顯示不平衡度供覆核。<br>
+<b>4) 09檔三相380V/440V表列75HP與100HP之In值重複（皆138A/119A）：</b>研判為原始資料標註兩者kW/HP對應有誤，本計算書逕引用表列數值，如兩者容量不同，建議您日後更正來源檔案。<br>
+<b>5) 非馬達連續負載AT係數：</b>本版本統一採1.5×In（與馬達Y-Δ相同），若您有不同基準（例如法規最低1.25×In）請告知修正。
+</div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secSOP">
+<h2 class="section"><span class="num">07</span> 分路計算方法 SOP</h2>
+<div class="sopbox">
+<ol>
+<li><b>Step 1　設備清冊：</b>於「分路計算總表」新增列，選擇設備類型（或自訂）、電壓相別、容量HP／kVA，運轉與備援設備請拆成獨立列。</li>
+<li><b>Step 2　查表取得滿載電流In：</b>系統依所選電壓相別自動查對應09檔馬達表；非馬達負載則依kVA/電壓自動換算。</li>
+<li><b>Step 3　判定啟動方式：</b>系統依電壓與容量門檻（220V&gt;15HP、380V/440V&gt;50HP）自動判定DOL或Y-Δ。</li>
+<li><b>Step 4　計算NFB AT：</b>DOL取2.0×In，Y-Δ取1.5×In，非馬達負載取1.5×In，均自動取最接近且≥計算值之標準規格。</li>
+<li><b>Step 5　計算導線與管徑：</b>依全案參數設定之絕緣材質(60℃/90℃)與配管材質(GIP/EMT/PVC)自動查表16-6/16-7取得導線Iw≥1.5×In之最小線徑，並查對應管徑對照表。</li>
+<li><b>Step 6　接地線：</b>依分路AT查表26-2自動取得設備接地線線徑。</li>
+<li><b>Step 7　勾選是否列入主回路：</b>運轉分路打勾，備援分路（主備互鎖）取消勾選。</li>
+<li><b>Step 8　主回路計算：</b>系統自動找出勾選分路中最大負載，套用 I_main與AT_main公式計算主開關與主幹線規格。</li>
+<li><b>Step 9　相平衡校核：</b>單相負載自動輪流分配A/B/C相（或手動指定），核對不平衡度。</li>
+<li><b>Step 10　單線圖確認：</b>ACMP單線圖依目前表列即時重繪，確認接線邏輯與規格標示無誤後，可列印或匯出。</li>
+</ol>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secMSYD">
+<h2 class="section"><span class="num">08</span> MS 與 Y-Δ 啟動系統說明</h2>
+<div class="methodbox">
+<h3 class="sub">8.1 名詞定義</h3>
+<div class="glossary">
+<div><b>MS</b>（Magnetic Starter 電磁式起動器）：電磁接觸器(MC)＋積熱電驛(TR)組成，為馬達啟閉與過載保護裝置。</div>
+<div><b>DOL</b>（Direct-On-Line 全壓直接啟動）：啟動瞬間直接施加全額電壓，構造簡單，啟動突波約5~8倍In。</div>
+<div><b>Y-Δ</b>（Star-Delta 星角降壓啟動）：啟動先接Y形（電壓降為1/√3），轉速上升後切換為Δ形全壓運轉，啟動電流降至全壓啟動1/3左右。</div>
+<div><b>TR</b>（Thermal Relay 積熱電驛）：偵測運轉電流，過載延遲跳脫保護馬達。</div>
+<div><b>VFD</b>（Variable Frequency Drive 變頻器）：改變電源頻率調速，可取代Y-Δ降壓啟動。</div>
+<div><b>SCCR</b>（Short-Circuit Current Rating 短路電流額定）：設備可承受之最大短路電流額定。</div>
+</div>
+<h3 class="sub">8.2 DOL 與 Y-Δ 比較表</h3>
+<div class="tablewrap"><table class="method">
+<thead><tr><th>比較項目</th><th>DOL（全壓直接啟動）</th><th>Y-Δ（星角降壓啟動）</th></tr></thead>
+<tbody>
+<tr><td class="left">適用容量門檻（第243條）</td><td class="left">220V≤15HP／380V,440V≤50HP</td><td class="left">220V&gt;15HP／380V,440V&gt;50HP</td></tr>
+<tr><td class="left">啟動電流倍數</td><td class="left">約5~8倍In</td><td class="left">約2~2.5倍In</td></tr>
+<tr><td class="left">本計算書NFB AT取值</td><td class="left">2.0×In</td><td class="left">1.5×In</td></tr>
+<tr><td class="left">電磁開關</td><td class="left">1組（S-Pxx）</td><td class="left">2組以上（MS-2xPxx＋限時電驛）</td></tr>
+<tr><td class="left">導線條數</td><td class="left">3條</td><td class="left">電源側3條＋馬達側6條</td></tr>
+<tr><td class="left">優點</td><td class="left">構造簡單、故障率低</td><td class="left">降低啟動突波、減少電壓閃爍</td></tr>
+<tr><td class="left">缺點</td><td class="left">大容量啟動衝擊大</td><td class="left">機構較複雜、切換瞬間仍有尖峰</td></tr>
+</tbody>
+</table></div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secExample">
+<h2 class="section"><span class="num">09</span> 情境應用實例（計算範例）</h2>
+<div class="example">
+<div class="title">範例一：冰水主機（60HP／380V）Y-Δ分路計算</div>
+<div class="step">查表In=86.2A（09檔表4-380V）。60HP&gt;50HP門檻→Y-Δ。</div>
+<div class="step">AT=1.5×86.2=129.3A→取150AT；AF=225AF。</div>
+<div class="step">電源側Iw=1.5×86.2=129.3A→查表16-6(90℃,3以下)：38mm²=145A≥129.3A。</div>
+<div class="step">馬達側Iφ=86.2/√3≈49.8A，Iw=1.5×49.8≈74.6A→查表16-6(90℃,5-6)：22mm²=80A≥74.6A→22mm²×6。</div>
+<div class="step">接地線：查表26-2，AT=150A對應200A以下欄→14mm²。</div>
+<div class="step">結果：<b>150AT／225AF，電源側38mm²，馬達側22mm²×6，MS-2xP35(Y-Δ)，TR 70~100A，接地線14mm²</b>。</div>
+</div>
+<div class="example">
+<div class="title">範例二：總回路計算（以7個運轉分路示範）</div>
+<div class="step">假設勾選分路：Chiller(In=86.2,AT=150)、P-1(22.6,AT=50)、P-2(29.8,AT=60)、P-3(37.0,AT=75)、CT-1(15.6,AT=40)、AHU-1(11.9,AT=30)、EF-1(5.1,AT=15)。</div>
+<div class="step">最大負載＝Chiller(In=86.2，自身AT=150)。ΣIn(其餘)＝22.6+29.8+37.0+15.6+11.9+5.1＝122.0A。</div>
+<div class="step">I_main＝86.2×1.5＋122.0＝251.3A。</div>
+<div class="step">AT_main＝150＋122.0＝272A→取300AT；AF＝400AF。</div>
+<div class="step">主幹線：查表16-6(90℃,3以下)，Iw=251.3A→250mm²=500A≥251.3A（保守可用200mm²=420A亦足夠，惟建議預留裕度採250mm²）。</div>
+<div class="step">接地線：AT=300A對應400A以下欄→22mm²。</div>
+<div class="step">結果：<b>主開關400AF／300AT，主幹線3-1c XLPE 250mm²＋接地線22mm²</b>（實際結果請以上方「總回路計算」區塊即時運算結果為準）。</div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secRef">
+<h2 class="section"><span class="num">10</span> 參考文獻與法規依據</h2>
+<div class="refbox"><b>法規依據：</b>經濟部《用戶用電設備裝置規則》第157、158、161、243條；表16-6/16-7導線安培容量表；表26-1/26-2接地導線線徑表；第354~363條電纜架裝置。<br>
+全國法規資料庫：<a href="https://law.moea.gov.tw/LawContent.aspx?id=FL011045" target="_blank">用戶用電設備裝置規則</a></div>
+<div class="refbox"><b>法規依據：</b>《能源管理法》第15條授權訂定之《低壓三相鼠籠型感應電動機能源效率基準、效率標示及檢查方式》；CNS 14400；IEC 60034-30-1。<br>
+<a href="https://law.moea.gov.tw/LawContent.aspx?id=GL000361" target="_blank">經濟部主管法規查詢系統－馬達能源效率基準</a></div>
+<div class="refbox"><b>資料來源：</b>03_NFB、04_ELB、05_導線(新版)、06_控制線、09_低壓馬達、10_能源管理法、第243條、用戶用電設備裝置規則等上傳檔案。</div>
+<div class="note"><b>專有名詞說明：</b>NFB (No Fuse Breaker 無熔線斷路器)、AT (Ampere Trip 跳脫電流)、AF (Ampere Frame 框架容量)、IC (Interrupting Capacity 啟斷容量)、TR (Thermal Relay 積熱電驛)、MS (Magnetic Starter 電磁式起動器)、DOL (Direct-On-Line 全壓直接啟動)、Y-Δ (Star-Delta 星角降壓啟動)、VFD (Variable Frequency Drive 變頻器)、XLPE (Cross-linked Polyethylene 交連聚乙烯)、GIP (厚金屬導線管)、EMT (Electrical Metallic Tubing 薄金屬導線管)、ACMP (Air-Conditioning Main Panel 空調主電盤)、AHU (Air Handling Unit 空調箱)、FCU (Fan Coil Unit 室內小型冷風機)、DDC (Direct Digital Control 直接數位控制)、SCCR (Short-Circuit Current Rating 短路電流額定)。</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="secVer">
+<h2 class="section"><span class="num">11</span> 版本紀錄</h2>
+<div class="tablewrap"><table class="method">
+<thead><tr><th>版本</th><th>日期</th><th>修改內容</th></tr></thead>
+<tbody>
+<tr><td>V1.0.0</td><td>2026-08-05</td><td class="left">首版發行，中央空調系統靜態分路計算書＋單線圖。</td></tr>
+<tr><td>V1.1.0</td><td>2026-08-05</td><td class="left">改為互動連動計算工具：電壓/相別/絕緣/配管材質可選並全表連動；新增EMT導線管選項；分路NFB AT改回DOL=2.0×In/Y-Δ=1.5×In；主回路公式統一為I_main=最大負載×1.5+ΣIn其餘，AT_main=AT(最大負載分路)+ΣIn其餘；新增「列入總電流與AT值計算」勾選欄，備援設備可排除於主回路加總；計算表可新增/刪除列；主幹線新增接地線(表26-2)；新增相平衡自動校核(AN/BN/CN)；ACMP單線圖隨表列動態重繪；擴充工業動力設備清單；編製欄改為李世權；AC-MSB更名為ACMP；FCU譯名統一為室內小型冷風機；章節順序調整為計算書/單線圖在前，說明在後；導線架選項暫緩。</td></tr>
+</tbody>
+</table></div>
+<p class="note redbold">⚠ 本計算書為工程估算參考文件，非正式送審圖說。變壓器容量、%Z、接地線與管徑等關鍵參數，正式設計前應以台電併聯審查資料、實際設備規格書覆核確認。</p>
+</section>
+
+</main>
+
+<footer>
+空調／工業動力配電計算書 &amp; ACMP單線圖 V1.1.0｜依《用戶用電設備裝置規則》及上傳參考文件估算，僅供study／verify用，正式送審圖說仍應由執業電機技師覆核簽證。
+</footer>
+
+<script>
+/* ============ 核心計算引擎（已於node環境驗證） ============ */
+// ===== 標準級距 =====
+const STD_AT = [15,20,30,40,50,60,75,100,125,150,175,200,225,250,300,350,400,450,500,600,700,800,1000,1200,1600,2000];
+const STD_AF = [50,100,225,400,600,800,1200,1600,2000,2500,3000];
+
+function pickStd(raw, series){
+  for (const v of series) if (v >= raw - 1e-9) return v;
+  return series[series.length-1];
+}
+function pickAT(raw){ return pickStd(raw, STD_AT); }
+function pickAF(at){ return pickStd(at, STD_AF); }
+
+// ===== 接地線 (表26-2, 依過電流保護器額定) =====
+const GROUND_TABLE = [
+  [20,2.0],[30,3.5],[60,5.5],[100,8],[200,14],[400,22],[600,38],[800,50],
+  [1000,60],[1200,80],[1600,100],[2000,125],[2500,175],[3000,200],[4000,250],[5000,350],[6000,400]
+];
+function lookupGround(at){
+  for (const [lim,size] of GROUND_TABLE) if (at <= lim) return size;
+  return 400;
+}
+
+// ===== 安培容量表 =====
+// 90C XLPE (表16-6): columns [3below,4,5-6,7-15,16-40,41-60,61+]
+// 註：僅取「絞線」系列供動力/馬達分路選用（實心單線1.6~2.6mm屬照明/控制迴路慣用尺寸，
+//     馬達分路端子多需壓接絞線，故不列入本計算書動力分路查表序列，避免管徑非單調跳號）
+const AMPACITY_90 = [
+ {size:'3.5', mm2:3.5, amp:[32,30,26,23,20,19,16]},
+ {size:'5.5', mm2:5.5, amp:[46,42,36,32,28,26,22]},
+ {size:'8', mm2:8, amp:[55,48,43,38,34,31,27]},
+ {size:'14', mm2:14, amp:[75,70,60,55,45,40,35]},
+ {size:'22', mm2:22, amp:[100,90,80,70,60,55,50]},
+ {size:'30', mm2:30, amp:[125,110,100,85,75,70,60]},
+ {size:'38', mm2:38, amp:[145,130,115,100,90,80,70]},
+ {size:'50', mm2:50, amp:[170,150,135,115,105,95,85]},
+ {size:'60', mm2:60, amp:[195,175,155,135,115,105,95]},
+ {size:'80', mm2:80, amp:[230,205,185,160,140,125,110]},
+ {size:'100', mm2:100, amp:[265,240,215,185,160,150,130]},
+ {size:'125', mm2:125, amp:[310,275,245,215,190,170,150]},
+ {size:'150', mm2:150, amp:[355,315,285,245,215,195,170]},
+ {size:'200', mm2:200, amp:[420,380,335,295,260,235,200]},
+ {size:'250', mm2:250, amp:[500,450,400,350,305,275,240]},
+ {size:'325', mm2:325, amp:[580,525,465,405,360,325,280]},
+ {size:'400', mm2:400, amp:[670,600,535,465,410,375,325]},
+ {size:'500', mm2:500, amp:[755,680,600,530,445,420,365]},
+];
+// 60C (表16-7): columns [3below,4,5-6,7-10]  (no 16-40/41-60/61+ columns -> reuse 7-10 col for those cases, flagged)
+const AMPACITY_60 = [
+ {size:'3.5', mm2:3.5, amp:[19,16,14,12,12,12,12]},
+ {size:'5.5', mm2:5.5, amp:[25,23,20,17,17,17,17]},
+ {size:'8', mm2:8, amp:[33,30,25,20,20,20,20]},
+ {size:'14', mm2:14, amp:[50,40,35,30,30,30,30]},
+ {size:'22', mm2:22, amp:[60,55,50,40,40,40,40]},
+ {size:'30', mm2:30, amp:[75,65,55,50,50,50,50]},
+ {size:'38', mm2:38, amp:[85,75,65,55,55,55,55]},
+ {size:'50', mm2:50, amp:[100,90,80,65,65,65,65]},
+ {size:'60', mm2:60, amp:[115,105,90,75,75,75,75]},
+ {size:'80', mm2:80, amp:[140,125,105,90,90,90,90]},
+ {size:'100', mm2:100, amp:[160,150,125,105,105,105,105]},
+ {size:'125', mm2:125, amp:[185,165,140,120,120,120,120]},
+ {size:'150', mm2:150, amp:[215,190,165,140,140,140,140]},
+ {size:'200', mm2:200, amp:[255,225,195,165,165,165,165]},
+ {size:'250', mm2:250, amp:[300,265,230,195,195,195,195]},
+ {size:'325', mm2:325, amp:[355,310,270,230,230,230,230]},
+ {size:'400', mm2:400, amp:[405,360,310,265,265,265,265]},
+ {size:'500', mm2:500, amp:[460,405,350,300,300,300,300]},
+];
+function ampColIndex(wireCount){
+  if (wireCount<=3) return 0;
+  if (wireCount===4) return 1;
+  if (wireCount<=6) return 2;
+  if (wireCount<=15) return 3;
+  if (wireCount<=40) return 4;
+  if (wireCount<=60) return 5;
+  return 6;
+}
+function lookupConductor(insul90, Iw, wireCount){
+  const table = insul90 ? AMPACITY_90 : AMPACITY_60;
+  const col = ampColIndex(wireCount);
+  for (const row of table){
+    if (row.amp[col] >= Iw - 1e-9) return row;
+  }
+  return table[table.length-1];
+}
+
+// ===== 管徑對照 (依導線截面積 mm2 + 條數 -> 管徑標稱) =====
+// XLPE-GIP / XLPE-EMT (90C wire), start at 3.5mm2; below that fallback to 3.5mm2 row (flag)
+const CONDUIT_XLPE_GIP = {
+ 3.5:['16','16','16','22','22','22','28','28'],
+ 5.5:['16','16','22','22','28','28','28','36'],
+ 8:['16','22','22','28','28','36','36','42'],
+ 14:['16','22','28','28','36','36','42','54'],
+ 22:['22','28','28','36','42','42','54','54'],
+ 38:['22','36','36','42','54','54','70','70'],
+ 60:['28','42','42','54','54','70','70','82'],
+ 100:['36','54','54','70','70','82','82','104'],
+};
+const CONDUIT_XLPE_EMT = {
+ 3.5:['E19','E19','E19','E25','E25','E25','E25','E31'],
+ 5.5:['E19','E19','E25','E25','E25','E31','E31','E39'],
+ 8:['E19','E25','E25','E31','E31','E31','E39','E39'],
+ 14:['E19','E25','E31','E31','E39','E39','E51','E51'],
+ 22:['E25','E31','E31','E39','E39','E51','E51','E63'],
+ 38:['E25','E31','E39','E51','E51','E51','E63','E63'],
+ 60:['E31','E39','E51','E51','E63','E63','E75','E75'],
+ 100:['E39','E51','E63','E63','E75','E75','E75','E75'],
+};
+// 600V general (60C) wire, PVC / GIP / EMT ; includes 2.0mm2
+const CONDUIT_PVC = {
+ 2.0:['16','16','16','16','20','20','22','22'],
+ 3.5:['16','16','16','20','20','22','22','28'],
+ 5.5:['16','16','20','20','22','22','28','28'],
+ 8:['16','20','20','22','22','28','28','35'],
+ 14:['16','22','22','28','28','35','35','41'],
+ 22:['20','22','28','35','35','41','41','52'],
+ 38:['22','28','35','41','41','52','52','65'],
+ 60:['28','35','41','52','52','65','65','80'],
+};
+const CONDUIT_GIP60 = {
+ 2.0:['16','16','16','16','22','22','22','28'],
+ 3.5:['16','16','16','22','22','22','28','28'],
+ 5.5:['16','16','22','22','22','28','28','36'],
+ 8:['16','22','22','22','28','28','36','36'],
+ 14:['16','22','22','28','28','36','36','42'],
+ 22:['22','22','28','36','36','42','42','54'],
+ 38:['22','28','36','42','42','54','54','70'],
+ 60:['28','36','42','54','54','70','70','82'],
+};
+// EMT for 60C wire only gave 4 buckets (1-2,3,4-6,7-10) as ranges; take conservative (upper) discrete value
+const CONDUIT_EMT60 = {
+ 2.0:['E19','E19','E25','E31'],
+ 3.5:['E19','E19','E25','E31'],
+ 5.5:['E19','E25','E31','E39'],
+ 8:['E19','E25','E31','E39'],
+ 14:['E25','E31','E51','E63'],
+ 22:['E25','E31','E51','E63'],
+ 38:['E31','E51','E75','E75'],
+ 60:['E31','E51','E75','E75'],
+};
+function countColIdxFull(n){ // for 8-col tables: 1,2,3,4,5,6,7-8,9-10
+  if(n<=1) return 0; if(n===2) return 1; if(n===3) return 2; if(n===4) return 3;
+  if(n===5) return 4; if(n===6) return 5; if(n<=8) return 6; return 7;
+}
+function countColIdxEMT60(n){ // 4 buckets: 1-2,3,4-6,7-10
+  if(n<=2) return 0; if(n===3) return 1; if(n<=6) return 2; return 3;
+}
+function lookupConduit(material, insul90, mm2, wireCount){
+  let table, keys;
+  if (insul90){
+    table = (material==='EMT') ? CONDUIT_XLPE_EMT : CONDUIT_XLPE_GIP; // GIP used also for G.I./厚導線管; PVC管 fallback to GIP table w/ note
+  } else {
+    table = (material==='EMT') ? CONDUIT_EMT60 : (material==='PVC' ? CONDUIT_PVC : CONDUIT_GIP60);
+  }
+  keys = Object.keys(table).map(Number).sort((a,b)=>a-b);
+  let key = keys.find(k=>k>=mm2-1e-9);
+  let approx=false;
+  if (key===undefined){ key = keys[keys.length-1]; approx=true; } // beyond table -> flag, needs 40% fill calc
+  if (mm2 < keys[0] - 1e-9){ key = keys[0]; approx=true; } // below table min -> flag
+  const idx = (material==='EMT' && !insul90) ? countColIdxEMT60(wireCount) : countColIdxFull(wireCount);
+  const val = table[key][idx];
+  return {conduit: val, approx: approx || (mm2 !== key)};
+}
+
+// ===== 馬達資料表 (In / TR / 啟動方式 / MS規格) =====
+const MOTOR_TABLES = {
+ '1P110': {
+  0.25:{In:4.4,tr:[3.2,4.8],type:'DOL',ms:'S-P11'},
+  0.333:{In:5.8,tr:[4.5,6.5],type:'DOL',ms:'S-P11'},
+  0.5:{In:7.2,tr:[6.0,9.0],type:'DOL',ms:'S-P11'},
+  0.75:{In:9.8,tr:[7.0,11],type:'DOL',ms:'S-P11'},
+  1:{In:13.8,tr:[11,16],type:'DOL',ms:'S-P16'},
+  1.5:{In:16.0,tr:[12,18],type:'DOL',ms:'S-P21'},
+  2:{In:20.0,tr:[16,22],type:'DOL',ms:'S-P21'},
+  3:{In:34.0,tr:[28,40],type:'DOL',ms:'S-P35'},
+  5:{In:56.0,tr:[45,65],type:'DOL',ms:'S-P60'},
+ },
+ '1P220': {
+  0.25:{In:2.2,tr:[1.7,2.5],type:'DOL',ms:'S-P11'},
+  0.333:{In:2.9,tr:[2.2,3.4],type:'DOL',ms:'S-P11'},
+  0.5:{In:3.6,tr:[2.8,4.2],type:'DOL',ms:'S-P11'},
+  0.75:{In:4.9,tr:[4.0,6.0],type:'DOL',ms:'S-P11'},
+  1:{In:6.9,tr:[5.0,8.0],type:'DOL',ms:'S-P11'},
+  1.5:{In:8.0,tr:[6.0,9.0],type:'DOL',ms:'S-P11'},
+  2:{In:10.0,tr:[7.0,11],type:'DOL',ms:'S-P11'},
+  3:{In:17.0,tr:[12,18],type:'DOL',ms:'S-P21'},
+  5:{In:28.0,tr:[22,32],type:'DOL',ms:'S-P30'},
+  7.5:{In:40.0,tr:[32,48],type:'DOL',ms:'S-P40'},
+  10:{In:50.0,tr:[45,65],type:'DOL',ms:'S-P50'},
+ },
+ '3P220': {
+  0.5:{In:1.8,tr:[1.4,2.2],type:'DOL',ms:'S-P11'},
+  1:{In:3.2,tr:[2.5,4.0],type:'DOL',ms:'S-P11'},
+  2:{In:6.1,tr:[5.0,8.0],type:'DOL',ms:'S-P11'},
+  3:{In:8.8,tr:[7.0,11],type:'DOL',ms:'S-P11'},
+  5:{In:14.2,tr:[11,16],type:'DOL',ms:'S-P16'},
+  7.5:{In:20.5,tr:[16,22],type:'DOL',ms:'S-P21'},
+  10:{In:27.0,tr:[22,32],type:'DOL',ms:'S-P35'},
+  15:{In:39.0,tr:[32,48],type:'DOL',ms:'S-P40'},
+  20:{In:51.5,tr:[45,65],type:'YD',ms:'MS-2xP21'},
+  25:{In:64.0,tr:[50,75],type:'YD',ms:'MS-2xP35'},
+  30:{In:75.5,tr:[60,90],type:'YD',ms:'MS-2xP35'},
+  40:{In:101,tr:[80,125],type:'YD',ms:'MS-2xP50'},
+  50:{In:124,tr:[100,150],type:'YD',ms:'MS-2xP60'},
+  75:{In:182,tr:[140,220],type:'YD',ms:'MS-2xP100'},
+  100:{In:238,tr:[180,280],type:'YD',ms:'MS-2xP150'},
+  125:{In:285,tr:[220,320],type:'YD',ms:'MS-2xP180'},
+  150:{In:347,tr:[280,400],type:'YD',ms:'MS-2xP220'},
+  200:{In:501,tr:[400,600],type:'YD',ms:'MS-2xP300'},
+ },
+ '3P380': {
+  1:{In:1.85,tr:[1.4,2.2],type:'DOL',ms:'S-P11'},
+  2:{In:3.5,tr:[2.8,4.2],type:'DOL',ms:'S-P11'},
+  3:{In:5.1,tr:[4.0,6.0],type:'DOL',ms:'S-P11'},
+  5:{In:8.2,tr:[7.0,11],type:'DOL',ms:'S-P11'},
+  7.5:{In:11.9,tr:[9.0,13],type:'DOL',ms:'S-P11'},
+  10:{In:15.6,tr:[12,18],type:'DOL',ms:'S-P16'},
+  15:{In:22.6,tr:[18,26],type:'DOL',ms:'S-P21'},
+  20:{In:29.8,tr:[22,32],type:'DOL',ms:'S-P30'},
+  25:{In:37.0,tr:[32,48],type:'DOL',ms:'S-P40'},
+  30:{In:43.7,tr:[32,48],type:'DOL',ms:'S-P50'},
+  40:{In:58.5,tr:[45,65],type:'DOL',ms:'S-P60'},
+  50:{In:71.8,tr:[60,90],type:'DOL',ms:'S-P80'},
+  60:{In:86.2,tr:[70,100],type:'YD',ms:'MS-2xP35'},
+  75:{In:138,tr:[100,150],type:'YD',ms:'MS-2xP60'},
+  100:{In:138,tr:[100,150],type:'YD',ms:'MS-2xP60'},
+  125:{In:165,tr:[120,180],type:'YD',ms:'MS-2xP80'},
+  150:{In:201,tr:[160,240],type:'YD',ms:'MS-2xP100'},
+  200:{In:290,tr:[220,320],type:'YD',ms:'MS-2xP180'},
+ },
+ '3P440': {
+  1:{In:1.6,tr:[1.2,1.8],type:'DOL',ms:'S-P11'},
+  2:{In:3.0,tr:[2.2,3.4],type:'DOL',ms:'S-P11'},
+  3:{In:4.4,tr:[3.2,4.8],type:'DOL',ms:'S-P11'},
+  5:{In:7.1,tr:[5.0,8.0],type:'DOL',ms:'S-P11'},
+  7.5:{In:10.3,tr:[8.0,12],type:'DOL',ms:'S-P11'},
+  10:{In:13.5,tr:[11,16],type:'DOL',ms:'S-P16'},
+  15:{In:19.5,tr:[16,22],type:'DOL',ms:'S-P21'},
+  20:{In:25.7,tr:[22,32],type:'DOL',ms:'S-P30'},
+  25:{In:32.0,tr:[28,40],type:'DOL',ms:'S-P35'},
+  30:{In:37.8,tr:[32,48],type:'DOL',ms:'S-P40'},
+  40:{In:50.5,tr:[45,65],type:'DOL',ms:'S-P50'},
+  50:{In:62.0,tr:[50,75],type:'DOL',ms:'S-P60'},
+  60:{In:74.5,tr:[60,90],type:'YD',ms:'MS-2xP30'},
+  75:{In:119,tr:[90,135],type:'YD',ms:'MS-2xP50'},
+  100:{In:119,tr:[90,135],type:'YD',ms:'MS-2xP50'},
+  125:{In:142,tr:[110,165],type:'YD',ms:'MS-2xP60'},
+  150:{In:173,tr:[140,220],type:'YD',ms:'MS-2xP80'},
+  200:{In:250,tr:[180,280],type:'YD',ms:'MS-2xP125'},
+ },
+};
+
+function computeBranch(In, starterType, insul90, material){
+  const atRaw = In * (starterType==='YD' ? 1.5 : 2.0);
+  const AT = pickAT(atRaw);
+  const AF = pickAF(AT);
+  const IwLine = 1.5 * In;
+  const condLine = lookupConductor(insul90, IwLine, 3);
+  const conduitLine = lookupConduit(material, insul90, condLine.mm2, 3);
+  const ground = lookupGround(AT);
+  let motorSide = null;
+  if (starterType==='YD'){
+    const Iphase = In/Math.sqrt(3);
+    const IwMotor = 1.5*Iphase;
+    const condMotor = lookupConductor(insul90, IwMotor, 6);
+    const conduitMotor = lookupConduit(material, insul90, condMotor.mm2, 6);
+    motorSide = {Iphase, IwMotor, condMotor, conduitMotor};
+  }
+  return {atRaw, AT, AF, IwLine, condLine, conduitLine, ground, motorSide};
+}
+
+
+/* ============ 設備目錄 ============ */
+const EQUIP_CATALOG = {
+  '中央空調系統類': ['冰水主機 Chiller','一次側冰水泵浦 Primary CHW Pump','二次側冰水泵浦 Secondary CHW Pump','冷卻水泵浦 Condenser Water Pump','冷卻水塔風扇 Cooling Tower Fan','空氣源熱泵 Air Source Heat Pump','空調箱送風機 AHU Fan','全熱交換機 ERV','排風機/進風機 Exhaust/Supply Fan','停車場排風機 Garage Ventilation Fan','廚房排油煙機 Kitchen Exhaust Fan','FCU (Fan Coil Unit 室內小型冷風機)'],
+  '給排水/消防動力類': ['加壓給水泵浦 Booster Pump','污水/廢水泵浦 Sewage Pump','電動消防泵浦 Electric Fire Pump','柴油消防泵浦控制箱 Diesel Fire Pump Panel','加壓馬達 Jockey Pump'],
+  '一般工業動力類': ['空壓機 Air Compressor','真空泵浦 Vacuum Pump','輸送機 Conveyor Motor','攪拌機/混合機 Agitator/Mixer','破碎機/研磨機 Crusher/Grinder','離心機 Centrifuge','起重機/天車 Crane/Hoist','製程泵浦 Process Pump','工業用鼓風機 Industrial Blower','冷凍主機 Refrigeration Compressor'],
+  '其他': ['單相備用分路 Spare Circuit','DDC/PLC控制箱電源','自訂設備']
+};
+const NONMOTOR_NAMES = ['單相備用分路 Spare Circuit','DDC/PLC控制箱電源'];
+
+const VOLTAGE_OPTIONS = [
+  {key:'3P380', label:'3φ380V (AN/BN/CN, 3φ4W)'},
+  {key:'3P220', label:'3φ220V (AB/BC/CA, 3φ3W)'},
+  {key:'3P440', label:'3φ440V (AB/BC/CA, 3φ3W)'},
+  {key:'1P220', label:'1φ220V (掛AN/BN/CN任一相)'},
+  {key:'1P110', label:'1φ110V (掛AN/BN/CN任一相)'},
+];
+const VOLT_NUM = {'3P380':380,'3P220':220,'3P440':440,'1P220':220,'1P110':110};
+
+const HP_STEPS = {
+  '1P110':[0.25,0.333,0.5,0.75,1,1.5,2,3,5],
+  '1P220':[0.25,0.333,0.5,0.75,1,1.5,2,3,5,7.5,10],
+  '3P220':[0.5,1,2,3,5,7.5,10,15,20,25,30,40,50,75,100,125,150,200],
+  '3P380':[1,2,3,5,7.5,10,15,20,25,30,40,50,60,75,100,125,150,200],
+  '3P440':[1,2,3,5,7.5,10,15,20,25,30,40,50,60,75,100,125,150,200],
+};
+function hpLabel(v){
+  const map={0.25:'1/4',0.333:'1/3',0.5:'1/2',0.75:'3/4'};
+  return map[v] || String(v);
+}
+
+/* ============ Row 狀態 ============ */
+let rows = [];
+let rowSeq = 1;
+function newRow(name, voltageKey, hp, includeMain, isNonMotor, kva, phase){
+  return {
+    id: rowSeq++,
+    name: name,
+    voltageKey: voltageKey,
+    hp: hp,
+    kva: kva || 5,
+    isNonMotor: !!isNonMotor,
+    includeMain: includeMain !== false,
+    phase: phase || 'AUTO',
+  };
+}
+function loadDemo(){
+  rows = [];
+  rows.push(newRow('冰水主機 Chiller','3P380',60,true));
+  rows.push(newRow('一次側冰水泵浦 Primary CHW Pump（運轉）','3P380',15,true));
+  rows.push(newRow('一次側冰水泵浦 Primary CHW Pump（備援）','3P380',15,false));
+  rows.push(newRow('二次側冰水泵浦 Secondary CHW Pump','3P380',20,true));
+  rows.push(newRow('冷卻水泵浦 Condenser Water Pump（運轉）','3P380',25,true));
+  rows.push(newRow('冷卻水泵浦 Condenser Water Pump（備援）','3P380',25,false));
+  rows.push(newRow('冷卻水塔風扇 Cooling Tower Fan #1','3P380',10,true));
+  rows.push(newRow('冷卻水塔風扇 Cooling Tower Fan #2','3P380',10,true));
+  rows.push(newRow('空調箱送風機 AHU Fan #1','3P380',7.5,true));
+  rows.push(newRow('空調箱送風機 AHU Fan #2','3P380',7.5,true));
+  rows.push(newRow('空調箱送風機 AHU Fan #3','3P380',7.5,true));
+  rows.push(newRow('排風機 Exhaust Fan #1','3P380',3,true));
+  rows.push(newRow('排風機 Exhaust Fan #2','3P380',3,true));
+  rows.push(newRow('FCU (Fan Coil Unit 室內小型冷風機) #1','1P220',0.25,true,false,null,'AUTO'));
+  rows.push(newRow('FCU (Fan Coil Unit 室內小型冷風機) #2','1P220',0.25,true,false,null,'AUTO'));
+  rows.push(newRow('FCU (Fan Coil Unit 室內小型冷風機) #3','1P220',0.25,true,false,null,'AUTO'));
+  rows.push(newRow('DDC/PLC控制箱電源','1P220',null,true,true,5,'AUTO'));
+  rows.push(newRow('單相備用分路 Spare Circuit','1P220',null,false,true,3,'AUTO'));
+}
+
+/* ============ 全案參數 ============ */
+function getSettings(){
+  return {
+    insul90: document.getElementById('setInsul').value === '1',
+    material: document.getElementById('setMaterial').value,
+    branchIC: parseFloat(document.getElementById('setBranchIC').value) || 22,
+    xfmrKVA: parseFloat(document.getElementById('setXfmrKVA').value) || 300,
+    xfmrZ: parseFloat(document.getElementById('setXfmrZ').value) || 4,
+  };
+}
+
+/* ============ 逐列計算 ============ */
+function computeRow(row, settings){
+  const V = VOLT_NUM[row.voltageKey];
+  const isSinglePhase = row.voltageKey.startsWith('1P');
+  if (row.isNonMotor){
+    const In = (row.kva*1000) / V; // 1φ 負載
+    const AT = pickAT(1.5*In);
+    const AF = pickAF(AT);
+    const Iw = 1.5*In;
+    const cond = lookupConductor(settings.insul90, Iw, 3);
+    const conduit = lookupConduit(settings.material, settings.insul90, cond.mm2, 3);
+    const ground = lookupGround(AT);
+    return {In, AT, AF, ground, starterType:'NONMOTOR', ms:'—', tr:'—',
+      condLine:cond, conduitLine:conduit, motorSide:null, V, isSinglePhase, kVA: row.kva};
+  } else {
+    const table = MOTOR_TABLES[row.voltageKey];
+    const m = table ? table[row.hp] : null;
+    if (!m) return null;
+    const r = computeBranch(m.In, m.type, settings.insul90, settings.material);
+    const kVA = isSinglePhase ? (V*m.In/1000) : (Math.sqrt(3)*V*m.In/1000);
+    return {In:m.In, AT:r.AT, AF:r.AF, ground:r.ground, starterType:m.type, ms:m.ms,
+      tr:`${m.tr[0]}~${m.tr[1]}`, condLine:r.condLine, conduitLine:r.conduitLine,
+      motorSide:r.motorSide, V, isSinglePhase, kVA};
+  }
+}
+
+/* ============ 相位自動分配 ============ */
+function assignPhases(){
+  const loads = {A:0,B:0,C:0};
+  const settings = getSettings();
+  for (const row of rows){
+    const c = computeRow(row, settings);
+    if (!c) continue;
+    if (c.isSinglePhase){
+      if (row.phase === 'AUTO'){
+        // 指派到目前負載最輕的相
+        let min = 'A';
+        if (loads.B < loads[min]) min='B';
+        if (loads.C < loads[min]) min='C';
+        row._assignedPhase = min;
+        loads[min] += c.kVA;
+      } else {
+        row._assignedPhase = row.phase;
+        loads[row.phase] += c.kVA;
+      }
+    }
+  }
+  return loads;
+}
+
+/* ============ 渲染：分路計算總表 ============ */
+function renderTable(){
+  const settings = getSettings();
+  assignPhases();
+  const tbody = document.getElementById('eqBody');
+  let html = '';
+  rows.forEach((row, idx) => {
+    const c = computeRow(row, settings);
+    const isYD = c && c.starterType === 'YD';
+    const isNM = row.isNonMotor;
+    const trCls = (isYD? 'ydelta ':'') + (!row.includeMain? 'excluded':'');
+    html += `<tr class="${trCls}" data-id="${row.id}">`;
+    html += `<td><input type="checkbox" data-field="includeMain" ${row.includeMain?'checked':''}></td>`;
+    html += `<td>${idx+1}</td>`;
+    html += `<td class="left"><input type="text" data-field="name" value="${escapeHtml(row.name)}" list="equipCatalogList"></td>`;
+    html += `<td><select data-field="voltageKey">`;
+    VOLTAGE_OPTIONS.forEach(o=>{ html += `<option value="${o.key}" ${row.voltageKey===o.key?'selected':''}>${o.label}</option>`; });
+    html += `</select></td>`;
+    if (isNM){
+      html += `<td><input type="number" step="0.5" data-field="kva" value="${row.kva}"> kVA</td>`;
+    } else {
+      const steps = HP_STEPS[row.voltageKey] || [];
+      html += `<td><select data-field="hp">`;
+      steps.forEach(h=>{ html += `<option value="${h}" ${row.hp==h?'selected':''}>${hpLabel(h)} HP</option>`; });
+      html += `</select></td>`;
+    }
+    if (c){
+      const startLabel = c.starterType==='YD' ? '<span class="tagY">Y-Δ</span>' : (c.starterType==='DOL'?'<span class="tag2">DOL</span>':'<span class="tag">連續</span>');
+      html += `<td>${startLabel}</td>`;
+      html += `<td>${c.In.toFixed(1)}</td>`;
+      html += `<td>${c.ms}</td>`;
+      html += `<td>${c.tr}</td>`;
+      html += `<td><b>${c.AT}</b></td>`;
+      html += `<td>${c.AF}</td>`;
+      html += `<td><input type="number" data-field="ic" value="${settings.branchIC}" style="width:40px"></td>`;
+      let condTxt = `${c.condLine.mm2}mm²×3`;
+      if (c.motorSide) condTxt += `<br><span style="color:#a6472f">馬達側 ${c.motorSide.condMotor.mm2}mm²×6</span>`;
+      html += `<td>${condTxt}</td>`;
+      html += `<td>${c.ground}mm²</td>`;
+      let conduitTxt = c.conduitLine.conduit + (c.conduitLine.approx?'<span class="note">＊</span>':'');
+      if (c.motorSide) conduitTxt += `<br><span style="color:#a6472f">${c.motorSide.conduitMotor.conduit}${c.motorSide.conduitMotor.approx?'＊':''}</span>`;
+      html += `<td>${conduitTxt}</td>`;
+      if (c.isSinglePhase){
+        html += `<td><select data-field="phase">
+          <option value="AUTO" ${row.phase==='AUTO'?'selected':''}>自動(${row._assignedPhase||'-'})</option>
+          <option value="A" ${row.phase==='A'?'selected':''}>A</option>
+          <option value="B" ${row.phase==='B'?'selected':''}>B</option>
+          <option value="C" ${row.phase==='C'?'selected':''}>C</option>
+        </select></td>`;
+      } else {
+        html += `<td>ABC(3φ)</td>`;
+      }
+    } else {
+      html += `<td colspan="9" style="color:#a6472f">查無此電壓/容量對應資料</td>`;
+    }
+    html += `<td><button class="btn danger" data-action="del">刪除</button></td>`;
+    html += `</tr>`;
+  });
+  tbody.innerHTML = html;
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ============ 渲染：總回路計算 ============ */
+function renderMain(){
+  const settings = getSettings();
+  const included = [];
+  rows.forEach(row=>{
+    if (!row.includeMain) return;
+    const c = computeRow(row, settings);
+    if (c) included.push({row, c});
+  });
+  const metaBar = document.getElementById('mainMetaBar');
+  const box = document.getElementById('mainCalcBox');
+  if (included.length === 0){
+    metaBar.innerHTML = `<div class="metacard warncard"><div class="label">狀態</div><div class="val">尚無勾選分路</div></div>`;
+    box.innerHTML = `<p class="note">請於上方分路計算總表勾選至少一個分路「列入總電流與AT值計算」。</p>`;
+    return;
+  }
+  let maxIdx = 0;
+  for (let i=1;i<included.length;i++) if (included[i].c.In > included[maxIdx].c.In) maxIdx = i;
+  const largest = included[maxIdx];
+  const others = included.filter((_,i)=>i!==maxIdx);
+  const sumOthers = others.reduce((s,o)=>s+o.c.In,0);
+  const Imain = largest.c.In*1.5 + sumOthers;
+  const ATraw = largest.c.AT + sumOthers;
+  const ATmain = pickAT(ATraw);
+  const AFmain = pickAF(ATmain);
+
+  // 是否含380V系統(需4線含中性線)
+  const has380 = included.some(o=>o.row.voltageKey==='3P380' || (o.row.voltageKey.startsWith('1P')));
+  const wireCount = has380 ? 4 : 3;
+  const condMain = lookupConductor(settings.insul90, Imain, wireCount<=3?3:4);
+  const conduitMain = lookupConduit(settings.material, settings.insul90, condMain.mm2, wireCount);
+  const groundMain = lookupGround(ATmain);
+
+  // IC計算
+  const Isec = (settings.xfmrKVA*1000) / (Math.sqrt(3)*380);
+  const Isc = Isec / (settings.xfmrZ/100);
+  const IcNeed = Isc*1.2/1000;
+
+  metaBar.innerHTML = `
+   <div class="metacard"><div class="label">勾選分路數</div><div class="val">${included.length}</div></div>
+   <div class="metacard"><div class="label">主開關 AT／AF</div><div class="val">${ATmain} / ${AFmain}</div></div>
+   <div class="metacard"><div class="label">主幹線 Iw(=I_main)</div><div class="val">${Imain.toFixed(1)} A</div></div>
+   <div class="metacard"><div class="label">主幹線導線</div><div class="val">${condMain.mm2}mm²×${wireCount}</div></div>
+   <div class="metacard"><div class="label">主幹線接地線</div><div class="val">${groundMain}mm²</div></div>
+  `;
+  box.innerHTML = `
+  <h3 class="sub">計算過程</h3>
+  <div class="formula">最大負載：${escapeHtml(largest.row.name)}　In=${largest.c.In.toFixed(1)}A　自身分路AT=${largest.c.AT}A
+ΣIn(其餘 ${others.length} 個勾選分路)＝${others.map(o=>o.c.In.toFixed(1)).join('+')} ＝ ${sumOthers.toFixed(1)} A
+
+I_main ＝ In(最大負載)×1.5 ＋ ΣIn(其餘) ＝ ${largest.c.In.toFixed(1)}×1.5 ＋ ${sumOthers.toFixed(1)} ＝ ${Imain.toFixed(1)} A
+AT_main ＝ AT(最大負載分路) ＋ ΣIn(其餘) ＝ ${largest.c.AT} ＋ ${sumOthers.toFixed(1)} ＝ ${ATraw.toFixed(1)} A → 取標準值 ${ATmain}AT／${AFmain}AF
+
+主幹線導線：查${settings.insul90?'表16-6(90℃XLPE)':'表16-7(60℃)'}，Iw=I_main=${Imain.toFixed(1)}A → ${condMain.mm2}mm²(${condMain.amp[0]}A，管內導線${wireCount}條)
+主幹線管徑：${settings.material} → ${conduitMain.conduit}${conduitMain.approx?'（＊超出常用對照表範圍，屬補充估算，建議以40%佔積率公式覆核）':''}
+主幹線接地線：查表26-2，AT=${ATmain}A → ${groundMain}mm²
+${has380?'＊系統含380V/220V(3φ4W)或單相負載，主幹線含中性線N，本計算採與相線同尺寸之保守設計。':''}
+
+短路電流計算（假設變壓器${settings.xfmrKVA}kVA，%Z=${settings.xfmrZ}%）：
+Isec＝${settings.xfmrKVA*1000}/(√3×380)≈${Isec.toFixed(1)}A
+Isc＝Isec/%Z＝${Isec.toFixed(1)}/${(settings.xfmrZ/100).toFixed(3)}≈${(Isc/1000).toFixed(2)}kA
+IC需求≥Isc×1.2≈${IcNeed.toFixed(2)}kA　→　建議主開關IC選用 ≥${Math.ceil(IcNeed)}kA（常用22kA或以上）
+</div>
+  <h3 class="sub">未列入主回路（備援／未勾選）之分路</h3>
+  <div class="note">${rows.filter(r=>!r.includeMain).map(r=>escapeHtml(r.name)).join('、') || '（無）'}</div>
+  `;
+  return {included, largest, sumOthers, Imain, ATmain, AFmain};
+}
+
+/* ============ 渲染：相平衡校核 ============ */
+function renderPhase(){
+  const loads = assignPhases();
+  const bar = document.getElementById('phaseBar');
+  const total = loads.A+loads.B+loads.C;
+  const avg = total/3;
+  const max = Math.max(loads.A,loads.B,loads.C);
+  const min = Math.min(loads.A,loads.B,loads.C);
+  const imbalance = avg>0 ? ((max-min)/avg*100) : 0;
+  bar.innerHTML = ['A','B','C'].map(p=>`
+    <div class="phasebox"><div class="ph">${p} 相</div><div class="kva">${loads[p].toFixed(2)} kVA</div></div>
+  `).join('');
+  const box = document.getElementById('phaseCalcBox');
+  const warnColor = imbalance>10 ? 'style="color:#a6472f;font-weight:700;"' : '';
+  box.innerHTML = `
+  <div class="formula">不平衡度 (%) ＝ (最大相負載－最小相負載) / 平均相負載 × 100%
+＝ (${max.toFixed(2)} － ${min.toFixed(2)}) / ${avg.toFixed(2)} × 100% ＝ <span ${warnColor}>${imbalance.toFixed(1)}%</span>
+${imbalance>10?'⚠ 不平衡度超過10%參考門檻，建議調整單相負載之相別指定以改善平衡。':'✓ 不平衡度在10%參考門檻內。'}
+</div>
+  <p class="note">單相負載（FCU／控制箱／備用分路）預設掛載於380V/220V系統(3φ4W)之AN、BN或CN相，自動輪流分配至目前負載最輕的一相；可於分路計算總表「相別指定」欄手動覆寫。三相負載平均分攤於A/B/C三相，不列入本表個別相加總（僅單相負載列入不平衡度計算）。</p>
+  `;
+}
+
+/* ============ 渲染：ACMP 單線圖 (動態SVG) ============ */
+function renderDiagram(mainResult){
+  const settings = getSettings();
+  const container = document.getElementById('diagramContainer');
+  const n = rows.length;
+  if (n === 0){ container.innerHTML = '<p class="note">尚無分路資料。</p>'; return; }
+  const boxW = 150, gap = 14, startX = 40;
+  const totalW = startX*2 + n*(boxW+gap);
+  const H = 480;
+  let svg = `<svg viewBox="0 0 ${Math.max(totalW,900)} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<text x="20" y="26" font-size="14" font-weight="700" fill="#1c2431">ACMP (Air-Conditioning Main Panel 空調主電盤) 單線圖</text>`;
+
+  const mainLabel = mainResult ? `${mainResult.AFmain}AF／${mainResult.ATmain}AT` : '（尚未計算）';
+  const mainCx = totalW/2;
+  svg += `<rect x="${mainCx-110}" y="55" width="220" height="50" fill="#fff" stroke="#1c2431" stroke-width="1.6"/>`;
+  svg += `<text x="${mainCx}" y="76" font-size="12" text-anchor="middle" font-weight="700">主 NFB (ACMP)</text>`;
+  svg += `<text x="${mainCx}" y="93" font-size="11" text-anchor="middle" fill="#a6472f" font-weight="700">${mainLabel}</text>`;
+  svg += `<line x1="${mainCx}" y1="105" x2="${mainCx}" y2="130" stroke="#1c2431" stroke-width="2"/>`;
+  svg += `<line x1="${startX}" y1="130" x2="${totalW-startX}" y2="130" stroke="#1c2431" stroke-width="3"/>`;
+
+  rows.forEach((row, idx) => {
+    const c = computeRow(row, settings);
+    const x = startX + idx*(boxW+gap);
+    const cx = x + boxW/2;
+    svg += `<line x1="${cx}" y1="130" x2="${cx}" y2="158" stroke="#1c2431" stroke-width="1.2"/>`;
+    let fill = '#fff', stroke='#1c2431';
+    if (c && c.starterType==='YD'){ fill='#fbf1ec'; stroke='#a6472f'; }
+    else if (c && c.starterType==='NONMOTOR'){ fill='#eaf1fb'; stroke='#2a5a94'; }
+    const opac = row.includeMain ? '1' : '0.4';
+    svg += `<g opacity="${opac}">`;
+    svg += `<rect x="${x}" y="158" width="${boxW}" height="46" fill="${fill}" stroke="${stroke}" stroke-width="1.3"/>`;
+    const nameShort = row.name.length>12? row.name.slice(0,12)+'…' : row.name;
+    svg += `<text x="${cx}" y="176" font-size="9.5" text-anchor="middle" font-weight="700">${escapeHtml(nameShort)}</text>`;
+    svg += `<text x="${cx}" y="190" font-size="9" text-anchor="middle" fill="${stroke}">${c? (c.AT+'AT/'+c.AF+'AF') : 'N/A'}</text>`;
+    svg += `<text x="${cx}" y="201" font-size="8" text-anchor="middle" fill="#666">${c && c.starterType==='YD'?'Y-Δ':(c && c.starterType==='DOL'?'DOL':'連續負載')}${!row.includeMain?'（未計入）':''}</text>`;
+    svg += `</g>`;
+    if (c && c.starterType!=='NONMOTOR'){
+      svg += `<line x1="${cx}" y1="204" x2="${cx}" y2="222" stroke="#1c2431" stroke-width="1"/>`;
+      svg += `<rect x="${x+20}" y="222" width="${boxW-40}" height="22" fill="#fff" stroke="#5b6b8c"/>`;
+      svg += `<text x="${cx}" y="237" font-size="8" text-anchor="middle">${c.ms}</text>`;
+      svg += `<line x1="${cx}" y1="244" x2="${cx}" y2="260" stroke="#1c2431" stroke-width="1"/>`;
+      svg += `<circle cx="${cx}" cy="274" r="14" fill="#fff" stroke="#1c2431" stroke-width="1.3"/>`;
+      svg += `<text x="${cx}" y="278" font-size="9" text-anchor="middle" font-weight="700">M</text>`;
+      svg += `<text x="${cx}" y="300" font-size="8" text-anchor="middle" fill="#555">${c.In.toFixed(1)}A</text>`;
+    } else if (c){
+      svg += `<line x1="${cx}" y1="204" x2="${cx}" y2="222" stroke="#1c2431" stroke-width="1"/>`;
+      svg += `<rect x="${x+15}" y="222" width="${boxW-30}" height="30" fill="#eaf1fb" stroke="#2a5a94"/>`;
+      svg += `<text x="${cx}" y="240" font-size="8" text-anchor="middle">${c.kVA.toFixed(1)}kVA</text>`;
+    }
+    if (c && c.isSinglePhase){
+      svg += `<text x="${cx}" y="316" font-size="8.5" text-anchor="middle" fill="#2a5a94" font-weight="700">相別: ${row._assignedPhase||row.phase}</text>`;
+    }
+  });
+
+  svg += `<rect x="20" y="${H-80}" width="${Math.max(totalW,900)-40}" height="64" fill="#f7f6f2" stroke="#c9c2b4"/>`;
+  svg += `<text x="36" y="${H-60}" font-size="10.5" fill="#333">深色框(橙)＝Y-Δ降壓啟動　白框＝DOL全壓啟動　藍框＝非馬達連續負載　虛化(透明度降低)＝未列入主回路計算</text>`;
+  svg += `<text x="36" y="${H-44}" font-size="10.5" fill="#333">導線絕緣：${settings.insul90?'90℃ XLPE':'60℃一般'}　配管材質：${settings.material}　全部分路AT/導線Iw依DOL=2.0×In／Y-Δ=1.5×In／導線=1.5×In計算</text>`;
+  svg += `<text x="36" y="${H-28}" font-size="10.5" fill="#a6472f" font-weight="700">單相負載掛載於380V/220V系統AN/BN/CN相，主幹線含中性線與接地線。</text>`;
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+/* ============ 主渲染流程 ============ */
+function renderAll(){
+  renderTable();
+  const mainResult = renderMain();
+  renderPhase();
+  renderDiagram(mainResult);
+}
+
+/* ============ 事件綁定 ============ */
+function bindEvents(){
+  document.getElementById('eqBody').addEventListener('change', e=>{
+    const tr = e.target.closest('tr');
+    if (!tr) return;
+    const id = parseInt(tr.dataset.id);
+    const row = rows.find(r=>r.id===id);
+    if (!row) return;
+    const field = e.target.dataset.field;
+    if (!field) return;
+    if (field === 'includeMain') row.includeMain = e.target.checked;
+    else if (field === 'name') row.name = e.target.value;
+    else if (field === 'voltageKey'){
+      row.voltageKey = e.target.value;
+      const steps = HP_STEPS[row.voltageKey];
+      if (steps && (row.hp===null || steps.indexOf(row.hp)===-1)) row.hp = steps[0];
+    }
+    else if (field === 'hp') row.hp = parseFloat(e.target.value);
+    else if (field === 'kva') row.kva = parseFloat(e.target.value);
+    else if (field === 'phase') row.phase = e.target.value;
+    renderAll();
+  });
+  document.getElementById('eqBody').addEventListener('click', e=>{
+    if (e.target.dataset.action === 'del'){
+      const tr = e.target.closest('tr');
+      const id = parseInt(tr.dataset.id);
+      rows = rows.filter(r=>r.id!==id);
+      renderAll();
+    }
+  });
+  document.getElementById('btnAddRow').addEventListener('click', ()=>{
+    rows.push(newRow('自訂設備','3P380',1,true));
+    renderAll();
+  });
+  document.getElementById('btnLoadDemo').addEventListener('click', ()=>{
+    loadDemo(); renderAll();
+  });
+  document.getElementById('btnClearAll').addEventListener('click', ()=>{
+    if (confirm('確定要清空全部分路列嗎？')){ rows = []; renderAll(); }
+  });
+  ['setInsul','setMaterial','setBranchIC','setXfmrKVA','setXfmrZ'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', renderAll);
+  });
+}
+
+/* ============ 初始化 ============ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  // datalist for equipment name suggestions
+  const dl = document.createElement('datalist');
+  dl.id = 'equipCatalogList';
+  Object.values(EQUIP_CATALOG).flat().forEach(name=>{
+    const opt = document.createElement('option');
+    opt.value = name;
+    dl.appendChild(opt);
+  });
+  document.body.appendChild(dl);
+
+  loadDemo();
+  bindEvents();
+  renderAll();
+});
+
+</script>
+</body>
+</html>
