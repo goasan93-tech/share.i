@@ -66,15 +66,46 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    font-weight: 700;
+    gap: 0.85rem;
+    text-decoration: none;
     color: var(--primary-light);
+    transition: color 0.3s ease;
 }
 
-.logo i {
+.logo:hover {
+    color: var(--accent-light);
+}
+
+.logo-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(0, 136, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 136, 255, 0.12);
+}
+
+.logo-icon i {
     font-size: 2rem;
     color: var(--accent-light);
+    animation: spin 3s linear infinite;
+}
+
+.logo:hover .logo-icon i {
+    animation-duration: 1s;
+}
+
+.logo-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.breathing-i {
+    display: inline-block;
+    animation: breathing 1.5s ease-in-out infinite;
 }
 
 .nav-links {
@@ -268,6 +299,16 @@ body {
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-30px); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes breathing {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
 }
 
 /* ============================================

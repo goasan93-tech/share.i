@@ -15,9 +15,9 @@ function updateLanguage() {
     
     elements.forEach(element => {
         if (currentLanguage === 'zh') {
-            element.textContent = element.getAttribute('data-zh');
+            element.innerHTML = element.getAttribute('data-zh');
         } else {
-            element.textContent = element.getAttribute('data-en');
+            element.innerHTML = element.getAttribute('data-en');
         }
     });
 
