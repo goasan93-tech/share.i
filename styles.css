@@ -106,6 +106,7 @@ body {
 .breathing-i {
     display: inline-block;
     animation: breathing 1.5s ease-in-out infinite;
+    color: #ff0000;
 }
 
 .nav-links {
