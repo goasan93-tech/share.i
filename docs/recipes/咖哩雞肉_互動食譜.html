@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>咖哩雞肉 互動食譜</title>
+<style>
+  :root{
+    --c-primary:#2c1505;   /* 深醬油色 */
+    --c-primary-light:#4a2410;
+    --c-accent:#c47f17;    /* 金色 */
+    --c-accent-light:#e0a84a;
+    --c-bg:#f7f1e3;        /* 米白底色 */
+    --c-card:#fffdf8;
+    --c-red:#b3261e;
+    --c-line:#e3d6b8;
+    --font-title:'Noto Serif TC','PMingLiU','MingLiU','Georgia',serif;
+    --font-body:'Noto Sans TC','Microsoft JhengHei','PingFang TC','Heiti TC',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--c-bg);
+    color:var(--c-primary);
+    line-height:1.7;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px 60px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(160deg,var(--c-primary) 0%,var(--c-primary-light) 100%);
+    color:#f7f1e3;
+    padding:40px 24px 32px;
+    border-radius:0 0 20px 20px;
+    margin-bottom:22px;
+  }
+  .hero .badge{
+    display:inline-block;font-size:12px;letter-spacing:.15em;
+    color:var(--c-accent-light);border:1px solid var(--c-accent-light);
+    padding:3px 10px;border-radius:20px;margin-bottom:12px;
+  }
+  .hero h1{
+    font-family:var(--font-title);
+    font-size:32px;margin:0 0 8px;
+    letter-spacing:.05em;
+  }
+  .hero p.desc{margin:0 0 20px;color:#e9dfc7;font-size:14.5px;}
+  .servings-box{
+    display:flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.2);
+    padding:10px 16px;border-radius:14px;width:fit-content;
+  }
+  .servings-box span.label{font-size:14px;color:#e9dfc7;}
+  .servings-box .ctrl{display:flex;align-items:center;gap:10px;}
+  .servings-box button{
+    width:32px;height:32px;border-radius:50%;border:none;
+    background:var(--c-accent);color:var(--c-primary);
+    font-size:18px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .servings-box button:active{transform:scale(.92);}
+  .servings-box .count{font-family:var(--font-title);font-size:20px;min-width:56px;text-align:center;}
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    display:flex;gap:6px;margin-bottom:18px;
+    border-bottom:2px solid var(--c-line);
+    overflow-x:auto;
+  }
+  .tab-btn{
+    flex:1;min-width:80px;
+    background:none;border:none;
+    font-family:var(--font-body);
+    font-size:14.5px;font-weight:700;
+    color:#8a7452;padding:10px 6px 12px;
+    cursor:pointer;border-bottom:3px solid transparent;
+    white-space:nowrap;
+  }
+  .tab-btn.active{color:var(--c-primary);border-bottom:3px solid var(--c-accent);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- Cards ---------- */
+  .card{
+    background:var(--c-card);
+    border:1px solid var(--c-line);
+    border-radius:14px;
+    padding:18px 20px;
+    margin-bottom:14px;
+    box-shadow:0 2px 6px rgba(44,21,5,.05);
+  }
+  .card h2{
+    font-family:var(--font-title);
+    font-size:19px;margin:0 0 12px;
+    color:var(--c-primary);
+    border-left:4px solid var(--c-accent);
+    padding-left:10px;
+  }
+  .imp{color:var(--c-red);font-weight:700;}
+
+  /* ---------- Ingredients ---------- */
+  .ing-group-title{
+    font-family:var(--font-title);
+    font-size:15px;color:var(--c-accent);
+    margin:18px 0 6px;font-weight:700;
+  }
+  .ing-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:9px 2px;border-bottom:1px dashed var(--c-line);
+    font-size:14.5px;
+  }
+  .ing-row:last-child{border-bottom:none;}
+  .ing-name{color:var(--c-primary);}
+  .ing-note{display:block;font-size:12px;color:#8a7452;margin-top:2px;}
+  .ing-amt{font-weight:700;color:var(--c-primary);white-space:nowrap;margin-left:12px;}
+  .ing-amt .unit{font-weight:400;font-size:12.5px;color:#8a7452;margin-left:2px;}
+
+  .cite{
+    font-size:12px;color:#8a7452;background:#f1e8d0;
+    display:inline-block;padding:2px 8px;border-radius:6px;margin-top:10px;
+  }
+
+  /* ---------- Cooking mode (stepper) ---------- */
+  .step-progress{display:flex;gap:5px;margin-bottom:14px;}
+  .step-dot{flex:1;height:5px;border-radius:3px;background:var(--c-line);}
+  .step-dot.done{background:var(--c-accent);}
+  .step-dot.current{background:var(--c-primary);}
+
+  .step-card{
+    background:var(--c-card);border:1px solid var(--c-line);border-radius:16px;
+    padding:24px 22px;min-height:260px;display:flex;flex-direction:column;
+  }
+  .step-tag{font-size:12.5px;color:var(--c-accent);font-weight:700;letter-spacing:.08em;}
+  .step-title{font-family:var(--font-title);font-size:21px;margin:6px 0 12px;}
+  .step-text{font-size:15px;flex:1;}
+  .step-cite{margin-top:10px;}
+
+  .timer-box{
+    margin-top:16px;background:#f1e8d0;border-radius:12px;
+    padding:14px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .timer-time{font-family:var(--font-title);font-size:26px;color:var(--c-primary);}
+  .timer-btns{display:flex;gap:8px;}
+  .timer-btns button{
+    border:none;border-radius:10px;padding:8px 14px;font-weight:700;
+    font-family:var(--font-body);cursor:pointer;font-size:13.5px;
+  }
+  .btn-start{background:var(--c-accent);color:#fff;}
+  .btn-reset{background:#e3d6b8;color:var(--c-primary);}
+
+  .done-check{
+    margin-top:16px;display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;
+    user-select:none;
+  }
+  .done-check input{width:18px;height:18px;accent-color:var(--c-accent);}
+
+  .step-nav{display:flex;gap:10px;margin-top:16px;}
+  .step-nav button{
+    flex:1;padding:13px;border-radius:12px;border:none;
+    font-family:var(--font-body);font-weight:700;font-size:15px;cursor:pointer;
+  }
+  .nav-prev{background:#e3d6b8;color:var(--c-primary);}
+  .nav-next{background:var(--c-primary);color:#f7f1e3;}
+  .nav-next:disabled,.nav-prev:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* ---------- Tips ---------- */
+  .tip-card h3{
+    font-family:var(--font-title);font-size:16.5px;margin:0 0 6px;
+    color:var(--c-primary);
+  }
+  .tip-card p{margin:0 0 4px;font-size:14.5px;}
+  .tip-eng{font-size:13px;color:#8a7452;}
+
+  /* ---------- Compare table ---------- */
+  table.cmp{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.cmp th{
+    background:var(--c-primary);color:#f7f1e3;font-family:var(--font-title);
+    padding:9px 8px;text-align:left;font-weight:500;
+  }
+  table.cmp td{padding:9px 8px;border-bottom:1px solid var(--c-line);vertical-align:top;}
+  table.cmp tr:nth-child(even) td{background:#f1e8d0;}
+
+  /* ---------- Footer ---------- */
+  footer{margin-top:24px;font-size:12px;color:#8a7452;text-align:center;line-height:1.9;}
+  footer a{color:var(--c-accent);}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;}
+    .step-card{padding:18px 16px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge">台式家常 · 日式咖哩塊</span>
+    <h1>咖哩雞肉</h1>
+    <p class="desc">這是我家常做的一道咖哩雞肉。我會先把雞皮煸出自製雞油、洋蔥小火炒到焦糖化，這是讓香氣濃郁的關鍵。根莖類跟雞肉我會分階段下鍋燉煮，湯汁才會濃稠掛勺、鹹甜平衡。</p>
+    <div class="servings-box">
+      <span class="label">人份</span>
+      <div class="ctrl">
+        <button id="minusBtn" aria-label="減少人份">－</button>
+        <span class="count" id="servingsCount">4</span>
+        <button id="plusBtn" aria-label="增加人份">＋</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="ing">食材</button>
+    <button class="tab-btn" data-tab="cook">烹飪模式</button>
+    <button class="tab-btn" data-tab="tips">秘訣</button>
+    <button class="tab-btn" data-tab="cmp">差異比較</button>
+  </div>
+
+  <!-- ============ 食材 ============ -->
+  <div class="tab-panel active" id="panel-ing">
+    <div class="card">
+      <h2>主料</h2>
+      <div class="ing-group-title">肉類</div>
+      <div id="ing-meat"></div>
+      <div class="ing-group-title">蔬菜 / 辛香料</div>
+      <div id="ing-veg"></div>
+      <div class="ing-group-title">湯底與咖哩</div>
+      <div id="ing-base"></div>
+    </div>
+    <div class="card">
+      <h2>調味料</h2>
+      <div id="ing-season"></div>
+    </div>
+    <div class="card">
+      <h2>換算小提醒</h2>
+      <p style="font-size:14.5px;">人份從 4 人調整為 8 人時，縮放倍率 = 目標人份 ÷ 基準人份 = 8 ÷ 4 = <b>2</b>。<br>
+      以「咖哩塊」為例：原本用 6 塊 × 縮放倍率 2 = <span class="imp">12 塊</span>（約 230g，剛好一整盒）。<br>
+      「食材」分頁會依此公式，即時換算所有食材用量，不用自己心算。</p>
+    </div>
+  </div>
+
+  <!-- ============ 烹飪模式 ============ -->
+  <div class="tab-panel" id="panel-cook">
+    <div class="step-progress" id="stepProgress"></div>
+    <div class="step-card">
+      <div>
+        <span class="step-tag" id="stepTag">STEP 1 / 6</span>
+        <h3 class="step-title" id="stepTitle"></h3>
+        <p class="step-text" id="stepText"></p>
+      </div>
+      <div class="timer-box" id="timerBox">
+        <span class="timer-time" id="timerTime">00:00</span>
+        <div class="timer-btns">
+          <button class="btn-start" id="timerStartBtn">開始</button>
+          <button class="btn-reset" id="timerResetBtn">重置</button>
+        </div>
+      </div>
+      <label class="done-check">
+        <input type="checkbox" id="doneCheck">
+        <span>此步驟已完成</span>
+      </label>
+      <div class="step-nav">
+        <button class="nav-prev" id="prevBtn">上一步</button>
+        <button class="nav-next" id="nextBtn">下一步</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 秘訣 ============ -->
+  <div class="tab-panel" id="panel-tips">
+
+    <div class="card tip-card">
+      <h3>1. 雞皮煸油＝我的天然「雞油」</h3>
+      <p>雞皮丁我會用小火慢煸逼油，這是我做這道咖哩<span class="imp">最重要</span>的香氣來源，等同自製雞油當作爆香基底，我覺得比直接用沙拉油風味更厚實。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>2. 洋蔥焦糖化＝梅納反應</h3>
+      <p>洋蔥小火煸到焦糖咖啡色，其實就是<span class="imp">梅納反應（Maillard Reaction，胺基酸與還原糖在加熱下產生棕化與香氣的化學反應）</span>。這個反應需要小火、足夠時間，才能讓洋蔥釋放甜味與香氣，是我這道咖哩鮮甜的重要來源，急不得。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>3. 雞骨可另熬高湯，提升鮮甜（我的建議）</h3>
+      <p>雞骨我平常會切塊備用，但如果單純用清水當湯底，其實有點可惜。<span class="imp">我的建議：</span>把雞骨另外用滾水汆燙去血水後，加水熬煮 20～30 分鐘取代部分或全部清水，湯頭鮮甜度會明顯提升，食材也不浪費。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>4. 咖哩塊融化技巧：關火下塊</h3>
+      <p>我通常會<span class="imp">先關火或轉最小火</span>再下咖哩塊，讓它在餘溫中慢慢融化攪散，避免鍋底溫度過高把澱粉燒焦結塊、口感變顆粒狀。融化均勻後再開小火續燉。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>5. 根莖類要先下鍋的原因</h3>
+      <p>馬鈴薯、紅蘿蔔屬於澱粉質根莖類，需要較長時間讓澱粉糊化、纖維軟化，所以我會比雞胸肉更早下鍋燉煮 20 分鐘；雞胸肉肉質細嫩，久煮容易柴，所以我會留到後段 10 分鐘才下鍋。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>6. <span class="imp">食品安全：雞肉中心溫度須達 74℃</span></h3>
+      <p>雞肉常見沙門氏菌、李斯特菌等病原，肉品中心溫度須達<span class="imp">74℃以上</span>才能有效殺菌、安心食用。家裡沒有溫度計的話，我會切開最厚的部位確認肉色轉為不透明白色、肉汁清澈無血水，這樣才安心。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>7. 隔夜靜置更入味</h3>
+      <p>咖哩燉煮完成後，我發現如果能靜置或冷藏隔夜再吃，風味會融合得更好、口感更濃稠圓潤。如果是當餐吃，我至少會關火靜置 5～10 分鐘再開動。</p>
+    </div>
+
+    <div class="card tip-card">
+      <h3>8. 保存與復熱建議</h3>
+      <p>吃不完的咖哩雞肉我會盡快放涼後移入冰箱冷藏，並在 <span class="imp">2～3 天內吃完</span>；復熱時我一定會加熱到全熱、中心冒煙，不會只吃微溫的。冷藏溫度我會保持在 7℃以下。</p>
+    </div>
+
+  </div>
+
+  <!-- ============ 差異比較 ============ -->
+  <div class="tab-panel" id="panel-cmp">
+    <div class="card">
+      <h2>我的家常作法 vs 專業／餐廳作法</h2>
+      <table class="cmp">
+        <tr><th>項目</th><th>我的家常作法</th><th>專業／餐廳作法</th><th>差異原因</th></tr>
+        <tr>
+          <td>湯底</td>
+          <td>清水 1500cc</td>
+          <td>雞骨或大骨另熬高湯</td>
+          <td>高湯含有更多胺基酸與明膠，鮮味與濃稠度較清水高，餐廳追求風味層次會另熬湯底。</td>
+        </tr>
+        <tr>
+          <td>咖哩基底</td>
+          <td>市售日本好侍佛蒙特咖哩塊</td>
+          <td>奶油＋麵粉炒製奶油炒麵糊（Roux），再加咖哩粉自行調配</td>
+          <td>咖哩塊已含調味與增稠劑，方便快速；自製 Roux 可依店家配方調整辛香層次與濃稠度，是專業做法的常見手法。</td>
+        </tr>
+        <tr>
+          <td>洋蔥處理</td>
+          <td>小火煸至焦糖咖啡色，約 8～10 分鐘</td>
+          <td>低溫慢炒 30 分鐘以上，甚至前一日先製作焦糖洋蔥</td>
+          <td>焦糖化時間越長，梅納反應越完整，甜度與香氣越濃郁，但需要更多備料時間，家庭版可視時間彈性調整。</td>
+        </tr>
+        <tr>
+          <td>雞肉處理</td>
+          <td>整塊雞胸肉直接燉煮</td>
+          <td>先煎封表面上色，或分開處理雞腿肉增加油脂潤澤</td>
+          <td>先煎封可鎖住肉汁並增加梅納香氣；雞胸肉油脂較少，餐廳常改用雞腿肉維持口感多汁。</td>
+        </tr>
+        <tr>
+          <td>去腥用酒</td>
+          <td>米酒</td>
+          <td>米酒或紹興酒，部分西式做法改用白酒</td>
+          <td>米酒為台式家常慣用去腥酒；紹興酒香氣更醇厚，白酒則帶果酸調性，可依風味偏好選用。</td>
+        </tr>
+        <tr>
+          <td>燉煮時間</td>
+          <td>總計約 30 分鐘（20＋10分鐘）</td>
+          <td>視食材與濃度需求燉煮 45 分鐘至 1 小時</td>
+          <td>時間拉長可讓根莖類更軟綿、醬汁更濃稠掛勺，但雞胸肉需留意久煮變柴的風險。</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    這份互動食譜是我自己整理的家常做法與心得，所有換算與計時功能都在瀏覽器本機執行，不會上傳任何資料。
+  </footer>
+
+</div>
+
+<script>
+/* ---------------- 食材資料（基準 4 人份） ---------------- */
+const BASE_SERVINGS = 4;
+const meatIngredients = [
+  {name:"雞胸肉（含皮帶骨）", amount:800, unit:"g", note:"雞皮切中丁、清雞胸肉切中大塊、雞骨切中塊（大雞約88元／台斤）"}
+];
+const vegIngredients = [
+  {name:"洋蔥", amount:1, unit:"顆", note:"切中粗段"},
+  {name:"馬鈴薯", amount:2, unit:"顆", note:"切中大塊"},
+  {name:"紅蘿蔔", amount:2, unit:"根", note:"切中大塊"},
+  {name:"鮮香菇", amount:8, unit:"朵", note:"莖部切絲、傘蓋切中丁"},
+  {name:"老薑", amount:1, unit:"小塊", note:"拍扁"},
+  {name:"青蔥", amount:2, unit:"支", note:"切段"},
+  {name:"蒜苗", amount:1, unit:"支", note:"切花"},
+  {name:"大蒜", amount:5, unit:"瓣", note:"切末"}
+];
+const baseIngredients = [
+  {name:"清水", amount:1500, unit:"cc", note:"可依秘訣第3點改用雞骨高湯"},
+  {name:"咖哩塊", amount:6, unit:"小塊", note:"日本 House 好侍佛蒙特（甜味）230g／盒，使用半盒／約115g"}
+];
+const seasonIngredients = [
+  {name:"冰糖", amount:15, unit:"g", note:"約1大匙"},
+  {name:"鹽巴", amount:5, unit:"g", note:"約1小匙，分次加入調整鹹度"},
+  {name:"干貝粉", amount:10, unit:"g", note:"約1中匙"},
+  {name:"蕃茄醬", amount:30, unit:"g", note:"約2大匙"},
+  {name:"米酒", amount:15, unit:"ml", note:"少許，建議約1大匙，用於醃肉去腥"}
+];
+
+function fmtAmount(n){
+  const rounded = Math.round(n*10)/10;
+  return (rounded % 1 === 0) ? rounded.toFixed(0) : rounded.toFixed(1);
+}
+
+function renderIngredients(list, containerId, scale){
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map(i => `
+    <div class="ing-row">
+      <div class="ing-name">${i.name}<span class="ing-note">${i.note}</span></div>
+      <div class="ing-amt">${fmtAmount(i.amount*scale)}<span class="unit">${i.unit}</span></div>
+    </div>
+  `).join("");
+}
+
+let servings = BASE_SERVINGS;
+function renderAll(){
+  document.getElementById('servingsCount').textContent = servings;
+  const scale = servings / BASE_SERVINGS;
+  renderIngredients(meatIngredients, 'ing-meat', scale);
+  renderIngredients(vegIngredients, 'ing-veg', scale);
+  renderIngredients(baseIngredients, 'ing-base', scale);
+  renderIngredients(seasonIngredients, 'ing-season', scale);
+}
+document.getElementById('minusBtn').addEventListener('click', ()=>{
+  if(servings > 1){ servings--; renderAll(); }
+});
+document.getElementById('plusBtn').addEventListener('click', ()=>{
+  if(servings < 20){ servings++; renderAll(); }
+});
+renderAll();
+
+/* ---------------- Tabs ---------------- */
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------------- 烹飪模式（步驟＋計時器） ---------------- */
+const steps = [
+  {
+    title:"醃製雞胸肉",
+    text:"將切成中大塊的清雞胸肉，加入少許鹽巴及米酒，用手抓勻，放入冰箱冷藏靜置，讓鹽分滲透、米酒去腥，備用。",
+    timer:900
+  },
+  {
+    title:"煸出雞皮油脂",
+    text:"鍋中不加油，直接放入雞皮丁，以小火慢慢煸出油脂，這是整道咖哩香氣的來源，務必耐心以小火進行，避免火大燒焦。",
+    timer:300
+  },
+  {
+    title:"爆香配料、洋蔥焦糖化",
+    text:"倒入蒜末、香菇莖絲、香菇塊、蒜苗、蔥花、洋蔥絲，以小火煸炒，直到洋蔥產生梅納反應，呈現焦糖咖啡色，香氣完全釋放。",
+    timer:600
+  },
+  {
+    title:"加水燉煮根莖類",
+    text:"倒入清水、馬鈴薯塊、紅蘿蔔塊，加入冰糖、蕃茄醬、干貝粉、少許鹽巴、老薑，開大火煮滾後轉小火，蓋上鍋蓋燉煮20分鐘。",
+    timer:1200
+  },
+  {
+    title:"加入咖哩塊與雞肉",
+    text:"加入咖哩塊與醃好的雞胸肉，維持小火續燉10分鐘，過程中試鹹度，不足則補少許鹽巴，時間到即可關火開蓋享用。",
+    timer:600
+  },
+  {
+    title:"靜置融合風味（建議）",
+    text:"關火後靜置5～10分鐘再享用，讓咖哩醬汁與食材風味充分融合；若能冷藏隔夜隔日再食用，風味會更濃郁圓潤。",
+    timer:300
+  }
+];
+
+let currentStep = 0;
+let timerInterval = null;
+let timerRemaining = 0;
+let timerRunning = false;
+
+function renderStepProgress(){
+  const box = document.getElementById('stepProgress');
+  box.innerHTML = steps.map((_,i)=>{
+    let cls='step-dot';
+    if(i < currentStep) cls += ' done';
+    if(i === currentStep) cls += ' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+function renderStep(){
+  const s = steps[currentStep];
+  document.getElementById('stepTag').textContent = `STEP ${currentStep+1} / ${steps.length}`;
+  document.getElementById('stepTitle').textContent = s.title;
+  document.getElementById('stepText').textContent = s.text;
+  document.getElementById('doneCheck').checked = false;
+  document.getElementById('prevBtn').disabled = (currentStep === 0);
+  document.getElementById('nextBtn').textContent = (currentStep === steps.length-1) ? "完成烹調" : "下一步";
+  resetTimer();
+  renderStepProgress();
+}
+
+function fmtTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerRemaining = steps[currentStep].timer;
+  document.getElementById('timerTime').textContent = fmtTime(timerRemaining);
+  document.getElementById('timerStartBtn').textContent = "開始";
+}
+
+document.getElementById('timerStartBtn').addEventListener('click', ()=>{
+  if(timerRunning){
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerStartBtn').textContent = "繼續";
+  } else {
+    timerRunning = true;
+    document.getElementById('timerStartBtn').textContent = "暫停";
+    timerInterval = setInterval(()=>{
+      if(timerRemaining > 0){
+        timerRemaining--;
+        document.getElementById('timerTime').textContent = fmtTime(timerRemaining);
+      } else {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerStartBtn').textContent = "開始";
+        document.getElementById('timerTime').textContent = "時間到！";
+      }
+    }, 1000);
+  }
+});
+document.getElementById('timerResetBtn').addEventListener('click', resetTimer);
+
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(currentStep < steps.length-1){ currentStep++; renderStep(); }
+  else{
+    document.getElementById('stepText').textContent = "🎉 全部步驟完成，咖哩雞肉已經可以上桌囉！";
+    document.getElementById('timerBox').style.display='none';
+  }
+});
+
+renderStep();
+</script>
+</body>
+</html>
