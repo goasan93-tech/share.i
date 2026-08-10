@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>地端 AIoT 物理AI應用｜完整架構圖</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+  :root{
+    --bg:#0B1623;
+    --grid:#142840;
+    --panel:#10212F;
+    --panel-soft:#0D1C28;
+    --border:#23415C;
+    --cyan:#38BDF8;
+    --cyan-soft:rgba(56,189,248,.12);
+    --amber:#F2A65A;
+    --amber-soft:rgba(242,166,90,.12);
+    --text:#E7EFF5;
+    --text-dim:#85A7C2;
+    --text-mute:#4D6A82;
+    --readout-bg:#04111B;
+    --readout-text:#5FE9D4;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 32px);
+    color:var(--text);
+    font-family:'Noto Sans TC', sans-serif;
+    padding:32px 16px 90px;
+    line-height:1.6;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .wrap{max-width:720px;margin:0 auto;}
+
+  /* ---------- header ---------- */
+  header{text-align:center;margin-bottom:8px;}
+  .kicker{
+    font-family:'JetBrains Mono';font-size:12px;letter-spacing:.18em;
+    color:var(--cyan);text-transform:uppercase;margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(24px,6vw,32px);font-weight:900;margin:0 0 12px;
+    letter-spacing:-.01em;
+  }
+  .sub{color:var(--text-dim);font-size:14.5px;max-width:520px;margin:0 auto 22px;}
+
+  .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:30px;}
+  .legend span{
+    font-family:'JetBrains Mono';font-size:11px;color:var(--text-dim);
+    border:1px solid var(--border);border-radius:999px;padding:4px 10px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+
+  /* ---------- overview map ---------- */
+  .map{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+    gap:5px;margin-bottom:34px;font-family:'JetBrains Mono';font-size:11.5px;
+  }
+  .map .chip{
+    background:var(--panel);border:1px solid var(--border);border-radius:6px;
+    padding:5px 9px;color:var(--text-dim);white-space:nowrap;
+  }
+  .map .arrow{color:var(--text-mute);}
+  .map .loop{color:var(--amber);font-weight:700;}
+
+  /* ---------- connector between cards ---------- */
+  .connector{width:2px;height:34px;margin:0 auto;position:relative;
+    background:linear-gradient(var(--cyan), transparent);}
+  .connector::after{
+    content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+    border-left:5px solid transparent;border-right:5px solid transparent;
+    border-top:7px solid var(--cyan);
+  }
+  .connector .pulse{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:6px;height:6px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 7px var(--cyan);animation:flow 1.7s linear infinite;
+  }
+  @keyframes flow{from{top:0;opacity:1;}to{top:100%;opacity:0;}}
+  @media (prefers-reduced-motion: reduce){.pulse{animation:none;opacity:0;}}
+
+  /* ---------- card ---------- */
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:18px 20px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.06em;
+    color:var(--cyan);display:flex;align-items:center;gap:8px;margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  .eyebrow.center{justify-content:center;}
+  .eyebrow .num{
+    background:var(--cyan-soft);border:1px solid rgba(56,189,248,.45);
+    padding:2px 8px;border-radius:5px;font-weight:700;
+  }
+  .eyebrow.amber{color:var(--amber);}
+  .eyebrow.amber .num{background:var(--amber-soft);border-color:rgba(242,166,90,.5);}
+
+  .card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .icon{width:22px;height:22px;flex-shrink:0;color:var(--cyan);}
+  .brain .icon, .eyebrow.amber + .card-head .icon{color:var(--amber);}
+  .card-head h3{margin:0;font-size:18px;font-weight:700;}
+
+  .desc{margin:0 0 14px;font-size:14.5px;color:var(--text);}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .tag{
+    font-family:'JetBrains Mono';font-size:11.5px;padding:3px 9px;
+    border-radius:999px;border:1px solid var(--border);color:var(--text-dim);
+  }
+  .readout{
+    background:var(--readout-bg);border:1px solid #0E2433;border-radius:7px;
+    padding:10px 13px;font-family:'JetBrains Mono';font-size:12px;
+    color:var(--readout-text);line-height:1.65;
+  }
+  .readout .label{color:var(--text-mute);}
+
+  /* ---------- fork (decision layer) ---------- */
+  .fork-wrap{margin:0;}
+  .fork-intro{
+    text-align:center;color:var(--text-dim);font-size:13px;margin:0 0 16px;
+  }
+  .fork-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+  @media (min-width:600px){.fork-grid{grid-template-columns:1fr 1fr;}}
+  .fork-card.control{border-color:rgba(56,189,248,.35);}
+  .fork-card.brain{border-color:rgba(242,166,90,.55);background:#13202B;}
+  .fork-merge{text-align:center;color:var(--text-mute);font-size:12.5px;margin:16px 0 0;font-family:'JetBrains Mono';}
+
+  /* ---------- security cross-cut wrapper ---------- */
+  .security-wrap{
+    position:relative;border:1.5px dashed rgba(242,166,90,.5);
+    border-radius:16px;padding:26px 16px 16px;margin:0;
+  }
+  .security-wrap > .connector{margin:26px auto;}
+  .security-tab{
+    position:absolute;top:-13px;left:18px;background:var(--bg);
+    padding:0 9px;font-family:'JetBrains Mono';font-size:11px;
+    color:var(--amber);letter-spacing:.04em;display:flex;align-items:center;gap:6px;
+  }
+  .security-tab svg{width:13px;height:13px;}
+
+  /* ---------- feedback loop note ---------- */
+  .loop-note{
+    display:flex;gap:10px;align-items:flex-start;margin-top:18px;
+    background:var(--amber-soft);border:1px solid rgba(242,166,90,.4);
+    border-radius:10px;padding:13px 16px;font-size:13.5px;color:var(--text);
+  }
+  .loop-note svg{width:18px;height:18px;color:var(--amber);flex-shrink:0;margin-top:1px;}
+
+  /* ---------- principles footer ---------- */
+  .principles{
+    background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--amber);
+    border-radius:10px;padding:20px 22px;margin-top:36px;
+  }
+  .principles h4{
+    margin:0 0 14px;font-family:'JetBrains Mono';font-size:12.5px;color:var(--amber);
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .principles ol{margin:0;padding-left:20px;font-size:14px;}
+  .principles li{margin-bottom:10px;}
+  .principles li:last-child{margin-bottom:0;}
+  .principles b{color:var(--cyan);}
+
+  .footnote{
+    text-align:center;color:var(--text-mute);font-size:12.5px;margin-top:28px;
+    max-width:560px;margin-left:auto;margin-right:auto;
+  }
+
+  .section-gap{height:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">ON-PREMISE AIOT · PHYSICAL AI ARCHITECTURE</div>
+    <h1>地端 AIoT 物理AI應用<br>完整架構圖</h1>
+    <p class="sub">感知 → 傳輸 → 運算 → AI決策 → 控制 → 執行，並回授形成閉環，而非單向流程。以「冷氣機」為情境範例，逐層標示真實數據如何轉換。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--cyan)"></span>訊號 / 資料流</span>
+      <span><span class="dot" style="background:var(--amber)"></span>AI決策重點</span>
+      <span style="border-style:dashed;border-color:rgba(242,166,90,.6)">┄ 資安貫穿全鏈路</span>
+      <span>▥ LCD = 冷氣機情境即時數據</span>
+    </div>
+  </header>
+
+  <div class="map">
+    <span class="chip">01 感知</span><span class="arrow">→</span>
+    <span class="chip">02 傳輸</span><span class="arrow">→</span>
+    <span class="chip">03 運算</span><span class="arrow">→</span>
+    <span class="chip">04 決策</span><span class="arrow">→</span>
+    <span class="chip">05 控制</span><span class="arrow">→</span>
+    <span class="chip">06 執行</span><span class="loop">⟲ 回授</span>
+  </div>
+
+  <!-- STAGE 01 -->
+  <div class="card">
+    <div class="eyebrow"><span class="num">01</span>PERCEPTION LAYER</div>
+    <div class="card-head">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2.5-7 4 14 2.5-7H22"/></svg>
+      <h3>感知層</h3>
+    </div>
+    <p class="desc">蒐集物理世界的環境與人員訊號，是AI能「感受」現場狀態的起點。</p>
+    <div class="tags">
+      <span class="tag">溫濕度感測器</span><span class="tag">PIR人體感測器</span>
+      <span class="tag">CO2感測器</span><span class="tag">麥克風</span><span class="tag">攝影機</span>
+    </div>
+    <div class="readout"><span class="label">情境讀數 →</span> 室溫 28°C ｜ 濕度 70% ｜ 偵測 2 人在室 ｜ 語音「好熱喔」</div>
+  </div>
+
+  <div class="connector"><div class="pulse"></div></div>
+
+  <!-- SECURITY WRAP starts -->
+  <div class="security-wrap">
+    <div class="security-tab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      資安與身份驗證 — 貫穿全鏈路，非單一階段
+    </div>
+
+    <!-- STAGE 02 -->
+    <div class="card">
+      <div class="eyebrow"><span class="num">02</span>GATEWAY · 傳輸層</div>
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.5a13 13 0 0 1 17 0"/><path d="M6.5 13a8.5 8.5 0 0 1 11 0"/><path d="M9.7 16.3a4 4 0 0 1 4.6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg>
+        <h3>WiFi / Wire Gateway</h3>
+      </div>
+      <p class="desc">彙整多組感測器訊號、進行通訊協定轉換（如 Zigbee / BLE / RS485 轉 WiFi），再傳輸至運算層。</p>
+      <div class="tags">
+        <span class="tag">Zigbee/BLE Gateway</span><span class="tag">Wi-Fi 路由器</span><span class="tag">RS485 有線閘道器</span>
+      </div>
+      <div class="readout"><span class="label">情境讀數 →</span> 封裝4組訊號（溫/濕/人數/語音）送往邊緣運算主機</div>
+    </div>
+
+    <div class="connector"><div class="pulse"></div></div>
+
+    <!-- STAGE 03 -->
+    <div class="card">
+      <div class="eyebrow"><span class="num">03</span>EDGE COMPUTE · 運算層</div>
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>
+        <h3>訊號前處理 + 特徵提取</h3>
+      </div>
+      <p class="desc">把原始訊號正規化、降噪，並轉換成AI模型可讀的向量／文字／張量格式——這一步才是真正的「轉換成AI語言」。</p>
+      <div class="tags">
+        <span class="tag">邊緣運算盒（Jetson/Edge TPU）</span><span class="tag">訊號正規化模組</span><span class="tag">ASR語音轉文字</span>
+      </div>
+      <div class="readout"><span class="label">情境讀數 →</span> [28, 70, 2] 結構化向量 ｜「好熱喔」→ 文字</div>
+    </div>
+
+    <div class="connector"><div class="pulse"></div></div>
+
+    <!-- STAGE 04 fork -->
+    <div class="fork-wrap">
+      <div class="eyebrow center"><span class="num">04</span>DECISION LAYER · 大腦中心</div>
+      <p class="fork-intro">依任務類型分流——並非所有決策都需要 LLM / VLM</p>
+      <div class="fork-grid">
+        <div class="card fork-card control">
+          <div class="eyebrow"><span class="num">04a</span>CONTROL MODEL</div>
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 17v-4h4"/></svg>
+            <h3>輕量控制模型</h3>
+          </div>
+          <p class="desc">處理高頻、規則明確的常規判斷，毫秒級反應、資源消耗低，負責絕大多數的即時迴路。</p>
+          <div class="tags"><span class="tag">回歸/分類模型</span><span class="tag">PID控制器</span><span class="tag">強化學習控制器</span></div>
+          <div class="readout"><span class="label">情境讀數 →</span> 溫度 &gt;27°C → 直接觸發降溫（不需大模型介入）</div>
+        </div>
+        <div class="card fork-card brain">
+          <div class="eyebrow amber"><span class="num">04b</span>LLM / VLM BRAIN</div>
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8.6 8.2 10.5 15.3M15.4 8.2 13.5 15.3M9 7h6"/></svg>
+            <h3>LLM / VLM 大腦</h3>
+          </div>
+          <p class="desc">理解自然語言意圖與影像場景脈絡，只在需要語意理解的複雜決策時才被調用。</p>
+          <div class="tags"><span class="tag">地端輕量化LLM</span><span class="tag">VLM影像理解模型</span></div>
+          <div class="readout"><span class="label">情境讀數 →</span>「好熱喔」+2人在室+濕度高 → 降溫24°C＋開除濕</div>
+        </div>
+      </div>
+      <p class="fork-merge">↓ 兩條路徑的決策結果，統一輸出至下一層</p>
+    </div>
+
+    <div class="connector"><div class="pulse"></div></div>
+
+    <!-- STAGE 05 -->
+    <div class="card">
+      <div class="eyebrow"><span class="num">05</span>IOT CONTROLLER · 控制輸出層</div>
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="15" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="8" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>
+        <h3>IoT 物聯網控制器</h3>
+      </div>
+      <p class="desc">把AI決策翻譯成設備能識別的控制協定指令。</p>
+      <div class="tags"><span class="tag">Modbus</span><span class="tag">MQTT</span><span class="tag">紅外線控制碼</span><span class="tag">設備專屬API</span></div>
+      <div class="readout"><span class="label">情境讀數 →</span>「降溫24°C＋除濕」→ 紅外線/MQTT控制碼</div>
+    </div>
+
+  </div>
+  <!-- SECURITY WRAP ends -->
+
+  <div class="connector"><div class="pulse"></div></div>
+
+  <!-- STAGE 06 -->
+  <div class="card">
+    <div class="eyebrow"><span class="num">06</span>ACTUATION · 執行層</div>
+    <div class="card-head">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="6" rx="1.5"/><path d="M6 12v2M10 12v2M14 12v2M18 12v2"/><path d="M7 16.5 5 20M12 16.5 11 21M17 16.5 15 20"/></svg>
+      <h3>地端設備</h3>
+    </div>
+    <p class="desc">實際執行動作的物理裝置，並回傳運行狀態，是整條鏈路最終落地的環節。</p>
+    <div class="tags"><span class="tag">具AIoT協定/接口的冷氣機</span><span class="tag">壓縮機</span><span class="tag">風扇</span><span class="tag">感測回授</span></div>
+    <div class="readout"><span class="label">情境讀數 →</span> 壓縮機/風速調整至24°C ｜ 回傳實際溫度</div>
+  </div>
+
+  <div class="loop-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 17v-4h4"/></svg>
+    <div><b>回授迴路：</b>地端設備執行後的實際狀態（如真實溫度變化）會回傳至 <b>① 感知層</b>，形成持續循環，而非單次指令後就結束。</div>
+  </div>
+
+  <div class="principles">
+    <h4>三個關鍵修正原則</h4>
+    <ol>
+      <li><b>大腦不只是 LLM/VLM</b>：常規即時迴路交給輕量模型處理（毫秒級、低成本），LLM/VLM只在需要語言或影像語意理解時才被調用。</li>
+      <li><b>閉環而非單向</b>：地端設備執行後的真實狀態要回到感知層，系統才能持續自我修正。</li>
+      <li><b>資安橫跨全鏈路</b>：身份驗證與加密不是單獨一層，而是傳輸、運算、控制每個節點都要顧及的橫切需求。</li>
+    </ol>
+  </div>
+
+  <p class="footnote">同一套六階段架構，可套用於任何具AIoT介面的地端裝置（智慧電表、工業馬達、門鎖等），只需替換②⑤⑥的協定與裝置即可。</p>
+
+</div>
+</body>
+</html>
