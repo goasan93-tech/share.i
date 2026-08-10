@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台式滷肉燥 — 店家級配方（1800g）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500&display=swap');
+
+  :root {
+    --ink:        #1a1108;
+    --parchment:  #faf6ef;
+    --soy:        #3d200a;
+    --caramel:    #8b4513;
+    --gold:       #c8860a;
+    --gold-light: #f0c060;
+    --steam:      #e8dcc8;
+    --red-imp:    #c0392b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--soy);
+    color: var(--gold-light);
+    padding: 56px 32px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, #6b2e0a55 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 4px 16px;
+    margin-bottom: 20px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--gold-light); }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--steam);
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    display: block;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--steam);
+    letter-spacing: 1px;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--soy);
+    border-left: 4px solid var(--gold);
+    padding-left: 14px;
+    margin: 40px 0 20px;
+  }
+
+  /* ── 食材區 ── */
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 540px) { .ingredients-grid { grid-template-columns: 1fr; } }
+
+  .ing-card {
+    background: #fff;
+    border: 1px solid var(--steam);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .ing-card h3 {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--caramel);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .ing-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--steam);
+    font-size: 14px;
+  }
+  .ing-row:last-child { border-bottom: none; }
+  .ing-name { color: var(--ink); }
+  .ing-qty { color: var(--caramel); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .ing-note { font-size: 11px; color: #888; margin-top: 2px; }
+
+  /* ── SOP步驟 ── */
+  .steps-list { list-style: none; }
+  .step-item {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0 20px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 25px; top: 52px; bottom: -28px;
+    width: 2px;
+    background: var(--steam);
+  }
+  .step-num {
+    width: 52px; height: 52px;
+    background: var(--soy);
+    color: var(--gold-light);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-body { padding-top: 4px; }
+  .step-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--soy);
+    margin-bottom: 6px;
+  }
+  .step-desc { font-size: 14px; color: #3a2a1a; line-height: 1.9; }
+  .step-time {
+    display: inline-block;
+    font-size: 11px;
+    background: var(--gold-light);
+    color: var(--soy);
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  .important { color: var(--red-imp); font-weight: 700; }
+
+  /* ── 秘訣卡 ── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .tip-card {
+    background: #fff8ee;
+    border: 1px solid var(--gold-light);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .tip-icon { font-size: 22px; margin-bottom: 8px; }
+  .tip-head {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--soy);
+    margin-bottom: 4px;
+  }
+  .tip-body { font-size: 13px; color: #5a3a1a; line-height: 1.7; }
+
+  /* ── 比較表 ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  th {
+    background: var(--soy);
+    color: var(--gold-light);
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--steam);
+    vertical-align: top;
+    color: var(--ink);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf5ec; }
+  td.good { color: #2e7d32; font-weight: 500; }
+  td.bad  { color: var(--red-imp); font-weight: 500; }
+
+  /* ── 保存說明 ── */
+  .storage-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .storage-box {
+    flex: 1;
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid var(--steam);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .storage-icon { font-size: 28px; margin-bottom: 8px; }
+  .storage-title { font-weight: 700; color: var(--soy); font-size: 14px; }
+  .storage-dur { color: var(--gold); font-size: 22px; font-weight: 700; font-family: 'Noto Serif TC', serif; margin: 4px 0; }
+  .storage-note { font-size: 12px; color: #777; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--soy);
+    color: var(--steam);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 12px;
+    margin-top: 60px;
+    letter-spacing: 0.5px;
+  }
+  footer strong { color: var(--gold-light); }
+
+  @media print {
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .step-item::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">店家級配方</div>
+  <h1>台式<span>滷肉燥</span></h1>
+  <p class="hero-sub">以黃金比例炸紅蔥酥・深色醬汁慢滷・油香濃郁・膠質豐厚</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">1800g</span><span class="stat-label">絞肉基準</span></div>
+    <div class="stat"><span class="stat-num">90+</span><span class="stat-label">慢滷分鐘</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">人份</span></div>
+    <div class="stat"><span class="stat-num">3:7</span><span class="stat-label">肥瘦黃金比</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 食材 -->
+  <h2 class="section-title">食材清單</h2>
+  <div class="ingredients-grid">
+
+    <div class="ing-card">
+      <h3>主食材</h3>
+      <div class="ing-row"><span class="ing-name">豬絞肉（粗絞，三肥七瘦）</span><span class="ing-qty">1800 g</span></div>
+      <div class="ing-row"><span class="ing-name">紅蔥頭（切薄片）</span><span class="ing-qty">200 g</span></div>
+      <div class="ing-row"><span class="ing-name">豬皮（可選，強烈建議）</span><span class="ing-qty">300 g</span></div>
+    </div>
+
+    <div class="ing-card">
+      <h3>醬汁調味</h3>
+      <div class="ing-row"><span class="ing-name">醬油（豆油伯金丸 / 萬家香）</span><span class="ing-qty">150 ml</span></div>
+      <div class="ing-row"><span class="ing-name">醬油膏</span><span class="ing-qty">50 ml</span></div>
+      <div class="ing-row"><span class="ing-name">米酒</span><span class="ing-qty">100 ml</span></div>
+      <div class="ing-row"><span class="ing-name">冰糖</span><span class="ing-qty">40 g</span></div>
+      <div class="ing-row"><span class="ing-name">水或高湯</span><span class="ing-qty">600 ml</span></div>
+    </div>
+
+    <div class="ing-card">
+      <h3>香料</h3>
+      <div class="ing-row"><span class="ing-name">五香粉</span><span class="ing-qty">3 tsp</span></div>
+      <div class="ing-row"><span class="ing-name">白胡椒粉</span><span class="ing-qty">1 tsp</span></div>
+      <div class="ing-row"><span class="ing-name">滷包（八角2顆、桂皮1片、月桂葉2片）</span><span class="ing-qty">1 包</span></div>
+    </div>
+
+    <div class="ing-card">
+      <h3>輔助材料</h3>
+      <div class="ing-row"><span class="ing-name">食用油（炸紅蔥頭用）</span><span class="ing-qty">150 ml</span></div>
+      <div class="ing-row"><span class="ing-name">油蔥酥（市售，補充香氣）</span><span class="ing-qty">30 g</span></div>
+    </div>
+
+  </div>
+
+  <!-- SOP步驟 -->
+  <h2 class="section-title">SOP 製作步驟</h2>
+  <ol class="steps-list">
+
+    <li class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">炸紅蔥酥（靈魂步驟）</div>
+        <div class="step-desc">
+          鍋中倒入 <strong>150ml 食用油</strong>，<strong>冷油放入</strong> 200g 紅蔥頭薄片。開中小火慢炸，過程中持續攪拌，炸至金黃焦香（約 8-10 分鐘）。<br>
+          <span class="important">關鍵：顏色剛轉深金色就要撈起</span>，餘熱會讓顏色再加深。油與蔥酥分開保留，都會用到！
+        </div>
+        <span class="step-time">⏱ 約 8–10 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">處理豬皮（增加膠質）</div>
+        <div class="step-desc">
+          豬皮先汆燙 5 分鐘去腥，撈起切成 0.5cm 小丁或細條。豬皮是讓肉燥有濃稠光澤感的關鍵，<span class="important">強烈建議加入</span>。
+        </div>
+        <span class="step-time">⏱ 約 5 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">爆香炒肉（建立鍋底焦香）</div>
+        <div class="step-desc">
+          取炸蔥的香油約 3 大匙留鍋，開大火。放入 1800g 絞肉，用鍋鏟將肉撥散，炒至肉色全白、水分收乾（約 5-7 分鐘）。<br>
+          <span class="important">不要太早翻動</span>，讓底部微微焦香，這層鍋底焦香是店家味道的關鍵。
+        </div>
+        <span class="step-time">⏱ 約 5–7 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">嗆酒與調味</div>
+        <div class="step-desc">
+          肉炒香後，沿鍋邊倒入 100ml 米酒嗆鍋（會有香氣噴出）。依序加入醬油 150ml、醬油膏 50ml、冰糖 40g、五香粉 3tsp、白胡椒粉 1tsp，翻炒均勻讓醬汁包覆每一粒肉，炒至肉的顏色變深褐色（約 2 分鐘）。
+        </div>
+        <span class="step-time">⏱ 約 2 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">加入紅蔥酥與豬皮</div>
+        <div class="step-desc">
+          加入步驟一炸好的全部紅蔥酥、市售油蔥酥 30g（增加層次），以及切好的豬皮丁。翻炒均勻。
+        </div>
+        <span class="step-time">⏱ 約 1 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">加水慢滷（決定口感）</div>
+        <div class="step-desc">
+          倒入 600ml 水或高湯（水位需蓋過肉），放入滷包。大火煮滾後，轉<span class="important">最小火</span>加蓋慢滷。<br>
+          <span class="important">鍋內只能微微冒泡，大火滾煮會讓肉變老、湯汁混濁。</span><br>
+          建議最少 90 分鐘，2 小時最佳。
+        </div>
+        <span class="step-time">⏱ 最少 90 分鐘，建議 120 分鐘</span>
+      </div>
+    </li>
+
+    <li class="step-item">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">收汁調味（最終定稿）</div>
+        <div class="step-desc">
+          滷至 90 分鐘後開蓋，取出滷包。試味道：顏色不夠深可再加少許醬油，不夠鹹加醬油，需要光澤感加少許醬油膏。<br>
+          轉中火<strong>不加蓋</strong>收汁 10–15 分鐘，至湯汁濃郁、表面有油光即完成。
+        </div>
+        <span class="step-time">⏱ 約 10–15 分鐘</span>
+      </div>
+    </li>
+
+  </ol>
+
+  <!-- 秘訣 -->
+  <h2 class="section-title">店家級關鍵秘訣</h2>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">🥩</div>
+      <div class="tip-head">絞肉要粗絞</div>
+      <div class="tip-body">請肉販用「粗孔」絞一次，或手工切小丁。細絞肉滷出來像泥，沒有口感層次。</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🧅</div>
+      <div class="tip-head">紅蔥頭不可省</div>
+      <div class="tip-body">這是台式肉燥與其他肉醬的最大差異。千萬不能用洋蔥替代，香氣完全不同。</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🐷</div>
+      <div class="tip-head">豬皮帶來膠質</div>
+      <div class="tip-body">豬皮完全融化後，膠原蛋白讓醬汁自然濃稠發亮，不需要勾芡。</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔥</div>
+      <div class="tip-head">火要小、時間要長</div>
+      <div class="tip-body">慢滷時鍋內只能微微冒泡。大火滾煮讓肉變老、湯汁混濁，是失敗最常見原因。</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🌙</div>
+      <div class="tip-head">隔夜更好吃</div>
+      <div class="tip-body">放涼冷藏一夜，油脂凝固後撈去表面多餘白油，再加熱風味更集中濃郁。</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📦</div>
+      <div class="tip-head">大量製作 分裝冷凍</div>
+      <div class="tip-body">冷藏可放 5 天，分裝冷凍可保存 3 個月。一次做足，隨時取用。</div>
+    </div>
+  </div>
+
+  <!-- 比較表 -->
+  <h2 class="section-title">家庭版 vs 店家版 關鍵差異對照</h2>
+  <table>
+    <thead>
+      <tr><th>項目</th><th>家庭版（一般做法）</th><th>店家版（本配方）</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>絞肉粗細</td>
+        <td class="bad">超市細絞肉（口感似肉泥）</td>
+        <td class="good">粗絞或手切小丁（有嚼感）</td>
+      </tr>
+      <tr>
+        <td>紅蔥酥</td>
+        <td class="bad">市售罐裝油蔥酥</td>
+        <td class="good">現炸紅蔥頭（香氣提升 3 倍）</td>
+      </tr>
+      <tr>
+        <td>豬皮</td>
+        <td class="bad">不加（湯汁稀、無光澤）</td>
+        <td class="good">加入 300g（自然膠質濃稠）</td>
+      </tr>
+      <tr>
+        <td>醬油種類</td>
+        <td class="bad">一般醬油</td>
+        <td class="good">醬油 + 醬油膏雙醬（層次豐富）</td>
+      </tr>
+      <tr>
+        <td>滷製時間</td>
+        <td class="bad">30–40 分鐘</td>
+        <td class="good">90–120 分鐘（風味完全釋放）</td>
+      </tr>
+      <tr>
+        <td>火候控制</td>
+        <td class="bad">中火不穩定</td>
+        <td class="good">轉最小火維持微微冒泡</td>
+      </tr>
+      <tr>
+        <td>靜置熟成</td>
+        <td class="bad">當天立即食用</td>
+        <td class="good">冷藏隔夜再加熱（風味濃縮）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 保存 -->
+  <h2 class="section-title">保存方式</h2>
+  <div class="storage-row">
+    <div class="storage-box">
+      <div class="storage-icon">❄️</div>
+      <div class="storage-title">冷藏保存</div>
+      <div class="storage-dur">5 天</div>
+      <div class="storage-note">放涼後密封冷藏，食用前充分加熱</div>
+    </div>
+    <div class="storage-box">
+      <div class="storage-icon">🧊</div>
+      <div class="storage-title">冷凍保存</div>
+      <div class="storage-dur">3 個月</div>
+      <div class="storage-note">分裝小份冷凍，取用方便，解凍後加熱即食</div>
+    </div>
+    <div class="storage-box">
+      <div class="storage-icon">🍚</div>
+      <div class="storage-title">最佳賞味</div>
+      <div class="storage-dur">隔夜後</div>
+      <div class="storage-note">冷藏一夜後撈去表面凝固白油，風味最集中</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>台式滷肉燥 — 店家級配方</strong>｜1800g 版本</p>
+  <p style="margin-top:8px;">食材比例與技術原則參考：台灣傳統滷肉燥製法・在地食材應用</p>
+</footer>
+
+</body>
+</html>
