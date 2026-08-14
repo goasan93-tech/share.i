@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人級・韭菜豬肉水餃黃金 SOP 簡報</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #061f14 0%, #0b1329 100%);
+            --accent-green: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.3);
+            --card-bg: rgba(17, 24, 39, 0.75);
+            --border-color: rgba(16, 185, 129, 0.2);
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* 封面樣式 */
+        .cover-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            background: linear-gradient(to right, #ffffff, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        /* 核心重點卡片 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid var(--accent-green);
+            padding-left: 15px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-green);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
+        }
+
+        .card-header {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header span {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+
+        /* 食材清單表格 */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 24px;
+        }
+
+        th {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            font-weight: bold;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 步驟SOP展示 */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sop-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .sop-step:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .step-number {
+            background: var(--accent-green);
+            color: #061f14;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .step-content h4 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 結論樣式 */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(11, 19, 41, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .conclusion-card p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 響應式排版 (RWD) */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover-card {
+                padding: 40px 20px;
+            }
+
+            th, td {
+                padding: 12px 16px;
+            }
+
+            .sop-step {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 封面區 -->
+        <header class="cover-card">
+            <span class="badge">職人配方・無私公開</span>
+            <h1>韭菜豬肉水餃</h1>
+            <p class="subtitle">讀者買得對、照著做就成功的黃金比例 SOP</p>
+        </header>
+
+        <!-- 核心重點卡片 -->
+        <section>
+            <h2 class="section-title">💡 兩大美味關鍵秘密</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        分次打水拌至拉絲
+                        <span>🥩</span>
+                    </div>
+                    <p style="color: var(--text-muted); line-height: 1.6;">
+                        在調味後，將特製的<strong>蔥花椒水</strong>分四次緩慢加入肉餡中，朝同一方向順時針攪拌。這能使肉餡充分吸水並產生拉絲黏性，是爆汁不柴的關鍵。
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        油脂封膜防止出水
+                        <span>🌱</span>
+                    </div>
+                    <p style="color: var(--text-muted); line-height: 1.6;">
+                        韭菜切丁後，必須先加入<strong>芝麻油輕輕拌勻</strong>，利用香濃油脂鎖住韭菜的斷面水分。最後混入肉餡時動作要極致輕柔，杜絕出水泡爛水餃皮。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 食材清單表格 -->
+        <section>
+            <h2 class="section-title">🛒 買得對・黃金比例材料表</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>食材類別</th>
+                            <th>品名項目</th>
+                            <th>精準配比克數 / 調味分量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3" style="font-weight: bold; background: rgba(255,255,255,0.01);">主食材 (⚾️A~C)</td>
+                            <td>梅花 (夾心) 肉</td>
+                            <td><strong>900 克</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新鮮韭菜 (洗淨晾乾)</td>
+                            <td><strong>300 克</strong></td>
+                        </tr>
+                        <tr>
+                            <td>雞蛋</td>
+                            <td><strong>2 顆</strong></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="7" style="font-weight: bold; background: rgba(255,255,255,0.01);">黃金調味料 (⚾️a~g)</td>
+                            <td>鹽巴</td>
+                            <td>9 克</td>
+                        </tr>
+                        <tr>
+                            <td>醬油</td>
+                            <td>25 cc</td>
+                        </tr>
+                        <tr>
+                            <td>烹大師干貝粉</td>
+                            <td>2 小匙 (6 克)</td>
+                        </tr>
+                        <tr>
+                            <td>紅砂糖</td>
+                            <td>15 克</td>
+                        </tr>
+                        <tr>
+                            <td>白胡椒粉</td>
+                            <td>1 大匙 (15 克)</td>
+                        </tr>
+                        <tr>
+                            <td>特製蔥花椒水 (高溫浸泡)</td>
+                            <td>230 cc <br><span style="font-size: 0.85rem; color: var(--text-muted);">(蔥1支切丁、花椒粒1小匙、85°C熱水泡10分鐘)</span></td>
+                        </tr>
+                        <tr>
+                            <td>優質芝麻油 (防出水關鍵)</td>
+                            <td>30 克</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 製作步驟SOP -->
+        <section>
+            <h2 class="section-title">⏱ 照著做・水餃職人標準 SOP</h2>
+            <div class="sop-timeline">
+                <div class="sop-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>底味拌勻</h4>
+                        <p>將梅花豬绞肉置於深盆，一次加入鹽巴 9g、醬油 25cc、干貝粉 6g、紅砂糖 15g、白胡椒粉 15g，徹底攪拌均勻奠定肉餡基底。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>精準打水</h4>
+                        <p>過濾好蔥花椒水（共230cc），<strong>分四次</strong>加入絞肉中。每一次加入都要順時針快速攪拌，直到水分被肉餡吸乾、肉質呈現黏性與拉絲感。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>打入蛋液</h4>
+                        <p>打入 2 顆新鮮雞蛋，繼續朝同方向（順時針）用力攪拌，讓蛋液完全融入肉餡，提升內餡滑嫩且多汁的口感。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>油脂鎖水</h4>
+                        <p>韭菜切細丁，<strong>先倒入 30 克芝麻油輕輕拌勻</strong>，利用油脂包覆蔬菜切面以鎖住水分，避免與鹽分接觸後脫水。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>輕柔混合與熟成</h4>
+                        <p>將拌好芝麻油的韭菜丁倒入肉餡中，<strong>改用最輕柔的力量拌勻</strong>。拌勻後封膜放入冷凍庫<strong>低溫熟成 1 小時</strong>，使水分凝結、質地乾爽，包製時更加流暢。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h4>拉伸包製與黃金烹煮</h4>
+                        <p>包製時先將水餃皮微微拉伸再包，兩手掌朝中心向下壓緊。大鍋水煮滾後下水餃轉中火，輕輕攪動避免沾鍋，<strong>水滾後點冷水 2 次</strong>。撈出後立即用風扇吹風放涼、蒸發水分，皮質將極致 Q 彈不軟爛！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 比較表格 -->
+        <section>
+            <h2 class="section-title">📊 常見失敗 VS 職人級 SOP 差異對比</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>烹調步驟</th>
+                            <th>傳統常見做法 (容易失敗)</th>
+                            <th>職人級 SOP 做法 (完美口感)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">內餡水份</td>
+                            <td>無打水，煮完後肉餡乾柴、毫無肉汁</td>
+                            <td><strong>分四次打入蔥花椒水</strong>，咬下時鮮汁爆開</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">韭菜處理</td>
+                            <td>直接混入肉中，遇鹽脫水，導致皮濕軟爆開</td>
+                            <td><strong>先以芝麻油拌勻鎖水</strong>，韭菜翠綠且乾爽好包</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">烹煮火候</td>
+                            <td>大火一路狂滾，水餃皮容易破裂且肉餡過熟</td>
+                            <td>下鍋後<strong>轉中火並點水 2 次</strong>，皮熟餡多汁</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">起鍋處理</td>
+                            <td>堆疊盛盤，熱氣水蒸氣回吸，餃子皮軟爛互黏</td>
+                            <td>撈出後<strong>立即吹風放涼</strong>，皮質緊緻無比 Q 彈</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <footer class="conclusion-card">
+            <p>
+                好水餃的秘訣，在於對溫度、水份與油脂的完美掌控。只要严格遵循這套「精準食材表 + 職人 SOP」，您家裡的餐桌隨時都能端出令人驚豔、顆顆爆汁且皮 Q 彈牙的頂級韭菜豬肉水餃！
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
