@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>應用於蔬果冷卻之真空預冷系統設計研究報告</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">應用於蔬果冷卻之真空預冷系統設計研究報告</h1>
+  <p class="eyebrow">2026.08.13 研究組員：李世權 Claude Gemini</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+
+
+<h1 id="1">1. 前言與研究動機</h1>
+<h2 id="11">1.1 蔬果採後生理特性與預冷之必要性</h2>
+<p>新鮮農產品採收後仍具有生命現象，其呼吸作用、蒸散作用及其他生理代謝仍持續進行，這些現象會加速產品老化、萎凋及黃化。</p>
+<p>低溫可抑制引起品質劣變的生理變化，並減緩病原菌滋生的速度，因此降低溫度及適當的溫度管理，是農園產品採收後保鮮處理中最關鍵的一環。</p>
+<p>所謂「預冷」，是指在短時間內（通常數分鐘）將農產品的田間熱快速移除，降至保鮮儲運所需的低溫。由於必須掌握時效，預冷處理實際上包含多項在不傷害產品前提下快速降溫的技術，而非單純的降溫手段。經過預冷之後，農產品溫度已降至合理範圍，將新鮮度鎖住以利後續的低溫貯藏或低溫運輸有效銜接，以減少運輸與貯藏期間的萎凋損耗。</p>
+<p><strong>基礎科普－三個關鍵名詞：</strong></p>
+<p><strong>表1.1　預冷相關基礎名詞定義</strong></p>
+<table>
+<thead>
+<tr>
+<th>名詞</th>
+<th>英文</th>
+<th>定義</th>
+<th>對預冷設計的意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>田間熱</td>
+<td>Field Heat（田間熱）</td>
+<td>產品在田間受日照、環境高溫累積，採收當下體內所帶有的溫度（通常27~35℃）</td>
+<td>是預冷系統要移除的主要冷卻負荷來源，田間熱越高，所需冷卻能量與時間越長</td>
+</tr>
+<tr>
+<td>呼吸作用</td>
+<td>Respiration（呼吸作用）</td>
+<td>產品採收後仍持續進行的生理代謝反應，消耗自身醣類、脂肪並釋出熱量（呼吸熱）與CO2</td>
+<td>溫度每升高10℃，呼吸速率大約增加2~3倍（Q10效應），這是為何「越早預冷、劣化越慢」的生理依據</td>
+</tr>
+<tr>
+<td>蒸散作用</td>
+<td>Transpiration（蒸散作用）</td>
+<td>產品表面水分經由氣孔或角質層向外散失的生理性失水現象</td>
+<td>與真空預冷的降溫機制方向相同（皆靠水分散失帶走熱量），但過度蒸散會導致萎凋，是預冷失水率需控制的原因</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12">1.2 預冷於冷鏈物流中的定位</h2>
+<p>預冷作業大多已獨立於冷藏作業之外，成為需要特別設備與特定空間執行的獨立工序。其在冷鏈中的位置如下：</p>
+<p>田間採收（帶有田間熱）→ 集貨場整理 → 【預冷＝移除田間熱】→ 冷藏貯存／低溫運輸 → 通路 → 消費端</p>
+<p><strong>預冷是冷鏈的第一道關卡，若此關卡處理不確實，即使後續冷藏庫、冷藏車溫度控制再精確，也無法彌補產品在預冷前已流失的品質與鮮度。</strong></p>
+<h2 id="13">1.3 本報告研究範疇與目的</h2>
+<p>本報告聚焦於真空預冷（Vacuum Cooling），研究範疇涵蓋：降溫原理（熱力學基礎）、適用蔬果種類與限制、系統架構與主要設備、設計準則制定與計算方法、設備選型原則與規範書開立。目的是提供具 HVAC 背景之工程人員一套可依循、可驗證的設計思維框架。</p>
+<h1 id="2">2. 五種常用預冷方式比較</h1>
+<p>目前實際採用的預冷方法可分為五類：冰水預冷、室內風冷、強制通風（壓差）預冷、真空預冷，以及碎冰預冷。不同方式各有優缺點，通常須依作物種類、操作方便性及設備成本綜合考量。</p>
+<h2 id="21">2.1 五種預冷方式比較表</h2>
+<p><strong>表2.1　五種常用預冷方式比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>預冷方式</th>
+<th>降溫原理</th>
+<th>相對降溫速率</th>
+<th>適用作物</th>
+<th>主要優點</th>
+<th>主要缺點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>室內風冷</td>
+<td>冷藏庫低溫空氣自然對流散熱</td>
+<td>基準（最慢）</td>
+<td>各類皆可，效率低</td>
+<td>設備門檻最低</td>
+<td>降溫極慢，不適合急速大量處理</td>
+</tr>
+<tr>
+<td>強制排氣／壓差預冷</td>
+<td>負壓風扇造成箱體內外壓差，強制冷風穿過包裝箱</td>
+<td>比室內風冷快4至10倍</td>
+<td>大多數蔬果</td>
+<td>可搭配既有冷藏庫、適用性廣</td>
+<td>降溫均勻度受堆疊方式影響</td>
+</tr>
+<tr>
+<td>冰水預冷</td>
+<td>冰水直接接觸產品表面傳導散熱</td>
+<td>比強制通風快2至23倍</td>
+<td>根莖類、果菜類（耐濕）</td>
+<td>降溫快、無失重問題</td>
+<td>易造成病原菌傳播、產品須耐濕</td>
+</tr>
+<tr>
+<td>真空預冷</td>
+<td>降低空間壓力使水分蒸發潛熱帶走田間熱</td>
+<td>最快（15~30分鐘完成批量處理）</td>
+<td>表面積大的葉菜類、花卉</td>
+<td>降溫均勻澈底、操作簡便、無包裝容器限制</td>
+<td>設備昂貴、不適用低表面積產品</td>
+</tr>
+<tr>
+<td>碎冰預冷</td>
+<td>碎冰直接混入包裝內吸熱</td>
+<td>中等</td>
+<td>耐濕耐冰接觸之根莖類、玉米</td>
+<td>兼具運輸過程持續保冷效果</td>
+<td>增加包裝重量與運費、易潮濕、需注意凍傷害</td>
+</tr>
+</tbody>
+</table>
+<h2 id="22">2.2 選用真空預冷的決策原因</h2>
+<p>依上表比較，選用真空預冷的關鍵原因如下：</p>
+<ol>
+<li>
+<p>降溫速度最快：以短期葉菜類為例，每次僅需20～30分鐘即可完成數百公斤處理量。</p>
+</li>
+<li>
+<p>操作簡便、自動化程度高：經自動控制設備，通常只需按一鍵即可完成全部操作。</p>
+</li>
+<li>
+<p>不受包裝容器限制：不像水冷需考慮容器防水性、氣冷需考慮冷風接觸性，可直接冷卻塑膠袋裝小包裝蔬菜。</p>
+</li>
+</ol>
+<p><strong>4. 能源效率需視批量規模評估，不宜視為必然的能效優勢（詳見第4章4.6節說明）。</strong></p>
+
+
+<p><strong>5. 但選用真空預冷前，必須先確認產品是否具備足夠的表面積／體積比，這是決策時最容易被忽略的前提條件，詳見下一章說明。</strong></p>
+<h1 id="3">3. 適用蔬果種類與限制</h1>
+<h2 id="31">3.1 表面積與體積比對真空預冷效率的影響</h2>
+<p>真空預冷主要依賴水分蒸發吸熱之原理降溫，因此可供水分蒸散的表面積與體積之比例，是決定降溫效率的關鍵因素。表面積大的葉菜類（如結球萵苣）效果顯著；而水果類、果菜類、根菜類因表面積與體積比小，降溫速率緩慢。此原理與國外技術文獻描述一致。</p>
+<h2 id="32">3.2 各類蔬果最適貯藏條件及預冷方式對照表</h2>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">〔來源說明〕本表數據引用文獻「林棟樑，2001」→ 內文轉引自西村勝義（1993）原始文獻，惟未能於公開網路資源中找到可直接連結、可供查驗的原始電子版本。</div></div>
+
+<p><strong>表3.1　各類蔬果最適貯藏條件及預冷方式對照表</strong></p>
+<table>
+<thead>
+<tr>
+<th>分類</th>
+<th>菜種</th>
+<th>最適溫度</th>
+<th>最適溼度</th>
+<th>預冷終溫</th>
+<th>水冷</th>
+<th>強風</th>
+<th>真空</th>
+<th>壓差</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>果菜類</td>
+<td>番茄(綠熟)</td>
+<td>13℃~</td>
+<td>85~90%</td>
+<td>13℃以上</td>
+<td>○</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>真空預冷降溫困難</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>番茄(完熟)</td>
+<td>7~10℃</td>
+<td>85~90%</td>
+<td>7℃以上</td>
+<td>○</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>甜椒</td>
+<td>7~10℃</td>
+<td>90~95%</td>
+<td>7℃以上</td>
+<td>×</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>小黃瓜</td>
+<td>7~10℃</td>
+<td>90~95%</td>
+<td>7℃以上</td>
+<td>×</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>茄子</td>
+<td>7~10℃</td>
+<td>90~95%</td>
+<td>7℃以上</td>
+<td>×</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>毛豆</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>甜玉米</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>○</td>
+<td>注意失水問題</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>菜豆</td>
+<td>7~10℃</td>
+<td>90~95%</td>
+<td>7℃以上</td>
+<td>○</td>
+<td>○</td>
+<td>△</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>甜豌豆</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>果菜類</td>
+<td>草莓</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>×</td>
+<td>◎</td>
+<td>水冷造成腐爛嚴重</td>
+</tr>
+<tr>
+<td>莖菜類</td>
+<td>洋蔥</td>
+<td>0℃</td>
+<td>60~70%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>×</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>莖菜類</td>
+<td>青蔥</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>莖菜類</td>
+<td>蘆筍</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>△</td>
+<td>○</td>
+<td>△</td>
+<td>◎</td>
+<td>水冷防筍尖傷,真空防失水</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>結球白菜</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>甘藍</td>
+<td>0℃</td>
+<td>95~100%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>結球萵苣</td>
+<td>0℃</td>
+<td>95~100%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>◎</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>葉萵苣</td>
+<td>0℃</td>
+<td>95~100%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>◎</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>菠菜</td>
+<td>0℃</td>
+<td>90~95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>◎</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>小白菜</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>◎</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>茼萵</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>莧菜</td>
+<td>10℃</td>
+<td>95%</td>
+<td>10℃</td>
+<td>◎</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>蕹菜</td>
+<td>10℃</td>
+<td>95%</td>
+<td>10℃</td>
+<td>◎</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>芹菜</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>◎</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>葉菜類</td>
+<td>蕪菁</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>◎</td>
+<td>○</td>
+<td>◎</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>花菜類</td>
+<td>花椰菜</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>×</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>花菜類</td>
+<td>青花菜</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>根菜類</td>
+<td>蘿蔔</td>
+<td>0℃</td>
+<td>95%</td>
+<td>5℃</td>
+<td>◎</td>
+<td>○</td>
+<td>△</td>
+<td>◎</td>
+<td>—</td>
+</tr>
+<tr>
+<td>根菜類</td>
+<td>胡蘿蔔</td>
+<td>0℃</td>
+<td>98~100%</td>
+<td>5℃</td>
+<td>◎</td>
+<td>○</td>
+<td>△</td>
+<td>○</td>
+<td>—</td>
+</tr>
+<tr>
+<td>根菜類</td>
+<td>牛蒡</td>
+<td>0℃</td>
+<td>98~100%</td>
+<td>5℃</td>
+<td>◎</td>
+<td>○</td>
+<td>△</td>
+<td>○</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>圖例：◎最適　○適　△注意　×不適（轉引自原始出處：西村勝義，1993）</p>
+<p><strong>由上表可清楚看出：葉菜類幾乎全數為◎（最適）或○（適），是真空預冷的最佳應用對象；果菜類與根菜類則多為△或×，屬不適合或效率不佳的品項。</strong></p>
+<h2 id="33">3.3 不適用品項及改善對策</h2>
+<p>主因：果菜類、根菜類蒸散表面積小，真空預冷效率差。</p>
+<p>日本特例：日本部分將真空預冷應用於裝箱蘿蔔、胡蘿蔔、甜椒、甜玉米，主因並非降溫效率最佳，而是操作方便性考量（可去除洗滌水分、避免表面潮濕發霉）。</p>
+<p>改善對策：容易失水的產品（短期葉菜類、甜玉米等）處理前先淋水，可增進降溫效率並減少失重；若產品新鮮度已流失，再好的預冷技術也僅能維持品質、無法增進品質，因此採收後應儘速送入預冷程序，這是比選對設備更重要的前提。</p>
+<h1 id="4">4. 真空預冷降溫熱力學</h1>
+<h2 id="41">4.1 水飽和蒸氣壓與沸點的壓力相依性</h2>
+<p>水的沸點並非固定於100℃，而是隨環境壓力降低而下降。當液體表面的飽和蒸氣壓（Saturated Vapor Pressure，飽和蒸氣壓）等於環境壓力時，液體便會沸騰。真空預冷正是利用這個原理──降低存放空間壓力，使水在遠低於室溫的溫度下即開始劇烈沸騰蒸發。</p>
+<p><strong>表4.1　水飽和蒸氣壓與汽化潛熱對照表</strong></p>
+<table>
+<thead>
+<tr>
+<th>溫度T(℃)</th>
+<th>飽和壓力Psat(kPa)</th>
+<th>換算mmHg(Torr)</th>
+<th>汽化潛熱hfg(kJ/kg)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.01</td>
+<td>0.6113</td>
+<td>4.58</td>
+<td>2501</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.8721</td>
+<td>6.54</td>
+<td>2490</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1.2276</td>
+<td>9.21</td>
+<td>2478</td>
+</tr>
+<tr>
+<td>15</td>
+<td>1.7051</td>
+<td>12.79</td>
+<td>2466</td>
+</tr>
+<tr>
+<td>20</td>
+<td>2.339</td>
+<td>17.54</td>
+<td>2454</td>
+</tr>
+</tbody>
+</table>
+<p>資料來源：Cengel &amp; Boles, Thermodynamics: An Engineering Approach, Table A-3（飽和水物性表）；交叉核對 NIST Chemistry WebBook。</p>
+
+
+<p>舉例：由上表可知，若要使水在5℃沸騰，環境壓力必須降至6.54 Torr。</p>
+<h2 id="42">4.2「蒸發」與「沸騰」的區別</h2>
+<p>蒸發（Evaporation）：僅發生於液體表面，速率較慢，任何溫度、壓力下皆可能發生（如室溫下水漸漸變乾）。大氣壓力下，液體表面飽和壓力大於空氣未飽和（相對濕度低於100%）水蒸氣壓力時，液體表面水分子會因壓力差而脫離液體而被空氣吸納，稱為「蒸發現象」。隨著液體表面溫度上升或氣流流經表面速度增加，會加快蒸發速度。</p>
+<p>沸騰（Boiling）：當液體內部同時產生氣泡並劇烈汽化，速率遠快於單純蒸發。真空預冷正是透過降壓，讓產品表面水分達到沸騰狀態，在極短時間內大量吸熱蒸發，這也是其降溫速度遠快於單純風冷、水冷的根本原因。</p>
+<p>蒸發與沸騰均屬於液體轉變為氣體（汽化）的相變過程，兩者的主要差異與真空冷卻的運作原理如下表說明：</p>
+<p><strong>表4.2　蒸發與沸騰之比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>蒸發 (Evaporation)</th>
+<th>沸騰 (Boiling)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>發生位置</td>
+<td>僅發生於液體表面</td>
+<td>同時發生於液體內部與表面</td>
+</tr>
+<tr>
+<td>發生溫度條件</td>
+<td>需達該壓力下的任何溫度（飽和液~沸點之間）</td>
+<td>需達該壓力下的飽和溫度（沸點）</td>
+</tr>
+<tr>
+<td>氣泡產生</td>
+<td>無氣泡形成</td>
+<td>內部產生大量飽和蒸氣氣泡</td>
+</tr>
+<tr>
+<td>反應劇烈程度</td>
+<td>較為緩和，僅從液面發生</td>
+<td>非常劇烈，液體表面與底部不斷熱傳循環</td>
+</tr>
+<tr>
+<td>驅動力(Driving Force)</td>
+<td>液面蒸氣壓差（未達飽和狀態）</td>
+<td>液體飽和蒸氣壓等於外界環境壓力</td>
+</tr>
+<tr>
+<td>真空冷卻運作原理</td>
+<td>否</td>
+<td>是，低壓環境下，快速閃蒸</td>
+</tr>
+</tbody>
+</table>
+<h2 id="43">4.3 水蒸發潛熱帶走田間熱量之原理</h2>
+<p>水由液態轉為氣態時，需吸收大量汽化潛熱（見上表hfg欄，約2450~2500 kJ/kg）。水蒸發所吸收的熱量來自產品本身的熱能，產品溫度因而下降。這與一般顯熱冷卻（靠溫差傳導散熱）機制不同──真空預冷是靠「相變化」帶走熱量，而非單純溫差傳導，因此即使槽內空氣已被抽至接近真空、對流傳熱幾乎消失，降溫仍能持續進行。</p>
+<h2 id="44-vacuum-cooling">4.4 真空冷卻（Vacuum Cooling）之原理</h2>
+<p>真空冷卻主要是利用「沸騰」原理達成快速冷卻的效果，並伴隨「蒸發」吸收潛熱。真空冷卻原理與運作過程如下：</p>
+<ol>
+<li>
+<p>降低壓力以降沸點：根據熱力學原理，水的飽和溫度（沸點）隨環境壓力下降而降低。在大氣壓（101.3 kPa）下，水的沸點為100℃；當真空系統將壓力抽至約0.87 kPa（8.7 mbar）時，水的沸點會降至約5℃。</p>
+</li>
+<li>
+<p>快速誘發閃蒸（Flash Boiling）：當密閉腔體內的壓力低於待冷卻物（如蔬菜、米飯、烘焙食品）內部水分對應的飽和蒸氣壓時，物料表面與內部的水分會同時發生劇烈的沸騰現象。</p>
+</li>
+<li>
+<p>帶走汽化潛熱：水分由液態轉變成氣態時需要吸收大量的汽化潛熱（約2,400~2,500 kJ/kg）。由於過程極快且於密閉環境進行，水分沸騰所需之熱量直接取自物料本體（田間熱），從而使物料溫度在短時間內（通常數分鐘）迅速下降。</p>
+</li>
+</ol>
+<p>選用沸騰（低壓沸騰／閃蒸）而非單純自然蒸發的原因，在於自然蒸發僅作用於表面且速度緩慢；而透過真空降低沸點誘發內部水分沸騰，能使熱傳導面積急劇增加，達到質傳與熱傳均勻且極速降溫的專業工程需求。</p>
+<h2 id="45">4.5 失水率與降溫幅度的經驗法則（附驗算過程）</h2>
+
+
+<p>業界常用經驗法則：「產品每降溫6℃，約失水1%」。以下以能量守恆驗證其熱力學基礎：</p>
+<p><strong>顯熱負荷與蒸發潛熱之基本關係式：</strong></p>
+<div class="math-block">$$
+Q_{s} = m  \times  cp  \times  ΔT \tag{4.1}
+$$</div>
+<div class="math-block">$$
+Q_{L} = m_{evap}  \times  hfg \tag{4.2}
+$$</div>
+<p><strong>驗算條件：1 kg產品，比熱 cp = 4.0 kJ/kg·K（結球萵苣代表值）</strong></p>
+<p>降溫6K所需顯熱：</p>
+<div class="math-block">$$
+Q_{s} = 1 \text{kg}  \times  4.0 \text{kJ/kg·K}  \times  6 K = 24 \text{kJ}
+$$</div>
+<p>蒸發1%水分(0.01kg)所釋出之潛熱(取hfg≈2500kJ/kg)：</p>
+<div class="math-block">$$
+Q_{L} = 0.01 \text{kg}  \times  2500 \text{kJ/kg} = 25 \text{kJ}
+$$</div>
+<p><strong>兩者相差約4%，在工程精度範圍內幾乎相等，證實此經驗法則確有熱力學基礎，並非單純經驗數字。這也是真空預冷設計的核心邏輯：降溫幅度（ΔT）與必要失水量，兩者互為因果、缺一不可──這正是計算失水率的理論依據。</strong></p>
+<h2 id="46">4.6 真空預冷系統能源效率排序</h2>
+
+
+<p>一份美國佛州大學（University of Florida IFAS）推廣文獻指出，若以能源效率排序，強制通風冷卻效率最高，其後依序為碎冰（含泥冰）、冰水預冷，真空預冷則排在最後。</p>
+<p>但澳洲一份針對青花菜（Broccoli）的成本案例研究則得出相反結論：在該研究的假設條件下，真空預冷是最節能且成本最低的冷卻方式，其後依序為強制通風冷卻、冰水預冷；室內風冷速度慢且效率差，頂冰法（Top Icing）則是成本最高的方式。</p>
+<p><strong>原因研判：兩份文獻的結論差異，主要來自產品種類、批量規模、設備新舊程度、當地電價假設不同所致──真空預冷因設備投資大，若批量規模夠大（如商業化連續處理），單位能耗效率佳；反之若批量小、設備閒置率高，能效優勢就無法發揮。</strong></p>
+<p>電費案例僅供計算方法示範，不宜直接引用為現行成本基準，建議在實際專案評估時，以自身批量規模、當地電價重新試算，而非直接套用計算範例。</p>
+<h1 id="5-design-criteria">5. 系統設計準則（Design Criteria）</h1>
+<h2 id="51-sop">5.1 設計條件設定SOP</h2>
+<p><strong>表5.1　設計輸入參數蒐集SOP</strong></p>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>項目</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>確認產品種類與批量</td>
+<td>依表2.1確認產品是否適用真空預冷；批量(kg/批)決定槽體容積</td>
+</tr>
+<tr>
+<td>2</td>
+<td>確認初溫（田間熱）</td>
+<td>建議實測而非假設，可用探針溫度計於採收現場量測</td>
+</tr>
+<tr>
+<td>3</td>
+<td>確認終溫需求</td>
+<td>依產品最適貯藏溫度（表3.1）決定，通常為0~5℃</td>
+</tr>
+<tr>
+<td>4</td>
+<td>確認允許失水率上限</td>
+<td>一般業界慣例≤3%，超過恐影響賣相與重量損耗成本</td>
+</tr>
+<tr>
+<td>5</td>
+<td>確認場地供電條件</td>
+<td>真空預冷設備多屬三相動力負載，需確認契約容量是否足夠</td>
+</tr>
+<tr>
+<td>6</td>
+<td>抽真空時間</td>
+<td>商用系統多設計於15~30分鐘內完成單批處理，時間過短則抽氣速率（幫浦容量）需求過大，設備成本大幅上升；時間過長則失去真空預冷「快速」的優勢</td>
+</tr>
+<tr>
+<td>7</td>
+<td>終壓設定</td>
+<td>依終溫需求反查飽和蒸氣壓表決定目標終壓，並建議額外預留5~10%安全裕度（即實際抽氣終壓略低於理論值），以補償槽內非冷凝氣體（空氣）殘留造成的壓力偏差</td>
+</tr>
+</tbody>
+</table>
+<h2 id="52-ventingsop">5.2 安全連鎖與回壓（Venting）操作程序SOP</h2>
+<p><strong>表5.2　安全連鎖與回壓操作程序SOP</strong></p>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>內容</th>
+<th>安全考量</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>1</td>
+<td>自動感測確認槽內無人、啟動前發出可視可聽警報、門鎖可由內緊急開啟、門內具緊急斷電按鈕</td>
+<td>防止人員誤鎖在槽內</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>確認槽門完全密閉、連鎖開關啟動</td>
+<td>防止抽真空過程中人員誤開槽門</td>
+</tr>
+<tr>
+<td>3</td>
+<td>啟動真空幫浦，依預設程序抽氣降壓</td>
+<td>全程監控壓力感測器讀值</td>
+</tr>
+<tr>
+<td>4</td>
+<td>達到目標終壓後，保壓一段時間（依產品調整）</td>
+<td>確保槽內各處產品均勻降溫</td>
+</tr>
+<tr>
+<td>5</td>
+<td>緩慢回壓（通入過濾空氣或氮氣）</td>
+<td>回壓速度不可過快，否則槽內壓力驟變恐造成產品組織損傷（如葉菜類細胞破裂），建議回壓時間不少於1~2分鐘</td>
+</tr>
+<tr>
+<td>6</td>
+<td>確認槽內外壓力平衡後，連鎖解鎖，方可開門</td>
+<td>防止壓差造成開門意外</td>
+</tr>
+</tbody>
+</table>
+<h2 id="53-aisop">5.3 結合現代AI智慧控制與一鍵化操作SOP</h2>
+<p><strong>為達節能減碳以減緩地球暖化，解決缺工及技術人員稀缺問題，如何使操作更簡便、智慧、自動化、系統節能最佳化已是未來發展趨勢。現代真空預冷控制系統可進一步結合AI（Artificial Intelligence，人工智慧）技術，將上述五步驟SOP整合為AIoT地端智慧物聯網系統，實現真正的「一鍵完成」智慧操作：操作人員僅需將產品置入槽內、關閉槽門並按下啟動鍵，AI控制系統即自動完成「產品辨識→參數調用→抽氣→保壓→回壓→解鎖」全流程，並可於完成後透過App或看板推播完成通知，達到真正的一鍵化操作。</strong></p>
+<p><strong>表5.3　AI智慧控制模組功能說明</strong></p>
+<table>
+<thead>
+<tr>
+<th>AI應用模組</th>
+<th>功能說明</th>
+<th>對應SOP步驟</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>產品辨識與參數自動選配</td>
+<td>透過RFID或機器視覺（Machine Vision）辨識產品種類與批量，自動比對資料庫（如表3.2）調用對應之目標終溫、終壓、抽氣曲線設定，免除人工手動輸入</td>
+<td>步驟1前置作業</td>
+</tr>
+<tr>
+<td>AI預測式抽氣曲線控制</td>
+<td>以歷史批次數據訓練之機器學習模型，即時預測最佳抽氣速率曲線，避免降壓過快損傷產品組織，同時透過VFD（Variable Frequency Drive，變頻器）動態調整真空幫浦轉速，兼顧時間與品質</td>
+<td>步驟2</td>
+</tr>
+<tr>
+<td>異常偵測與自動保護</td>
+<td>即時監測壓力、溫度變化率，若偏離AI預測曲線超過設定閾值，系統自動判斷是否為洩漏、產品異常出水等狀況，自動觸發警報或暫停程序</td>
+<td>步驟2~3</td>
+</tr>
+<tr>
+<td>智慧回壓控制</td>
+<td>AI依據槽內壓力數據動態調節回壓閥開度，確保回壓曲線平緩，降低產品損傷風險，取代傳統固定速率回壓</td>
+<td>步驟4</td>
+</tr>
+<tr>
+<td>預測性維護（Predictive Maintenance）</td>
+<td>分析幫浦真空度衰退趨勢、運轉電流特徵，提前預警保養需求，避免非計畫性停機</td>
+<td>全流程</td>
+</tr>
+<tr>
+<td>最佳化操作模式，達到節能減碳、降低運轉成本</td>
+<td>藉由EMS（Energy Management System，能源管理系統）介接，將每批次之能耗、失水率、處理時間等數據回傳雲端，作為後續製程優化與能源管理之依據</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="54">5.4 冷藏庫配合銜接原則</h2>
+<p>真空預冷完成後之產品應立即移入冷藏庫或冷藏車，避免在常溫環境下等待，否則田間熱概念上雖已移除，但呼吸熱仍會持續累積，降低預冷效益。建議預冷站與冷藏庫動線規劃盡量縮短搬運距離與時間。</p>
+<h1 id="6">6. 真空冷卻系統設計範例</h1>
+<h2 id="61-800-kg">6.1 範例一：結球萵苣 800 kg 批量</h2>
+<p><strong>表6.1　範例一設計條件參數</strong></p>
+<table>
+<thead>
+<tr>
+<th>設計條件參數</th>
+<th>數值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蔬果名稱</td>
+<td>結球萵苣</td>
+</tr>
+<tr>
+<td>單批處理量 m</td>
+<td>800 kg</td>
+</tr>
+<tr>
+<td>初溫 T1</td>
+<td>25℃</td>
+</tr>
+<tr>
+<td>終溫 T2</td>
+<td>5℃</td>
+</tr>
+<tr>
+<td>比熱 cp</td>
+<td>4.0 kJ/kg·K</td>
+</tr>
+<tr>
+<td>目標處理時間 t</td>
+<td>20分鐘（1200秒）</td>
+</tr>
+<tr>
+<td>假設真空槽有效容積 V</td>
+<td>8 m3（示意值，實際應依槽體圖面計算）</td>
+</tr>
+<tr>
+<td>失水率</td>
+<td>3%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="611">6.1.1 產品冷卻顯熱負荷計算</h3>
+<p>套用公式4.1：</p>
+<div class="math-block">$$
+Q_{s} = m  \times  cp  \times  ΔT
+$$</div>
+<div class="math-block">$$
+Q_{s} = 800 \text{kg}  \times  4.0 \text{kJ/kg·K}  \times  (25−5) K
+$$</div>
+<div class="math-block">$$
+Q_{s} = 800 \text{kg}  \times  4.0 \text{kJ/kg·K}  \times  20 K
+$$</div>
+<div class="math-block">$$
+Q_{s} = 64,000 \text{kJ}
+$$</div>
+<h3 id="612">6.1.2 失水率與終溫關係計算</h3>
+<p>真空預冷之降溫熱量全數由水分蒸發之潛熱提供，故：</p>
+<div class="math-block">$$
+m_{evap} = Q_{s}  \div  hfg(\text{平均})
+$$</div>
+<p>取5~25℃區間平均汽化潛熱 hfg ≈ 2466 kJ/kg（依4.1表內插）：</p>
+<div class="math-block">$$
+m_{evap} = 64,000 \text{kJ}  \div  2466 \text{kJ/kg} = 25.96 \text{kg}
+$$</div>
+<div class="math-block">$$
+\text{失水率} = m_{evap}  \div  m  \times  100% = 25.96 \text{kg}  \div  800 \text{kg}  \times  100% = 3.24%
+$$</div>
+<p><strong>交叉驗證（與4.5節經驗法則比對）：</strong></p>
+<p>經驗法則估算：</p>
+<div class="math-block">$$
+ΔT  \div  6^{\circ}\text{C}  \times  1% = 20  \div  6  \times  1% = 3.33%
+$$</div>
+<p>兩者（3.24% vs 3.33%）高度吻合，誤差僅約3%，證實本計算方法與業界經驗法則相互驗證一致。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">本計算結果3.24%已略超過5.1節步驟4建議之3%上限，依第3章3.3節「改善對策」，建議處理前對產品先行淋水，以額外水分供應部分蒸發需求，降低產品自身失水率，同時不影響降溫效果。</div></div>
+
+<h3 id="613">6.1.3 真空槽抽氣速率計算（真空幫浦選型基礎）</h3>
+<p>採用真空技術標準抽氣時間公式：</p>
+<div class="math-block">$$
+S = (V  \div  t)  \times  ln(P0  \div  P1) \tag{6.1}
+$$</div>
+<p>V = 8 m<sup>3</sup>（槽體有效容積）；t = 1200秒（20分鐘）；P0 = 101.3 kPa（大氣壓）；P1 = 0.8721 kPa（對應5℃終溫之飽和壓力，查4.1表）</p>
+<div class="math-block">$$
+S = (8 \text{m}^3  \div  1200 s)  \times  ln(101.3  \div  0.8721)
+$$</div>
+<div class="math-block">$$
+S = 0.00667 \text{m}^3\text{/s}  \times  ln(116.2)
+$$</div>
+<div class="math-block">$$
+S = 0.00667 \text{m}^3\text{/s}  \times  4.755
+$$</div>
+<div class="math-block">$$
+S = 0.0317 \text{m}^3\text{/s}  \approx  114 \text{m}^3\text{/h}
+$$</div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">重要限制說明：此公式僅計算「排除槽內原有空氣」所需之理論抽氣速率，未計入產品持續蒸發產生之大量水蒸氣負荷。實務上，水蒸氣在低壓下體積膨脹極大，水蒸氣移除才是真空幫浦負擔的主要來源，而非槽內空氣本身。這也是為何6.1.7節冷媒直膨機組選型所述「蒸發器須設置於幫浦前端」的工程原因──先以蒸發器將水蒸氣凝結為液態水（體積驟減約1700倍），大幅降低真空幫浦實際需處理的氣體體積負荷。因此本節114 m3/h僅為簡化教學範例，實際設備選型應向設備商索取「抽氣時間-壓力」實測曲線（Pump-down Curve），並委請專業人員以實際產品蒸發速率重新驗算。</div></div>
+
+<h3 id="614-vacuum-pump">6.1.4 真空幫浦（Vacuum Pump）選型原則</h3>
+<p><strong>表6.2　真空幫浦選型原則</strong></p>
+<table>
+<thead>
+<tr>
+<th>選型項目</th>
+<th>原則</th>
+<th>原因說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽氣速率</td>
+<td>依6.1.3節計算值，並加計水蒸氣負荷修正係數（建議洽設備商提供實測曲線）</td>
+<td>避免僅以理論空氣抽氣速率選型導致設備容量不足</td>
+</tr>
+<tr>
+<td>極限壓力（Ultimate Pressure）</td>
+<td>須低於目標終壓（如5℃對應0.87 kPa），建議選型極限壓力達目標值的1/2~1/3</td>
+<td>確保幫浦有足夠餘裕達到並維持目標真空度</td>
+</tr>
+<tr>
+<td>幫浦型式</td>
+<td>商用真空預冷多採用液環式真空幫浦（Liquid Ring Vacuum Pump）</td>
+<td>液環式幫浦本身具耐水氣特性，適合處理含大量水蒸氣的抽氣製程，不易因水氣凝結損壞幫浦</td>
+</tr>
+</tbody>
+</table>
+<h3 id="615">6.1.5 真空槽材質、容積、氣密性規範</h3>
+<p><strong>表6.3　真空槽材質容積氣密性規範</strong></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>建議規範</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>材質</td>
+<td>不鏽鋼（SUS304或以上），耐腐蝕且符合食品接觸衛生要求</td>
+</tr>
+<tr>
+<td>容積</td>
+<td>依單批處理量與堆疊方式計算（本例約8 m3對應800kg）</td>
+</tr>
+<tr>
+<td>氣密性</td>
+<td>建議規範洩漏率（Leak Rate）指標，並要求出廠前實施氦氣檢漏測試或抽真空保壓測試（如24小時內壓力回升不超過某一限值）</td>
+</tr>
+<tr>
+<td>安全裝置</td>
+<td>應含壓力洩放閥、連鎖門鎖裝置（防止未回壓前開門）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="616">6.1.6 冷凍負荷估算</h3>
+<div class="math-block">$$
+Q_{evp} = m_{evap}  \times  hfg \tag{6.2}
+$$</div>
+<div class="math-block">$$
+Q_{evp} = 25.96 \text{kg}  \times  2501 \text{kJ/kg}\text{（取}0^{\circ}\text{C}\text{冷凝溫}\text{度}\text{下}hfg\text{）}
+$$</div>
+<div class="math-block">$$
+Q_{evp} = 64,926 \text{kJ}  \approx  64.9 \text{MJ}  \approx  18.0 \text{kWh}\text{（每批次）}
+$$</div>
+<p>若批次循環時間（含裝卸料）約30分鐘，則冷凍主機平均負載：</p>
+<div class="math-block">$$
+\text{冷凍負載} = 18.0 \text{kWh}  \div  0.5 h = 36 \text{kW}
+$$</div>
+<p><strong>建議加計20%安全裕度，冷凝器/冷凍主機選型容量約 43 kW。</strong></p>
+<h3 id="617-dx">6.1.7 DX直膨式冷凝機組選型</h3>
+<p><strong>表6.4　DX直膨式冷凝機組選型原則</strong></p>
+<table>
+<thead>
+<tr>
+<th>選型項目</th>
+<th>原則</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷凍容量</td>
+<td>約43 kW</td>
+</tr>
+<tr>
+<td>冷媒側蒸發溫度</td>
+<td>建議控制在 -5～-10℃，確保蒸發器表面溫度低於水的三相點以上、且足以有效將真空幫浦自槽倉抽出的空氣中的水蒸氣冷凝下來，之後較乾燥的空氣才進入真空幫浦進氣端</td>
+</tr>
+<tr>
+<td>型式選擇</td>
+<td>水冷式冷凍機組效率較高但需搭配冷卻水塔；氣冷式初設較簡便但受環境溫度影響效率，選用時應考量案場水資源取得便利性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="618">6.1.8 現行主流冷凍機組環保替代冷媒代號說明</h3>
+<p>R-448A／R-449A：目前商用冷凍系統常見的無毒、環保替代方案，用以取代舊有的R-404A。</p>
+<p>R-513A：針對R-134a系統的低溫室效應A1等級無毒替代冷媒。</p>
+<p>R-32：在許多新式變頻空調與輕型冷凍設備中越來越普及。</p>
+<h3 id="619">6.1.9 耗電量與單位處理成本計算（依現行電價）</h3>
+<p>沿用原文獻案例耗電量17度電/批（示範用）：</p>
+<p>夏月成本：</p>
+<div class="math-block">$$
+17\text{度}  \times  2.58\text{元}/\text{度} = 43.86\text{元}
+$$</div>
+<div class="math-block">$$
+\text{每公斤成本} = 43.86\text{元}  \div  800 \text{kg} = 0.0548\text{元}/\text{kg}
+$$</div>
+<p>非夏月成本：</p>
+<div class="math-block">$$
+17\text{度}  \times  2.45\text{元}/\text{度} = 41.65\text{元}
+$$</div>
+<div class="math-block">$$
+\text{每公斤成本} = 41.65\text{元}  \div  800 \text{kg} = 0.0521\text{元}/\text{kg}
+$$</div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">電費計算基礎備註：<br>1. 本節17度電/批之耗電量數據，沿用文獻（林棟樑，2001）原始案例數值，用於示範單位成本計算方法，並非本報告800kg／25→5℃計算範例的實測或理論推算功耗值。<br>2. 若需以本例熱負荷、抽氣、冷凝計算結果反推理論耗電量，應另行依實際設備效率（COP）、幫浦馬達功率及運轉時間計算，才具有工程代表性。<br>3. 電價數據來源：台灣電力公司《電價表》，中華民國114年10月1日起實施，低壓電力電價－農漁業、學校及社福團體適用，非時間電價流動電費：夏月2.58元/度、非夏月2.45元/度。<br>4. 查詢日期：2026年8月11日。資料來源：台灣電力公司官網電價表公告。<br>5. 提醒：電價可能隨台電公告調整，正式設計時應至台電官網查核最新公告版本。</div></div>
+
+<h3 id="6110-specification-sheet">6.1.10 設備規範書（Specification Sheet）</h3>
+<p><strong>表6.5　設備規範書範本（範例一）</strong></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>規範內容</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設備名稱</td>
+<td>真空預冷機（Vacuum Cooler）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>單批處理量</td>
+<td>800 kg/批</td>
+<td>依業主需求調整</td>
+</tr>
+<tr>
+<td>真空槽有效容積</td>
+<td>8 m3</td>
+<td>依處理量及產品堆疊密度計算</td>
+</tr>
+<tr>
+<td>目標處理時間</td>
+<td>≤20分鐘/批</td>
+<td>—</td>
+</tr>
+<tr>
+<td>真空幫浦型式</td>
+<td>液環式真空幫浦</td>
+<td>建議耐水氣、免保養油品更換型式</td>
+</tr>
+<tr>
+<td>幫浦抽氣速率</td>
+<td>≥114 m3/h（需經水蒸氣負荷修正，由廠商確認）</td>
+<td></td>
+</tr>
+<tr>
+<td>直膨式冷凍機組容量</td>
+<td>≥43 kW</td>
+<td>R-448A</td>
+</tr>
+<tr>
+<td>槽體材質</td>
+<td>SUS304不鏽鋼</td>
+<td>食品接觸等級</td>
+</tr>
+<tr>
+<td>控制系統</td>
+<td>PLC自動控制，含AI預測式抽氣曲線控制、壓力溫度感測與記錄功能</td>
+<td>可與BEMS介接（詳見5.3節）</td>
+</tr>
+<tr>
+<td>安全裝置</td>
+<td>連鎖門鎖、壓力洩放閥、緊急停止按鈕</td>
+<td>依CNS相關機械安全規範</td>
+</tr>
+</tbody>
+</table>
+<h2 id="62-1500-kg">6.2 範例二：某大型農產品物流中心 — 高麗菜 1,500 kg 批量</h2>
+
+
+<p>以某大型農產品物流中心為例，預計處理1,500 kg的高麗菜真空預冷：</p>
+<ol>
+<li>
+<p>預冷要求：於20分鐘（1200秒）內將蔬菜由28℃快速降溫至3℃。</p>
+</li>
+<li>
+<p>熱量計算：顯熱與潛熱蒸發帶走總熱量約為158,000 kJ。</p>
+</li>
+</ol>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔查證限制〕原文未列出本例採用之比熱cp數值與逐步算式，158,000 kJ 無法逐項覆核。若反推，隱含cp≈4.21 kJ/kg·K（158,000 kJ ÷ 1,500 kg ÷ 25K）。此cp值僅供範例計算用，實際值需自行確認（依4.6節前所述，蔬果比熱依品項與含水率而異，一般葉菜類約3.1~4.3 kJ/kg·K範圍內，4.21屬合理但偏高之估算值）。</div></div>
+
+<ol>
+<li>
+<p>平均負荷需求：Q_avg = 158,000 kJ ÷ 1200 s = 131.7 kW。</p>
+</li>
+<li>
+<p>安全係數與Peak峰值應付：考慮安全係數1.75（應付抽真空初期水蒸氣爆發負荷），設計冷凍能力 Q_c = 131.7 × 1.75 = 230.5 kW ≈ 230 kW。</p>
+</li>
+<li>
+<p>選型驗證結果：配備1台選用R448A冷媒與ECO經濟器之螺桿式壓縮機，系統能效COP詳見第7章獨立驗證後之修正數值。</p>
+</li>
+</ol>
+
+
+<h2 id="63-1">6.3 範例三：1噸級農產品真空預冷系統建置案</h2>
+<p>文件編號：SPEC-VCS-202608-001　</p>
+<p>專案名稱：1噸級農產品真空預冷系統建置案　</p>
+<p>產出標準：依據ASHRAE／ISO／ASME工程規範設計編製</p>
+<h3 id="631">6.3.1 設計基本條件與參數</h3>
+<p>剛採收1000kg批量的甘藍菜（包心菜）中心溫度為30℃，需在15分鐘內迅速冷卻至3℃，ΔT=27℃，以抑制呼吸作用並延長保鮮期。</p>
+<p><strong>表6.6　範例三設計基本條件與參數</strong></p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>數值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>物料處理量 m物料</td>
+<td>1,000 kg/batch</td>
+</tr>
+<tr>
+<td>處理時間 t</td>
+<td>15 min（0.25 hr）</td>
+</tr>
+<tr>
+<td>物料初始溫度 T1</td>
+<td>30℃</td>
+</tr>
+<tr>
+<td>目標溫度 T2</td>
+<td>3℃</td>
+</tr>
+<tr>
+<td>物料比熱 Cp</td>
+<td>3.98 kJ/(kg·℃)</td>
+</tr>
+<tr>
+<td>真空腔體極限壓力 P極限</td>
+<td>0.75 kPa（對應水之飽和溫度約2.8℃）</td>
+</tr>
+<tr>
+<td>蒸發潛熱 hfg</td>
+<td>2,450 kJ/kg</td>
+</tr>
+<tr>
+<td>水蒸氣比容 vg</td>
+<td>約147 m3/kg（於0.87 kPa, 5℃條件下）</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="632">6.3.2 熱負荷與蒸發量計算</h3>
+<p>算式來源：熱力學第一能量守恆定律（熱平衡方程式），與公式4.1、公式4.2同源</p>
+<div class="math-block">$$
+ΔQ\text{田間熱釋放} = ΔQ\text{汽化潛熱吸收}
+$$</div>
+<div class="math-block">$$
+m\text{蔬果總重}  \times  Cp  \times  (T1 − T2) = m\text{水分蒸發}  \times  hfg
+$$</div>
+<p>田間熱負荷計算過程：</p>
+<div class="math-block">$$
+ΔQ = 1,000 \text{kg}  \times  3.98 \text{kJ}/(\text{kg}·^{\circ}\text{C})  \times  (30^{\circ}\text{C} − 3^{\circ}\text{C}) = 107,460 \text{kJ}
+$$</div>
+<p>達成此降溫所需沸騰蒸發的水分蒸發量計算過程：</p>
+<div class="math-block">$$
+m\text{蒸發水量} = ΔQ  \div  hfg = 107,460 \text{kJ}  \div  2,450 \text{kJ/kg} = 43.86 \text{kg}
+$$</div>
+<p>菜體僅需損失約43.86 kg的水分（佔總重量約4.39%），即可透過真空低壓沸騰將1噸的蔬菜從30℃均勻降溫至3℃。</p>
+
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">重要：本計算結果4.39%已超過第5章5.1節步驟4建議之3%上限（且超出幅度較範例一更多），依第3章3.3節「改善對策」，建議處理前對甘藍菜先行淋水，以額外水分供應部分蒸發需求，降低產品自身失水率，同時不影響降溫效果；若淋水後仍無法有效降低失水率，應評估是否改採強制通風或壓差預冷等其他方式處理本批次。</div></div>
+
+<p>平均製冷能力計算過程：</p>
+<div class="math-block">$$
+Q\text{冷卻} = ΔQ  \div  t = 107,460 \text{kJ}  \div  (15  \times  60 s) = 119.4 \text{kW}
+$$</div>
+<p>（考慮1.25安全係數與沸騰峰值負載Fpeak=1.5，捕水冷凝器之峰值熱負荷設計需求值定為223.8 kW）</p>
+<h3 id="633">6.3.3 真空抽氣與真空泵容量計算</h3>
+<p>算式來源：理想氣體狀態方程式與排氣時間算式，與公式6.1同式（P1、P2符號對應公式6.1之P0、P1）</p>
+<p>已知條件：腔體自由空間體積 V腔體 = 12 m3；初始壓力 P1 = 101.3 kPa，目標預抽壓力 P2 = 0.87 kPa；預抽時間限制 t預抽 = 3 min（180 s）</p>
+<p>粗抽泵排氣速度計算過程：</p>
+<div class="math-block">$$
+S\text{抽氣} = 12 \text{m}^3  \div  3 \text{min}  \times  ln(101.3  \div  0.87) = 4  \times  ln(116.44)  \approx  4  \times  4.757 = 19.03 \text{m}^3\text{/min} = 1,142 \text{m}^3\text{/h}
+$$</div>
+<p>（考量管道阻力與容積效率，抽氣速率標準選定值為1,200 m3/h）</p>
+<h3 id="634">6.3.4 系統主設備規格表</h3>
+<p><strong>表6.7　範例三系統主設備規格表</strong></p>
+<table>
+<thead>
+<tr>
+<th>設備名稱</th>
+<th>關鍵技術規格參數</th>
+<th>選用原因與功能說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>真空腔體（Vacuum Chamber）</td>
+<td>材質：SUS304不銹鋼／尺寸：2.2m(W)×2.0m(H)×3.0m(L)／設計壓力：全真空(-0.1 MPa)／結構：外側矩形加強筋結構</td>
+<td>採用SUS304可防止食品級腐蝕並便於清洗。矩形加強筋設計可避免低壓下結構坍塌，結構符合ASME Section VIII壓力容器標準</td>
+</tr>
+<tr>
+<td>水蒸氣捕水冷凝器（Cold Trap）</td>
+<td>類型：腔體內置直膨式蒸發器／熱交換能力：225 kW／蒸發溫度：-8～-10℃／材質：304不銹鋼無縫鰭片管</td>
+<td>水蒸氣於低壓下比容極大(147 m3/kg)，若直接進入真空泵會造成油乳化毀損。內置冷凝器可在低壓下快速將水蒸氣凝結為水，維護真空泵性能</td>
+</tr>
+<tr>
+<td>真空泵組（Vacuum Pump System）</td>
+<td>組合：羅茨泵+水環式真空泵／總抽氣量：1,200 m3/h／極限真空：0.1 kPa／總馬達功率：22 kW</td>
+<td>羅茨泵負責大抽氣量增壓，水環泵對水蒸氣忍受度高，兩者組合可避免傳統油泵因水氣污染而失效的問題</td>
+</tr>
+<tr>
+<td>冷凍機組（Refrigeration Unit）</td>
+<td>類型：螺桿式冷凍壓縮機／冷媒：R448A/R507A（環保冷媒）／製冷量：230 kW(SST=-10℃,SCT=45℃)／功率：詳見第7章修正值</td>
+<td>螺桿式壓縮機具備良好之無級能量調節功能，能精準對應閃蒸過程中劇烈變化的熱負荷需求</td>
+</tr>
+<tr>
+<td>自動控制系統（PLC Control System）</td>
+<td>硬體：西門子(Siemens) S7-1200 PLC + 10吋彩色觸控螢幕／感測器：高精度高真空電容式壓力計(0~100 mbar)、Pt100插入式溫度感測器</td>
+<td>實現壓力對應飽和溫度的自動動態追蹤控溫，達到自動閃蒸止沸與預防凍傷防護</td>
+</tr>
+</tbody>
+</table>
+<h3 id="635-procurement-specifications">6.3.5 工程規範（Procurement Specifications）</h3>
+<h4 id="sop-1vendor-qualification">SOP 1：供應商資格與規範審查（Vendor Qualification）</h4>
+<ol>
+<li>
+<p>規範要求：投標廠商須具備ASME Section VIII壓力容器製造認證或ISO 9001品質管理體系認證。</p>
+</li>
+<li>
+<p>審查文件：廠商須提供近3年內同等規模（1噸以上）真空預冷系統之實績證明與工程竣工圖紙。</p>
+</li>
+</ol>
+<h4 id="sop-2material-manufacturing-standards">SOP 2：材料與製造標準規範（Material &amp; Manufacturing Standards）</h4>
+<ol>
+<li>
+<p>材料標準：凡與物料／水蒸氣接觸之腔體內壁、管道及捕水器，均應採用AISI 304（SUS304）不銹鋼，板厚不得低於6 mm。</p>
+</li>
+<li>
+<p>焊接規範：腔體焊接必須採用TIG（AWS D1.6）自動保護焊接，所有受壓焊縫須進行100%滲透探傷（PT）與20%射線探傷（RT）。</p>
+</li>
+</ol>
+<h4 id="sop-3fat-factory-acceptance-test">SOP 3：工廠驗收測試（FAT - Factory Acceptance Test）</h4>
+<ol>
+<li>
+<p>腔體洩漏率測試：腔體抽至0.5 kPa後關閉閥門，測漏維持30分鐘，壓力升高率不得大於0.05 kPa/min。</p>
+</li>
+<li>
+<p>真空降壓性能測試：空腔狀態下，真空泵組須於3 min內將腔內壓力由101.3 kPa抽至0.87 kPa。</p>
+</li>
+</ol>
+<h4 id="sop-4sat-site-acceptance-test">SOP 4：現場性能驗收標準（SAT - Site Acceptance Test）</h4>
+<ol>
+<li>
+<p>冷卻效能驗收：實載1,000 kg葉菜，初始平均溫度30℃，系統運轉15 min內，菜心平均溫度須降至3℃±0.5℃。</p>
+</li>
+<li>
+<p>物料失重率：全程降溫完成後，物料總失重率必須控制在4.0%~5.0%之間。</p>
+</li>
+<li>
+<p>凍傷率驗收：經冷卻後之農產品表面不得有冰晶生成或細胞壁破裂凍傷之現象。</p>
+</li>
+</ol>
+<h1 id="7">7. 螺旋式冷凍壓縮機熱工計算與選型報告</h1>
+
+
+<h2 id="71">7.1 專案執行摘要與基本設計條件</h2>
+<p>本報告針對真空冷卻系統所採用之螺桿式冷凍壓縮機（Screw Compressor）進行極限工況下的熱力循環分析與選型計算驗證。真空冷卻技術廣泛應用於農產品保鮮與快速食品降溫，其特點為短時間內產生高熱負荷抽氣需求。</p>
+<p>本範例基於冷凝蒸發標準設計工況（SST = -10.0℃, SCT = 45.0℃），針對高效率環保冷媒R448A（HFO/HFC混合冷媒）與傳統高GWP冷媒R507A（HFC共沸冷媒）進行獨立物性查表與系統性能比對。</p>
+<p><strong>系統輸入與基準參數：</strong></p>
+<p><strong>表7.1　螺桿壓縮機系統輸入與基準參數</strong></p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>數值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>壓縮機型式</td>
+<td>螺桿式冷凍壓縮機（Screw Compressor）</td>
+</tr>
+<tr>
+<td>名目冷凍能力 Qc</td>
+<td>230.0 kW</td>
+</tr>
+<tr>
+<td>蒸發飽和溫度 SST</td>
+<td>-10.0℃</td>
+</tr>
+<tr>
+<td>冷凝飽和溫度 SCT</td>
+<td>45.0℃</td>
+</tr>
+<tr>
+<td>吸氣過熱度 SH</td>
+<td>5.0 K（吸氣溫度 T1 = -5.0℃）</td>
+</tr>
+<tr>
+<td>液體過冷度 SC</td>
+<td>5.0 K（過冷溫度 T3 = 40.0℃）</td>
+</tr>
+<tr>
+<td>等熵效率 ηis</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>機械/馬達效率 ηmm</td>
+<td>0.90</td>
+</tr>
+</tbody>
+</table>
+<h2 id="72">7.2 熱力狀態點分析與算式來源</h2>
+<p>本系統之冷媒熱力狀態點依據CoolProp（HEOS狀態方程）計算，核心計算公式與單位如下：</p>
+<div class="math-block">$$
+CR = Pc / Pe \tag{7.1}
+$$</div>
+<div class="math-block">$$
+qc = h1 − h4\text{　　}[\text{kJ/kg}] \tag{7.2}
+$$</div>
+<div class="math-block">$$
+m = Qc / qc\text{　　}[\text{kg/s}] \tag{7.3}
+$$</div>
+<div class="math-block">$$
+Welec = m  \times  (h2s − h1) / (ηis  \times  ηmm)\text{　　}[\text{kW}] \tag{7.4}
+$$</div>
+<div class="math-block">$$
+COPsys = Qc / Welec \tag{7.5}
+$$</div>
+<h2 id="73">7.3 計算過程與結果</h2>
+<h3 id="731-r448ahfohfc">7.3.1 R448A（HFO/HFC混合冷媒）計算實例</h3>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔查證限制說明〕R448A為五元混合HFO冷媒（R32/R125/R1234yf/R134a/R1234ze），本次驗證所使用之開源版CoolProp軟體函式庫未內建其完整物性資料（需使用REFPROP或原廠選型軟體之混合物模型方能取得高精度數據）。以下數值沿用原文件所提供之計算結果，本報告尚無法獨立覆核，請於正式採購前，另請設備商或以REFPROP／原廠選型軟體重新驗證後再行採用。</div></div>
+
+<p>壓力參數：蒸發壓力 Pe = 432.5 kPa，冷凝壓力 Pc = 1895.2 kPa，壓力比 CR = 1895.2 / 432.5 = 4.38</p>
+<p>狀態點1（吸氣點）：h1 = 308.2 kJ/kg, s1 = 1.765 kJ/(kg·K)</p>
+<p>狀態點3與4（節流點）：h3 = h4 = 158.4 kJ/kg</p>
+<p>單位質量冷凍能力：</p>
+<div class="math-block">$$
+qc = 308.2 - 158.4 = 149.8 \text{kJ/kg}
+$$</div>
+<p>冷媒質量流量：</p>
+<div class="math-block">$$
+m = 230.0 \text{kW}  \div  149.8 \text{kJ/kg} = 1.535 \text{kg/s}\text{（} \approx 5526.0 \text{kg/h}\text{）}
+$$</div>
+<p>等熵壓縮終點：</p>
+<div class="math-block">$$
+h2s = 351.5 \text{kJ/kg}
+$$</div>
+<p>指示功軸功率：</p>
+<div class="math-block">$$
+Wshaft = 1.535  \times  (351.5 - 308.2)  \div  0.75 = 88.62 \text{kW}
+$$</div>
+<p>基本電功率：</p>
+<div class="math-block">$$
+Welec_{base} = 88.62  \div  0.90 = 98.47 \text{kW}
+$$</div>
+<p>配備經濟器(ECO)運轉功率：75.0 kW（原文件數值，未獨立驗證）</p>
+<p>整體系統性能係數：</p>
+<div class="math-block">$$
+COPsys = 230.0  \div  75.0 = 3.07\text{（原文件數值，未獨立驗證）}
+$$</div>
+<h3 id="732-r507ahfc">7.3.2 R507A（HFC共沸冷媒）計算實例</h3>
+
+
+<p>壓力參數：蒸發壓力 Pe = 449.3 kPa（原文件452.1 kPa），冷凝壓力 Pc = 2104.3 kPa（原文件2024.6 kPa），壓力比 CR = 4.68（原文件4.48）</p>
+<p>狀態點1（吸氣點）：h1 = 361.6 kJ/kg（原文件362.5 kJ/kg）</p>
+<p>狀態點3與4（節流點）：h3 = h4 = 259.6 kJ/kg（原文件260.1 kJ/kg）</p>
+<p>等熵壓縮終點：h2s = 392.5 kJ/kg（原文件391.2 kJ/kg）</p>
+<p>單位質量冷凍能力：</p>
+<div class="math-block">$$
+qc = 361.6 - 259.6 = 102.0 \text{kJ/kg}
+$$</div>
+<p>冷媒質量流量：</p>
+<div class="math-block">$$
+m = 230.0 \text{kW}  \div  102.0 \text{kJ/kg} = 2.256 \text{kg/s}\text{（} \approx 8120.2 \text{kg/h}\text{）}
+$$</div>
+<p>指示功軸功率：</p>
+<div class="math-block">$$
+Wshaft = 2.256  \times  (392.5 - 361.6)  \div  0.75 = 92.80 \text{kW}
+$$</div>
+<p>基本電功率：</p>
+<div class="math-block">$$
+Welec_{base} = 92.80  \div  0.90 = 103.11 \text{kW}
+$$</div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔修正後結果〕沿用原文件ECO經濟器約18%節電比例估算：配備經濟器運轉功率 ≈ 103.11 × (1 − 0.181) ≈ 84.45 kW；整體系統性能係數 COPsys = 230.0 ÷ 84.45 ≈ 2.72。原文件數值（78.2 kW／COP 2.94）建議不再採用，改以本修正值84.45 kW／COP 2.72為準；若ECO經濟器實際節電比例與18%不同，請以設備商提供之實測曲線為準重新計算。</div></div>
+
+<h2 id="74">7.4 冷媒特性與運轉效能比較表</h2>
+<p><strong>表7.2　R448A與R507A冷媒特性與運轉效能比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>R448A(HFO/HFC混合冷媒)</th>
+<th>R507A(HFC共沸冷媒)</th>
+<th>選型評估說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GWP(全球暖化潛勢)</td>
+<td>1,387（已核對，與國際公開AR4數據相符）</td>
+<td>3,985（已核對，與國際公開AR4數據相符）</td>
+<td>R448A減碳達65%，符合國際環保規範</td>
+</tr>
+<tr>
+<td>蒸發壓力 Pe</td>
+<td>432.5 kPa（未獨立驗證）</td>
+<td>449.3 kPa（已驗證）</td>
+<td>兩者吸氣壓力相當接近</td>
+</tr>
+<tr>
+<td>冷凝壓力 Pc</td>
+<td>1895.2 kPa（未獨立驗證）</td>
+<td>2104.3 kPa（已驗證）</td>
+<td>R507A壓差較大，壓縮機結構負擔稍高</td>
+</tr>
+<tr>
+<td>壓力比 CR</td>
+<td>4.38（未獨立驗證）</td>
+<td>4.68（已驗證）</td>
+<td>R448A壓比略低，有利於提升容積效率</td>
+</tr>
+<tr>
+<td>單位質量冷凍能力 qc</td>
+<td>149.8 kJ/kg（未獨立驗證）</td>
+<td>102.0 kJ/kg（已驗證）</td>
+<td>R448A冷凍能力較高，惟R448A數值待覆核</td>
+</tr>
+<tr>
+<td>循環質量流量</td>
+<td>1.535 kg/s（未獨立驗證）</td>
+<td>2.256 kg/s（已驗證）</td>
+<td>R448A流量需求較低，惟數值待覆核</td>
+</tr>
+<tr>
+<td>ECO額定耗電功率</td>
+<td>75.0 kW（未獨立驗證，待覆核）</td>
+<td>84.45 kW（已依CoolProp修正）</td>
+<td>兩者實際差距待R448A覆核後才可準確比較</td>
+</tr>
+<tr>
+<td>系統性能係數 COPsys</td>
+<td>3.07（未獨立驗證，待覆核）</td>
+<td>2.72（已依CoolProp修正）</td>
+<td>兩者實際差距待R448A覆核後才可準確比較</td>
+</tr>
+<tr>
+<td>排氣溫度 T2觀察</td>
+<td>較高，約85~92℃（未獨立驗證）</td>
+<td>較低，約72~78℃（未獨立驗證）</td>
+<td>R448A螺桿機建議搭配液噴或冷媒噴油冷卻</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">重要提醒：上表R448A欄位數據因工具限制尚未獨立驗證，R448A與R507A之選型優劣比較結論（如「R448A節能約4.4%」）建議暫緩採用，待R448A數據以REFPROP或原廠軟體覆核後，再重新比較兩者實際差異，避免以未驗證數字做出設備採購決策。</div></div>
+
+<h2 id="75-sop">7.5 真空冷卻螺桿壓縮機選型與建置SOP標準作業流程</h2>
+<p>步驟一：極限熱負荷估算——計算真空冷卻槽內農作物／食品之降溫熱量（如15分鐘內由30℃降至2℃），確定系統所需Peak冷凍能力 Qc = 230 kW。</p>
+<p>步驟二：確定蒸發與冷凝基準溫度——依據冷凝水塔散熱能力與真空槽壓力降對應之蒸發溫度，設定SST = -10.0℃及SCT = 45.0℃。</p>
+<p>步驟三：評估與選用低GWP環保冷媒——比較R448A與R507A。選用R448A之原因：GWP僅1387（降低65%）；惟COPsys等效能數據待R448A完成獨立驗證後再行確認。</p>
+
+
+<p>步驟四：壓縮機型號與經濟器（ECO）配備選型——選定雙螺桿式冷凍壓縮機，配備氣體噴射經濟器（Economizer）迴路，優化運轉功率（R507A經修正後約84.45 kW，R448A待驗證）。</p>
+<p>步驟五：排氣過熱防護與噴油冷卻設計——因R448A壓比與排氣溫度略高，須於螺桿機安裝液體噴射冷卻（Liquid Injection）或噴油冷卻系統，確保排氣溫度≤100℃。</p>
+<p>步驟六：試運轉驗證與性能檢測——量測吸氣過熱度SH（5.0 K）、過冷度SC（5.0 K）及運轉電流，對照CoolProp或REFPROP物性理論值，完成進版校對。</p>
+<h1 id="8">8. 參考文獻與規範依據</h1>
+
+
+<h2 id="81">8.1 農業與預冷技術文獻</h2>
+<p>[1] 林棟樑，〈真空預冷技術原理及應用〉，《台南區農業專訊》第35期，頁15~18，2001年3月。</p>
+<p>[2] NC State Extension，《Chapter 3a. Forced-Air Cooling》，Postharvest Engineering for Fresh Fruits and Vegetables，https://content.ces.ncsu.edu/introduction-to-the-postharvest-engineering-for-fresh-fruits-and-vegetables/3a-forced-air-cooling</p>
+<p>[3] eagri.org，《Chapter 8: Methods of Storage - Precooling》，http://eagri.org/eagri50/HORT381/pdf/lec08.pdf</p>
+<p>[4] Leybold, "Vacuum Cooling – From Field to Table", https://www.leybold.com/en-us/knowledge/blog/vacuum-cooling-from-field-to-table</p>
+<p>[5] Dekker Vacuum Technologies, "Vacuum Cooling Preserving Fresh Vegetables", https://www.dekkervacuum.com/en/news/vacuum-cooling-preserving-fresh-vegetables</p>
+<p>[6] 補充資料：UF/IFAS Extension, "A Portable Demonstration Forced-Air Cooler", https://ufdcimages.uflib.ufl.edu/IR/00/00/45/11/00001/AE09600.pdf</p>
+<p>[7] 補充資料：Postharvest Management of Vegetables (postharvest.net.au), "Cost of Cooling – A Case Study with Broccoli", https://www.postharvest.net.au/postharvest-fundamentals/cooling-and-storage/cost-of-cooling-a-case-study-with-broccoli/</p>
+<p>[8] 臺灣大學科學教育發展中心（NTU CASE），〈蒸發與沸騰（Evaporating and Boiling）相變機制解析〉，https://case.ntu.edu.tw/highscope/蒸發與沸騰evaporation-and-boiling/index.html</p>
+<h2 id="82">8.2 熱力學與物性資料</h2>
+<p>[9] Cengel, Y. A., &amp; Boles, M. A., Thermodynamics: An Engineering Approach, Table A-3, McGraw-Hill.</p>
+<p>[10] NIST Chemistry WebBook, Thermophysical Properties of Fluid Systems (Saturated Water and Steam), https://webbook.nist.gov/chemistry/fluid/</p>
+<p>[11] CoolProp High-Accuracy Thermodynamic Properties Library (HEOS Equation of State), http://www.coolprop.org/</p>
+<h2 id="83">8.3 冷凍空調與壓力容器規範</h2>
+<p>[12] ASHRAE Handbook - Refrigeration (Chapter 28: Processed Food Cooling and Freezing), https://www.ashrae.org</p>
+<p>[13] ASHRAE Handbook - Refrigeration (2022), Chapter 3: Organic Refrigerants.</p>
+<p>[14] ASME Boiler and Pressure Vessel Code (BPVC) Section VIII: Rules for Construction of Pressure Vessels, https://www.asme.org</p>
+<p>[15] ISO 16812:2019 - Petroleum, petrochemical and natural gas industries — Shell-and-tube heat exchangers, https://www.iso.org</p>
+<p>[16] ISO 5149-1:2014 Refrigerating systems and heat pumps — Safety and environmental requirements.</p>
+<p>[17] AHRI Standard 550/590: Performance Rating of Water-Chilling and Heat Pump Water-Heating Packages.</p>
+<p>[18] EU F-Gas Regulation (EC No 517/2014) Phase-down schedule for HFCs.</p>
+<p>[19] Pfeiffer Vacuum Technology Handbook - Calculation of Vacuum Systems and Evacuation Times, https://www.pfeiffer-vacuum.com</p>
+<h2 id="84">8.4 電價與台灣法規</h2>
+<p>[20] 台灣電力公司，《電價表》，中華民國114年10月1日起實施，低壓電力電價－農漁業、學校及社福團體適用。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔第八章查證提醒〕[12]～[19]項為ASHRAE／ASME／ISO／AHRI／Pfeiffer等國際標準與手冊，屬公開發行之權威技術文件，惟本次未能逐一開啟原始PDF逐頁核對第七章數據是否確實出自各該標準的對應章節，建議您在正式進版前，針對第七章（尤其R448A部分）所引用之具體數據，逐一比對原始標準內容或委請專業技師複核後再行採用。</div></div>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本報告為技術研究文件，歡迎據此繼續深入探討，尤其如何透過EMS系統以達到能源最佳化管理是未來研究的重要方向。</p>
+</footer>
+</div>
+
+<script>
+// Build TOC from h2 (chapter) headings
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
