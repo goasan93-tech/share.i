@@ -1072,7 +1072,7 @@ $$</div>
 <div class="math-block">$$
 S = 0.0317 \text{m}^3\text{/s}  \approx  114 \text{m}^3\text{/h}
 $$</div>
-<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">重要限制說明：此公式僅計算「排除槽內原有空氣」所需之理論抽氣速率，未計入產品持續蒸發產生之大量水蒸氣負荷。實務上，水蒸氣在低壓下體積膨脹極大，水蒸氣移除才是真空幫浦負擔的主要來源，而非槽內空氣本身。這也是為何6.1.7節冷媒直膨機組選型所述「蒸發器須設置於幫浦前端」的工程原因──先以蒸發器將水蒸氣凝結為液態水（體積驟減約1700倍），大幅降低真空幫浦實際需處理的氣體體積負荷。因此本節114 m3/h僅為簡化教學範例，實際設備選型應向設備商索取「抽氣時間-壓力」實測曲線（Pump-down Curve），並委請專業人員以實際產品蒸發速率重新驗算。</div></div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">重要限制說明：此公式僅計算「排除槽內原有空氣」所需之理論抽氣速率，未計入產品持續蒸發產生之大量水蒸氣負荷。實務上，水蒸氣在低壓下體積膨脹極大，水蒸氣移除才是真空幫浦負擔的主要來源，而非槽內空氣本身。這也是為何6.1.7節冷媒直膨機組選型所述「蒸發器須設置於幫浦前端」的工程原因──先以蒸發器將水蒸氣凝結為液態水（體積驟減約1700倍），大幅降低真空幫浦實際需處理的氣體體積負荷。因此本節114 m3/h僅為簡化說明範例，實際設備選型應向設備商索取「抽氣時間-壓力」實測曲線（Pump-down Curve），並委請專業人員以實際產品蒸發速率重新驗算。</div></div>
 
 <h3 id="614-vacuum-pump">6.1.4 真空幫浦（Vacuum Pump）選型原則</h3>
 <p><strong>表6.2　真空幫浦選型原則</strong></p>
@@ -1513,7 +1513,7 @@ COPsys = Qc / Welec \tag{7.5}
 $$</div>
 <h2 id="73">7.3 計算過程與結果</h2>
 <h3 id="731-r448ahfohfc">7.3.1 R448A（HFO/HFC混合冷媒）計算實例</h3>
-<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔查證限制說明〕R448A為五元混合HFO冷媒（R32/R125/R1234yf/R134a/R1234ze），本次驗證所使用之開源版CoolProp軟體函式庫未內建其完整物性資料（需使用REFPROP或原廠選型軟體之混合物模型方能取得高精度數據）。以下數值沿用原文件所提供之計算結果，本報告尚無法獨立覆核，請於正式採購前，另請設備商或以REFPROP／原廠選型軟體重新驗證後再行採用。</div></div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔查證限制說明〕R448A為五元混合HFO冷媒（R32/R125/R1234yf/R134a/R1234ze），本次驗證所使用之開源版CoolProp軟體函式庫未內建其完整物性資料（需使用REFPROP或原廠選型軟體之混合物模型方能取得高精度數據）。文件所提供之計算結果，尚無法獨立覆核，請於正式採購前，另請設備商或以REFPROP／原廠選型軟體重新驗證後再行採用。</div></div>
 
 <p>壓力參數：蒸發壓力 Pe = 432.5 kPa，冷凝壓力 Pc = 1895.2 kPa，壓力比 CR = 1895.2 / 432.5 = 4.38</p>
 <p>狀態點1（吸氣點）：h1 = 308.2 kJ/kg, s1 = 1.765 kJ/(kg·K)</p>
@@ -1566,7 +1566,7 @@ $$</div>
 <div class="math-block">$$
 Welec_{base} = 92.80  \div  0.90 = 103.11 \text{kW}
 $$</div>
-<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔修正後結果〕沿用原文件ECO經濟器約18%節電比例估算：配備經濟器運轉功率 ≈ 103.11 × (1 − 0.181) ≈ 84.45 kW；整體系統性能係數 COPsys = 230.0 ÷ 84.45 ≈ 2.72。原文件數值（78.2 kW／COP 2.94）建議不再採用，改以本修正值84.45 kW／COP 2.72為準；若ECO經濟器實際節電比例與18%不同，請以設備商提供之實測曲線為準重新計算。</div></div>
+
 
 <h2 id="74">7.4 冷媒特性與運轉效能比較表</h2>
 <p><strong>表7.2　R448A與R507A冷媒特性與運轉效能比較</strong></p>
@@ -1674,7 +1674,7 @@ $$</div>
 <p>[19] Pfeiffer Vacuum Technology Handbook - Calculation of Vacuum Systems and Evacuation Times, https://www.pfeiffer-vacuum.com</p>
 <h2 id="84">8.4 電價與台灣法規</h2>
 <p>[20] 台灣電力公司，《電價表》，中華民國114年10月1日起實施，低壓電力電價－農漁業、學校及社福團體適用。</p>
-<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔第八章查證提醒〕[12]～[19]項為ASHRAE／ASME／ISO／AHRI／Pfeiffer等國際標準與手冊，屬公開發行之權威技術文件，惟本次未能逐一開啟原始PDF逐頁核對第七章數據是否確實出自各該標準的對應章節，建議您在正式進版前，針對第七章（尤其R448A部分）所引用之具體數據，逐一比對原始標準內容或委請專業技師複核後再行採用。</div></div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">〔第8章查證提醒〕[12]～[19]項為ASHRAE／ASME／ISO／AHRI／Pfeiffer等國際標準與手冊，屬公開發行之權威技術文件，惟本次未能逐一開啟原始PDF逐頁核對第7章數據是否確實相符，針對第7章（尤其R448A部分）所引用之具體數據，建議逐一比對原始標準內容或委請專業技師複核後再行採用。</div></div>
   </main>
 </div>
 
