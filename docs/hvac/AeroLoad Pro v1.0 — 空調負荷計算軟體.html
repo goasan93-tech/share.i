@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroLoad Pro — 空調負荷計算軟體</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --navy:#0B2A4A;
+  --navy-2:#123A63;
+  --navy-3:#1B4D7E;
+  --accent:#0091D5;
+  --accent-2:#00B8A9;
+  --warn:#E8732C;
+  --bg:#EEF1F5;
+  --panel:#FFFFFF;
+  --line:#D8DEE6;
+  --text:#1C2733;
+  --muted:#5C6B7A;
+  --mono:'Consolas','SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:'Segoe UI','Noto Sans TC',Arial,sans-serif;font-size:13px;}
+button{font-family:inherit;cursor:pointer;}
+input,select{font-family:inherit;font-size:12.5px;}
+
+/* ===== Top bar ===== */
+#topbar{
+  height:52px;background:linear-gradient(180deg,var(--navy-2),var(--navy));
+  display:flex;align-items:center;padding:0 16px;color:#fff;gap:18px;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);position:relative;z-index:20;
+}
+#topbar .logo{font-weight:700;font-size:17px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
+#topbar .logo .mark{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:inline-block;}
+#topbar .sub{font-size:11px;color:#9FC4E0;font-weight:400;margin-left:4px;}
+#topbar .spacer{flex:1;}
+#topbar .tb-btn{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;
+  padding:6px 12px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:6px;
+}
+#topbar .tb-btn:hover{background:rgba(255,255,255,.18);}
+#topbar select{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:5px 8px;}
+#topbar select option{color:#000;}
+
+/* ===== Layout ===== */
+#app{display:flex;height:calc(100% - 52px);}
+#sidebar{
+  width:270px;background:#0F2138;color:#cfe0f0;overflow-y:auto;flex-shrink:0;
+  border-right:1px solid #06121f;
+}
+#sidebar .side-section-title{
+  padding:10px 14px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6F90AC;font-weight:600;
+}
+.tree-node{padding:7px 10px 7px 16px;display:flex;align-items:center;gap:7px;font-size:12.5px;cursor:pointer;border-left:3px solid transparent;}
+.tree-node:hover{background:rgba(255,255,255,.05);}
+.tree-node.active{background:rgba(0,145,213,.18);border-left-color:var(--accent);color:#fff;}
+.tree-node .ic{width:14px;text-align:center;opacity:.85;font-size:12px;}
+.tree-floor{font-weight:600;color:#E7F0F8;}
+.tree-room{padding-left:34px;color:#B9CEE0;}
+.tree-room.active{color:#fff;}
+.tree-add{padding:6px 14px;font-size:11.5px;color:var(--accent);background:none;border:none;width:100%;text-align:left;}
+.tree-add:hover{text-decoration:underline;}
+.tree-actions{margin-left:auto;display:flex;gap:4px;opacity:0;}
+.tree-node:hover .tree-actions{opacity:1;}
+.tree-actions span{font-size:11px;padding:1px 4px;color:#9FB6CB;}
+.tree-actions span:hover{color:#fff;}
+#sidebar-footer{padding:10px 14px;border-top:1px solid #1c344c;font-size:11px;color:#7691A8;}
+
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+#tabbar{
+  display:flex;background:#fff;border-bottom:1px solid var(--line);padding:0 14px;flex-shrink:0;
+}
+.tabbtn{
+  padding:11px 18px;font-size:12.5px;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;font-weight:600;
+}
+.tabbtn.active{color:var(--navy);border-bottom-color:var(--accent);}
+.tabbtn:hover{color:var(--navy-3);}
+
+#content{flex:1;overflow-y:auto;padding:18px 22px;}
+
+/* ===== Cards / forms ===== */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin-bottom:16px;}
+.card-head{padding:10px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;justify-content:space-between;}
+.card-body{padding:14px 16px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px 16px;}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.field input,.field select{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:#FBFCFE;}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent);}
+.field .unit{color:var(--muted);font-size:10.5px;}
+
+table.dtable{width:100%;border-collapse:collapse;font-size:12px;}
+table.dtable th{background:#F2F5F9;color:var(--navy-2);text-align:left;padding:7px 8px;border-bottom:2px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+table.dtable td{padding:6px 8px;border-bottom:1px solid #EEF1F5;}
+table.dtable tr:hover td{background:#F8FAFC;}
+table.dtable input,table.dtable select{padding:4px 6px;font-size:12px;}
+.numcell{font-family:var(--mono);text-align:right;}
+
+.btn{background:var(--navy-3);color:#fff;border:none;padding:7px 14px;border-radius:4px;font-size:12px;font-weight:600;}
+.btn:hover{background:var(--accent);}
+.btn.sm{padding:4px 9px;font-size:11px;}
+.btn.ghost{background:#fff;color:var(--navy-3);border:1px solid var(--navy-3);}
+.btn.ghost:hover{background:#EAF4FC;}
+.btn.danger{background:#fff;color:#C0392B;border:1px solid #E2A39B;}
+.btn.danger:hover{background:#FBEEEC;}
+
+.kpi-row{display:flex;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+.kpi{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:13px 16px;}
+.kpi .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.kpi .val{font-size:24px;font-weight:700;color:var(--navy);font-family:var(--mono);margin-top:3px;}
+.kpi .val span{font-size:13px;color:var(--muted);font-weight:500;margin-left:3px;}
+.kpi.accent{border-top:3px solid var(--accent);}
+.kpi.warn{border-top:3px solid var(--warn);}
+.kpi.teal{border-top:3px solid var(--accent-2);}
+
+.chart-wrap{position:relative;height:280px;}
+.chart-wrap.small{height:220px;}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;}
+@media(max-width:1100px){.two-col{grid-template-columns:1fr;}}
+
+.tagrow{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{background:#EAF4FC;color:var(--navy-3);border-radius:3px;padding:2px 8px;font-size:11px;font-weight:600;}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state .big{font-size:34px;margin-bottom:8px;}
+
+#welcome{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;color:var(--muted);}
+#welcome h2{color:var(--navy);}
+
+.note{font-size:11px;color:var(--muted);background:#F6F8FA;border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 4px 4px 0;margin-top:10px;line-height:1.5;}
+.removeRow{color:#C0392B;cursor:pointer;font-weight:700;}
+.addRowBtn{margin-top:8px;}
+.schedBox{display:flex;gap:2px;flex-wrap:wrap;margin-top:6px;}
+.schedHour{width:28px;text-align:center;}
+.schedHour input{width:100%;padding:3px 0;text-align:center;font-size:10.5px;}
+.schedHour .hl{font-size:9px;color:var(--muted);display:block;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo"><span class="mark"></span>AeroLoad Pro<span class="sub">空調負荷計算軟體 · 簡化逐時法</span></div>
+  <div class="spacer"></div>
+  <select id="unitSelect" title="單位系統">
+    <option value="SI">SI 公制</option>
+    <option value="IP">IP 英制</option>
+  </select>
+  <button class="tb-btn" id="btnSave">💾 儲存專案</button>
+  <button class="tb-btn" id="btnLoad">📂 開啟專案</button>
+  <button class="tb-btn" id="btnReport">🖨 產出報告</button>
+  <input type="file" id="fileInput" style="display:none" accept=".json">
+</div>
+
+<div id="app">
+  <div id="sidebar">
+    <div class="side-section-title">專案架構</div>
+    <div id="treeWrap"></div>
+    <div id="sidebar-footer">提示：點選樓層或房間以編輯參數</div>
+  </div>
+
+  <div id="main">
+    <div id="tabbar"></div>
+    <div id="content"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   AeroLoad Pro — 簡化逐時負荷計算引擎 (參考 Daikin 簡化法精神，非完整ASHRAE RTS)
+   ========================================================================= */
+
+/* ---------- 常數資料表 ---------- */
+const CITY_PRESETS = {
+  hongkong: {label:'香港 Hong Kong', summerDB:33.0, summerWB:27.5, winterDB:9.0, dailyRange:6.5, indoorDB:24.0, indoorRH:55, altitude:5},
+  singapore:{label:'新加坡 Singapore', summerDB:33.5, summerWB:27.0, winterDB:23.0, dailyRange:5.0, indoorDB:24.0, indoorRH:55, altitude:10},
+  taipei:   {label:'台北 Taipei', summerDB:34.5, summerWB:27.5, winterDB:10.0, dailyRange:7.0, indoorDB:24.5, indoorRH:55, altitude:9},
+  shanghai: {label:'上海 Shanghai', summerDB:35.0, summerWB:27.8, winterDB:-2.0, dailyRange:8.0, indoorDB:25.0, indoorRH:55, altitude:7},
+  custom:   {label:'自訂 Custom', summerDB:33.0, summerWB:27.0, winterDB:10.0, dailyRange:7.0, indoorDB:24.0, indoorRH:55, altitude:0}
+};
+
+const ROOM_TEMPLATES = {
+  office:{label:'一般辦公室', peoplePerM2:10, peopleM2Each:true, occW:75, occLat:55, lightingW:11, equipW:13, vent:10, infACH:0.3,
+    sched:[0,0,0,0,0,0,0,.2,.7,1,1,1,.6,.8,1,1,1,.8,.3,.1,0,0,0,0]},
+  retail:{label:'零售商店', peoplePerM2:5, peopleM2Each:true, occW:80, occLat:60, lightingW:18, equipW:8, vent:10, infACH:0.4,
+    sched:[0,0,0,0,0,0,0,0,.2,.5,.7,.8,.9,.9,.8,.8,.9,1,1,.9,.6,.3,.1,0]},
+  restaurant:{label:'餐廳', peoplePerM2:1.2, peopleM2Each:true, occW:95, occLat:75, lightingW:14, equipW:25, vent:15, infACH:0.5,
+    sched:[0,0,0,0,0,0,0,.1,.2,.3,.5,.9,1,.9,.4,.2,.3,.6,1,1,.9,.5,.2,.1]},
+  conference:{label:'會議室', peoplePerM2:1.8, peopleM2Each:true, occW:75, occLat:55, lightingW:14, equipW:15, vent:10, infACH:0.2,
+    sched:[0,0,0,0,0,0,0,0,.5,.9,1,.8,.3,.7,1,.9,.6,.3,.1,0,0,0,0,0]},
+  lobby:{label:'大廳/走廊', peoplePerM2:3, peopleM2Each:true, occW:80, occLat:60, lightingW:10, equipW:3, vent:8, infACH:0.6,
+    sched:[.1,.1,.1,.1,.1,.1,.2,.5,.8,.8,.7,.8,.9,.8,.7,.8,.8,.8,.7,.5,.3,.2,.1,.1]},
+  server:{label:'機房/伺服器室', peoplePerM2:30, peopleM2Each:true, occW:75, occLat:55, lightingW:8, equipW:120, vent:5, infACH:0.1,
+    sched:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},
+  custom:{label:'自訂房間', peoplePerM2:10, peopleM2Each:true, occW:75, occLat:55, lightingW:12, equipW:12, vent:10, infACH:0.3,
+    sched:[0,0,0,0,0,0,0,.2,.7,1,1,1,.6,.8,1,1,1,.8,.3,.1,0,0,0,0]}
+};
+
+const ORIENTATIONS = ['N','NE','E','SE','S','SW','W','NW'];
+// 簡化太陽輻射尖峰時刻(24hr)與尖峰強度(W/m^2) — 簡化逐時法，非精確ASHRAE表
+const SOLAR_PEAK = {
+  N:{peakHour:12, peakVal:90, width:12},
+  NE:{peakHour:8, peakVal:420, width:5},
+  E:{peakHour:9, peakVal:520, width:5},
+  SE:{peakHour:10,peakVal:480, width:5.5},
+  S:{peakHour:12.5,peakVal:330, width:6.5},
+  SW:{peakHour:15,peakVal:500, width:5.5},
+  W:{peakHour:16,peakVal:560, width:5},
+  NW:{peakHour:17,peakVal:380, width:5},
+  HORIZ:{peakHour:12.5,peakVal:820, width:6.5}
+};
+const MASS_FACTORS = { // 構造蓄熱：[時間延遲hr, 衰減係數]
+  light:{lag:0, decrement:1.0, label:'輕質(輕鋼/玻璃帷幕)'},
+  medium:{lag:2, decrement:0.78, label:'中質(磚牆/混凝土板)'},
+  heavy:{lag:4.5, decrement:0.58, label:'重質(厚混凝土/石材)'}
+};
+const WALL_U_DEFAULT = {light:2.8, medium:1.6, heavy:0.9};
+
+/* ---------- 工具函式 ---------- */
+function uid(){return Math.random().toString(36).slice(2,9);}
+function clone(o){return JSON.parse(JSON.stringify(o));}
+
+// Magnus飽和水氣壓 (kPa), T in °C
+function pSat(T){return 0.6108*Math.exp(17.27*T/(T+237.3));}
+// 由 DB(°C)+RH(%) 求濕度比 (kg/kg)
+function humidityRatioFromRH(Tdb,RH,P=101.325){
+  const ps = pSat(Tdb)*(RH/100);
+  return 0.622*ps/(P-ps);
+}
+function enthalpyMoistAir(Tdb,W){ // kJ/kg dry air
+  return 1.006*Tdb + W*(2501+1.86*Tdb);
+}
+
+function hourArray(){return Array.from({length:24},(_,i)=>i);}
+
+function outdoorTempAt(t, meanDB, range){
+  // 簡化日溫度週期：尖峰在15:00
+  return meanDB + (range/2)*Math.cos((t-15)*15*Math.PI/180);
+}
+function solarAt(orientation, t){
+  const o = SOLAR_PEAK[orientation];
+  let diff = Math.abs(t-o.peakHour);
+  if(diff>12) diff = 24-diff;
+  const frac = Math.cos((diff/o.width)*(Math.PI/2));
+  return Math.max(0, o.peakVal*frac);
+}
+function solarHoriz(t){
+  const o = SOLAR_PEAK.HORIZ;
+  let diff = Math.abs(t-o.peakHour);
+  if(diff>12) diff=24-diff;
+  const frac = Math.cos((diff/o.width)*(Math.PI/2));
+  return Math.max(0,o.peakVal*frac);
+}
+function schedVal(sched,t){
+  const i0=Math.floor(t)%24;
+  return sched[i0]!==undefined?sched[i0]:0;
+}
+
+/* =========================== 狀態 (State) =========================== */
+let state = {
+  project:{
+    name:'未命名專案', city:'hongkong',
+    designConditions: clone(CITY_PRESETS.hongkong),
+    units:'SI'
+  },
+  floors: []
+};
+let selection = {floorId:null, roomId:null};
+let activeTab = 'geometry';
+
+function newRoom(name='新房間', tmplKey='office'){
+  const tmpl = ROOM_TEMPLATES[tmplKey];
+  return {
+    id:uid(), name, template:tmplKey, area:30, height:3.0,
+    constructionMass:'medium',
+    walls:[{id:uid(),orientation:'S',area:20,uValue:WALL_U_DEFAULT.medium}],
+    windows:[{id:uid(),orientation:'S',area:8,uValue:2.8,shgc:0.45,shadeFactor:0.9}],
+    roof:{exposed:false, area:30, uValue:0.6, absorptivity:0.6},
+    peopleCount:6, occW:tmpl.occW, occLat:tmpl.occLat, peopleSched:clone(tmpl.sched),
+    lightingW:tmpl.lightingW, lightSched:clone(tmpl.sched),
+    equipW:tmpl.equipW, equipSched:clone(tmpl.sched),
+    ventLps:tmpl.vent, infACH:tmpl.infACH
+  };
+}
+function newFloor(name='1樓'){
+  return {id:uid(), name, rooms:[newRoom('辦公室 101','office')]};
+}
+state.floors.push(newFloor('1樓'));
+selection.floorId = state.floors[0].id;
+selection.roomId = state.floors[0].rooms[0].id;
+
+function findFloor(id){return state.floors.find(f=>f.id===id);}
+function findRoom(roomId){
+  for(const f of state.floors){const r=f.rooms.find(r=>r.id===roomId); if(r) return {floor:f,room:r};}
+  return null;
+}
+
+/* =========================== 計算引擎 =========================== */
+function calcRoomHourly(room){
+  const dc = state.project.designConditions;
+  const Tin = dc.indoorDB;
+  const Win = humidityRatioFromRH(Tin, dc.indoorRH);
+  const Wout = humidityRatioFromRH(dc.summerDB, (function(){
+      // 由WB估算室外RH（簡化：用WB,DB估計濕度比再換算RH不必要，直接用WB估濕度比近似）
+      return 50;
+  })());
+  // 更精確：以summerDB & summerWB計算室外濕度比（簡化WB迭代略過，採近似公式）
+  const Tdb=dc.summerDB, Twb=dc.summerWB;
+  const Wsat_wb = humidityRatioFromRH(Twb,100);
+  const Wout2 = ((2501-2.326*Twb)*Wsat_wb - 1.006*(Tdb-Twb)) / (2501+1.86*Tdb-4.186*Twb);
+  const mass = MASS_FACTORS[room.constructionMass];
+
+  const hours = hourArray();
+  const results = hours.map(t=>{
+    const Tout_t = outdoorTempAt(t, Tdb, dc.dailyRange);
+    const Tout_lag = outdoorTempAt(((t-mass.lag)+24)%24, Tdb, dc.dailyRange);
+
+    // --- 外牆傳導 (含構造蓄熱延遲衰減) ---
+    let wallCond=0;
+    room.walls.forEach(w=>{
+      const dT = (Tout_lag - Tin);
+      wallCond += w.uValue * w.area * dT * mass.decrement;
+    });
+
+    // --- 窗戶傳導 (輕質、無延遲) ---
+    let winCond=0, winSolar=0;
+    room.windows.forEach(w=>{
+      winCond += w.uValue * w.area * (Tout_t - Tin);
+      const I = solarAt(w.orientation, t);
+      winSolar += w.area * w.shgc * w.shadeFactor * I;
+    });
+
+    // --- 屋頂 (含日射輻射溫度修正) ---
+    let roofCond=0;
+    if(room.roof.exposed){
+      const Ihoriz = solarHoriz(((t-mass.lag)+24)%24);
+      const solAirRise = (room.roof.absorptivity*Ihoriz)/17; // ho=17 W/m2K
+      const Tsolair = Tout_lag + solAirRise;
+      roofCond = room.roof.uValue*room.roof.area*(Tsolair-Tin)*mass.decrement;
+    }
+
+    // --- 內部負荷 ---
+    const occFrac = schedVal(room.peopleSched,t);
+    const peopleS = room.peopleCount*occFrac*room.occW;
+    const peopleL = room.peopleCount*occFrac*room.occLat;
+    const lightS = room.lightingW*room.area*schedVal(room.lightSched,t);
+    const equipS = room.equipW*room.area*schedVal(room.equipSched,t);
+
+    // --- 通風 + 滲透 ---
+    const ventQ_Ls = room.ventLps*room.peopleCount*occFrac;
+    const infilVol_m3h = room.infACH*room.area*room.height;
+    const infilQ_Ls = infilVol_m3h/3.6;
+    const totalQ_Ls = ventQ_Ls + infilQ_Ls;
+    const ventS = 1.23*totalQ_Ls*(Tdb-Tin);
+    const ventL = 3010*(totalQ_Ls/1000)*Math.max(0,(Wout2-Win));
+
+    const sensible = wallCond+winCond+winSolar+roofCond+peopleS+lightS+equipS+ventS;
+    const latent = peopleL+ventL;
+    return {
+      t, sensible, latent, total:sensible+latent,
+      breakdown:{wallCond,winCond,winSolar,roofCond,peopleS,lightS,equipS,ventS,peopleL,ventL}
+    };
+  });
+  return results;
+}
+
+function calcBuildingHourly(){
+  const allRooms=[]; state.floors.forEach(f=>f.rooms.forEach(r=>allRooms.push(r)));
+  const perRoom = allRooms.map(r=>({room:r, hourly:calcRoomHourly(r)}));
+  const buildingHourly = hourArray().map(t=>{
+    let s=0,l=0;
+    perRoom.forEach(pr=>{s+=pr.hourly[t].sensible; l+=pr.hourly[t].latent;});
+    return {t, sensible:s, latent:l, total:s+l};
+  });
+  let peakIdx=0;
+  buildingHourly.forEach((h,i)=>{if(h.total>buildingHourly[peakIdx].total) peakIdx=i;});
+  let blockTotal=0;
+  perRoom.forEach(pr=>{ let pk=pr.hourly[0]; pr.hourly.forEach(h=>{if(h.total>pk.total) pk=h;}); blockTotal+=pk.total;});
+  return {perRoom, buildingHourly, peakIdx, blockTotal};
+}
+
+/* =========================== 渲染：側邊樹狀 =========================== */
+function renderTree(){
+  const wrap = document.getElementById('treeWrap');
+  let html='';
+  html += `<div class="tree-node ${selection.floorId===null&&selection.roomId===null?'active':''}" onclick="selectSummary()">
+    <span class="ic">🏢</span><span>建築總覽 / 樓棟總表</span></div>`;
+  state.floors.forEach(f=>{
+    const fActive = selection.floorId===f.id && !selection.roomId;
+    html += `<div class="tree-node tree-floor ${fActive?'active':''}" onclick="selectFloor('${f.id}')">
+      <span class="ic">▾</span><span contenteditable="false">${f.name}</span>
+      <span class="tree-actions"><span onclick="event.stopPropagation();renameFloor('${f.id}')">✎</span><span onclick="event.stopPropagation();deleteFloor('${f.id}')">✕</span></span>
+      </div>`;
+    f.rooms.forEach(r=>{
+      const active = selection.roomId===r.id;
+      html += `<div class="tree-node tree-room ${active?'active':''}" onclick="selectRoom('${f.id}','${r.id}')">
+        <span class="ic">▪</span><span>${r.name}</span>
+        <span class="tree-actions"><span onclick="event.stopPropagation();renameRoom('${f.id}','${r.id}')">✎</span><span onclick="event.stopPropagation();deleteRoom('${f.id}','${r.id}')">✕</span></span>
+        </div>`;
+    });
+    html += `<button class="tree-add" onclick="addRoom('${f.id}')">＋ 新增房間</button>`;
+  });
+  html += `<button class="tree-add" style="padding-left:14px;border-top:1px solid #1c344c;margin-top:4px;" onclick="addFloor()">＋ 新增樓層</button>`;
+  wrap.innerHTML = html;
+}
+
+function selectSummary(){selection.floorId=null;selection.roomId=null;renderTree();renderTabs();renderContent();}
+function selectFloor(fid){selection.floorId=fid;selection.roomId=null;renderTree();renderTabs();renderContent();}
+function selectRoom(fid,rid){selection.floorId=fid;selection.roomId=rid;activeTab='geometry';renderTree();renderTabs();renderContent();}
+function addFloor(){const f=newFloor('樓層 '+(state.floors.length+1));state.floors.push(f);selectFloor(f.id);}
+function addRoom(fid){const f=findFloor(fid); const r=newRoom('新房間 '+(f.rooms.length+1),'office'); f.rooms.push(r); selectRoom(fid,r.id);}
+function renameFloor(fid){const f=findFloor(fid); const n=prompt('樓層名稱',f.name); if(n){f.name=n; renderTree();}}
+function renameRoom(fid,rid){const {room}=findRoom(rid); const n=prompt('房間名稱',room.name); if(n){room.name=n; renderTree();}}
+function deleteFloor(fid){
+  if(state.floors.length<=1){alert('至少需保留一個樓層');return;}
+  if(!confirm('刪除此樓層及所有房間？'))return;
+  state.floors = state.floors.filter(f=>f.id!==fid);
+  selection.floorId=state.floors[0].id; selection.roomId=state.floors[0].rooms[0]?.id||null;
+  renderAll();
+}
+function deleteRoom(fid,rid){
+  const f=findFloor(fid);
+  if(f.rooms.length<=1){alert('樓層至少需保留一個房間');return;}
+  if(!confirm('刪除此房間？'))return;
+  f.rooms = f.rooms.filter(r=>r.id!==rid);
+  selection.roomId=f.rooms[0].id;
+  renderAll();
+}
+
+/* =========================== Tabs =========================== */
+const TABS = [
+  {key:'geometry', label:'幾何 / 構造'},
+  {key:'envelope', label:'外牆 / 開窗 / 屋頂'},
+  {key:'internal', label:'內部負荷'},
+  {key:'vent', label:'通風 / 滲透'},
+  {key:'results', label:'計算結果'}
+];
+function renderTabs(){
+  const bar = document.getElementById('tabbar');
+  if(!selection.roomId){bar.innerHTML='';return;}
+  bar.innerHTML = TABS.map(t=>`<button class="tabbtn ${activeTab===t.key?'active':''}" onclick="setTab('${t.key}')">${t.label}</button>`).join('');
+}
+function setTab(k){activeTab=k; renderTabs(); renderContent();}
+
+/* =========================== Content 渲染 =========================== */
+function renderContent(){
+  const c = document.getElementById('content');
+  if(!selection.roomId){
+    c.innerHTML = renderBuildingSummaryHTML();
+    setTimeout(drawBuildingCharts,30);
+    return;
+  }
+  const {room} = findRoom(selection.roomId);
+  let html='';
+  if(activeTab==='geometry') html = roomGeometryHTML(room);
+  else if(activeTab==='envelope') html = roomEnvelopeHTML(room);
+  else if(activeTab==='internal') html = roomInternalHTML(room);
+  else if(activeTab==='vent') html = roomVentHTML(room);
+  else if(activeTab==='results') html = roomResultsHTML(room);
+  c.innerHTML = html;
+  if(activeTab==='results') setTimeout(()=>drawRoomCharts(room),30);
+}
+
+function field(label, value, onchange, type='number', step='0.1', unit=''){
+  const id='f_'+uid();
+  return `<div class="field"><label>${label} ${unit?'<span class="unit">('+unit+')</span>':''}</label>
+    <input id="${id}" type="${type}" step="${step}" value="${value}" onchange="${onchange}(this.value)"></div>`;
+}
+
+function roomGeometryHTML(room){
+  return `
+  <div class="card">
+    <div class="card-head">房間基本資料 — ${room.name}</div>
+    <div class="card-body grid">
+      <div class="field"><label>房間用途範本</label>
+        <select onchange="applyTemplate('${room.id}', this.value)">
+          ${Object.entries(ROOM_TEMPLATES).map(([k,v])=>`<option value="${k}" ${room.template===k?'selected':''}>${v.label}</option>`).join('')}
+        </select></div>
+      ${field('樓地板面積','room','area',room.area)}
+      ${field('淨高','room','height',room.height)}
+      <div class="field"><label>構造蓄熱等級</label>
+        <select onchange="updateRoomField('${room.id}','constructionMass',this.value)">
+          ${Object.entries(MASS_FACTORS).map(([k,v])=>`<option value="${k}" ${room.constructionMass===k?'selected':''}>${v.label}</option>`).join('')}
+        </select></div>
+    </div>
+  </div>
+  <div class="note">套用範本會覆寫人員密度、燈光/設備密度與作息排程，但不會改變已輸入之牆體/開窗資料。構造蓄熱等級決定外牆/屋頂熱傳導之延遲與衰減係數（簡化逐時法核心假設）。</div>
+  `;
+}
+
+function rebindNumber(id, room){ }
+function updateRoomField(rid, key, val){
+  const {room}=findRoom(rid);
+  room[key] = isNaN(parseFloat(val)) ? val : (typeof room[key]==='number'?parseFloat(val):val);
+  renderContent();
+}
+window.updateRoomField=updateRoomField;
+// helper used by field() generic numeric updater for top-level room props
+function field(label, target, prop, value, unit=''){
+  const id='f_'+uid();
+  return `<div class="field"><label>${label}${unit?' <span class="unit">('+unit+')</span>':''}</label>
+    <input type="number" step="0.1" value="${value}" onchange="updateRoomField('${selection.roomId}','${prop}',this.value)"></div>`;
+}
+
+function applyTemplate(rid, key){
+  const {room}=findRoom(rid);
+  const tmpl=ROOM_TEMPLATES[key];
+  room.template=key;
+  room.occW=tmpl.occW; room.occLat=tmpl.occLat;
+  room.lightingW=tmpl.lightingW; room.equipW=tmpl.equipW;
+  room.peopleSched=clone(tmpl.sched); room.lightSched=clone(tmpl.sched); room.equipSched=clone(tmpl.sched);
+  room.ventLps=tmpl.vent; room.infACH=tmpl.infACH;
+  room.peopleCount = Math.max(1, Math.round(room.area/tmpl.peoplePerM2));
+  renderContent();
+}
+window.applyTemplate=applyTemplate;
+
+function roomEnvelopeHTML(room){
+  const wallsRows = room.walls.map(w=>`
+    <tr>
+      <td><select onchange="updateWall('${room.id}','${w.id}','orientation',this.value)">
+        ${ORIENTATIONS.map(o=>`<option ${w.orientation===o?'selected':''}>${o}</option>`).join('')}
+      </select></td>
+      <td><input type="number" step="0.5" class="numcell" value="${w.area}" onchange="updateWall('${room.id}','${w.id}','area',this.value)"></td>
+      <td><input type="number" step="0.1" class="numcell" value="${w.uValue}" onchange="updateWall('${room.id}','${w.id}','uValue',this.value)"></td>
+      <td style="text-align:center"><span class="removeRow" onclick="removeWall('${room.id}','${w.id}')">移除</span></td>
+    </tr>`).join('');
+  const winRows = room.windows.map(w=>`
+    <tr>
+      <td><select onchange="updateWin('${room.id}','${w.id}','orientation',this.value)">
+        ${ORIENTATIONS.map(o=>`<option ${w.orientation===o?'selected':''}>${o}</option>`).join('')}
+      </select></td>
+      <td><input type="number" step="0.5" class="numcell" value="${w.area}" onchange="updateWin('${room.id}','${w.id}','area',this.value)"></td>
+      <td><input type="number" step="0.1" class="numcell" value="${w.uValue}" onchange="updateWin('${room.id}','${w.id}','uValue',this.value)"></td>
+      <td><input type="number" step="0.01" class="numcell" value="${w.shgc}" onchange="updateWin('${room.id}','${w.id}','shgc',this.value)"></td>
+      <td><input type="number" step="0.01" class="numcell" value="${w.shadeFactor}" onchange="updateWin('${room.id}','${w.id}','shadeFactor',this.value)"></td>
+      <td style="text-align:center"><span class="removeRow" onclick="removeWin('${room.id}','${w.id}')">移除</span></td>
+    </tr>`).join('');
+  return `
+  <div class="card">
+    <div class="card-head">外牆 (依朝向分別輸入)
+      <button class="btn sm ghost" onclick="addWall('${room.id}')">＋ 新增牆面</button></div>
+    <div class="card-body">
+      <table class="dtable"><thead><tr><th>朝向</th><th>面積 (m²)</th><th>U值 (W/m²K)</th><th></th></tr></thead>
+      <tbody>${wallsRows}</tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">開窗 (依朝向分別輸入)
+      <button class="btn sm ghost" onclick="addWin('${room.id}')">＋ 新增窗戶</button></div>
+    <div class="card-body">
+      <table class="dtable"><thead><tr><th>朝向</th><th>面積 (m²)</th><th>U值 (W/m²K)</th><th>SHGC</th><th>遮陽係數</th><th></th></tr></thead>
+      <tbody>${winRows}</tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">屋頂</div>
+    <div class="card-body grid">
+      <div class="field"><label>是否為頂層暴露屋頂</label>
+        <select onchange="updateRoofField('${room.id}','exposed',this.value==='true')">
+          <option value="false" ${!room.roof.exposed?'selected':''}>否</option>
+          <option value="true" ${room.roof.exposed?'selected':''}>是</option>
+        </select></div>
+      <div class="field"><label>屋頂面積 <span class="unit">(m²)</span></label>
+        <input type="number" step="0.5" value="${room.roof.area}" onchange="updateRoofField('${room.id}','area',this.value)"></div>
+      <div class="field"><label>U值 <span class="unit">(W/m²K)</span></label>
+        <input type="number" step="0.05" value="${room.roof.uValue}" onchange="updateRoofField('${room.id}','uValue',this.value)"></div>
+      <div class="field"><label>表面吸收率 α</label>
+        <input type="number" step="0.05" value="${room.roof.absorptivity}" onchange="updateRoofField('${room.id}','absorptivity',this.value)"></div>
+    </div>
+  </div>`;
+}
+function updateWall(rid,wid,key,val){const {room}=findRoom(rid); const w=room.walls.find(x=>x.id===wid); w[key]= key==='orientation'?val:parseFloat(val); renderContent();}
+function updateWin(rid,wid,key,val){const {room}=findRoom(rid); const w=room.windows.find(x=>x.id===wid); w[key]= key==='orientation'?val:parseFloat(val); renderContent();}
+function addWall(rid){const {room}=findRoom(rid); room.walls.push({id:uid(),orientation:'N',area:10,uValue:WALL_U_DEFAULT[room.constructionMass]||1.6}); renderContent();}
+function addWin(rid){const {room}=findRoom(rid); room.windows.push({id:uid(),orientation:'N',area:4,uValue:2.8,shgc:0.45,shadeFactor:0.9}); renderContent();}
+function removeWall(rid,wid){const {room}=findRoom(rid); room.walls=room.walls.filter(w=>w.id!==wid); renderContent();}
+function removeWin(rid,wid){const {room}=findRoom(rid); room.windows=room.windows.filter(w=>w.id!==wid); renderContent();}
+function updateRoofField(rid,key,val){const {room}=findRoom(rid); room.roof[key]= (key==='exposed')?val:parseFloat(val); renderContent();}
+window.updateWall=updateWall;window.updateWin=updateWin;window.addWall=addWall;window.addWin=addWin;
+window.removeWall=removeWall;window.removeWin=removeWin;window.updateRoofField=updateRoofField;
+
+function schedEditorHTML(room, key, label){
+  const sched = room[key];
+  const cells = sched.map((v,i)=>`<div class="schedHour"><span class="hl">${i}</span>
+    <input type="number" step="0.1" min="0" max="1" value="${v}" onchange="updateSchedHour('${room.id}','${key}',${i},this.value)"></div>`).join('');
+  return `<div style="margin-top:8px"><label style="font-size:11px;color:var(--muted)">${label} — 0~1 使用率，依小時(0–23)</label>
+    <div class="schedBox">${cells}</div></div>`;
+}
+function updateSchedHour(rid,key,idx,val){const {room}=findRoom(rid); room[key][idx]=Math.max(0,Math.min(1,parseFloat(val)||0)); }
+window.updateSchedHour=updateSchedHour;
+
+function roomInternalHTML(room){
+  return `
+  <div class="card">
+    <div class="card-head">人員</div>
+    <div class="card-body grid">
+      <div class="field"><label>人數</label><input type="number" step="1" value="${room.peopleCount}" onchange="updateRoomField('${room.id}','peopleCount',this.value)"></div>
+      <div class="field"><label>單人顯熱 <span class="unit">(W/人)</span></label><input type="number" step="1" value="${room.occW}" onchange="updateRoomField('${room.id}','occW',this.value)"></div>
+      <div class="field"><label>單人潛熱 <span class="unit">(W/人)</span></label><input type="number" step="1" value="${room.occLat}" onchange="updateRoomField('${room.id}','occLat',this.value)"></div>
+    </div>
+    <div class="card-body" style="padding-top:0">${schedEditorHTML(room,'peopleSched','人員作息排程')}</div>
+  </div>
+  <div class="card">
+    <div class="card-head">照明</div>
+    <div class="card-body grid">
+      <div class="field"><label>照明密度 <span class="unit">(W/m²)</span></label><input type="number" step="0.5" value="${room.lightingW}" onchange="updateRoomField('${room.id}','lightingW',this.value)"></div>
+    </div>
+    <div class="card-body" style="padding-top:0">${schedEditorHTML(room,'lightSched','照明作息排程')}</div>
+  </div>
+  <div class="card">
+    <div class="card-head">設備</div>
+    <div class="card-body grid">
+      <div class="field"><label>設備密度 <span class="unit">(W/m²)</span></label><input type="number" step="0.5" value="${room.equipW}" onchange="updateRoomField('${room.id}','equipW',this.value)"></div>
+    </div>
+    <div class="card-body" style="padding-top:0">${schedEditorHTML(room,'equipSched','設備作息排程')}</div>
+  </div>`;
+}
+
+function roomVentHTML(room){
+  return `
+  <div class="card">
+    <div class="card-head">外氣通風 / 滲透</div>
+    <div class="card-body grid">
+      <div class="field"><label>每人外氣量 <span class="unit">(L/s/人)</span></label>
+        <input type="number" step="0.5" value="${room.ventLps}" onchange="updateRoomField('${room.id}','ventLps',this.value)"></div>
+      <div class="field"><label>滲透換氣次數 ACH <span class="unit">(1/hr)</span></label>
+        <input type="number" step="0.05" value="${room.infACH}" onchange="updateRoomField('${room.id}','infACH',this.value)"></div>
+    </div>
+  </div>
+  <div class="note">通風顯熱 = 1.23 × Q(L/s) × ΔT；通風潛熱 = 3010 × Q(m³/s) × ΔW，採簡化定壓比熱與蒸發潛熱常數，適用一般舒適空調設計估算。</div>
+  `;
+}
+
+function roomResultsHTML(room){
+  const hourly = calcRoomHourly(room);
+  let peak = hourly[0]; hourly.forEach(h=>{if(h.total>peak.total) peak=h;});
+  return `
+  <div class="kpi-row">
+    <div class="kpi accent"><div class="lbl">尖峰總負荷</div><div class="val">${peak.total.toFixed(0)}<span>W</span></div></div>
+    <div class="kpi"><div class="lbl">尖峰顯熱</div><div class="val">${peak.sensible.toFixed(0)}<span>W</span></div></div>
+    <div class="kpi"><div class="lbl">尖峰潛熱</div><div class="val">${peak.latent.toFixed(0)}<span>W</span></div></div>
+    <div class="kpi teal"><div class="lbl">尖峰發生時刻</div><div class="val">${peak.t}:00</div></div>
+    <div class="kpi warn"><div class="lbl">單位面積負荷</div><div class="val">${(peak.total/room.area).toFixed(0)}<span>W/m²</span></div></div>
+  </div>
+  <div class="two-col">
+    <div class="card"><div class="card-head">24小時負荷曲線</div><div class="card-body"><div class="chart-wrap"><canvas id="roomLineChart"></canvas></div></div></div>
+    <div class="card"><div class="card-head">尖峰時刻負荷組成</div><div class="card-body"><div class="chart-wrap"><canvas id="roomPieChart"></canvas></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">逐時負荷明細</div>
+    <div class="card-body" style="max-height:320px;overflow:auto;padding:0">
+      <table class="dtable"><thead><tr><th>時刻</th><th>外牆</th><th>窗傳導</th><th>窗日射</th><th>屋頂</th><th>人員顯</th><th>照明</th><th>設備</th><th>通風顯</th><th>人員潛</th><th>通風潛</th><th>顯熱合計</th><th>潛熱合計</th><th>總計</th></tr></thead>
+      <tbody>${hourly.map(h=>`<tr ${h===peak?'style="background:#FFF6EC"':''}>
+        <td>${h.t}:00</td>
+        <td class="numcell">${h.breakdown.wallCond.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.winCond.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.winSolar.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.roofCond.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.peopleS.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.lightS.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.equipS.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.ventS.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.peopleL.toFixed(0)}</td>
+        <td class="numcell">${h.breakdown.ventL.toFixed(0)}</td>
+        <td class="numcell" style="font-weight:700">${h.sensible.toFixed(0)}</td>
+        <td class="numcell">${h.latent.toFixed(0)}</td>
+        <td class="numcell" style="font-weight:700;color:var(--navy-3)">${h.total.toFixed(0)}</td>
+      </tr>`).join('')}</tbody></table>
+    </div>
+  </div>
+  `;
+}
+
+let _charts = {};
+function destroyChart(key){ if(_charts[key]){_charts[key].destroy(); delete _charts[key];} }
+function drawRoomCharts(room){
+  const hourly = calcRoomHourly(room);
+  let peak = hourly[0]; hourly.forEach(h=>{if(h.total>peak.total) peak=h;});
+  destroyChart('line'); destroyChart('pie');
+  const ctx1 = document.getElementById('roomLineChart');
+  if(ctx1) _charts.line = new Chart(ctx1,{type:'line',data:{
+    labels:hourly.map(h=>h.t+':00'),
+    datasets:[
+      {label:'顯熱 (W)',data:hourly.map(h=>h.sensible),borderColor:'#0091D5',backgroundColor:'rgba(0,145,213,.12)',fill:true,tension:.3},
+      {label:'潛熱 (W)',data:hourly.map(h=>h.latent),borderColor:'#00B8A9',backgroundColor:'rgba(0,184,169,.12)',fill:true,tension:.3}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{title:{display:true,text:'W'}}}}});
+  const bd = peak.breakdown;
+  const pieLabels=['外牆','窗傳導','窗日射','屋頂','人員顯','照明','設備','通風顯','人員潛','通風潛'];
+  const pieData=[bd.wallCond,bd.winCond,bd.winSolar,bd.roofCond,bd.peopleS,bd.lightS,bd.equipS,bd.ventS,bd.peopleL,bd.ventL].map(v=>Math.max(0,v));
+  const ctx2 = document.getElementById('roomPieChart');
+  if(ctx2) _charts.pie = new Chart(ctx2,{type:'doughnut',data:{labels:pieLabels,datasets:[{data:pieData,
+    backgroundColor:['#0B2A4A','#0091D5','#E8732C','#7C5CBF','#00B8A9','#F2C12E','#C0392B','#5C6B7A','#28A99E','#9FB6CB']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:11,font:{size:10}}}}}});
+}
+
+/* =========================== 建築總覽 =========================== */
+function renderBuildingSummaryHTML(){
+  const calc = calcBuildingHourly();
+  const peak = calc.buildingHourly[calc.peakIdx];
+  const totalArea = calc.perRoom.reduce((s,p)=>s+p.room.area,0);
+  const rows = calc.perRoom.map(p=>{
+    let pk=p.hourly[0]; p.hourly.forEach(h=>{if(h.total>pk.total) pk=h;});
+    return {name:p.room.name, area:p.room.area, peak:pk.total, hour:pk.t, wm2:pk.total/p.room.area};
+  }).sort((a,b)=>b.peak-a.peak);
+  return `
+  <div class="kpi-row">
+    <div class="kpi accent"><div class="lbl">建築同時尖峰負荷</div><div class="val">${(peak.total/1000).toFixed(2)}<span>kW</span></div></div>
+    <div class="kpi"><div class="lbl">同時尖峰時刻</div><div class="val">${peak.t}:00</div></div>
+    <div class="kpi"><div class="lbl">各室非同時峰值加總 (Block Load)</div><div class="val">${(calc.blockTotal/1000).toFixed(2)}<span>kW</span></div></div>
+    <div class="kpi teal"><div class="lbl">總樓地板面積</div><div class="val">${totalArea.toFixed(0)}<span>m²</span></div></div>
+    <div class="kpi warn"><div class="lbl">單位面積負荷</div><div class="val">${(peak.total/totalArea).toFixed(0)}<span>W/m²</span></div></div>
+  </div>
+  <div class="two-col">
+    <div class="card"><div class="card-head">建築逐時負荷曲線 (各房間疊加)</div><div class="card-body"><div class="chart-wrap"><canvas id="bldgLineChart"></canvas></div></div></div>
+    <div class="card"><div class="card-head">尖峰時刻 顯熱/潛熱 比例</div><div class="card-body"><div class="chart-wrap"><canvas id="bldgPieChart"></canvas></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">各房間負荷排行</div>
+    <div class="card-body" style="padding:0">
+      <table class="dtable"><thead><tr><th>排名</th><th>房間</th><th>面積 (m²)</th><th>尖峰負荷 (W)</th><th>尖峰時刻</th><th>單位面積 (W/m²)</th></tr></thead>
+      <tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.name}</td><td class="numcell">${r.area}</td>
+        <td class="numcell" style="font-weight:700">${r.peak.toFixed(0)}</td><td>${r.hour}:00</td><td class="numcell">${r.wm2.toFixed(0)}</td></tr>`).join('')}</tbody></table>
+    </div>
+  </div>
+  <div class="note">「同時尖峰負荷」為所有房間在同一時刻負荷加總後的最大值，適合用於主機/冰水主機選型；「Block Load」為各房間各自尖峰值加總，適合用於末端設備(風機盤管/VAV)逐室選型參考。本工具採簡化逐時計算法，設計階段建議搭配實際氣象資料與完整動態負荷模擬校核。</div>
+  `;
+}
+function drawBuildingCharts(){
+  const calc = calcBuildingHourly();
+  destroyChart('bline'); destroyChart('bpie');
+  const ctx1=document.getElementById('bldgLineChart');
+  if(ctx1) _charts.bline = new Chart(ctx1,{type:'line',data:{
+    labels:calc.buildingHourly.map(h=>h.t+':00'),
+    datasets:[
+      {label:'顯熱 (kW)',data:calc.buildingHourly.map(h=>h.sensible/1000),borderColor:'#0091D5',backgroundColor:'rgba(0,145,213,.12)',fill:true,tension:.3},
+      {label:'潛熱 (kW)',data:calc.buildingHourly.map(h=>h.latent/1000),borderColor:'#00B8A9',backgroundColor:'rgba(0,184,169,.12)',fill:true,tension:.3},
+      {label:'總計 (kW)',data:calc.buildingHourly.map(h=>h.total/1000),borderColor:'#0B2A4A',borderDash:[4,3],fill:false}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{title:{display:true,text:'kW'}}}}});
+  const peak = calc.buildingHourly[calc.peakIdx];
+  const ctx2=document.getElementById('bldgPieChart');
+  if(ctx2) _charts.bpie = new Chart(ctx2,{type:'doughnut',data:{labels:['顯熱','潛熱'],datasets:[{data:[peak.sensible,peak.latent],backgroundColor:['#0091D5','#00B8A9']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+}
+
+/* =========================== 頂部列功能 =========================== */
+document.getElementById('unitSelect').addEventListener('change', e=>{
+  if(e.target.value==='IP'){ alert('提示：目前計算引擎以 SI 公制為基準，IP顯示換算功能將於後續版本提供。'); e.target.value='SI'; return; }
+});
+document.getElementById('btnSave').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify({state},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=(state.project.name||'專案')+'.json'; a.click();
+});
+document.getElementById('btnLoad').addEventListener('click', ()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change', e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      state=data.state;
+      selection={floorId:state.floors[0].id, roomId:state.floors[0].rooms[0]?.id||null};
+      renderAll();
+    }catch(err){alert('讀取失敗：檔案格式錯誤');}
+  };
+  reader.readAsText(file);
+});
+document.getElementById('btnReport').addEventListener('click', generateReport);
+
+function generateReport(){
+  const calc = calcBuildingHourly();
+  const peak = calc.buildingHourly[calc.peakIdx];
+  const dc = state.project.designConditions;
+  const rows = calc.perRoom.map(p=>{
+    let pk=p.hourly[0]; p.hourly.forEach(h=>{if(h.total>pk.total) pk=h;});
+    return {name:p.room.name, area:p.room.area, sens:pk.sensible, lat:pk.latent, total:pk.total, hour:pk.t};
+  });
+  const win = window.open('','_blank');
+  win.document.write(`
+  <html><head><meta charset="UTF-8"><title>空調負荷計算報告 - ${state.project.name}</title>
+  <style>
+    body{font-family:'Segoe UI','Noto Sans TC',Arial;padding:30px;color:#1C2733;}
+    h1{color:#0B2A4A;border-bottom:3px solid #0091D5;padding-bottom:8px;}
+    h2{color:#123A63;margin-top:28px;border-left:4px solid #0091D5;padding-left:8px;}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+    th{background:#F2F5F9;color:#123A63;padding:7px;border:1px solid #D8DEE6;text-align:left;}
+    td{padding:6px 7px;border:1px solid #EEF1F5;}
+    .kpi{display:inline-block;width:23%;border:1px solid #D8DEE6;border-radius:6px;padding:10px 14px;margin-right:1%;}
+    .kpi .l{font-size:11px;color:#5C6B7A;} .kpi .v{font-size:20px;font-weight:700;color:#0B2A4A;}
+    @media print{button{display:none;}}
+  </style></head><body>
+  <button onclick="window.print()" style="float:right;padding:8px 16px;">列印 / 另存PDF</button>
+  <h1>空調負荷計算報告</h1>
+  <p>專案名稱：${state.project.name} ｜ 地點：${CITY_PRESETS[state.project.city]?.label||'自訂'} ｜ 產出日期：${new Date().toLocaleDateString('zh-TW')}</p>
+  <h2>設計條件</h2>
+  <div class="kpi"><div class="l">室外乾球 DB</div><div class="v">${dc.summerDB}°C</div></div>
+  <div class="kpi"><div class="l">室外濕球 WB</div><div class="v">${dc.summerWB}°C</div></div>
+  <div class="kpi"><div class="l">室內設定 DB</div><div class="v">${dc.indoorDB}°C</div></div>
+  <div class="kpi"><div class="l">室內設定 RH</div><div class="v">${dc.indoorRH}%</div></div>
+  <h2>建築總負荷摘要</h2>
+  <div class="kpi" style="width:31%"><div class="l">同時尖峰負荷</div><div class="v">${(peak.total/1000).toFixed(2)} kW</div></div>
+  <div class="kpi" style="width:31%"><div class="l">尖峰發生時刻</div><div class="v">${peak.t}:00</div></div>
+  <div class="kpi" style="width:31%"><div class="l">Block Load 合計</div><div class="v">${(calc.blockTotal/1000).toFixed(2)} kW</div></div>
+  <h2>各房間負荷明細</h2>
+  <table><thead><tr><th>房間</th><th>面積(m²)</th><th>顯熱峰值(W)</th><th>潛熱峰值(W)</th><th>總尖峰(W)</th><th>峰值時刻</th></tr></thead>
+  <tbody>${rows.map(r=>`<tr><td>${r.name}</td><td>${r.area}</td><td>${r.sens.toFixed(0)}</td><td>${r.lat.toFixed(0)}</td><td><b>${r.total.toFixed(0)}</b></td><td>${r.hour}:00</td></tr>`).join('')}</tbody>
+  </table>
+  <p style="margin-top:24px;font-size:11px;color:#5C6B7A;">本報告採用簡化逐時負荷計算法產出，僅供初步機電系統選型參考，正式設計請依當地法規及完整動態能耗模擬進行覆核。</p>
+  </body></html>`);
+  win.document.close();
+}
+
+/* =========================== 專案資訊 (頂部下方可選頁) =========================== */
+// 將「建築總覽」頁面加入專案/城市設定區塊
+function renderBuildingSummaryHTML_withSettings(){ /* not used, settings embedded below */ }
+
+const _origBuildingHTML = renderBuildingSummaryHTML;
+renderBuildingSummaryHTML = function(){
+  const dc = state.project.designConditions;
+  const settingsHTML = `
+  <div class="card">
+    <div class="card-head">專案設定</div>
+    <div class="card-body grid">
+      <div class="field"><label>專案名稱</label><input type="text" value="${state.project.name}" onchange="updateProjectName(this.value)"></div>
+      <div class="field"><label>地點 / 氣象站</label>
+        <select onchange="updateCity(this.value)">
+          ${Object.entries(CITY_PRESETS).map(([k,v])=>`<option value="${k}" ${state.project.city===k?'selected':''}>${v.label}</option>`).join('')}
+        </select></div>
+      <div class="field"><label>夏季室外乾球 <span class="unit">°C</span></label><input type="number" step="0.1" value="${dc.summerDB}" onchange="updateDC('summerDB',this.value)"></div>
+      <div class="field"><label>夏季室外濕球 <span class="unit">°C</span></label><input type="number" step="0.1" value="${dc.summerWB}" onchange="updateDC('summerWB',this.value)"></div>
+      <div class="field"><label>日溫差 Daily Range <span class="unit">°C</span></label><input type="number" step="0.1" value="${dc.dailyRange}" onchange="updateDC('dailyRange',this.value)"></div>
+      <div class="field"><label>室內設定乾球 <span class="unit">°C</span></label><input type="number" step="0.1" value="${dc.indoorDB}" onchange="updateDC('indoorDB',this.value)"></div>
+      <div class="field"><label>室內設定相對濕度 <span class="unit">%</span></label><input type="number" step="1" value="${dc.indoorRH}" onchange="updateDC('indoorRH',this.value)"></div>
+    </div>
+  </div>` + _origBuildingHTML();
+  return settingsHTML;
+};
+function updateProjectName(v){state.project.name=v;}
+function updateCity(v){
+  state.project.city=v;
+  if(v!=='custom'){ state.project.designConditions = clone(CITY_PRESETS[v]); }
+  renderContent();
+}
+function updateDC(key,val){ state.project.designConditions[key]=parseFloat(val); }
+window.updateProjectName=updateProjectName; window.updateCity=updateCity; window.updateDC=updateDC;
+
+/* =========================== 初始化 =========================== */
+window.selectSummary=selectSummary; window.selectFloor=selectFloor; window.selectRoom=selectRoom;
+window.addFloor=addFloor; window.addRoom=addRoom; window.renameFloor=renameFloor; window.renameRoom=renameRoom;
+window.deleteFloor=deleteFloor; window.deleteRoom=deleteRoom; window.setTab=setTab;
+
+function renderAll(){ renderTree(); renderTabs(); renderContent(); }
+selection.floorId=null; selection.roomId=null; // start at building summary
+renderAll();
+</script>
+</body>
+</html>
