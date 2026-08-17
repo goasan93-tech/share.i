@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>R32&#x51b7;&#x5a92;&#x7a97;&#x578b;&#x53ca;&#x5206;&#x96e2;&#x5f0f;&#x51b7;&#x6c23;&#x6a5f;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<h1 id="r32冷媒窗型及分離式冷氣機">R32冷媒窗型及分離式冷氣機</h1>
+<h2 id="冷凍循環-p-h莫里爾線圖分析與工程選型計算報告">冷凍循環 p-h（莫里爾）線圖分析與工程選型計算報告</h2>
+<p>以 2.8 kW 冷氣能力機種為例之壓縮機、冷凝器、膨脹器、蒸發器全系統選型演算</p>
+<h2 id="一前言">一、前言</h2>
+<h2 id="本報告以專業空調設備工程角度針對採用r32冷媒之家用窗型">本報告以專業空調設備工程角度，針對採用R32冷媒之家用窗型</h2>
+<h2 id="分離式冷氣機說明其蒸氣壓縮冷凍循環於p-h線圖壓焓">／分離式冷氣機，說明其蒸氣壓縮冷凍循環於p-h線圖（壓焓</h2>
+<h2 id="圖即莫里爾圖-mollier-diagram上之狀態變化並定義各關鍵">圖，即莫里爾圖 Mollier Diagram）上之狀態變化，並定義各關鍵</h2>
+<h2 id="溫度壓力與焓值參數的工程意義報告後段以冷氣能力">溫度、壓力與焓值參數的工程意義。報告後段以「冷氣能力</h2>
+<h2 id="28kw之典型分離式冷氣機為例展示由冷凍循環基本參數推">2.8kW」之典型分離式冷氣機為例，展示由冷凍循環基本參數推</h2>
+<h2 id="算壓縮機規格冷媒循環流量冷凝器與蒸發器熱交換面積送">算壓縮機規格、冷媒循環流量、冷凝器與蒸發器熱交換面積、送</h2>
+<h2 id="風機風量與風扇規格以及膨脹裝置選用的完整計算流程供產">風機風量與風扇規格、以及膨脹裝置選用的完整計算流程，供產</h2>
+<h2 id="品開發性能驗證與教學參考之用">品開發、性能驗證與教學參考之用。</h2>
+<p>【本版修正說明】本報告初版之焓值曾以簡化溫度關係式估算，經與使用者實際依NIST REFPROP繪</p>
+<p>製之R32 p-h圖比對後，發現壓縮機排氣焓等數值有系統性高估。本修正版已改用CoolProp（開源冷媒</p>
+<p><strong><em>物性計算庫，核心算法與REFPROP同源，採Tillner-Roth &amp; Yokozeki狀態方程式）重新精算所有狀態</em></strong></p>
+<p>點，並沿等熵線計算壓縮機理論排氣狀態，數據精度已對齊REFPROP基準（0°C飽和液態焓值＝200</p>
+<p><strong><em>kJ/kg、熵值＝1.00 kJ/kg·K）。</em></strong></p>
+<p>所有數據及計算例仍僅供工程教學、初步系統評估及方案比較之用；實際產品開發之最終選型仍應以</p>
+<p>NIST REFPROP、壓縮機原廠選型軟體及熱交換器原廠性能曲線進行精確核算。</p>
+<h2 id="二r32冷媒基本物性">二、R32冷媒基本物性</h2>
+<p>項目</p>
+<p>數值</p>
+<p>備註</p>
+<p>化學名稱／分子式</p>
+<p>二氟甲烷 CH₂F₂</p>
+<p>分子量</p>
+<p>52.02 g/mol</p>
+<p>較R410A(72.6)輕，故比容較</p>
+<p>沸點（1atm）</p>
+<p>-51.7 °C</p>
+<p>臨界溫度</p>
+<p>78.11 °C</p>
+<p>臨界壓力</p>
+<p>5.78 MPa (57.8 bar)</p>
+<p>GWP（全球暖化潛值）</p>
+<p>675</p>
+<p>約為R410A(2088)的1/3</p>
+<p>安全分類</p>
+<p>A2L（低毒性、微燃）</p>
+<p>依ASHRAE 34</p>
+<p>液態比熱 Cp,liq（25°C）</p>
+<p>約1.94 kJ/kg·K</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>數值</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>排氣溫度特性</td>
+<td>較R410A約高15–20°C</td>
+<td>因等熵指數k較高，壓縮機選</td>
+</tr>
+</tbody>
+</table>
+<p>型須留意</p>
+<h2 id="三冷凍循環於-p-h莫里爾線圖之分析">三、冷凍循環於 p-h（莫里爾）線圖之分析</h2>
+<h2 id="單級蒸氣壓縮冷凍循環在p-h線圖上以四個特徵狀態點表示各">單級蒸氣壓縮冷凍循環在p-h線圖上以四個特徵狀態點表示，各</h2>
+<h2 id="點間以四個熱力過程相連接">點間以四個熱力過程相連接：</h2>
+<table>
+<thead>
+<tr>
+<th>●</th>
+<th>狀態點1 → 2：壓縮機絕熱壓縮過程（吸氣過熱蒸氣 → 排氣過熱蒸氣），沿近似等熵線上升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>●</td>
+<td>狀態點2 → 3：冷凝器定壓放熱過程（排氣降溫→飽和凝結→液體過冷），為水平等壓線</td>
+</tr>
+<tr>
+<td>●</td>
+<td>狀態點3 → 4：膨脹裝置（毛細管／電子膨脹閥）節流降壓過程，為等焓垂直線</td>
+</tr>
+<tr>
+<td>●</td>
+<td>狀態點4 → 1：蒸發器定壓吸熱過程（低溫兩相蒸發→過熱），為水平等壓線</td>
+</tr>
+</tbody>
+</table>
+<p>狀態點定義</p>
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>位置說明</th>
+<th>狀態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>壓縮機吸氣口（＝蒸發器出口）</td>
+<td>低壓過熱蒸氣</td>
+</tr>
+<tr>
+<td>2</td>
+<td>壓縮機排氣口（＝冷凝器入口）</td>
+<td>高壓過熱蒸氣</td>
+</tr>
+<tr>
+<td>2'</td>
+<td>冷凝器內飽和氣點（開始凝結）</td>
+<td>高壓飽和蒸氣</td>
+</tr>
+<tr>
+<td>3</td>
+<td>冷凝器出口（＝膨脹裝置入口）</td>
+<td>高壓過冷液體</td>
+</tr>
+<tr>
+<td>4</td>
+<td>膨脹裝置出口（＝蒸發器入口）</td>
+<td>低壓氣液兩相</td>
+</tr>
+</tbody>
+</table>
+<p><img src="file:////Users/lsc/空調/Github 網站備份/share.i/docs/refrigeration/R32%E5%86%B7%E5%AA%92_2.assets/page-3-img-0.png" alt="Figure"></p>
+<p>圖1 R32冷媒p-h線圖（CoolProp精算，基準與REFPROP一致）－虛線為等熵理論壓縮路徑，實線為含壓縮機效率</p>
+<p>之實際循環</p>
+<h2 id="四循環關鍵溫度壓力與焓值參數定義">四、循環關鍵溫度、壓力與焓值參數定義</h2>
+<h2 id="以下彙整分離式冷氣機冷凍循環設計及現場量測常用之各項溫">以下彙整分離式冷氣機冷凍循環設計及現場量測常用之各項溫</h2>
+<h2 id="度壓力與焓值參數定義並列出典型設計值範圍標準冷房額">度、壓力與焓值參數定義，並列出典型設計值範圍（標準冷房額</h2>
+<h2 id="定工況室內回風27c-db19c-wb室外35c-db24c">定工況：室內回風27°C DB／19°C WB，室外35°C DB／24°C</h2>
+<h2 id="wb依cnsjisahri-t1標準額定條件">WB，依CNS／JIS／AHRI T1標準額定條件）。</h2>
+<table>
+<thead>
+<tr>
+<th>參數名稱</th>
+<th>定義說明</th>
+<th>典型設計值範圍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蒸發溫度 Te</td>
+<td>蒸發器內冷媒飽和蒸發溫度</td>
+<td>5～10 °C（家用機常取6～</td>
+</tr>
+</tbody>
+</table>
+<p>8°C）</p>
+<p>室內溫度（回風）</p>
+<p>室內機回風乾球溫度</p>
+<p>27 °C DB／19 °C WB（額定</p>
+<p>工況）</p>
+<table>
+<thead>
+<tr>
+<th>冷氣送回風溫差 ΔTa,evap</th>
+<th>蒸發器送風（出風）與回風乾球溫差</th>
+<th>8～10 K</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蒸發器過熱度 SH</td>
+<td>壓縮機吸氣溫度－蒸發溫度</td>
+<td>3～8 K（本例取5K）</td>
+</tr>
+<tr>
+<td>壓縮機吸氣溫度</td>
+<td>＝Te＋SH</td>
+<td>約10～18 °C</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>參數名稱</th>
+<th>定義說明</th>
+<th>典型設計值範圍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷凝溫度 Tc</td>
+<td>冷凝器內冷媒飽和凝結溫度</td>
+<td>40～50 °C（依外氣35°C設</td>
+</tr>
+</tbody>
+</table>
+<p>計）</p>
+<p>外氣溫度 Ta</p>
+<p>室外機吸入空氣乾球溫度（額定工況）</p>
+<p>35 °C DB</p>
+<p>扇熱溫差 ΔTc-a（冷凝溫</p>
+<p>Tc－Ta，反映冷凝器熱交換裕度</p>
+<p>10～15 K</p>
+<p>度與外氣溫差）</p>
+<table>
+<thead>
+<tr>
+<th>冷凝器風側溫升</th>
+<th>冷凝器出風與進風（外氣）溫差</th>
+<th>5～8 K</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>過冷溫度／過冷度 SC</td>
+<td>冷凝溫度－冷凝器出口液體溫度</td>
+<td>3～8 K（本例取5K）</td>
+</tr>
+<tr>
+<td>壓縮機排氣溫度</td>
+<td>壓縮機出口過熱蒸氣溫度</td>
+<td>70～100 °C（R32較R410A</td>
+</tr>
+</tbody>
+</table>
+<p>高約15～20°C）</p>
+<p>壓縮比</p>
+<p>P排氣／P吸氣</p>
+<p>約2.5～4（家用冷房應用）</p>
+<h2 id="五28-kw-分離式冷氣機計算實例coolprop精算修正版">五、2.8 kW 分離式冷氣機計算實例（CoolProp精算修正版）</h2>
+<h2 id="以下以冷氣能力顯熱潛熱總冷房能力qc--28-kw之典">以下以「冷氣能力（顯熱+潛熱總冷房能力）Qc = 2.8 kW」之典</h2>
+<h2 id="型壁掛分離式冷氣機為例依前述循環參數逐步計算壓縮機">型壁掛分離式冷氣機為例，依前述循環參數，逐步計算壓縮機、</h2>
+<h2 id="冷凝器膨脹裝置蒸發器之規格">冷凝器、膨脹裝置、蒸發器之規格。</h2>
+<h3 id="51-設計條件與循環狀態點">5.1 設計條件與循環狀態點</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>代號</th>
+<th>數值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷氣能力（額定）</td>
+<td>Qc</td>
+<td>2.8 kW</td>
+</tr>
+<tr>
+<td>室內回風狀態</td>
+<td>－</td>
+<td>27 °C DB / 19 °C WB</td>
+</tr>
+<tr>
+<td>室外環境溫度</td>
+<td>Ta</td>
+<td>35 °C DB</td>
+</tr>
+<tr>
+<td>蒸發溫度</td>
+<td>Te</td>
+<td>7 °C</td>
+</tr>
+<tr>
+<td>蒸發器過熱度</td>
+<td>SH</td>
+<td>5 K</td>
+</tr>
+<tr>
+<td>冷凝溫度</td>
+<td>Tc</td>
+<td>48 °C</td>
+</tr>
+<tr>
+<td>扇熱溫差（Tc－Ta）</td>
+<td>ΔTc-a</td>
+<td>13 K</td>
+</tr>
+<tr>
+<td>過冷度</td>
+<td>SC</td>
+<td>5 K</td>
+</tr>
+<tr>
+<td>送回風溫差（蒸發器風側）</td>
+<td>ΔTa,evap</td>
+<td>9 K（回風27°C／送風約18°C）</td>
+</tr>
+<tr>
+<td>冷凝器風側溫升</td>
+<td>ΔTair,cond</td>
+<td>6 K（進風35°C／出風約41°C）</td>
+</tr>
+<tr>
+<td>顯熱比 SHR（設計假設）</td>
+<td>－</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>壓縮機等熵效率（假設）</td>
+<td>η_is</td>
+<td>0.70</td>
+</tr>
+<tr>
+<td>機械／馬達總效率（假設）</td>
+<td>η_mech,motor</td>
+<td>0.90</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-循環各狀態點溫度壓力焓值coolprop精算值">5.2 循環各狀態點－溫度、壓力、焓值（CoolProp精算值）</h3>
+<p>狀態點</p>
+<p>說明</p>
+<p><strong>溫度 (°C)</strong></p>
+<p><strong>壓力 (kPa, abs)</strong></p>
+<p><strong>比焓 h (kJ/kg)</strong></p>
+<p>5</p>
+<p>蒸發器出口飽和氣點</p>
+<p>7.0</p>
+<p>1,011.5</p>
+<p>516.4</p>
+<p>1</p>
+<p>壓縮機吸氣（過熱後）</p>
+<p>12.0</p>
+<p>1,011.5</p>
+<p>522.8</p>
+<p>2s</p>
+<p>壓縮機排氣（等熵理論</p>
+<p>83.5</p>
+<p>2,998.9</p>
+<p>567.8</p>
+<p>2</p>
+<p>壓縮機排氣（實際，</p>
+<p>≈98.1</p>
+<p>2,998.9</p>
+<p>587.1</p>
+<p>η_is=0.70）</p>
+<table>
+<thead>
+<tr>
+<th>2'</th>
+<th>冷凝器內飽和氣點</th>
+<th>48.0</th>
+<th>2,998.9</th>
+<th>508.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>冷凝器出口（膨脹裝置</td>
+<td>43.0</td>
+<td>2,998.9</td>
+<td>281.6</td>
+</tr>
+</tbody>
+</table>
+<p>狀態點</p>
+<p>說明</p>
+<p><strong>溫度 (°C)</strong></p>
+<p><strong>壓力 (kPa, abs)</strong></p>
+<p><strong>比焓 h (kJ/kg)</strong></p>
+<p>4</p>
+<p>膨脹裝置出口（蒸發器入</p>
+<p>7.0（兩相）</p>
+<p>1,011.5</p>
+<p>281.6（＝h3，等焓）</p>
+<p>口）</p>
+<p><em>壓縮比＝P2/P1＝2,998.9/1,011.5≈2.97；單位冷凍效應 q_evap=h1－h4=522.8－281.6=241.2 kJ/kg；等熵</em></p>
+<p><em>壓縮功 w_s=h2s－h1=45.0 kJ/kg；實際壓縮功 w_comp=h2－h1=587.1－522.8=64.3 kJ/kg（已計入</em></p>
+<p><em>η_is=0.70）；單位放熱量 q_cond=h2－h3=587.1－281.6=305.5 kJ/kg（能量平衡校核：241.2＋64.3＝</em></p>
+<p>305.5，一致）。</p>
+<p>【與使用者實測莫里爾圖比對】使用者依REFPROP基準親自繪製之p-h圖，各點讀值（h2'≈508～520、</p>
+<p>h2（等熵）≈555～570）與本次CoolProp精算結果高度吻合，證實初版報告以簡化溫度關係式估算之h2</p>
+<p>（≈608 kJ/kg）確有明顯高估，本版已修正。</p>
+<h3 id="53-冷媒循環流量計算">5.3 冷媒循環流量計算</h3>
+<h3 id="依冷房能力與單位冷凍效應冷媒質量流率">依冷房能力與單位冷凍效應，冷媒質量流率：</h3>
+<h3 id="ṁ--qc--q_evap--28-kw--2412-kjkg--0011607-kgs--4179-kgh">ṁ = Qc / q_evap = 2.8 kW ÷ 241.2 kJ/kg = 0.011607 kg/s ＝ 41.79 kg/h</h3>
+<h3 id="54-壓縮機規格計算">5.4 壓縮機規格計算</h3>
+<h3 id="1壓縮機冷媒側實際壓縮功率已計入等熵效率η_is070">（1）壓縮機冷媒側實際壓縮功率（已計入等熵效率η_is＝0.70）：</h3>
+<h3 id="w_comp--ṁ--w_comp--0011607-kgs--643-kjkg--07465-kw">W_comp = ṁ × w_comp = 0.011607 kg/s × 64.3 kJ/kg ＝ 0.7465 kW</h3>
+<h3 id="2計入機械與馬達總效率假設-η_mechmotor--090之電機輸入功率">（2）計入機械與馬達總效率（假設 η_mech,motor ≈ 0.90）之電機輸入功率：</h3>
+<h3 id="p_input--w_comp--η_mechmotor--07465--090--0829-kw">P_input = W_comp / η_mech,motor = 0.7465 / 0.90 ≈ 0.829 kW</h3>
+<h3 id="3系統性能係數">（3）系統性能係數：</h3>
+<p><em>COP = Qc / P_input = 2.8 / 0.829 ≈ 3.38（COP數值已隨精確焓值大幅提升，與一般標準效率R32分離式</em></p>
+<p>冷氣機額定COP約3.0～3.8之公開規格相符，較初版報告之簡化估算值2.70更貼近實際）</p>
+<h3 id="4壓縮機排氣量幾何位移容積以coolprop查得吸氣狀態12c">（4）壓縮機排氣量（幾何位移容積）：以CoolProp查得吸氣狀態（12°C，</h3>
+<h3 id="10115kpa冷媒蒸氣密度比容-v--003760-mkg較初版粗估值高出近一">1,011.5kPa）冷媒蒸氣密度，比容 v₁ ＝ 0.03760 m³/kg（較初版粗估值高出近一</h3>
+<h3 id="倍顯示簡化估算法誤差不僅在焓值比容亦須以精確物性查表為準">倍，顯示簡化估算法誤差不僅在焓值，比容亦須以精確物性查表為準）。</h3>
+<h3 id="吸氣體積流率v̇---ṁ--v--0011607--003760--00004364-ms--1571-mh">吸氣體積流率：V̇  = ṁ × v₁ = 0.011607 × 0.03760 ≈ 0.0004364 m³/s ＝ 1.571 m³/h</h3>
+<h3 id="設容積效率-η_vol--090壓縮機運轉轉速取-n60-revs3600-rpm對應變頻">設容積效率 η_vol ≈ 0.90，壓縮機運轉轉速取 N＝60 rev/s（3,600 rpm，對應變頻</h3>
+<h3 id="機種本工況運轉點">機種本工況運轉點）：</h3>
+<h3 id="排氣量-vd--v̇---η_vol--n--00004364--09060--808-cmrev">排氣量 Vd = V̇  / (η_vol × N) = 0.0004364 / (0.90×60) ≈ 8.08 cm³/rev</h3>
+<h3 id="-選用等級小型迴轉式rotary壓縮機額定排氣量約7585-ccrev屬">→ 選用等級：小型迴轉式（Rotary）壓縮機，額定排氣量約7.5～8.5 cc/rev，屬</h3>
+<h3 id="075hp級額定輸入功率750950w機種與計算所得輸入功率083kw相">0.75HP級（額定輸入功率750～950W）機種，與計算所得輸入功率0.83kW相</h3>
+<h3 id="符註此排氣量較初版報告估算值42-ccrev明顯提高主因初版比容v估">符。（註：此排氣量較初版報告估算值4.2 cc/rev明顯提高，主因初版比容v₁估</h3>
+<h3 id="算過低非壓縮機容量需求改變">算過低，非壓縮機容量需求改變）</h3>
+<h3 id="55-冷凝器與室外送風機規格計算">5.5 冷凝器與室外送風機規格計算</h3>
+<h3 id="1冷凝器放熱量依能量平衡">（1）冷凝器放熱量（依能量平衡）：</h3>
+<h3 id="q_cond--ṁ--q_cond--0011607--3055--3547-kwqcw_comp核對">Q_cond = ṁ × q_cond = 0.011607 × 305.5 ≈ 3.547 kW（＝Qc＋W_comp，核對：</h3>
+<h3 id="280746535465一致">2.8＋0.7465＝3.5465，一致）</h3>
+<h3 id="2冷凝器所需風量設冷凝器風側溫升-δtaircond6k空氣密度12-kg">（2）冷凝器所需風量：設冷凝器風側溫升 ΔTair,cond＝6K，空氣密度1.2 kg/</h3>
+<h3 id="m比熱1006-kjkgk">m³、比熱1.006 kJ/kg·K：</h3>
+<h3 id="v̇-aircond--q_cond--ρcpδt--3547--1210066--490-ls--1763-mh">V̇ air,cond = Q_cond / (ρ×Cp×ΔT) = 3,547 / (1.2×1.006×6) ≈ 490 L/s ＝ 1,763 m³/h</h3>
+<h3 id="cmh">（CMH）</h3>
+<h3 id="3冷凝器熱交換面積以對數平均溫差lmtd法估算冷凝溫度tc48c">（3）冷凝器熱交換面積：以對數平均溫差(LMTD)法估算，冷凝溫度Tc＝48°C</h3>
+<h3 id="為定值外氣進風35c出風41c">為定值，外氣進風35°C、出風41°C：</h3>
+<h3 id="δttctin483513kδttctout48417k">ΔT₁＝Tc－Tin＝48－35＝13K；ΔT₂＝Tc－Tout＝48－41＝7K</h3>
+<h3 id="lmtdδtδtlnδtδt137ln1376061997-k">LMTD＝(ΔT₁－ΔT₂)/ln(ΔT₁/ΔT₂)＝(13－7)/ln(13/7)＝6/0.619≈9.7 K</h3>
+<h3 id="設冷凝器總括熱傳係數風側控制翅片管式u--40-wmk">設冷凝器總括熱傳係數（風側控制，翅片管式）U ≈ 40 W/m²·K：</h3>
+<h3 id="所需散熱面積-a_cond--q_cond--ulmtd--3547--4097--91-m翅片">所需散熱面積 A_cond = Q_cond / (U×LMTD) = 3,547 / (40×9.7) ≈ 9.1 m²（翅片</h3>
+<h3 id="外表面積">外表面積）</h3>
+<p>→ 對應實體尺寸約：正面迎風面積約0.22 m²（迎風風速取2.2m/s），常見線圈尺寸約寬450mm×高</p>
+<p>500mm、2～3列管配置。</p>
+<h3 id="4室外送風機軸流扇規格對應風量1763-mh一般選用軸流螺旋槳">（4）室外送風機（軸流扇）規格：對應風量1,763 m³/h，一般選用軸流螺旋槳</h3>
+<h3 id="扇扇葉直徑約400450mm採dc直流馬達額定功率約1828w轉速約">扇，扇葉直徑約400～450mm，採DC直流馬達，額定功率約18～28W，轉速約</h3>
+<h3 id="700850-rpm依機外靜壓需求微調">700～850 rpm（依機外靜壓需求微調）。</h3>
+<h3 id="56-膨脹裝置規格計算">5.6 膨脹裝置規格計算</h3>
+<h3 id="膨脹裝置前後壓差δp--p3p4--30001012--1988-kpa">膨脹裝置前後壓差：ΔP = P3－P4 = 3,000－1,012 = 1,988 kPa</h3>
+<h3 id="冷媒質量流率-ṁ415-kgh001152-kgs對於28kw等級之小型分離式冷氣">冷媒質量流率 ṁ＝41.5 kg/h（0.01152 kg/s）。對於2.8kW等級之小型分離式冷氣</h3>
+<h3 id="機常用膨脹裝置為毛細管capillary-tube或電子膨脹閥eev">機，常用膨脹裝置為毛細管（Capillary Tube）或電子膨脹閥（EEV）：</h3>
+<ul>
+<li></li>
+</ul>
+<p>毛細管方案：依系統充填量、配管長度及壓差查毛細管選型圖表，典型規格約為內徑</p>
+<p>Φ1.6mm、長度900～1,200mm（實際須以原廠毛細管流量特性曲線核算並試車微調）</p>
+<ul>
+<li></li>
+</ul>
+<p>電子膨脹閥（EEV）方案：選用額定容量涵蓋2.8kW（約4kW以下等級）之脈波式EEV，開度</p>
+<p>依過熱度回授控制，可提升變頻機種之部分負載效率</p>
+<h3 id="57-蒸發器與室內送風機規格計算">5.7 蒸發器與室內送風機規格計算</h3>
+<h3 id="1蒸發器總冷房能力-qc28kw設計顯熱比-shr075則顯熱負荷">（1）蒸發器總冷房能力 Qc＝2.8kW；設計顯熱比 SHR＝0.75，則顯熱負荷：</h3>
+<h3 id="qs--shr--qc--075--28--21-kw潛熱負荷-ql07kw">Qs = SHR × Qc = 0.75 × 2.8 = 2.1 kW（潛熱負荷 Ql＝0.7kW）</h3>
+<h3 id="2蒸發器室內機所需風量以送回風溫差δtaevap9k回風27c送">（2）蒸發器（室內機）所需風量：以送回風溫差ΔTa,evap＝9K（回風27°C、送</h3>
+<h3 id="風約18c計算顯熱負荷對應風量">風約18°C）計算顯熱負荷對應風量：</h3>
+<h3 id="v̇-airevap--qs--ρcpδt--2100--1210069--193-ls--696-mh">V̇ air,evap = Qs / (ρ×Cp×ΔT) = 2,100 / (1.2×1.006×9) ≈ 193 L/s ＝ 696 m³/h</h3>
+<h3 id="cmh-1">（CMH）</h3>
+<h3 id="3蒸發器熱交換面積lmtd法蒸發溫度te7c為定值室內進風">（3）蒸發器熱交換面積：LMTD法，蒸發溫度Te＝7°C為定值，室內進風</h3>
+<h3 id="27c出風18c">27°C、出風18°C：</h3>
+<h3 id="δttinte27720kδttoutte18711k">ΔT₁＝Tin－Te＝27－7＝20K；ΔT₂＝Tout－Te＝18－7＝11K</h3>
+<h3 id="lmtd2011ln201190598151-k">LMTD＝(20－11)/ln(20/11)＝9/0.598≈15.1 K</h3>
+<h3 id="設蒸發器總括熱傳係數濕潤除濕面風側控制u--50-wmk">設蒸發器總括熱傳係數（濕潤除濕面、風側控制）U ≈ 50 W/m²·K：</h3>
+<h3 id="所需散熱面積-a_evap--qc--ulmtd--2800--50151--37-m翅片外表">所需散熱面積 A_evap = Qc / (U×LMTD) = 2,800 / (50×15.1) ≈ 3.7 m²（翅片外表</h3>
+<h3 id="面積">面積）</h3>
+<h3 id="4室內送風機貫流扇規格對應風量696-mh採用貫流風扇cross-">（4）室內送風機（貫流扇）規格：對應風量696 m³/h，採用貫流風扇（Cross-</h3>
+<h3 id="flow-fan扇輪直徑約82100mm長度約600700mm交流直流變頻馬">flow Fan），扇輪直徑約82～100mm，長度約600～700mm，交流／直流變頻馬</h3>
+<h3 id="達額定功率約1525w高風速檔約9001200-rpm依噪音與靜壓需求分檔">達額定功率約15～25W，高風速檔約900～1,200 rpm（依噪音與靜壓需求分檔</h3>
+<h3 id="設計">設計）。</h3>
+<h3 id="58-計算結果彙總表coolprop精算修正版">5.8 計算結果彙總表（CoolProp精算修正版）</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>計算結果</th>
+<th>較初版變化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷媒循環流量 ṁ</td>
+<td>41.79 kg/h（0.011607 kg/s）</td>
+<td>＋0.3 kg/h（略升）</td>
+</tr>
+<tr>
+<td>壓縮機輸入功率 P_input</td>
+<td>約0.829 kW</td>
+<td>－0.21 kW（下修約20%）</td>
+</tr>
+<tr>
+<td>系統性能係數 COP</td>
+<td>約3.38</td>
+<td>＋0.68（上修，更貼近實際機</td>
+</tr>
+</tbody>
+</table>
+<p>種）</p>
+<table>
+<thead>
+<tr>
+<th>壓縮機排氣量 Vd</th>
+<th>約8.08 cc/rev（0.75HP級迴轉式）</th>
+<th>＋3.9 cc/rev（比容修正所致）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷凝器放熱量 Q_cond</td>
+<td>約3.55 kW</td>
+<td>－0.18 kW</td>
+</tr>
+<tr>
+<td>冷凝器（室外機）風量</td>
+<td>約1,763 m³/h</td>
+<td>－93 m³/h</td>
+</tr>
+<tr>
+<td>冷凝器散熱面積</td>
+<td>約9.1 m²</td>
+<td>－0.5 m²</td>
+</tr>
+</tbody>
+</table>
+<p>室外送風機</p>
+<p>軸流扇，Φ400～450mm，約18～</p>
+<p>28W</p>
+<p>略降</p>
+<p>膨脹裝置</p>
+<p>毛細管Φ1.6mm×900～1,200mm，</p>
+<p>不變</p>
+<p>或EEV（≤4kW級）</p>
+<table>
+<thead>
+<tr>
+<th>蒸發器（室內機）風量</th>
+<th>約696 m³/h</th>
+<th>不變（取決於Qc、SHR、</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蒸發器散熱面積</td>
+<td>約3.7 m²</td>
+<td>不變</td>
+</tr>
+<tr>
+<td>室內送風機</td>
+<td>貫流扇，Φ82～100mm，約15～</td>
+<td>不變</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六工程限制與應用聲明">六、工程限制與應用聲明</h2>
+<ul>
+<li></li>
+</ul>
+<p>本報告所列焓值、比容等冷媒物性數據，係依國際通用IIR參考基準並輔以典型比熱與潛熱趨勢</p>
+<p>估算而得，用於呈現計算方法論與數量級合理性；正式產品設計、性能保證及能效測試，應以</p>
+<p>NIST REFPROP、原廠冷媒物性軟體或壓縮機/熱交換器選型軟體之精確數據為準。</p>
+<ul>
+<li></li>
+</ul>
+<p>壓縮機排氣溫度、等熵效率及實際COP，受壓縮機型式（迴轉式、渦卷式）、馬達效率、機構</p>
+<p>損失及潤滑油影響甚大，須以壓縮機原廠性能曲線（如日立、三菱重工、Highly、Toshiba等）</p>
+<p>進行最終選型核算。</p>
+<ul>
+<li></li>
+</ul>
+<p>冷凝器／蒸發器熱傳係數U值會因翅片間距、管排數、迎風風速及濕潤（除濕）狀況而異，本</p>
+<p>例採簡化定值估算，實際設計應以熱交換器原廠選型軟體或CFD模擬進行精確驗證。</p>
+<ul>
+<li></li>
+</ul>
+<p>R32屬A2L（微燃性）冷媒，系統設計、充填量限制及安裝規範須符合當地法規（如CNS</p>
+<p>15503、IEC 60335-2-40及ISO 5149等）之充填量上限與通風安全要求。</p>
+
+            
+            
+        </body>
+        </html>
