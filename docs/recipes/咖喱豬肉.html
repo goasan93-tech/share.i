@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2000cc 專業級豬肉咖哩製作指南</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0d0a07 0%, #1a120b 50%, #2a1b0c 100%);
+            --card-bg: rgba(28, 20, 14, 0.85);
+            --card-border: rgba(245, 158, 11, 0.15);
+            --accent-color: #f59e0b; /* 琥珀焦糖金 */
+            --accent-glow: rgba(245, 158, 11, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --highlight: #f97316; /* 溫暖咖哩橘 */
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* 封面區塊 */
+        .cover-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .cover-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            background: linear-gradient(to right, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        /* 章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        /* 核心重點摘要卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header span {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 食材清單表格 */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+        }
+
+        th {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-color);
+            font-weight: bold;
+            border-bottom: 2px solid var(--card-border);
+            font-size: 1.05rem;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 步驟SOP展示 */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sop-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .sop-step:hover {
+            border-color: var(--accent-color);
+            background: rgba(245, 158, 11, 0.03);
+        }
+
+        .step-number {
+            background: var(--accent-color);
+            color: #1a120b;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .step-content {
+            width: 100%;
+        }
+
+        .step-content h4 {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .step-content ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .step-content li {
+            position: relative;
+            padding-left: 15px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 4px;
+        }
+
+        .step-content li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* 結論樣式 */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(26, 18, 11, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .conclusion-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 響應式排版 (RWD) */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover-card {
+                padding: 40px 20px;
+            }
+
+            th, td {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+
+            .sop-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 封面區 -->
+        <header class="cover-card">
+            <span class="badge">黃金比例・極致濃郁</span>
+            <h1>2000cc 專業級豬肉咖哩</h1>
+            <p class="subtitle">照著買、照著 SOP 做就成功的職人食譜</p>
+        </header>
+
+        <!-- 核心重點卡片 -->
+        <section>
+            <h2 class="section-title">✨ 三大美味底蘊靈魂</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        豬肉預煎鎖住肉汁
+                        <span>🥩</span>
+                    </div>
+                    <p>豬梅花肉/五花肉轉中小火慢煎逼出豬油、鎖住肉汁；再利用這些豬油來煸炒洋蔥。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        焦糖化洋蔥甜味
+                        <span>🧅</span>
+                    </div>
+                    <p>將 1 顆洋蔥碎轉中小火慢炒 15–20 分鐘，直到縮小並化為琥珀色。這是免加精製糖、帶出多層次天然甘甜的秘密武器。</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        低溫熟成魔法
+                        <span>❄️</span>
+                    </div>
+                    <p>咖哩在起鍋後「靜置冷藏過夜」，能讓多種香料與高湯風味完美融合、熟成，使醬汁入口滑順、風味更顯圓潤有深度。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 食材清單表格 -->
+        <section>
+            <h2 class="section-title">🥣 照著買・2000cc 精確黃金食材表</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>食材分類</th>
+                            <th>食材名稱</th>
+                            <th>2000cc 比例份量</th>
+                            <th>備註 / 挑選建議</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="4" style="font-weight: bold; background: rgba(255,255,255,0.01);">主料</td>
+                            <td>豬梅花肉或五花肉</td>
+                            <td><strong>700 克</strong></td>
+                            <td>切小塊，帶點油脂口感更佳</td>
+                        </tr>
+                        <tr>
+                            <td>洋蔥</td>
+                            <td><strong>1 顆（約 200 克）</strong></td>
+                            <td>切細碎或薄片，焦糖化甜味主要來源</td>
+                        </tr>
+                        <tr>
+                            <td>胡蘿蔔</td>
+                            <td><strong>2 根（約 300 克）</strong></td>
+                            <td>切滾刀塊，富含胡蘿蔔素</td>
+                        </tr>
+                        <tr>
+                            <td>馬鈴薯</td>
+                            <td><strong>3 顆（約 450 克）</strong></td>
+                            <td>切滾刀塊，預煎防散</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" style="font-weight: bold; background: rgba(255,255,255,0.01);">辛香料</td>
+                            <td>蒜末</td>
+                            <td>2 大匙（約 30 克）</td>
+                            <td>增加香氣，點綴層次</td>
+                        </tr>
+                        <tr>
+                            <td>薑塊拍扁</td>
+                            <td>約 10 克</td>
+                            <td>去腥溫潤，中和寒性</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" style="font-weight: bold; background: rgba(255,255,255,0.01);">液體底湯</td>
+                            <td>水或大骨高湯</td>
+                            <td>1800 cc</td>
+                            <td>煮滾燉煮用，高湯能提供天然膠質</td>
+                        </tr>
+                        <tr>
+                            <td>鮮蘋果泥</td>
+                            <td>200 克</td>
+                            <td>與高湯合計總液體達 2000 cc（可不加）</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" style="font-weight: bold; background: rgba(255,255,255,0.01);">靈魂調味</td>
+                            <td>好伺甜味咖哩塊</td>
+                            <td>0.5 盒（約 115 克）</td>
+                            <td>也可混搭兩種品牌/辣度，風味層次最豐富</td>
+                        </tr>
+                        <tr>
+                            <td>醬油</td>
+                            <td>1 小匙（5 ml）</td>
+                            <td>提鮮與補充傳統鹹香（可不加）</td>
+                        </tr>
+                        <tr>
+                            <td>蕃茄醬</td>
+                            <td>2 大匙（30 ml）</td>
+                            <td>酸甜提味，增添天然麩胺酸（可不加）</td>
+                        </tr>
+                        <tr>
+                            <td>無鹽奶油</td>
+                            <td>25 克</td>
+                            <td>炒洋蔥與增添乳化滑順奶香（可不加）</td>
+                        </tr>
+                        <tr>
+                            <td>黑巧克力（70%以上）</td>
+                            <td>18 克 （3小塊）</td>
+                            <td>增加苦甜與色澤濃郁深邃感（可不加）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 製作步驟SOP -->
+        <section>
+            <h2 class="section-title">⏱ 照著做・職人級咖哩製作 SOP</h2>
+            <div class="sop-timeline">
+                <div class="sop-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>肉塊與蔬菜預處理（封存肉汁與防煮散）</h4>
+                        <ul>
+                            <li><strong>煎豬肉：</strong>熱鍋放入少許油，將切塊的豬肉下鍋，以小火煎至表面呈現金黃微焦，鎖住肉汁後撈出備用。</li>
+                            <li><strong>煸炒洋蔥：</strong>利用鍋內殘留的豬油煸炒洋蔥絲。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>焦糖化洋蔥（靈魂底蘊）</h4>
+                        <ul>
+                            <li><strong>慢炒洋蔥：</strong>同一鍋補入 25 克無鹽奶油，放入洋蔥碎，轉中小火慢炒約 15–20 分鐘。過程需持續翻炒，直到洋蔥縮小並呈現美麗的深琥珀焦糖色。</li>
+                            <li><strong>爆香辛香料：</strong>加入蒜末，與焦糖洋蔥一同翻炒約 1 分鐘至香氣四溢。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>高湯燉煮與軟化</h4>
+                        <ul>
+                            <li><strong>加入液體與食材：</strong>將煎好的豬肉塊倒回鍋中，倒入
+                                 1800 cc 高湯與 200 cc 蘋果泥（總液體量 2000 cc）。</li>
+                            <li><strong>燉煮：</strong>大火煮滾後，仔細撇去表面的浮沫與多餘雜油。蓋上鍋蓋，轉小火慢燉 10 分鐘。</li>
+                        <li><strong>加入食材：</strong>10分鐘後，再將馬鈴薯、胡蘿蔔倒入鍋中。</li>
+                            <li><strong>燉煮：</strong>蓋上鍋蓋，繼續小火慢燉 20 分鐘。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>調味、熟成與完成</h4>
+                        <ul>
+                            <li><strong>關火融化咖哩塊（鐵律）：</strong>請一定要先關火！將 0.5 盒咖哩塊放入鍋中，用湯勺輕輕攪拌至完全融化無顆粒（關火可防止醬汁太快勾芡而導致咖哩塊無法溶解結塊）。</li>
+                            <li><strong>加入特殊調味：</strong>開微火，加入 2 大匙醬油、2 大匙蕃茄醬以及 18 克黑巧克力，持續攪拌煮約 5 分鐘至醬汁呈現濃稠光澤感。</li>
+                            <li><strong>熟成美味：</strong>關火後可直接享用，或靜置冷藏過夜熟成，風味會更佳！</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 關鍵食材說明 -->
+        <section>
+            <h2 class="section-title">💡 靈魂隱味之關鍵作用</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        黑巧克力 (70%以上)
+                        <span>🍫</span>
+                    </div>
+                    <p><strong>作用：</strong>提供深邃的苦甜底蘊與自然濃稠感。可可脂與多酚能平衡咖哩塊的鹹度與辛辣感，使醬汁呈現深沉高級的琥珀褐色，入口後後韻綿長。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        蕃茄醬
+                        <span>🍅</span>
+                    </div>
+                    <p><strong>作用：</strong>補充天然的「果酸味」與「天然麩胺酸 (Umami 鮮味)」。酸味可以完美中和濃郁咖哩的油膩感，讓整體口感更開胃、百吃不膩。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        蘋果汁 (或蘋果泥)
+                        <span>🍎</span>
+                    </div>
+                    <p><strong>作用：</strong>提供溫和柔順的自然甘甜與蘋果酵素。蘋果的果糖與水果酸能軟化豬肉纖維，讓肉質更軟嫩，並使辣味與鹹味過渡得更加圓潤。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        無鹽奶油
+                        <span>🧈</span>
+                    </div>
+                    <p><strong>作用：</strong>作為炒焦糖洋蔥的絕佳油脂介質，賦予咖哩醬乳化後的濃郁奶香味，使醬汁口感更加絲滑、充滿法式高雅質感。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 比較表格 -->
+        <section>
+            <h2 class="section-title">📊 傳統家常 VS 專業店家做法差異</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>關鍵技術</th>
+                            <th>一般家庭作法 (風味較單薄)</th>
+                            <th>職人級 SOP 做法 (層次濃郁)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">洋蔥炒法</td>
+                            <td>洋蔥稍微炒軟即加水煮滾</td>
+                            <td><strong>奶油慢炒 15-20 分鐘</strong>至深焦糖琥珀色，釋放焦糖化甜香 [1, 2]</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">食材預處理</td>
+                            <td>蔬菜與生肉直接丟入湯中水煮</td>
+                            <td><strong>豬肉與根莖類先煎封</strong>，鎖住肉汁、防止馬鈴薯糊化散開 [1, 2]</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">咖哩溶解</td>
+                            <td>開著大火直接丟入咖哩塊</td>
+                            <td><strong>鐵律：一定要先關火</strong>，切碎放入攪勻，完全不結塊 [1]</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">隱味調合</td>
+                            <td>僅依靠市售咖哩塊單一風味</td>
+                            <td><strong>加入黑巧克力、蕃茄醬、蘋果汁、醬油</strong>，堆疊出深邃後韻 [1]</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">最佳享用時間</td>
+                            <td>煮好立刻起鍋盛盤開動</td>
+                            <td><strong>靜置冷藏熟成一晚</strong>，讓香料與高湯完美融合再吃 [1-3]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <footer class="conclusion-card">
+            <p>
+                頂級豬肉咖哩的美味奧秘，絕非單純依靠調味包，而是透過「時間、溫度、脂香、蔬果香、辛香料」的層層堆疊。只要遵循這套「2000cc 食材表 + 職人烹煮 SOP」，您家裡的餐桌隨時都能端出媲美日式洋食名店、濃稠發亮且極致溫潤的靈魂豬肉咖哩！
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
