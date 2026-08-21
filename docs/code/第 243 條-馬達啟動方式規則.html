@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 243 條：馬達啟動方式與起動電流限制</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: .08em;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub { color: var(--ink-soft); font-size: 16px; margin: 0; }
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .08em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 { font-size: 17px; color: var(--ink); margin: 26px 0 10px; }
+.content p { margin: 0 0 16px; }
+.content strong { color: var(--ink); }
+.content ul { margin: 0 0 18px; padding-left: 1.5em; }
+.content li { margin: 5px 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.callout-body ul { margin-bottom: 0; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  <p class="eyebrow">法規、標準、基準、規範與文獻</p>
+  <h1 class="report-title">第 243 條：馬達啟動方式與起動電流限制</h1>
+  <p class="report-sub">《用戶用電設備裝置規則》之低壓與高壓電動機設計應用整理</p>
+</header>
+
+<div class="layout">
+<nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+
+<main class="content">
+<h1>1. 低壓電動機起動電流限制</h1>
+<p>根據經濟部發布之《用戶用電設備裝置規則》（原屋內線路裝置規則），三相交流電動機之起動方式與起動電流限制，主要規範於第 243 條（低壓電動機）與第 955 條（高壓電動機）。</p>
+<p>相關法令依供電電壓等級與馬達容量，對全電壓直接起動（全壓起動）與降壓起動（限流型操作器）進行規範。</p>
+<p>三相低壓電動機之起動電流若超出下列容量限制，不得直接全壓起動，應採用降壓型或限流型操作器，例如 Y-$\Delta$ 起動、自耦變壓器降壓起動、軟啟動器或變頻器。</p>
+<table>
+<thead><tr><th>供電系統電壓</th><th>免受限制之馬達單具容量上限</th><th>超過容量限制時之起動電流規定</th></tr></thead>
+<tbody>
+<tr><td><strong>三相 220 V</strong></td><td>每具容量不超過 <strong>15 HP</strong> 者，得全壓起動</td><td>不得超過該電動機全載額定電流之 <strong>3.5 倍</strong></td></tr>
+<tr><td><strong>三相 380 V</strong></td><td>每具容量不超過 <strong>50 HP</strong> 者，得全壓起動</td><td>不得超過該電動機全載額定電流之 <strong>3.5 倍</strong></td></tr>
+<tr><td><strong>高壓用戶之低壓馬達</strong></td><td>每具容量不超過 <strong>200 HP</strong> 者，不加限制</td><td>不得超過該電動機全載額定電流之 <strong>3.5 倍</strong></td></tr>
+</tbody>
+</table>
+<div class="callout callout-note"><div class="callout-title">參考文獻與法規來源</div><div class="callout-body"><ul><li>經濟部《用戶用電設備裝置規則》第 243 條</li><li><a href="https://law.moea.gov.tw/LawContent.aspx?id=FL011045" target="_blank" rel="noopener">全國法規資料庫：用戶用電設備裝置規則</a></li></ul></div></div>
+
+<h1>2. 高壓電動機起動電流限制</h1>
+<p>針對高壓供電用戶之高壓電動機，其起動電流限制依供電電壓等級分類如下：</p>
+<ul>
+<li><strong>3 kV 級供電</strong>：每具容量不超過 <strong>200 HP</strong> 者，不加限制。</li>
+<li><strong>11 kV 級供電</strong>：每具容量不超過 <strong>400 HP</strong> 者，不加限制。</li>
+<li><strong>22 kV 級供電</strong>：每具容量不超過 <strong>800 HP</strong> 者，不加限制。</li>
+<li><strong>超過上述容量限制者</strong>：其起動電流不得超過該電動機全載額定電流之 <strong>3.5 倍</strong>。</li>
+</ul>
+
+<h1>3. 操作器與降壓裝置設計 SOP 規範</h1>
+<h2>3.1 檢討馬達容量與供電系統電壓</h2>
+<p>依據《用戶用電設備裝置規則》第 243 條，確認現場系統電壓（如 220 V 或 380 V）及單台馬達容量（HP）。若超過 15 HP（220 V）或 50 HP（380 V），即需規劃降壓啟動。</p>
+<h2>3.2 選定適當之降壓或限流啟動方式</h2>
+<p>可選用 <strong>Y-$\Delta$ 起動</strong>、自耦變壓器降壓起動、SS（Solid-State Soft Starter，軟啟動器）或 VFD（Variable Frequency Drive，變頻器），將起動突波電流限制於全載電流的 3.5 倍以內。</p>
+<h2>3.3 自耦變壓器保護與位置連鎖設定</h2>
+<p>依第 239 條辦理。若採用自耦變壓起動器，其機構應具備「啟斷位置」、「運轉位置」及一個以上之「起動位置」，且必須設計為<strong>不可持續停留於起動位置</strong>，避免過載保護失效或自耦變壓器過熱燒毀。</p>
+<h2>3.4 過載保護裝置選定與設定</h2>
+<p>依第 225 條辦理。若採用 <strong>Y-$\Delta$ 起動方式</strong>，過載保護電驛（Thermal Overload Relay）安裝於線路側時，僅承載相電流：</p>
+<div class="math-block">$$ I_\phi = \frac{I_L}{\sqrt{3}} \approx 0.577 I_L $$</div>
+<p>其額定設定值應依銘牌滿載電流比例調整，跳脫值不得大於銘牌電流之 <strong>125%</strong>，並應明確標示於設備上。</p>
+
+<h1>4. 75 HP 冰水主機壓縮機案例</h1>
+<h2>4.1 案例情境</h2>
+<p>某 HVAC（Heating, Ventilating, and Air Conditioning，暖通空調）機房規劃安裝一台 <strong>三相 380 V / 75 HP</strong> 之冰水主機壓縮機馬達，已知該馬達銘牌全載電流為 <strong>$I_F = 100\text{ A}$</strong>。</p>
+<h2>4.2 法規選用分析</h2>
+<ul><li><strong>電壓與容量判定</strong>：供電電壓為 380 V，馬達容量 75 HP &gt; 50 HP。</li><li><strong>選用原因</strong>：馬達容量已超過 380 V 系統免限制之 50 HP 門檻，不得直接全壓起動，必須選用降壓型操作器（如 Y-$\Delta$ 或軟啟動器），並將起動電流抑制於額定電流之 3.5 倍以內。</li></ul>
+<h2>4.3 計算與結果</h2>
+<div class="math-block">$$ I_{\text{start(max)}} = I_F \times 3.5 $$</div>
+<div class="math-block">$$ I_{\text{start(max)}} = 100\text{ A} \times 3.5 = 350\text{ A} $$</div>
+<div class="callout callout-success"><div class="callout-title">計算結果</div><div class="callout-body">該 75 HP 馬達在啟動過程中的最大允許起動電流為 <strong>350 A</strong>。設計技師需選用可將啟動電流控制在 350 A 以下之降壓起動設備。Y-$\Delta$ 起動時，線電流降為全壓之 $1/3 \approx 33.3\%$，其啟動電流約為全壓啟動的 2 至 2.5 倍。</div></div>
+
+<h1>5. 「不超過」與「超過」之邊界判定</h1>
+<p>根據《用戶用電設備裝置規則》第 243 條的文意與法規實務解析，文字表述「若超過 15 HP（220 V）」不包含 15 HP 本身。</p>
+<ul><li><strong>剛好 15 HP</strong>：屬於「不超過 15 HP」的範圍，包含 15 HP 本身，得全壓直接起動。</li><li><strong>大於 15 HP</strong>（例如 20 HP）：屬於「超過 15 HP」的範圍，不得全壓直接起動，起動電流必須限制在全載電流之 3.5 倍以內。</li></ul>
+<table>
+<thead><tr><th>文字表述</th><th>法律用語數學定義</th><th>15 HP 是否適用全壓起動？</th><th>說明與理由</th></tr></thead>
+<tbody>
+<tr><td><strong>每具容量不超過 15 HP</strong><br>（法規第 243 條原文用語）</td><td>容量 $\le 15\text{ HP}$<br><strong>（包含 15 HP）</strong></td><td><strong>得全壓起動</strong></td><td>「不超過」在法規與公務語意中相當於「小於或等於（$\le$）」，包含邊界值。</td></tr>
+<tr><td><strong>若超過 15 HP</strong><br>（常見解說用語）</td><td>容量 $&gt; 15\text{ HP}$<br><strong>（不含 15 HP）</strong></td><td><strong>不得全壓起動</strong></td><td>「超過」在法規與公務語意中相當於「嚴格大於（$&gt;$）」，不包含邊界值。</td></tr>
+</tbody>
+</table>
+<div class="callout callout-note"><div class="callout-title">參考文獻與法規來源</div><div class="callout-body"><ul><li>經濟部《用戶用電設備裝置規則》第 243 條（原屋內線路裝置規則）</li><li>法務部《行政法令草擬暨審查作業手冊》（關於「超過」與「不超過」之法律效果定義）</li><li><a href="https://law.moea.gov.tw/LawContent.aspx?id=FL011045" target="_blank" rel="noopener">全國法規資料庫：用戶用電設備裝置規則</a></li></ul></div></div>
+
+<h1>6. 審圖 SOP 判定流程</h1>
+<h2>6.1 讀取馬達銘牌及單線圖容量</h2>
+<p>確認額定 HP 數值，檢視空調水泵、風機或壓縮機馬達之銘牌數據與三相電壓（以 220 V 為例）。</p>
+<h2>6.2 比對第 243 條容量等級</h2>
+<p>邊界數值為 15 HP。若容量為 <strong>7.5 HP、10 HP、15 HP</strong>，屬於「不超過 15 HP」，可全壓起動（DOL）。若容量為 <strong>20 HP、25 HP 及以上</strong>，屬於「超過 15 HP」，須設降壓起動裝置。</p>
+<h2>6.3 設計及選用降壓起動操作器</h2>
+<p>對超過 15 HP 之馬達，選用 Y-$\Delta$（Y-Delta 降壓起動）、變頻器（VFD）或軟啟動器，確保起動突波電流：</p>
+<div class="math-block">$$ I_{\text{start}} \le 3.5 \times I_F $$</div>
+
+<h1>7. 220 V 三相空調水泵案例</h1>
+<h2>7.1 案例情境</h2>
+<p>某工程規劃安裝兩台 220 V 三相空調水泵馬達：</p>
+<table>
+<thead><tr><th>水泵</th><th>容量</th><th>銘牌額定電流</th></tr></thead>
+<tbody><tr><td>A 水泵</td><td>15 HP</td><td>$I_F = 40\text{ A}$</td></tr><tr><td>B 水泵</td><td>20 HP</td><td>$I_F = 52\text{ A}$</td></tr></tbody>
+</table>
+<h2>7.2 選用原因</h2>
+<p><strong>A 水泵（15 HP）</strong>屬於「不超過 15 HP」之範疇（含 15 HP），符合直接起動之容量上限，可直接採用直啟磁力開關（DOL 起動）。</p>
+<p><strong>B 水泵（20 HP）</strong>屬於「超過 15 HP」之範疇（不含 15 HP），已突破全壓起動上限，必須採用降壓控制，如 Y-$\Delta$ 起動器。</p>
+<h2>7.3 B 水泵最大允許起動電流</h2>
+<div class="math-block">$$ I_{\text{start(max)}} = I_F \times 3.5 $$</div>
+<div class="math-block">$$ I_{\text{start(max)}} = 52\text{ A} \times 3.5 = 182\text{ A} $$</div>
+<div class="callout callout-success"><div class="callout-title">案例結論</div><div class="callout-body"><strong>A 水泵（15 HP）</strong>起動電流不受 3.5 倍限制；<strong>B 水泵（20 HP）</strong>降壓起動時之峰值電流不得超過 <strong>182 A</strong>。</div></div>
+
+<h1>8. 設計結論</h1>
+<p>馬達起動方式應先依供電電壓與單具容量判定是否落在第 243 條或第 955 條的免限制範圍內。容量「不超過」門檻值時包含門檻本身；超過門檻時，則應採用降壓或限流型操作器，並確認起動電流不超過全載額定電流的 3.5 倍。</p>
+</main>
+</div>
+<footer class="report-footer"><p>本頁為《用戶用電設備裝置規則》相關技術資料之網頁整理版；正式設計、送審與施工前，仍應以最新法規原文及主管機關解釋為準。</p></footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(header, index) {
+    var id = 'sec-' + index;
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
