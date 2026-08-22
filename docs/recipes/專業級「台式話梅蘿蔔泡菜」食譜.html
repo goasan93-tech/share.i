@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人傳授・台式話梅醃蘿蔔黃金 SOP 簡報</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #011611 0%, #032b20 50%, #0c4d3d 100%);
+            --card-bg: rgba(6, 31, 24, 0.85);
+            --card-border: rgba(251, 191, 36, 0.2);
+            --accent-gold: #fbbf24; /* 晶瑩話梅金 */
+            --accent-glow: rgba(251, 191, 36, 0.3);
+            --accent-green: #10b981; /* 爽脆蘿蔔綠 */
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* 封面設計 */
+        .cover-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .cover-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            background: linear-gradient(to right, #ffffff, var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        /* 章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--accent-gold);
+            padding-left: 15px;
+        }
+
+        /* 核心摘要卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.25);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header span {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 食材清單表格 */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+        }
+
+        th {
+            background: rgba(251, 191, 36, 0.12);
+            color: var(--accent-gold);
+            font-weight: bold;
+            border-bottom: 2px solid var(--card-border);
+            font-size: 1.05rem;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 步驟SOP展示 */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sop-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .sop-step:hover {
+            border-color: var(--accent-gold);
+            background: rgba(251, 191, 36, 0.03);
+        }
+
+        .step-number {
+            background: var(--accent-gold);
+            color: #011611;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .step-content {
+            width: 100%;
+        }
+
+        .step-content h4 {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 結論卡片 */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(6, 31, 24, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .conclusion-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* RWD 響應式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover-card {
+                padding: 40px 20px;
+            }
+
+            th, td {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+
+            .sop-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 封面 -->
+        <header class="cover-card">
+            <span class="badge">開胃小菜・爽脆爆汁</span>
+            <h1>台式話梅蘿蔔泡菜</h1>
+            <p class="subtitle">專業名店級「喀滋脆感」與古早甘甜調配密碼。照著買，照著SOP做，超Easy!</p>
+            <p>研究組員：李世權 Gemini</p>
+        </header>
+
+        <!-- 核心重點卡片 -->
+        <section>
+            <h2 class="section-title">✨ 店家不說的爽脆三大秘密</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        保留表皮厚片切法
+                        <span>🔪</span>
+                    </div>
+                    <p>專業店家不把皮完全刨掉！蘿蔔皮富含極高強度的纖維質，保留外皮並<strong>精準切成 0.8 公分厚度</strong>，是打造硬挺、極致爽脆嚼勁的絕對關鍵。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        3% 黃金去菁與重壓
+                        <span>🪨</span>
+                    </div>
+                    <p>抓鹽比例必須落在<strong>蘿蔔重量的 3%</strong>。抓醃後以重物壓制 3~4 小時，徹底逼出白蘿蔔自帶的芥子油苦水與澀味，讓蘿蔔呈現堅韌且半透明的質地。</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        紹興話梅果酸隱味
+                        <span>梅</span>
+                    </div>
+                    <p>傳統糖醋汁加入 <strong>8 顆南投紹興話梅</strong>慢火熬煮。話梅釋放出的獨特甘草與梅果香甜，能完美中和白醋的嗆喉酸度，轉化為高雅的回甘甜味。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 食材清單表格 -->
+        <section>
+            <h2 class="section-title">🥣 照著買・黃金比例食材清單</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>食材分類</th>
+                            <th>食材名稱</th>
+                            <th>專業店家黃金配比</th>
+                            <th>職人挑選與預處理建議</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2" style="font-weight: bold; background: rgba(255,255,255,0.01);">主要食材</td>
+                            <td>新鮮白蘿蔔 (去頭尾不削皮)</td>
+                            <td><strong>1200 克 (2 台斤)</strong></td>
+                            <td>挑選沉甸甸、表皮光滑無裂縫者。徹底用乾淨菜瓜布刷淨表皮。</td>
+                        </tr>
+                        <tr>
+                            <td>鮮彩紅蘿蔔 (配色用)</td>
+                            <td><strong>100 克</strong></td>
+                            <td>切成薄片或用模具壓出星花形，增添視覺美感。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: rgba(255,255,255,0.01);">去菁殺青</td>
+                            <td>鹽巴</td>
+                            <td><strong>36 克 (精準 3% 比例)</strong></td>
+                            <td>用以去菁，逼出蘿蔔澀水。</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" style="font-weight: bold; background: rgba(255,255,255,0.01);">靈魂話梅糖醋汁</td>
+                            <td>陳年糯米醋 (或蘋果醋)</td>
+                            <td>220 cc</td>
+                            <td>提供溫潤醇香不嗆、多層次的酸感。</td>
+                        </tr>
+                        <tr>
+                            <td>乾淨冷開水 / 飲用水</td>
+                            <td>200 cc</td>
+                            <td>用以稀釋、降低醋酸帶來的刺激喉感。</td>
+                        </tr>
+                        <tr>
+                            <td>蔗香二砂糖 (赤砂)</td>
+                            <td>200 克</td>
+                            <td>提供厚實、微帶蔗香的甘甜。與醋呈 1:1 的黃金調和。</td>
+                        </tr>
+                        <tr>
+                            <td>台灣紹興話梅 (甘甜梅)</td>
+                            <td><strong>8 顆</strong></td>
+                            <td>極致靈魂隱味！徹底軟化醋酸，轉化為梅香果酸。</td>
+                        </tr>
+                        <tr>
+                            <td>鮮紅大辣椒 (切圈)</td>
+                            <td>1 條</td>
+                            <td>點綴用。微辛香去腥，怕辣者可去籽後切圈使用。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: rgba(255,255,255,0.01);">台式經典增香</td>
+                            <td>新鮮蒜頭 (切片)</td>
+                            <td>5 瓣</td>
+                            <td>增添微微的台式辛香風味。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 製作步驟 SOP -->
+        <section>
+            <h2 class="section-title">⏱ 照著做・台式話梅醃蘿蔔標準 SOP</h2>
+            <div class="sop-timeline">
+                <div class="sop-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>刷洗切片 (帶皮極致脆口)</h4>
+                        <p>白蘿蔔無須完全削皮（僅切除極硬的頭尾），使用乾淨刷子或菜瓜布在清水下徹底將表皮刷洗乾淨。縱向對剖後，切成厚度約 <strong>0.8 公分的扇形片狀或粗條狀</strong>。紅蘿蔔切成薄片或星花型備用。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>重物加壓去菁 (逼出苦澀水)</h4>
+                        <p>將切好的白蘿蔔、紅蘿蔔片放入乾淨大盆中。撒入 36 克細鹽，用手徹底抓醃均勻，確保每片蘿蔔都沾裹鹽分。在上面壓上重物（例如裝滿水的另一個大鍋、或乾淨的重石），<strong>重壓靜置 3~4 小時</strong>，將苦澀芥子油與多餘水分徹底壓出。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>白開水漂洗與極致擰乾 (極度吸汁關鍵)</h4>
+                        <p>將壓出來的蘿蔔鹽苦水完全倒掉。倒入足量<strong>冷開水 (或過濾飲用水) 漂洗 3~4 次</strong>，洗去多餘的鹽分。最後分批裝入乾淨紗布袋中，用力擰乾或用扭乾水分（水分擠得越乾，口感越是乾脆，且越能完美吸足糖醋汁）。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>熬煮話梅糖醋汁並「完全放涼」</h4>
+                        <p>在小鍋中倒入 200cc 乾淨冷水、200g 二砂糖、220cc 糯米醋，並放入 8 顆紹興話梅。開小火慢燉煮沸至二砂糖完全融化，即可關火。<strong>重點提示：務必讓糖醋汁完全冷卻至常溫</strong>，熱汁會使蘿蔔細胞壁燙熟而軟塌，徹底失去脆度！</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>低溫密封熟成</h4>
+                        <p>將徹底擰乾的蘿蔔片、紅蘿蔔花、蒜片與辣椒圈，依序裝入已高溫煮沸殺菌並晾乾的乾淨玻璃密封罐中。倒入完全冷卻的话梅糖醋汁（液體高度必須完全淹過蘿蔔）。蓋緊瓶蓋，<strong>放入冰箱冷藏低溫熟成 2~3 天</strong>，風味最為完美。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 比較表格 -->
+        <section>
+            <h2 class="section-title">📊 傳統家常醃法 VS 專業店家 SOP 差異</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>工藝環節</th>
+                            <th>傳統家常醃法 (容易軟爛苦辣)</th>
+                            <th>專業店家 SOP 醃法 (爆汁喀滋爽脆)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">外皮處理</td>
+                            <td>將外皮全部刨乾淨。口感軟塌，缺乏阻力。</td>
+                            <td><strong>保留刷乾淨的蘿蔔皮。</strong>蘿蔔皮提供極高密度的爽脆嚼勁與「喀滋」阻力。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">去菁方式</td>
+                            <td>僅放鹽靜置，無外力重壓。去水不完全，蘿蔔咬下去仍帶有嗆辣辛澀味。</td>
+                            <td><strong>精準 3% 鹽巴 + 重物重壓 3 小時。</strong>徹底把細胞壁水分榨乾並排除芥子油苦澀生味。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">水分控制</td>
+                            <td>用自來水漂洗且沒有用力擰乾。容易變質、變酸、長霉。</td>
+                            <td><strong>冷開水漂洗 + 徹底用力擰乾。</strong>蘿蔔處於極度乾渴狀態，能瞬間完美吸足醃漬液。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">糖醋汁熬煮</td>
+                            <td>只用白醋與白糖，甚至不熬煮直接拌。醋酸銳利嗆鼻，味道缺乏深度。</td>
+                            <td><strong>糯米醋加二砂糖與 8 顆紹興話梅熬煮放涼。</strong>甘草與梅果酸甜融入醋汁，酸甜層次深邃。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">美味熟成期</td>
+                            <td>醃好 2 小時後就直接吃。味道流於表面、蘿蔔內部依然無味。</td>
+                            <td><strong>低溫冷藏靜置熟成 2-3 天。</strong>醃汁徹底滲透至蘿蔔核心，每口都均勻爆汁、甜中帶酸。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <footer class="conclusion-card">
+            <p>
+                這道專業級「台式話梅醃蘿蔔」的迷人之處，在於重壓去菁帶來的頂級爽脆口感，與紹興話梅釋放出的甘草果酸隱味。只要嚴格遵循這套「精準食材表 + 職人 SOP」，您家裡的冰箱隨時都能端出一碟驚艷親友、清脆解膩的神級常備開胃小菜！
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
