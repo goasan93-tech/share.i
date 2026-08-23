@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人傳授・鄭曼青大師37式太極拳完整37勢教學簡報</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #051410 0%, #0a2921 50%, #0d382c 100%);
+            --card-bg: rgba(9, 36, 29, 0.85);
+            --card-border: rgba(16, 185, 129, 0.25);
+            --accent-green: #10b981; /* 翡翠綠 */
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --accent-gold: #f59e0b; /* 琥珀金 */
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* 封面設計 */
+        .cover-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .cover-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            background: linear-gradient(to right, #ffffff, var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        /* 章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--accent-green);
+            padding-left: 15px;
+        }
+
+        /* 核心摘要卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-green);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header span {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 互動式分頁導覽列 */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-green);
+            color: #051410;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 37式卡片排版 */
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 22px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-left: 4px solid var(--accent-green);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .form-card:hover {
+            border-left-color: var(--accent-gold);
+            transform: translateX(5px);
+        }
+
+        .form-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-num {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 2px 10px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            border: 1px solid var(--card-border);
+        }
+
+        .form-key {
+            color: var(--accent-gold);
+            font-size: 0.92rem;
+            font-weight: bold;
+        }
+
+        .form-sop {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 表格樣式 */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+        }
+
+        th {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            font-weight: bold;
+            border-bottom: 2px solid var(--card-border);
+            font-size: 1.05rem;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 結論卡片 */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(9, 36, 29, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .conclusion-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* RWD 響應式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover-card {
+                padding: 40px 20px;
+            }
+
+            .tab-navigation {
+                border-radius: 16px;
+                width: 100%;
+            }
+
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                flex: 1 1 40%;
+                text-align: center;
+            }
+
+            th, td {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 封面 -->
+        <header class="cover-card">
+            <span class="badge">正宗薪傳・37勢全收錄</span>
+            <h1>鄭子太極拳完整37勢教材</h1>
+            <p class="subtitle">虛實分清、用意不用力，讀者照著練就成功的黃金指南</p>
+        </header>
+
+        <!-- 核心心法摘要 -->
+        <section>
+            <h2 class="section-title">✨ 習練太極拳之三大黃金要素</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        太極十要身法
+                        <span>🥋</span>
+                    </div>
+                    <p>
+                        練拳時務必嚴格遵循「虛領頂頸、含胸拔背、沉肩墜肘、鬆腰落胯」等基本要領，骨架結構端正，氣血方能順暢下行沉入湧泉。
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        終身相隨「美人手」
+                        <span>✋</span>
+                    </div>
+                    <p>
+                        五指自然微翹，手腕呈現優美平滑弧線。絕不折腕、不僵直，這是最利於人體末梢神經傳導與「先天炁」一收一放的靈魂手勢。
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        不丟不頂「學吃虧」
+                        <span>🌊</span>
+                    </div>
+                    <p>
+                        推手時絕不以僵力硬抗，而是引進落空、先自學吃虧始。當能順暢化解對方拙力，稍微撒手便能借力使人跌出尋丈之外。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 互動分頁導覽 -->
+        <section>
+            <h2 class="section-title">⏱ 完整37勢・手眼身法步 SOP</h2>
+            
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab(event, 'part1')">第一階段 (1-13勢)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'part2')">第二階段 (14-27勢)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'part3')">第三階段 (28-37勢)</button>
+            </div>
+        </section>
+
+        <!-- 分頁一：1-13勢 -->
+        <div id="part1" class="tab-content active">
+            
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第一勢</span> 預備式、起勢</div>
+                    <span class="form-key">關鍵：意守丹田、美人手領舉</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>兩腳併立放鬆，重心移至右腳橫跨左腳與肩同寬。雙手呈「美人手」在空氣阻力（陸地游泳意念）中徐徐向上平舉與肩同高，隨後沉肩墜肘，雙掌按回腹前，膝蓋微彎沉氣。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第二勢</span> 左掤</div>
+                    <span class="form-key">關鍵：虛實分清、手腳相隨</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心落右腳，腰微右旋雙手合抱。左腳上步（腳跟先著地），重心緩緩前移，左臂向前向上撐起呈弓形（掤），右手按在右胯旁，身軀中正。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第三勢</span> 右攬雀尾 (掤、捋、擠、按)</div>
+                    <span class="form-key">關鍵：四正勁完整一氣</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>上右步呈右掤；順勢右轉引導對方來力（捋）；後坐蓄勁、前移將雙手貼合向前推出（擠）；雙手分開後坐收回、垂直向下再向前平推（按）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第四勢</span> 單鞭</div>
+                    <span class="form-key">關鍵：吊手鉤定、含胸旋腰</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心後坐，左轉右腳扣步，右掌變五指合攏的「吊手」，腰微左旋，左上步，左掌自面前拂過、旋腕向左前方推出，呈單鞭弓步。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第五勢</span> 提手上勢</div>
+                    <span class="form-key">關鍵：合抱拔根、重心後坐</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>後坐收回左腳，右手向上、左手向上合抱於胸前，右腳向前移，右腳跟虛點地呈虛步，合抱蓄勁，氣沉下盤。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第六勢</span> 靠</div>
+                    <span class="form-key">關鍵：肩背蓄發、意在肩背</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>上右腳前移，右手折回貼近胸肋，左手護於右肘內側，借腰胯前移之勢，以右肩背外側向前方斜靠發力，不可低頭聳肩。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第七勢</span> 白鶴亮翅</div>
+                    <span class="form-key">關鍵：陰陽分清、舒展拔伸</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>身體左轉，右腳稍退，重心後坐，右手向上旋腕亮掌於右額前，左手向下按於左胯旁，左腳尖虛點地呈左虛步，形如白鶴展翅。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第八勢</span> 摟膝拗步</div>
+                    <span class="form-key">關鍵：摟、推協調、腰胯帶動</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心微移，左腳向前上步呈弓步，左掌向下經膝前向左摟過，右掌經右耳旁由腰胯帶動向前平平推出。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第九勢</span> 手揮琵琶</div>
+                    <span class="form-key">關鍵：雙掌懷抱、蓄勁聽勁</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心微後移，左腳稍收回，腳跟點地，右手合抱在前，左手在後，兩手呈現懷抱琵琶狀，神意中正，蓄勢待發。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十勢</span> 摟膝拗步</div>
+                    <span class="form-key">關鍵：重複招勢、動作精準</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>與第八勢動作要領完全相同。再次右推左摟，上步呈左弓步，拉長身形，氣息均勻沉於下腹。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十一勢</span> 搬攔捶</div>
+                    <span class="form-key">關鍵：搬、攔、捶三動一氣</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>右手握拳向右下方撇擊（搬），左掌上前阻攔對方（攔），隨後右拳自腰際向前方筆直擊出（捶），右弓步身體保持中正。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十二勢</span> 如封似閉</div>
+                    <span class="form-key">關鍵：隨曲就伸、借力引回</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>左手自右臂下方穿出，雙手分開，重心後坐，雙掌隨對方的推力而引回胸前；隨後重心前移，雙掌垂直立於胸前並向前推按。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十三勢</span> 十字手</div>
+                    <span class="form-key">關鍵：合抱圓中、歸於預備</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心後坐，右腳扣步，身體左轉，雙臂自兩側向上、向內大合抱交叉呈「十字手」於胸前，雙腳移回同寬平行，身軀微微上立。</p>
+            </div>
+
+        </div>
+
+        <!-- 分頁二：14-27勢 -->
+        <div id="part2" class="tab-content">
+            
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十四勢</span> 抱虎歸山</div>
+                    <span class="form-key">關鍵：斜向捋按、轉身沉穩</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>身體右轉，右腳斜向邁出呈弓步，雙手自胸前合抱向斜前方推出（掤、捋、擠、按手法相同，唯方向呈斜角）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十五勢</span> 斜單鞭</div>
+                    <span class="form-key">關鍵：斜向單鞭、沉胯撐圓</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>動作與第四勢單鞭相同，唯出步與推掌的方向朝斜角方位，特別注重含胸拔背與右吊手之拉伸力。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十六勢</span> 肘底捶</div>
+                    <span class="form-key">關鍵：捶藏肘底、步法輕靈</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心後坐左轉，右腳跟步，左上步腳尖虛點地。左手立於身前，右掌變拳藏於左肘下方，全身鬆柔，含藏勁道。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十七勢</span> 倒攆猴 (右、左、右)</div>
+                    <span class="form-key">關鍵：退步輕靈、以推御敵</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>左腳輕輕向後退一步，重心後移，左掌經耳旁向前平推，右掌撤回右胯旁（此動作連續做三次，左右互換，如猴子敏捷退避）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十八勢</span> 斜飛勢</div>
+                    <span class="form-key">關鍵：斜線舒展、大開大合</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心移至左腳，右腳向右斜後方大跨一步，右臂順勢自下而上向斜上方展翅掤出，左手按在左胯旁，全身斜向舒展開來。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第十九勢</span> 雲手 (左、右、左...)</div>
+                    <span class="form-key">關鍵：手隨腰轉、如雲流轉</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>兩腳平行站立，腰部左右橫向旋轉，雙手一上一下在身前畫圓，如同白雲在空中流轉，配合側向並步、開步。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第二十勢</span> 單鞭下勢</div>
+                    <span class="form-key">關鍵：蛇身下伏、沉胯降心</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心全部移向右腳，左腳向左側平平伸出，右腿屈膝大下蹲（下勢），右吊手斜向上拉，左手順著左腿內側向低處穿出。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿一勢</span> 右、左金雞獨立</div>
+                    <span class="form-key">關鍵：獨立平衡、提膝托掌</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心前移左腳，右腿提膝，右掌隨之上托，左掌下按（右獨立）；隨後右腳落地重心轉移，左腿提膝，左掌上托（左獨立）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿二勢</span> 右、左分腳</div>
+                    <span class="form-key">關鍵：單腳立穩、腳背分踢</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>雙手在胸前抱十字手，重心落左腳，雙手左右分開，右腳以腳背向右前方踢出；隨後收回，換右腳立穩，左腳分踢。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿三勢</span> 轉身蹬腳</div>
+                    <span class="form-key">關鍵：轉身平穩、腳跟蹬擊</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心落右腳，大旋轉身扣左腳，雙手抱十字手。隨後雙手分開，右腿屈膝提起，用<strong>右腳跟</strong>蓄勁向右前方用力蹬出。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿四勢</span> 左、右摟膝拗步</div>
+                    <span class="form-key">關鍵：連環摟推、下盤連貫</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重溫經典，左腳上步左摟右推（左弓步）；隨後重心前移，右腳上步右摟左推（右弓步），腰胯為核心帶動手臂。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿五勢</span> 進步栽捶</div>
+                    <span class="form-key">關鍵：俯身擊地、意注捶心</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>左上步呈左弓步，身微前傾。左手摟膝，右拳自耳旁斜向下方（如同栽樹一般）往地心砸擊，意念專注於右拳背。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿六勢</span> 上步攬雀尾</div>
+                    <span class="form-key">關鍵：轉身回歸、重溫棚履</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>轉身後，右腳上步，雙手合抱接「右攬雀尾」之掤、捋、擠、按，讓氣息與勁道重新回歸中正與圓融。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿七勢</span> 單鞭</div>
+                    <span class="form-key">關鍵：單鞭撐圓、節節貫穿</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>承接攬雀尾按勢後坐，向左轉身扣右步，右臂提吊手，左臂由前抹過推出呈單鞭，維持整體骨架的飽滿圓形。</p>
+            </div>
+
+        </div>
+
+        <!-- 分頁三：28-37勢 -->
+        <div id="part3" class="tab-content">
+            
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿八勢</span> 玉女穿梭 (四次)</div>
+                    <span class="form-key">關鍵：四隅斜擊、架推並重</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>身體往四個斜角轉動（四隅）。每次皆上步呈弓步，一手臂斜上架（護頭），另一手掌朝斜前方用力推出（連續做四個方向）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第廿九勢</span> 攬雀尾 (左掤開始)</div>
+                    <span class="form-key">關鍵：左掤引導、全身舒泰</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>從左掤開始，上右步，完整演練右攬雀尾（掤、捋、擠、按），是套路後半段再次鞏固四正勁的重要過渡。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第三十勢</span> 單鞭下勢</div>
+                    <span class="form-key">關鍵：二次下伏、筋骨拉伸</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>再度將重心坐實右腿，左腿平直伸出，呈低身下蹲姿態，左手沿左腿向下穿，極力放鬆大腿內側之跨關節。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅一勢</span> 上步七星</div>
+                    <span class="form-key">關鍵：上步虛步、雙拳架十字</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心前移左腿，右腳跨前虛步，腳尖點地。雙手在胸前握拳，交叉重疊呈十字「七星拳」架於頭部前方。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅二勢</span> 退步跨虎</div>
+                    <span class="form-key">關鍵：退步大開、拉弓姿態</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>右腳向後退一大步，重心後坐，雙拳變掌，右手大展向上亮掌，左手下按，左腳收回腳尖虛點地面，氣沉丹田。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅三勢</span> 轉身擺蓮</div>
+                    <span class="form-key">關鍵：旋轉敏捷、擺蓮拍腳</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>以左腳為軸，身軀向右大轉動扣腳。隨後右腿自左向右上方呈扇形擺動，雙手在面前依次快速拍擊右腳背（擺蓮）。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅四勢</span> 彎弓射虎</div>
+                    <span class="form-key">關鍵：身如緊弓、雙拳向斜</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>右腳落地呈右弓步，上身微轉。雙手握拳，右手置於太陽穴旁，左手向前下方斜斜推出，形如拉滿之弓箭。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅五勢</span> 轉身搬攔捶</div>
+                    <span class="form-key">關鍵：最後擊搥、氣貫拳心</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>大轉身扣右腳，右手握拳施展搬、左掌施展攔、右拳奮力向前擊出（捶），全身重歸中正、勁道渾然。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅六勢</span> 如封似閉</div>
+                    <span class="form-key">關鍵：最後封閉、借力引送</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>雙掌再度分開，後坐收蓄對方推力，接著順勢前推，完成最後的推按攻防要領，呼吸順暢調勻。</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-meta">
+                    <div class="form-title"><span class="form-num">第卅七勢</span> 十字手合太極</div>
+                    <span class="form-key">關鍵：九歸太極、抱元守一</span>
+                </div>
+                <p class="form-sop"><strong>SOP：</strong>重心後坐，轉身扣腳，雙手大開大合後合交叉呈「十字手」抱於胸前。緩緩將重心均勻落於兩足，兩手慢慢放下垂於體側。回歸起點，氣沉丹田，合太極收勢。</p>
+            </div>
+
+        </div>
+
+        <!-- 比較表格 -->
+        <section>
+            <h2 class="section-title">📊 僵勁太極 VS 鄭子鬆柔太極對比表</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>工藝環節</th>
+                            <th>傳統僵勁太極 (容易受傷、空架子)</th>
+                            <th>鄭子三十七式太極 (鬆柔體用兼備)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">手掌手腕</td>
+                            <td>手指過度用力撐開或手腕折彎（氣血被阻斷）</td>
+                            <td><strong>首創「美人手」鬆持。</strong>手腕平直弧形美，最利神經與氣血傳導。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">全身放鬆</td>
+                            <td>僅是動作軟塌無力，或者全身關節僵硬抗力</td>
+                            <td><strong>心意放鬆為先。</strong>九大關節逐一鬆開，最後鬆透至湧泉生根。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">發勁根源</td>
+                            <td>全靠上半身與肩膀的硬力肌肉死推</td>
+                            <td><strong>其根在腳，發於腿。</strong>手不主動（太極不動手），全靠腰胯傳導。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">防守觀念</td>
+                            <td>以力抗力，輸了便氣餒，贏了便爭強鬥狠</td>
+                            <td><strong>學太極必先自「學吃虧」始。</strong>引進落空，吃虧至極便是佔便宜。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <footer class="conclusion-card">
+            <p>
+                鄭子太極拳三十七式的偉大，在於將高深的道家氣功與科學物理完美融合。只要您的學員或讀者「照著身法自我檢視、跟著 37 勢 SOP 一招一招練」，每天花七分鐘，必定能實現專氣致柔、袪病延年的奇效，真正踏入武藝與養生的最高境界！
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript 分頁切換腳本 -->
+    <script>
+        function switchTab(evt, tabId) {
+            // 隱藏所有分頁內容
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 移除所有按鈕的 active 狀態
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 顯示當前選取的分頁
+            document.getElementById(tabId).classList.add('active');
+            
+            // 點亮當前點擊的按鈕
+            evt.currentTarget.classList.add('active');
+
+            // 點擊後自動微調滾動條到頂部，優化體驗
+            window.scrollTo({
+                top: document.querySelector('.tab-navigation').offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>
