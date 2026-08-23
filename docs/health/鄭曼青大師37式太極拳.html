@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人傳授・鄭曼青大師37式太極拳教學簡報</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #071412 0%, #0b1f1b 50%, #112d27 100%);
+            --card-bg: rgba(11, 31, 27, 0.85);
+            --card-border: rgba(16, 185, 129, 0.2);
+            --accent-green: #10b981; /* 翡翠綠 */
+            --accent-glow: rgba(16, 185, 129, 0.35);
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* 封面設計 */
+        .cover-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .cover-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            background: linear-gradient(to right, #ffffff, var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        /* 章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--accent-green);
+            padding-left: 15px;
+        }
+
+        /* 核心摘要卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-green);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header span {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 表格包裝 */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+        }
+
+        th {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            font-weight: bold;
+            border-bottom: 2px solid var(--card-border);
+            font-size: 1.05rem;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 步驟SOP展示 */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sop-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .sop-step:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .step-number {
+            background: var(--accent-green);
+            color: #071412;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .step-content {
+            width: 100%;
+        }
+
+        .step-content h4 {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 結論卡片 */
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(7, 20, 18, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .conclusion-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* RWD 響應式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover-card {
+                padding: 40px 20px;
+            }
+
+            th, td {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+
+            .sop-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 封面 -->
+        <header class="cover-card">
+            <span class="badge">專氣致柔・體用兼備</span>
+            <h1>鄭曼青大師37式太極拳</h1>
+            <p class="subtitle">讀者一秒看懂要領、照著 SOP 做就成功的專業教學指南</p>
+        </header>
+
+        <!-- 核心重點卡片 -->
+        <section>
+            <h2 class="section-title">✨ 太極三大核心修練心法</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        「鬆」為太極之靈魂
+                        <span>🎐</span>
+                    </div>
+                    <p>
+                        鄭子太極拳首重「鬆得透徹、鬆得乾乾淨淨」。先由<strong>心意鬆起</strong>，繼而開關達節，從手腕、肘、臂、肩、腰、胯依次放鬆，最後將周身之氣導向湧泉。
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        鄭大師首創「美人手」
+                        <span>✋</span>
+                    </div>
+                    <p>
+                        手腕到手指尖外形呈微凸弧線，不折腕、不僵硬。醫學證實此姿勢最有利<strong>神經傳導與氣血循環</strong>；心法上是「吐氣炁出指尖，吸氣炁回丹田」的行氣功夫。
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        意念「陸地游泳」
+                        <span>🏊</span>
+                    </div>
+                    <p>
+                        視空氣如水！演練拳架時，要感覺周圍空氣帶有如水般的阻力。用意不用力，專氣致柔，以意念導引氣血行遍四肢百骸。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練功基本要點（八項檢視表） -->
+        <section>
+            <h2 class="section-title">📋 練拳起步・身體八項自我檢視表</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>檢視部位</th>
+                            <th>核心要領</th>
+                            <th>口訣說明</th>
+                            <th>動作功能與目的</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">頭部</td>
+                            <td><strong>虛領頂頸</strong></td>
+                            <td>頭輕放肩上，眼平視</td>
+                            <td>百會微上頂，提振精神，維持身軀中正。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">肩肘</td>
+                            <td><strong>沉肩墬肘</strong></td>
+                            <td>肩膀完全放鬆，肘下墬</td>
+                            <td>拔伸肩關節，防止僵勁上浮，使氣血下行。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">胸背</td>
+                            <td><strong>含胸拔背</strong></td>
+                            <td>胸口微內縮，背部微鼓</td>
+                            <td>使氣貼於背，保護心肺，方便勁力由脊椎傳導。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">腹部</td>
+                            <td><strong>氣沉丹田</strong></td>
+                            <td>細長靜慢呼吸導入下腹</td>
+                            <td>降低重心，蓄養先天炁，建立身體核心穩定。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">脊椎</td>
+                            <td><strong>尾閭中正</strong></td>
+                            <td>末端脊椎直立於中心點</td>
+                            <td>如指南針般垂直地面，是太極拳「中定」的基石。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">腰胯</td>
+                            <td><strong>鬆腰落胯</strong></td>
+                            <td>腰跨不出力，完全放鬆</td>
+                            <td>腰為主宰。放鬆腰胯才能靈活轉動，傳遞下盤力量。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">膝蓋</td>
+                            <td><strong>膝蓋微彎</strong></td>
+                            <td>微彎但不超過腳尖</td>
+                            <td>保護膝關節，虛實分清，承受並轉換身體重量。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">足底</td>
+                            <td><strong>湧泉貼地</strong></td>
+                            <td>腳掌前1/3處貼緊地面</td>
+                            <td>與地心引力相接，如同樹木「生根」於地下。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 製作步驟 SOP -->
+        <section>
+            <h2 class="section-title">⏱ 練功步驟・預備式與起勢標準 SOP</h2>
+            <div class="sop-timeline">
+                <div class="sop-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>預備式：中正安舒，湧泉生根</h4>
+                        <p>兩腳併立，雙手自然微垂於大腿兩側。頭頂虛領頂頸，兩眼平視前方。將全身體重及多餘拙力完全卸下，透過雙腳湧泉穴沉入地下。深呼吸，讓呼吸歸於細、長、靜、慢，意守下丹田，做好靜心準備。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>開左腳：虛實分清，水平橫跨</h4>
+                        <p>重心緩緩全部移至右腳（右腳為實，左腳為虛）。提起左腳跟、腳尖，輕輕向左橫跨一步，兩腳外側保持平行，寬度與肩同寬。隨後重心均勻移回雙腳中央，此時雙腳湧泉均勻抓地。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>起勢升臂：陸地游泳，美人手領</h4>
+                        <p>雙手維持<strong>美人手</strong>狀態（手腕不折、手指放鬆自然微翹）。用意念想像雙臂前方有水阻，以意引氣，雙臂極其緩慢地向前、向上徐徐平舉抬起，直至與肩同高、同寬，過程中肩膀保持完全下沉（沉肩墬肘）。</p>
+                    </div>
+                </div>
+                <div class="sop-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>起勢按掌：沉肩墬肘，意注湧泉</h4>
+                        <p>雙臂與肩同高時，手肘微墬，雙掌坐腕（掌心轉向下，手指指向前方）。用意念引導雙掌如同在水中按壓木板一般，緩緩向下按回腹部前方。同時，膝蓋配合按掌節奏微微彎曲，將全身之氣與意念收回丹田，雙腳向下扎根。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 比較表格 -->
+        <section>
+            <h2 class="section-title">📊 傳統僵勁太極 VS 鄭子鬆柔太極差異對比</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>關鍵技術</th>
+                            <th>一般硬力太極 (容易受傷、變空架)</th>
+                            <th>鄭子三十七式太極 (體用兼備、養生長壽)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">用手習慣</td>
+                            <td>手部主動出力去推、拉對方</td>
+                            <td><strong>太極不動手。</strong>手只作為腰胯力量的終端呈現，保持虛靜。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">手掌姿態</td>
+                            <td>手指用力撐開或手腕折彎（折氣血）</td>
+                            <td><strong>首創「美人手」鬆持法。</strong>最利神經傳導、行氣至十指指尖。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">練拳意境</td>
+                            <td>純動作模仿，在空氣中揮舞、空洞無物</td>
+                            <td><strong>用意念在陸地上游泳。</strong>時刻體會空氣阻力，以意導氣，以氣催力。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">心態與發勁</td>
+                            <td>追求剛猛、爭強好勝，以拙力與人相抗</td>
+                            <td><strong>學太極必先自「學吃虧」始。</strong>引進落空、吃虧至極，便是佔便宜之極。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <footer class="conclusion-card">
+            <p>
+                鄭曼青大師37式太極拳的精妙，在於將高深的太極理論簡化為能為現代人快速吸收的養生科學。只要讀者嚴格遵循這套「八項身體檢視表 + 預備起勢 SOP」，每天花六至七分鐘演練一趟，必定能達到專氣致柔、袪病延年，在動靜轉換中體會道家的最高養生境界！
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
