@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰沙機與冰淇淋機原理、熱負荷計算及冷媒分析報告 v2.0</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --accent-red: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --code-bg: #090d16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 封面區塊 */
+        .cover {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .cover h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .cover p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .version-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 14px;
+            border-radius: 999px;
+            background-color: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* 核心摘要卡片 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        .card h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin: 16px 0 8px 0;
+        }
+
+        .card ul {
+            padding-left: 22px;
+            margin-bottom: 10px;
+        }
+
+        .card ul li {
+            margin-bottom: 8px;
+        }
+
+        .card ul ul {
+            margin-top: 6px;
+        }
+
+        /* 章節標題 */
+        h2.section-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin: 40px 0 20px 0;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        h3.subsection-title {
+            font-size: 1.35rem;
+            color: var(--secondary);
+            margin: 28px 0 14px 0;
+            padding-left: 10px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        /* 表格標題 (表X.Y) */
+        p.table-caption {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        /* SOP 步驟列表 */
+        .sop-list {
+            list-style: none;
+            counter-reset: sop-counter;
+        }
+
+        .sop-list li {
+            counter-increment: sop-counter;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .sop-list li::before {
+            content: counter(sop-counter);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            background-color: var(--primary);
+            color: var(--bg-color);
+            font-weight: bold;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 0.9rem;
+        }
+
+        /* 比較表格 */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            background-color: #1a2332;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #26334d;
+        }
+
+        /* 計算與公式區塊 */
+        .calc-box {
+            background-color: var(--code-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .highlight-red {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        /* 參考文獻 */
+        .references {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+            border: 1px solid var(--card-border);
+        }
+
+        .references h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .references ul {
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 目錄 */
+        .toc {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 30px;
+        }
+
+        .toc h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+
+        .toc ol ol {
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            .cover h1 {
+                font-size: 1.8rem;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 封面 -->
+    <div class="cover">
+        <h1>冰沙機與冰淇淋機原理、熱負荷計算及冷媒分析報告</h1>
+        <p>專業HVAC (Heating, Ventilation and Air Conditioning 冷凍空調) 技術研析與系統設計指南</p>
+        <p>研究組員：李世權 Gemini Claude ，　編碼整合：Copilot</p>
+        <span class="version-badge">版本 v2.0</span>
+    </div>
+
+    <!-- 目錄 -->
+    <div class="toc">
+        <h4>目錄 (Table of Contents)</h4>
+        <ol>
+            <li><a href="#sec1">核心重點摘要</a></li>
+            <li><a href="#sec2">設備構造與運作機制比較</a>
+                <ol>
+                    <li><a href="#sec2-1">冰沙機工作原理</a></li>
+                    <li><a href="#sec2-2">冰淇淋機工作原理</a></li>
+                    <li><a href="#sec2-3">關鍵構造比較</a></li>
+                    <li><a href="#sec2-4">兩者核心比較表</a></li>
+                </ol>
+            </li>
+            <li><a href="#sec3">冷媒種類與應用總覽</a></li>
+            <li><a href="#sec4">常用冷媒特性比較</a></li>
+            <li><a href="#sec5">各機型蒸發溫度設定原理</a>
+                <ol>
+                    <li><a href="#sec5-1">各機型建議蒸發溫度總表</a></li>
+                    <li><a href="#sec5-2">蒸發溫度設定為-20°C至-30°C之工程原因</a></li>
+                </ol>
+            </li>
+            <li><a href="#sec6">冷凍系統熱負荷計算SOP與範例</a></li>
+            <li><a href="#sec7">參考文獻</a></li>
+        </ol>
+    </div>
+
+    <!-- 1. 核心重點摘要 -->
+    <h2 class="section-title" id="sec1">1. 核心重點摘要</h2>
+    <div class="grid-2">
+        <div class="card">
+            <h3>冰沙機 (Blender / Slush Machine)</h3>
+            <p><span class="highlight-red">核心原理：</span> 依靠 <span class="highlight-red">高速粉碎</span>（&gt; 15,000 RPM，Revolutions Per Minute 每分鐘轉速）與液體渦流效應，將預先結冰的硬塊打碎並與液體均勻混合。</p>
+        </div>
+        <div class="card">
+            <h3>冰淇淋機 (Ice Cream Maker)</h3>
+            <p><span class="highlight-red">核心原理：</span> 依靠 <span class="highlight-red">邊冷凍邊慢速攪拌</span>（20–60 RPM），持續刮壁破壞冰晶成長，並主動拌入空氣（Overrun）形成綿密乳化體。</p>
+        </div>
+    </div>
+
+    <!-- 2. 設備構造與運作機制比較 -->
+    <h2 class="section-title" id="sec2">2. 設備構造與運作機制比較</h2>
+
+    <h3 class="subsection-title" id="sec2-1">2.1 冰沙機工作原理 (Blender / Slush Machine)</h3>
+    <div class="card" style="margin-bottom: 20px;">
+        <p>冰沙機主要利用高轉速打碎冰塊與食材，使其均勻混合成綿密顆粒。</p>
+        <h4>核心工作原理</h4>
+        <ul>
+            <li><strong>物理粉碎與衝擊：</strong>馬達帶動刀頭以每分鐘 <span class="highlight-red">15,000 至 30,000 轉（RPM）</span>以上的高速旋轉，利用刀片鈍角的衝擊力將大顆冰塊擊碎。</li>
+            <li><strong>液體渦流效應（Vortex Effect）：</strong>刀片高速旋轉會在杯內形成低壓中心，將上方的冰塊與液體向下牽引吸入刀片區，形成持續循環的流體迴路。</li>
+        </ul>
+    </div>
+
+    <h3 class="subsection-title" id="sec2-2">2.2 冰淇淋機工作原理 (Ice Cream Maker)</h3>
+    <div class="card" style="margin-bottom: 20px;">
+        <p>冰淇淋機處理的是液體基底（鮮奶油、牛奶、糖），透過冷卻與慢速拌入空氣使其凝固。</p>
+        <h4>核心工作原理</h4>
+        <ul>
+            <li><strong>邊凍邊刮（刮壁作用）：</strong>內桶壁極低溫，液體接觸桶壁會瞬間結冰。攪拌槳以慢速（約 20–60 RPM）持續旋轉，將桶壁上的薄冰層刮下並混入中央。</li>
+            <li><strong>抑制冰晶成長：</strong>持續攪拌能破壞冰晶結晶網，使其無法聚合成大顆粒，保持極其細緻綿密的口感。</li>
+            <li><strong>拌入空氣（Overrun 膨脹率）：</strong>慢速攪拌會將微小氣泡均勻推入奶漿中，使質地變得蓬鬆，避免變成堅硬的冰塊。</li>
+        </ul>
+    </div>
+
+    <h3 class="subsection-title" id="sec2-3">2.3 關鍵構造比較</h3>
+    <div class="grid-2">
+        <div class="card">
+            <h3>冰沙機關鍵構造</h3>
+            <ul>
+                <li><strong>高功率馬達：</strong>提供高扭矩與高轉速（家用型通常為 600W–1500W 以上）。</li>
+                <li><strong>立體刀頭組：</strong>採用高硬度不銹鋼，通常包含向下彎（防止底部沉澱）與向上彎（產生牽引力）的多角度刀刃。</li>
+                <li><strong>擾流杯身（Baffle Jar）：</strong>杯壁設計有凸起肋條（擾流板），破壞圓形漩渦，讓食材不只是跟著旋轉，而是不斷碰撞反彈回中央刀片處。</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>冰淇淋機關鍵構造</h3>
+            <ul>
+                <li><strong>冷卻系統：</strong>
+                    <ul>
+                        <li><em>預冷凍型（蓄冷桶）：</em>雙層金屬桶內裝有高比熱的蓄冷液，使用前需先放入冰箱冷凍庫 12–24 小時。</li>
+                        <li><em>自帶壓縮機型：</em>內建如小型冰箱的壓縮機與冷媒管，開啟後可直接降溫至 -20°C 至 -30°C。</li>
+                    </ul>
+                </li>
+                <li><strong>低速高扭力馬達與減速齒輪：</strong>提供強勁拉力，在混合物逐漸變硬、黏度大增時仍能持續運轉。</li>
+                <li><strong>刮刀 / 攪拌槳（Paddle/Dasher）：</strong>貼合桶壁旋轉，具備刮除金屬壁結霜與翻滾奶漿的功能。</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="subsection-title" id="sec2-4">2.4 兩者核心比較表</h3>
+    <p class="table-caption">表2.1　冰沙機與冰淇淋機核心比較表</p>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>比較項目</th>
+                    <th>冰沙機 (Blender / Slush)</th>
+                    <th>冰淇淋機 (Ice Cream Maker)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>運作機制</strong></td>
+                    <td>高速擊碎已結冰的固體</td>
+                    <td>慢速攪拌冷凍液體，阻止大冰晶形成</td>
+                </tr>
+                <tr>
+                    <td><strong>馬達轉速 (RPM)</strong></td>
+                    <td>極高 (&gt; 15,000 RPM)</td>
+                    <td>極低 (20–60 RPM)</td>
+                </tr>
+                <tr>
+                    <td><strong>降溫機制</strong></td>
+                    <td>無（依靠加入之冰塊冷卻）</td>
+                    <td>有（蓄冷桶或內建壓縮機）</td>
+                </tr>
+                <tr>
+                    <td><strong>空氣拌入</strong></td>
+                    <td>儘量減少（避免產生過多泡泡）</td>
+                    <td>主動拌入（提供蓬鬆綿密感）</td>
+                </tr>
+                <tr>
+                    <td><strong>成品結構</strong></td>
+                    <td>微小冰晶顆粒懸浮於液體中</td>
+                    <td>脂肪、氣泡與極小冰晶構成的乳化體</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3. 冷媒種類與應用總覽 -->
+    <h2 class="section-title" id="sec3">3. 冷媒種類與應用總覽</h2>
+    <div class="card" style="margin-bottom: 20px;">
+        <p>市面上內建壓縮機的免預冷冰淇淋機與霜淇淋機，主要使用 <strong>R134a</strong>、<strong>R404A</strong> 以及環保碳氫冷媒 <strong>R290（丙烷，Propane）</strong>。小型家用或輕商用機型多採用 R134a 或 R290，而大型連續式商用機型則常使用 R404A 或 R507。部分平價家用機則不使用冷媒，而是改用蓄冷冷凍液內膽或半導體晶片。</p>
+    </div>
+
+    <p class="table-caption">表3.1　冷媒種類與機型應用分類表</p>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>冷媒 / 系統類型</th>
+                    <th>特點</th>
+                    <th>應用機型</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>R134a</strong></td>
+                    <td>傳統中高溫冷凍制冷劑，無毒、不燃，技術非常成熟。</td>
+                    <td>小型家用全自動冰淇淋機及小型商用冰箱</td>
+                </tr>
+                <tr>
+                    <td><strong>R290（丙烷）</strong></td>
+                    <td>天然碳氫冷媒，具備零臭氧消耗（<span class="highlight-red">ODP=0</span>，Ozone Depletion Potential 臭氧消耗潛勢）與極低全球暖化潛勢（<span class="highlight-red">GWP=3</span>，Global Warming Potential 全球暖化潛勢）的優勢，能源效率高。</td>
+                    <td>近年新推出或講求永續環保的高效商用、吧檯型冰淇淋機主流</td>
+                </tr>
+                <tr>
+                    <td><strong>R404A / R507</strong></td>
+                    <td>HFC (Hydrofluorocarbon 氫氟碳化合物) 混合冷媒，低溫冷凍性能強，適合需要強力且快速凍結缸體的設備。</td>
+                    <td>大型營業用連續式冰淇淋機或連鎖速食店霜淇淋機</td>
+                </tr>
+                <tr>
+                    <td><strong>冷凍液內膽型（預冷型）</strong></td>
+                    <td>非冷媒系統。內部不含壓縮機與冷媒，需將整個攪拌桶身提前放入家用冷凍庫冷凍 12 至 24 小時蓄冷。</td>
+                    <td>平價家用機</td>
+                </tr>
+                <tr>
+                    <td><strong>半導體晶片製冷型</strong></td>
+                    <td>非冷媒系統。透過電子致冷晶片降溫，結構輕巧但製冷量較小。</td>
+                    <td>平價家用機</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 4. 常用冷媒特性比較 -->
+    <h2 class="section-title" id="sec4">4. 常用冷媒特性比較 ($T_e = -25^\circ\text{C}, T_c = 45^\circ\text{C}$)</h2>
+    <p class="table-caption">表4.1　常用冷媒特性比較表（蒸發溫度 $T_e=-25^\circ\text{C}$，凝結溫度假定 $T_c=45^\circ\text{C}$）</p>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>比較項目</th>
+                    <th>R290 (Propane 丙烷)</th>
+                    <th>R404A</th>
+                    <th>R449A (Opteon XP40)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>冷媒類別</strong></td>
+                    <td>HC (Hydrocarbon 碳氫冷媒)</td>
+                    <td>HFC (氫氟碳化合物)</td>
+                    <td>HFO/HFC 混合冷媒</td>
+                </tr>
+                <tr>
+                    <td><strong>蒸發壓力 (kPa, 絕對壓力)</strong></td>
+                    <td>約 225 kPa (2.25 bar)</td>
+                    <td>約 250 kPa (2.50 bar)</td>
+                    <td>約 220 kPa (2.20 bar)</td>
+                </tr>
+                <tr>
+                    <td><strong>凝結壓力 (kPa, 絕對壓力)</strong></td>
+                    <td>約 1530 kPa (15.3 bar)</td>
+                    <td>約 2050 kPa (20.5 bar)</td>
+                    <td>約 1880 kPa (18.8 bar)</td>
+                </tr>
+                <tr>
+                    <td><strong>壓力比 (Pressure Ratio)</strong></td>
+                    <td>約 6.8</td>
+                    <td>約 8.2</td>
+                    <td>約 8.55</td>
+                </tr>
+                <tr>
+                    <td><strong>單位質量潛熱 (kJ/kg)</strong></td>
+                    <td><span class="highlight-red">極高 (約 380 kJ/kg)</span></td>
+                    <td>低 (約 160 kJ/kg)</td>
+                    <td>中等 (約 180 kJ/kg)</td>
+                </tr>
+                <tr>
+                    <td><strong>全球暖化潛勢 (GWP)</strong></td>
+                    <td><span class="highlight-red">3 (極低)</span></td>
+                    <td>3922 (極高，面臨淘汰)</td>
+                    <td>1397 (中等，過渡方案)</td>
+                </tr>
+                <tr>
+                    <td><strong>臭氧破壞潛勢 (ODP)</strong></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td><strong>安全等級 (ASHRAE 34)</strong></td>
+                    <td>A3 (無毒、高度可燃)</td>
+                    <td>A1 (無毒、不可燃)</td>
+                    <td>A1 (無毒、不可燃)</td>
+                </tr>
+                <tr>
+                    <td><strong>溫度滑移 (Temperature Glide)</strong></td>
+                    <td>0 K（單一化合物）</td>
+                    <td>&lt; 0.8 K（近共沸混合物）</td>
+                    <td>約 4 ~ 6 K（非共沸混合物）</td>
+                </tr>
+                <tr>
+                    <td><strong>排氣溫度 (Discharge Temp.)</strong></td>
+                    <td>適中</td>
+                    <td>低</td>
+                    <td>較高（需注意過熱度控制）</td>
+                </tr>
+                <tr>
+                    <td><strong>選用原因與特性</strong></td>
+                    <td>COP (Coefficient of Performance 性能係數) 高、充填量少（約為 R404A 的 40%）、環保。<br>缺點：具高可燃性，法規限制單一系統充填量上限（通常 ≤ 150g），適合小型/獨立桌上型冰淇淋機。</td>
+                    <td>技術成熟、安全等級 A1，壓比相對較低、排氣溫度低，系統穩定性極高。<br>缺點：GWP 過高，歐盟及許多國家已嚴格限制新設備使用，面臨淘汰。</td>
+                    <td>A1 安全等級，GWP 較 R404A 降低約 65%，系統壓力與運轉特性接近 R404A，適合舊機直接替換 (drop-in) 或中大型商業冰淇淋機。<br>缺點：存在滑移溫度（Glide），過熱度調校需更精確；排氣溫度高於 R404A。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 5. 各機型蒸發溫度設定原理 -->
+    <h2 class="section-title" id="sec5">5. 各機型蒸發溫度設定原理</h2>
+
+    <h3 class="subsection-title" id="sec5-1">5.1 各機型建議蒸發溫度總表</h3>
+    <p class="table-caption">表5.1　常見冰淇淋機類型與建議蒸發溫度 $T_e$ 總表</p>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>機型</th>
+                    <th>說明</th>
+                    <th>建議蒸發溫度 $T_e$</th>
+                    <th>目標產品溫度</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>軟性冰淇淋機/霜淇淋機</strong>（Soft Serve，連續式）</td>
+                    <td>便利店/速食店常見，邊攪拌邊出料</td>
+                    <td><span class="highlight-red">-28°C ~ -25°C</span></td>
+                    <td>出料溫度約 -5 ~ -8°C，維持此蒸發溫度可確保口感滑順，避免缸壁結厚冰。</td>
+                </tr>
+                <tr>
+                    <td><strong>硬式/批式冰淇淋機</strong>（Batch Freezer）</td>
+                    <td>咖啡廳、義式冰淇淋店，做完再冷凍硬化</td>
+                    <td><span class="highlight-red">-33°C ~ -30°C</span></td>
+                    <td>出缸溫度約 -8 ~ -12°C，需要更強的冷源快速凍結，以減少冰晶產生。之後進硬化庫再降到 -18°C 以下。</td>
+                </tr>
+                <tr>
+                    <td><strong>義式 Gelato 機</strong></td>
+                    <td>類似批式，但空氣含量低、質地更緻密</td>
+                    <td><span class="highlight-red">-35°C ~ -32°C</span></td>
+                    <td>出料約 -12 ~ -14°C</td>
+                </tr>
+                <tr>
+                    <td><strong>家用/小型商用桌上型</strong></td>
+                    <td>小型直立式</td>
+                    <td><span class="highlight-red">-28°C ~ -25°C</span></td>
+                    <td>較不需極端低溫，量小</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card" style="margin-bottom: 30px;">
+        <p><strong>為什麼 $T_e$ 要壓這麼低：</strong>冰淇淋機的蒸發器是包覆在攪拌缸外側的夾套（不是吹風的鰭片盤管），靠刮刀不斷刮除缸壁結霜層維持熱傳，缸壁與物料之間需要很大溫差（通常 <span class="highlight-red">20K 以上</span>）才能在合理時間內把液態 mix 快速凍結成細冰晶——溫差不夠，冰晶會結得太大、口感變粗糙。</p>
+    </div>
+
+    <h3 class="subsection-title" id="sec5-2">5.2 蒸發溫度設定為 -20°C 至 -30°C 之原因</h3>
+    <div class="card" style="margin-bottom: 30px;">
+        <ol class="sop-list">
+            <li><strong>熱傳導溫差 (Temperature Difference, ΔT) 需求：</strong> 奶漿結冰與出料溫度約為 -6°C 至 -9°C。根據熱傳遞定律 $Q = U \cdot A \cdot \Delta T$，冷媒蒸發溫度必須維持 <span class="highlight-red">15°C 至 20°C 的傳熱溫差</span>，故蒸發溫度 $T_e = -8^\circ\text{C} - (15^\circ\text{C} \sim 20^\circ\text{C}) = -23^\circ\text{C} \sim -28^\circ\text{C}$。</li>
+            <li><strong>快速過冷 (Supercooling) 與微小冰晶生成：</strong> 低蒸發溫度能使奶漿接觸桶壁時瞬間過冷，促成高密度微小冰晶核生成，避免冰晶顆粒超過 <span class="highlight-red">20 ~ 50 μm</span>，以維持滑順口感。若蒸發溫度過高（例如僅 -10°C），結晶速度過慢，水分子有時間聚集長成巨大冰晶，導致口感粗糙。</li>
+            <li><strong>克服黏度與熱阻劇增：</strong> 結冰後期奶漿黏度與熱阻會成指數級上升。若蒸發溫度不夠低，冷凍後期傳熱效率會急劇下降，導致刮刀無法將冷凍層順利刮下，或是攪拌時間過長導致空氣打入過度、品質劣化。</li>
+            <li><strong>系統效率 (COP) 與經濟性平衡：</strong> 若蒸發溫度高於 -20°C，冷凍速度太慢，冰晶過大，口感失敗；若蒸發溫度低於 -30°C，壓縮機的壓比（Pressure Ratio）過高，導致容積效率（Volumetric Efficiency）與 <span class="highlight-red">COP (Coefficient of Performance 性能係數)</span> 大幅衰退，且需要耗費更昂貴的雙級壓縮或高階冷媒。因此，-20°C 至 -30°C 是品質（快速細緻結晶）與商用冷凍機效率（經濟性）的最佳工程甜蜜點（Sweet Spot）。</li>
+        </ol>
+    </div>
+
+    <!-- 6. 冷凍系統熱負荷計算SOP與範例 -->
+    <h2 class="section-title" id="sec6">6. 冷凍系統熱負荷 (Heat Load) 計算 SOP 與範例</h2>
+    <div class="card" style="margin-bottom: 20px;">
+        <p>冰淇淋機冷凍系統的熱負荷（Heat Load, $Q_{\text{total}}$）計算主要由四個部分組成：<strong>奶漿顯熱（Sensible Heat）</strong>、<strong>水分潛熱（Latent Heat）</strong>、<strong>攪拌馬達摩擦熱（Mechanical Heat Input）</strong> 以及 <strong>環境侵入熱量（Ambient Heat Gain）</strong>。</p>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+        <h3>6.1 熱負荷算式來源與公式</h3>
+        <p>參考來源：<strong>ASHRAE Handbook - Refrigeration (Chapter 24: Ice Cream)</strong> 與 冷凍空調工程學（Refrigeration &amp; Air Conditioning Engineering）之食品冷凍計算規範。</p>
+        <div class="calc-box">
+            <p>$$ Q_{\text{total}} = Q_1 + Q_2 + Q_3 + Q_4 \tag{6.1} $$</p>
+            <p>• 奶漿冷卻顯熱 $Q_1$：$$ Q_1 = \frac{m \cdot C_{p,\text{liquid}} \cdot (T_{\text{in}} - T_f)}{t} \tag{6.2} $$</p>
+            <p>• 潛熱與冰晶顯熱 $Q_2$：$$ Q_2 = \frac{m \cdot w_{\text{water}} \cdot \alpha \cdot L_f + m \cdot C_{p,\text{frozen}} \cdot (T_f - T_{\text{out}})}{t} \tag{6.3} $$</p>
+            <p>• 攪拌馬達摩擦熱 $Q_3$：$$ Q_3 = P_{\text{motor}} \cdot \eta \tag{6.4} $$</p>
+            <p>• 安全裕度與侵入熱 $Q_4$：$$ Q_4 = (Q_1 + Q_2 + Q_3) \cdot f_{\text{safety}} \tag{6.5} $$</p>
+        </div>
+        <p style="margin-top: 12px;"><strong>變數說明：</strong></p>
+        <ul>
+            <li>$m$：奶漿總質量（kg）；$C_{p,\text{liquid}}$：未結冰奶漿之比熱（約 3.3 kJ/(kg·K)）</li>
+            <li>$T_{\text{in}}$：奶漿進料初始溫度（°C）；$T_f$：初晶點溫度（約 -2.5°C）；$t$：預期冷凍運轉時間（s）</li>
+            <li>$w_{\text{water}}$：含水量比例；$\alpha$：出料溫度下水分凍結比例；$L_f$：水之融解潛熱（333.5 kJ/kg）</li>
+            <li>$C_{p,\text{frozen}}$：結冰後比熱（約 1.9 kJ/(kg·K)）；$T_{\text{out}}$：出料溫度（°C）</li>
+            <li>$P_{\text{motor}}$：馬達輸入電功率（kW）；$\eta$：軸功轉化為摩擦熱之傳遞係數（一般取 0.85 ~ 0.95）</li>
+            <li>$f_{\text{safety}}$：安全係數（通常取 10% ~ 15%）</li>
+        </ul>
+    </div>
+
+    <div class="card" style="margin-bottom: 30px;">
+        <h3>6.2 情境應用實例（5 kg 桌上型冰淇淋機，預計 12 分鐘完成）</h3>
+        <p><strong>已知條件：</strong></p>
+        <p>• 奶漿質量 $m = 5\text{ kg}$，含水率 $w_{\text{water}} = 0.65$</p>
+        <p>• 初始溫度 $T_{\text{in}} = +4^\circ\text{C}$，初晶點 $T_f = -2.5^\circ\text{C}$，出料溫度 $T_{\text{out}} = -6.5^\circ\text{C}$（凍結率 $\alpha = 0.52$）</p>
+        <p>• 比熱 $C_{p,\text{liquid}} = 3.3\text{ kJ/(kg}\cdot\text{K)}$，$C_{p,\text{frozen}} = 1.9\text{ kJ/(kg}\cdot\text{K)}$，潛熱 $L_f = 333.5\text{ kJ/kg}$</p>
+        <p>• 時間 $t = 720\text{ s}$，馬達 $P_{\text{motor}} = 0.4\text{ kW}$（$\eta = 0.9$），安全係數 $f_{\text{safety}} = 0.15$</p>
+
+        <br>
+        <p><strong>計算 SOP 步驟：</strong></p>
+        <ol class="sop-list">
+            <li>
+                <strong>計算奶漿降溫顯熱 $Q_1$：</strong>
+                <div class="calc-box">
+                $$ Q_1 = \frac{5\text{ kg} \times 3.3\text{ kJ/(kg}\cdot\text{K)} \times [4 - (-2.5)]\text{ K}}{720\text{ s}} = \frac{107.25\text{ kJ}}{720\text{ s}} = 0.14896\text{ kW} = 148.96\text{ W} $$
+                </div>
+            </li>
+            <li>
+                <strong>計算水分凍結潛熱與降溫顯熱 $Q_2$：</strong>
+                <div class="calc-box">
+                $$ q_{\text{latent}} = 5\text{ kg} \times 0.65 \times 0.52 \times 333.5\text{ kJ/kg} = 563.948\text{ kJ} $$
+                $$ q_{\text{sensible2}} = 5\text{ kg} \times 1.9\text{ kJ/(kg}\cdot\text{K)} \times [-2.5 - (-6.5)]\text{ K} = 38.0\text{ kJ} $$
+                $$ Q_2 = \frac{563.948\text{ kJ} + 38.0\text{ kJ}}{720\text{ s}} = \frac{601.948\text{ kJ}}{720\text{ s}} = 0.83604\text{ kW} = 836.04\text{ W} $$
+                </div>
+            </li>
+            <li>
+                <strong>計算攪拌馬達摩擦熱 $Q_3$：</strong>
+                <div class="calc-box">
+                $$ Q_3 = 0.4\text{ kW} \times 0.9 = 0.36\text{ kW} = 360\text{ W} $$
+                </div>
+            </li>
+            <li>
+                <strong>計算基礎小計與安全係數 $Q_4$：</strong>
+                <div class="calc-box">
+                $$ Q_{\text{base}} = Q_1 + Q_2 + Q_3 = 148.96\text{ W} + 836.04\text{ W} + 360\text{ W} = 1345\text{ W} $$
+                $$ Q_4 = 1345\text{ W} \times 0.15 = 201.75\text{ W} $$
+                </div>
+            </li>
+            <li>
+                <strong>求出總熱負荷 $Q_{\text{total}}$：</strong>
+                <div class="calc-box">
+                $$ Q_{\text{total}} = 1345\text{ W} + 201.75\text{ W} = \mathbf{1546.75\text{ W}} $$
+                </div>
+            </li>
+        </ol>
+        <p><strong>計算結果：</strong> 該台 5 kg 冰淇淋機在蒸發溫度 -25°C 的工況下，系統需配備冷凍能力至少為 <span class="highlight-red">1.55 kW（約 1330 kcal/h，或 0.44 美國冷凍噸 RT）</span> 之壓縮機組，方能滿足 12 分鐘快速結冰綿密的工藝要求。</p>
+    </div>
+
+    <div class="card" style="margin-bottom: 30px;">
+        <h3>6.3 冷媒循環選型計算書（依 6.2 熱負荷結果代入計算系統）</h3>
+        <p>以 6.2 節所得總熱負荷 $Q_{\text{total}} = 1.547\text{ kW}$ 作為冷房能力 $Q_c$，代入自建之「冷媒循環選型計算系統 v2.0」（CoolProp 同源物性引擎）進行冷媒循環計算。依第 3～4 章冷媒選用分析，小型獨立桌上型機種以 <strong>R290（丙烷）</strong> 最適合，故本計算採用 R290，並沿用第 4 章比較表之工況假設 $T_c = 45^\circ\text{C}$。</p>
+
+        <p><strong>輸入參數：</strong></p>
+        <p>• 冷媒 Fluid = R290　• 冷房能力 $Q_c = 1.547\text{ kW}$（來自 6.2 節 $Q_{\text{total}}$）</p>
+        <p>• 蒸發溫度 $T_e = -25^\circ\text{C}$　• 冷凝溫度 $T_c = 45^\circ\text{C}$　• 外氣溫度 $T_a = 35^\circ\text{C}$　• 物料/出料溫度 $= -6.5^\circ\text{C}$（即 $T_{\text{out}}$）</p>
+        <p>• 過熱度 $SH = 5\text{ K}$　• 過冷度 $SC = 5\text{ K}$　• 冷凝器風側溫升 $\Delta T_{\text{cond}} = 6\text{ K}$</p>
+        <p>• 壓縮機等熵效率 $\eta_{is} = 0.70$　• 機械/馬達效率 $\eta_{mm} = 0.90$　• 蒸發器型式：刮面式熱交換器（Scraped-Surface，夾套＋刮刀，符合冰淇淋機構造）</p>
+
+        <p style="margin-top:14px;"><strong>一、循環狀態點計算結果</strong></p>
+        <p class="table-caption">表6.1　R290 冷媒循環各狀態點計算結果（$T_e=-25^\circ\text{C}$，$T_c=45^\circ\text{C}$）</p>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr><th>狀態點</th><th>說明</th><th>溫度 T</th><th>壓力 P</th><th>比焓 h</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>壓縮機吸氣（過熱後）</td><td>-20.0°C</td><td>203.4 kPa</td><td>553.98 kJ/kg</td></tr>
+                    <tr><td>2s</td><td>等熵壓縮終點（理論）</td><td>60.0°C</td><td>1534.3 kPa</td><td>651.78 kJ/kg</td></tr>
+                    <tr><td>2</td><td>實際壓縮終點（排氣）</td><td><span class="highlight-red">78.8°C</span></td><td>1534.3 kPa</td><td>693.69 kJ/kg</td></tr>
+                    <tr><td>3</td><td>冷凝器出口（過冷後）</td><td>40.0°C</td><td>1534.3 kPa</td><td>307.15 kJ/kg</td></tr>
+                    <tr><td>4</td><td>膨脹閥出口（等焓節流）</td><td>-25.0°C</td><td>203.4 kPa</td><td>307.15 kJ/kg</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="margin-top:14px;"><strong>二、系統性能與選型結果</strong></p>
+        <p class="table-caption">表6.2　冷媒循環系統性能彙總</p>
+        <div class="table-responsive">
+            <table>
+                <thead><tr><th>項目</th><th>計算結果</th></tr></thead>
+                <tbody>
+                    <tr><td>壓縮比 $P_c/P_e$</td><td>7.54　<span class="highlight-red">（偏高，單級壓縮容積效率會下降，建議評估中間冷卻或高壓縮比專用壓縮機）</span></td></tr>
+                    <tr><td>冷媒循環流量 $\dot{m}$</td><td>22.56 kg/h（0.00627 kg/s）</td></tr>
+                    <tr><td>單位冷凍效應 $q_{\text{evap}}$</td><td>246.83 kJ/kg</td></tr>
+                    <tr><td>壓縮機軸功 $W_{\text{comp}}$</td><td>0.875 kW</td></tr>
+                    <tr><td>壓縮機輸入電功率 $P_{\text{input}}$</td><td>0.973 kW</td></tr>
+                    <tr><td>系統性能係數 COP / EER</td><td>1.59 / 5.43</td></tr>
+                    <tr><td>冷凝器負荷 $Q_{\text{cond}}$</td><td>2.422 kW</td></tr>
+                    <tr><td>排氣溫度 $T_2$</td><td>78.8°C　✓ 在一般壓縮機安全運轉範圍內（&lt; 110°C）</td></tr>
+                    <tr><td>壓縮機排氣量 $V_d$</td><td>25.83 cm³/rev</td></tr>
+                    <tr><td>建議壓縮機型式</td><td>迴轉式(Rotary)或渦卷式(Scroll)，約 1 HP 級</td></tr>
+                    <tr><td>吸氣管建議內徑</td><td>17.2 mm</td></tr>
+                    <tr><td>液管建議內徑</td><td>4.1 mm</td></tr>
+                    <tr><td>冷凝器面積估算（$U=40\text{ W/m}^2\text{K}$）</td><td>9.25 m²（風側溫升 6K 假設下之翅片外表面積）</td></tr>
+                    <tr><td>蒸發夾套面積估算（刮面式，$U=200\sim600\text{ W/m}^2\text{K}$）</td><td>0.14 ～ 0.42 m²</td></tr>
+                    <tr><td>冷媒充填量估計</td><td>0.39 ～ 0.77 kg（經驗法則粗估，實際以原廠銘牌或試車調整為準）</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="margin-top:14px;"><strong>三、莫里爾圖（Mollier Diagram, p-h 圖）</strong></p>
+        <div style="background:#0b1930; border:1px solid var(--card-border); border-radius:12px; padding:12px;">
+            <svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" style="width:100%; height:auto;">
+<line x1="148.2" y1="30" x2="148.2" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="138.2" y="578" fill="#7e8fae" font-size="11">300</text>
+<line x1="227.7" y1="30" x2="227.7" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="217.7" y="578" fill="#7e8fae" font-size="11">350</text>
+<line x1="307.3" y1="30" x2="307.3" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="297.3" y="578" fill="#7e8fae" font-size="11">400</text>
+<line x1="386.8" y1="30" x2="386.8" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="376.8" y="578" fill="#7e8fae" font-size="11">450</text>
+<line x1="466.4" y1="30" x2="466.4" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="456.4" y="578" fill="#7e8fae" font-size="11">500</text>
+<line x1="545.9" y1="30" x2="545.9" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="535.9" y="578" fill="#7e8fae" font-size="11">550</text>
+<line x1="625.5" y1="30" x2="625.5" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="615.5" y="578" fill="#7e8fae" font-size="11">600</text>
+<line x1="705.0" y1="30" x2="705.0" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="695.0" y="578" fill="#7e8fae" font-size="11">650</text>
+<line x1="784.6" y1="30" x2="784.6" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="774.6" y="578" fill="#7e8fae" font-size="11">700</text>
+<line x1="864.1" y1="30" x2="864.1" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="854.1" y="578" fill="#7e8fae" font-size="11">750</text>
+<line x1="80" y1="514.8" x2="870" y2="514.8" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="518.8" fill="#7e8fae" font-size="11">100</text>
+<line x1="80" y1="422.7" x2="870" y2="422.7" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="426.7" fill="#7e8fae" font-size="11">200</text>
+<line x1="80" y1="368.8" x2="870" y2="368.8" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="372.8" fill="#7e8fae" font-size="11">300</text>
+<line x1="80" y1="300.9" x2="870" y2="300.9" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="304.9" fill="#7e8fae" font-size="11">500</text>
+<line x1="80" y1="256.1" x2="870" y2="256.1" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="260.1" fill="#7e8fae" font-size="11">700</text>
+<line x1="80" y1="208.7" x2="870" y2="208.7" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="212.7" fill="#7e8fae" font-size="11">1.0M</text>
+<line x1="80" y1="116.6" x2="870" y2="116.6" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="120.6" fill="#7e8fae" font-size="11">2.0M</text>
+<line x1="80" y1="62.7" x2="870" y2="62.7" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="8" y="66.7" fill="#7e8fae" font-size="11">3.0M</text>
+<text x="405.0" y="605" fill="#b7c4dc" font-size="13">比焓 Enthalpy h (kJ/kg)</text>
+<text x="18" y="335.0" fill="#b7c4dc" font-size="13" transform="rotate(-90 18 335.0)">壓力 Pressure (kPa, log)</text>
+<path d="M -193.94,554.87 L -190.40,548.63 L -186.86,542.44 L -183.31,536.32 L -179.76,530.26 L -176.20,524.26 L -172.63,518.31 L -169.05,512.42 L -165.46,506.60 L -161.87,500.82 L -158.27,495.10 L -154.66,489.44 L -151.05,483.83 L -147.43,478.27 L -143.79,472.77 L -140.15,467.32 L -136.51,461.91 L -132.85,456.56 L -129.19,451.26 L -125.51,446.00 L -121.83,440.80 L -118.14,435.64 L -114.45,430.52 L -110.74,425.45 L -107.02,420.43 L -103.30,415.45 L -99.56,410.52 L -95.82,405.63 L -92.07,400.78 L -88.30,395.97 L -84.53,391.21 L -80.75,386.48 L -76.96,381.80 L -73.16,377.16 L -69.35,372.55 L -65.53,367.99 L -61.70,363.46 L -57.86,358.97 L -54.01,354.52 L -50.14,350.10 L -46.27,345.72 L -42.39,341.37 L -38.49,337.07 L -34.59,332.79 L -30.67,328.55 L -26.74,324.34 L -22.81,320.17 L -18.86,316.03 L -14.90,311.92 L -10.92,307.85 L -6.94,303.80 L -2.94,299.79 L 1.07,295.81 L 5.09,291.86 L 9.12,287.94 L 13.17,284.04 L 17.23,280.18 L 21.30,276.35 L 25.39,272.54 L 29.48,268.77 L 33.60,265.02 L 37.72,261.29 L 41.86,257.60 L 46.01,253.93 L 50.18,250.29 L 54.36,246.67 L 58.55,243.09 L 62.76,239.52 L 66.99,235.98 L 71.23,232.47 L 75.48,228.98 L 79.75,225.51 L 84.04,222.07 L 88.34,218.65 L 92.66,215.26 L 97.00,211.88 L 101.35,208.53 L 105.71,205.21 L 110.10,201.90 L 114.50,198.62 L 118.92,195.36 L 123.36,192.12 L 127.82,188.90 L 132.29,185.70 L 136.78,182.52 L 141.30,179.36 L 145.83,176.23 L 150.38,173.11 L 154.96,170.01 L 159.55,166.93 L 164.17,163.87 L 168.80,160.83 L 173.46,157.81 L 178.14,154.80 L 182.85,151.82 L 187.57,148.85 L 192.32,145.90 L 197.10,142.96 L 201.90,140.05 L 206.73,137.15 L 211.58,134.26 L 216.46,131.40 L 221.37,128.55 L 226.31,125.71 L 231.27,122.90 L 236.27,120.09 L 241.30,117.31 L 246.36,114.53 L 251.45,111.78 L 256.58,109.03 L 261.74,106.31 L 266.95,103.59 L 272.18,100.89 L 277.46,98.21 L 282.78,95.54 L 288.14,92.88 L 293.55,90.23 L 299.01,87.60 L 304.51,84.98 L 310.07,82.38 L 315.67,79.78 L 321.34,77.20 L 327.07,74.63 L 332.86,72.07 L 338.72,69.52 L 344.65,66.99 L 350.66,64.46 L 356.75,61.95 L 362.93,59.45 L 369.21,56.95 L 375.60,54.47 L 382.10,52.00 L 388.73,49.53 L 395.50,47.08 L 402.43,44.63 L 409.54,42.19 L 416.86,39.76 L 424.42,37.34 L 432.26,34.92 L 440.46,32.51 L 449.08,30.10 " fill="none" stroke="#3fa9f5" stroke-width="2.4"/>
+<path d="M 494.51,554.87 L 496.42,548.63 L 498.33,542.44 L 500.24,536.32 L 502.15,530.26 L 504.06,524.26 L 505.97,518.31 L 507.88,512.42 L 509.78,506.60 L 511.69,500.82 L 513.59,495.10 L 515.49,489.44 L 517.39,483.83 L 519.29,478.27 L 521.18,472.77 L 523.08,467.32 L 524.97,461.91 L 526.86,456.56 L 528.74,451.26 L 530.63,446.00 L 532.51,440.80 L 534.39,435.64 L 536.27,430.52 L 538.14,425.45 L 540.01,420.43 L 541.88,415.45 L 543.74,410.52 L 545.61,405.63 L 547.46,400.78 L 549.32,395.97 L 551.17,391.21 L 553.02,386.48 L 554.86,381.80 L 556.70,377.16 L 558.54,372.55 L 560.37,367.99 L 562.20,363.46 L 564.02,358.97 L 565.84,354.52 L 567.65,350.10 L 569.46,345.72 L 571.26,341.37 L 573.06,337.07 L 574.85,332.79 L 576.64,328.55 L 578.42,324.34 L 580.20,320.17 L 581.97,316.03 L 583.73,311.92 L 585.49,307.85 L 587.24,303.80 L 588.98,299.79 L 590.72,295.81 L 592.45,291.86 L 594.18,287.94 L 595.89,284.04 L 597.60,280.18 L 599.30,276.35 L 601.00,272.54 L 602.68,268.77 L 604.36,265.02 L 606.03,261.29 L 607.69,257.60 L 609.34,253.93 L 610.98,250.29 L 612.61,246.67 L 614.23,243.09 L 615.84,239.52 L 617.44,235.98 L 619.03,232.47 L 620.61,228.98 L 622.18,225.51 L 623.74,222.07 L 625.28,218.65 L 626.82,215.26 L 628.34,211.88 L 629.84,208.53 L 631.34,205.21 L 632.82,201.90 L 634.29,198.62 L 635.74,195.36 L 637.18,192.12 L 638.60,188.90 L 640.01,185.70 L 641.40,182.52 L 642.77,179.36 L 644.13,176.23 L 645.47,173.11 L 646.79,170.01 L 648.09,166.93 L 649.38,163.87 L 650.64,160.83 L 651.88,157.81 L 653.10,154.80 L 654.30,151.82 L 655.48,148.85 L 656.63,145.90 L 657.76,142.96 L 658.86,140.05 L 659.94,137.15 L 660.99,134.26 L 662.01,131.40 L 663.00,128.55 L 663.96,125.71 L 664.89,122.90 L 665.79,120.09 L 666.65,117.31 L 667.47,114.53 L 668.26,111.78 L 669.01,109.03 L 669.71,106.31 L 670.38,103.59 L 670.99,100.89 L 671.56,98.21 L 672.08,95.54 L 672.54,92.88 L 672.95,90.23 L 673.30,87.60 L 673.58,84.98 L 673.80,82.38 L 673.95,79.78 L 674.02,77.20 L 674.01,74.63 L 673.92,72.07 L 673.74,69.52 L 673.45,66.99 L 673.07,64.46 L 672.57,61.95 L 671.94,59.45 L 671.19,56.95 L 670.28,54.47 L 669.22,52.00 L 667.97,49.53 L 666.53,47.08 L 664.85,44.63 L 662.93,42.19 L 660.70,39.76 L 658.14,37.34 L 655.16,34.92 L 651.69,32.51 L 647.60,30.10 " fill="none" stroke="#3fa9f5" stroke-width="2.4"/>
+<line x1="159.6" y1="420.4" x2="552.3" y2="420.4" stroke="#ff5470" stroke-width="2.6"/>
+<line x1="552.3" y1="420.4" x2="774.5" y2="151.8" stroke="#ff5470" stroke-width="2.6"/>
+<line x1="774.5" y1="151.8" x2="159.6" y2="151.8" stroke="#ff5470" stroke-width="2.6"/>
+<line x1="159.6" y1="151.8" x2="159.6" y2="420.4" stroke="#ff5470" stroke-width="2.6"/>
+<line x1="552.3" y1="420.4" x2="707.9" y2="151.8" stroke="#ffb648" stroke-width="1.8" stroke-dasharray="6,5"/>
+<circle cx="540.0" cy="420.4" r="4" fill="#fff"/>
+<text x="547.0" y="412.4" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">5</text>
+<circle cx="552.3" cy="420.4" r="4" fill="#fff"/>
+<text x="559.3" y="436.4" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">1</text>
+<circle cx="707.9" cy="151.8" r="4" fill="#fff"/>
+<text x="714.9" y="143.8" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">2s</text>
+<circle cx="774.5" cy="151.8" r="4" fill="#fff"/>
+<text x="781.5" y="143.8" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">2</text>
+<circle cx="654.3" cy="151.8" r="4" fill="#fff"/>
+<text x="661.3" y="143.8" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">2'</text>
+<circle cx="159.6" cy="151.8" r="4" fill="#fff"/>
+<text x="166.6" y="143.8" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">3</text>
+<circle cx="159.6" cy="420.4" r="4" fill="#fff"/>
+<text x="166.6" y="436.4" fill="#eef3fb" font-size="13" font-weight="bold" font-family="monospace">4</text>
+<text x="437.0" y="135.8" fill="#ff5470" font-size="14" font-weight="bold">Tc = 45°C</text>
+<text x="325.9" y="448.4" fill="#ff5470" font-size="14" font-weight="bold">Te = -25°C</text>
+            </svg>
+            <div class="legend" style="display:flex; flex-wrap:wrap; gap:14px; margin-top:12px; font-size:12px; color:var(--text-muted);">
+                <span><i style="display:inline-block;width:14px;height:3px;background:#ff5470;border-radius:2px;"></i> 實際循環（4→1→2→3→4）</span>
+                <span><i style="display:inline-block;width:14px;height:3px;background:#ffb648;border-top:2px dashed #ffb648;"></i> 等熵理論壓縮線（1→2s）</span>
+                <span><i style="display:inline-block;width:14px;height:3px;background:#3fa9f5;border-radius:2px;"></i> 飽和線</span>
+            </div>
+        </div>
+
+        <p class="section-note" style="margin-top:14px;">本計算書由「冷媒循環選型計算系統 v2.0」產出，物性採 CoolProp（與 NIST REFPROP 同源之 Tillner-Roth/HEOS 狀態方程）精算；$U$ 值、風速、效率等為工程經驗假設，正式設計仍應以壓縮機/熱交換器原廠選型軟體及試驗數據核算，刮面式熱交換器選型並應參考 Taylor、Carpigiani、Emery Thompson 等原廠測試數據。</p>
+    </div>
+
+    <!-- 7. 參考文獻 -->
+    <div class="references" id="sec7">
+        <h4>7. 參考文獻與法規標準 (References &amp; Standards)</h4>
+        <ul>
+            <li><a href="https://www.ashrae.org/" target="_blank" style="color: var(--primary);">ASHRAE Handbook - Refrigeration (Chapter 24: Ice Cream)</a></li>
+            <li>ISO 2145: Documentation — Designation of main divisions and subdivisions in numbered documents</li>
+            <li>ANSI/ASHRAE Standard 34: Designation and Safety Classification of Refrigerants</li>
+            <li>EU Regulation No 517/2014 on fluorinated greenhouse gases (F-Gas Regulation)</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
