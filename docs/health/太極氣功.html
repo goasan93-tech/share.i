@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現代科技養生：太極氣功全功能教學與心法教材</title>
+    <style>
+        /* 現代科技感深色漸層主題 */
+        :root {
+            --bg-primary: #0a0d16;
+            --bg-secondary: #0f1424;
+            --bg-card: #182035;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #3a86ff;
+            --accent-purple: #8338ec;
+            --accent-gold: #ffb703;
+            --accent-green: #06d6a0;
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #02040a 100%);
+            color: var(--text-primary);
+            font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 科技感簡報封面 */
+        header.cover {
+            text-align: center;
+            padding: 80px 24px;
+            background: radial-gradient(circle at center, rgba(58, 134, 255, 0.15) 0%, transparent 75%);
+            border: 1px solid rgba(0, 242, 254, 0.1);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header.cover h1 {
+            font-size: 3rem;
+            background: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        header.cover p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 霓虹章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 16px;
+            margin: 50px 0 25px 0;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* 核心摘要卡片（Bento Grid 樣式） */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h3 span {
+            font-size: 0.8rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card-body .label {
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        /* 響應式比較表格 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: rgba(58, 132, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.2);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 標籤設計 */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-cyan { background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .badge-purple { background: rgba(131, 56, 236, 0.1); color: var(--accent-purple); border: 1px solid rgba(131, 56, 236, 0.2); }
+        .badge-green { background: rgba(6, 214, 160, 0.1); color: var(--accent-green); border: 1px solid rgba(6, 214, 160, 0.2); }
+
+        /* 雙欄 RWD 招式卡片 */
+        .movement-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 992px) {
+            .movement-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .movement-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .movement-card:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
+        }
+
+        .movement-card h2 {
+            font-size: 1.6rem;
+            color: var(--accent-cyan);
+            margin-bottom: 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .movement-card h2 .number {
+            font-size: 2.2rem;
+            font-style: italic;
+            color: rgba(0, 242, 254, 0.12);
+            font-weight: 900;
+        }
+
+        .formula {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--accent-gold);
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            border-radius: 0 12px 12px 0;
+            font-weight: bold;
+            color: var(--accent-gold);
+            font-size: 1rem;
+        }
+
+        .movement-details .item {
+            margin-bottom: 20px;
+        }
+
+        .movement-details .item-title {
+            font-weight: bold;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.05rem;
+        }
+
+        /* 頁尾與驗證資訊 */
+        footer {
+            text-align: center;
+            padding: 50px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .validation-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .validation-box h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .validation-box ul {
+            list-style-type: none;
+        }
+
+        .validation-box li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .validation-box a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+
+        .validation-box a:hover {
+            text-decoration: underline;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 簡報封面區 -->
+        <header class="cover">
+            <h1>道法自然：太極氣功全功能教學</h1>
+            <p>融合八百年中醫臟腑學說、橫膈膜腹式呼吸與溫和伸展，為高壓、久坐與身心失衡者量身打造的動態導引指南。</p>
+        </header>
+
+        <!-- 核心重點摘要卡片 -->
+        <div class="section-title"><span>🌟</span> 核心重點與氣功心法</div>
+        <div class="grid-container">
+            <!-- 卡片 1 -->
+            <div class="card">
+                <h3>腹式呼吸 <span>調息心法</span></h3>
+                <div class="card-body">
+                    <p><span class="label">呼吸機制：</span>太極氣功的核心靈魂在於「腹式呼吸」（亦稱丹田/橫膈膜呼吸）[1]。吸氣時橫膈膜下降，腹部自然鼓起；呼氣時橫膈膜上升，腹部自然向內收縮[1]。</p>
+                    <p><span class="label">生理效益：</span>此呼吸法可引導氣息下行，達成「氣沉丹田」[1]。現代醫學證實，這能顯著增加肺活量、啟動副交感神經以降低心率血壓、舒緩極度焦慮[1]。</p>
+                </div>
+            </div>
+            <!-- 卡片 2 -->
+            <div class="card">
+                <h3>中正安舒 <span>身法要領</span></h3>
+                <div class="card-body">
+                    <p><span class="label">脊椎調校：</span>練習時不論立姿或打坐，皆須保持脊椎自然挺直，想像頭頂有懸線向上牽引，肩膀自然下沉放鬆，下巴微收，頸部拉長，眼神微閉或垂簾[2]。</p>
+                    <p><span class="label">打坐根基：</span>若在收勢後進行靜坐，初學者可選「散盤」（自然交叉），進階者則採「單盤」或「雙盤」，臀下可墊薄墊以保持脊椎端正、減輕雙腿壓力[2]。</p>
+                </div>
+            </div>
+            <!-- 卡片 3 -->
+            <div class="card">
+                <h3>三昧禪定 <span>心神合一</span></h3>
+                <div class="card-body">
+                    <p><span class="label">心一境性：</span>太極內功講求「心靜、身靈、氣斂」。「三昧」（Samādhi）非指三種物件，而是指心念平等持續的「等持」與「正定」狀態，使意念高度集中而不被外境干擾[3, 4]。</p>
+                    <p><span class="label">神經科學：</span>研究發現，當心神進入不散亂的三昧專注時，大腦前額葉皮質活動顯著增加，除了能降低壓力，更有助於情緒穩定與創意啟發[5]。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 比較表格 -->
+        <div class="section-title"><span>📊</span> 太極氣功經典八式經絡與生活應用對照</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>招式名稱</th>
+                        <th>核心呼吸節奏</th>
+                        <th>主調經絡/部位</th>
+                        <th>主要生理保健功效</th>
+                        <th>現代高壓情境應用</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>一、起勢調息</strong></td>
+                        <td>起吸、落呼（腹式）</td>
+                        <td>肺經、三焦經（引氣下行）</td>
+                        <td>穩定心率、宣通肺氣、排除體內廢氣</td>
+                        <td><span class="badge badge-cyan">晨起昏沉、上班前定心神、消除雜念</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>二、開闊胸懷</strong></td>
+                        <td>開吸、合呼</td>
+                        <td>心經、肺經、任脈（舒胸）</td>
+                        <td>改善胸悶緊繃、活化心肺功能、調和氣血</td>
+                        <td><span class="badge badge-purple">久坐辦公胸悶、呼吸急促、焦慮心悸</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>三、揮舞彩虹</strong></td>
+                        <td>左吸、右呼（或自然）</td>
+                        <td>膽經、脾胃經、兩肋</td>
+                        <td>拉伸側體肌群、鬆開肋骨、宣通肝膽氣鬱</td>
+                        <td><span class="badge badge-green">腰側痠痛、精神抑鬱、壓力型偏頭痛</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>四、左右分水</strong></td>
+                        <td>分吸、合呼</td>
+                        <td>肩關節、大腸經、手三陽經</td>
+                        <td>鬆弛肩周關節、活動手臂經絡、提升免疫力</td>
+                        <td><span class="badge badge-cyan">肩膀僵硬、長期打字滑鼠手、上肢沉重</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>五、左右倒捲肱</strong></td>
+                        <td>退吸、推呼</td>
+                        <td>督脈、脊椎周邊神經</td>
+                        <td>扭轉脊柱、緩解深層背肌痙攣、鍛鍊平衡</td>
+                        <td><span class="badge badge-purple">久坐脊椎僵硬、背部痠痛、體態不良</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>六、湖心划船</strong></td>
+                        <td>前俯呼、起立吸</td>
+                        <td>膀胱經、腎經、腰背</td>
+                        <td>深度伸展腰背肌、強健腎氣、通暢下肢血液</td>
+                        <td><span class="badge badge-green">下背部緊繃、久站腰痠、雙下肢冰冷</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>七、轉腕推掌</strong></td>
+                        <td>收吸、推呼（發勁）</td>
+                        <td>肝經、膽經、手腕關節</td>
+                        <td>疏肝理氣、靈活腕部與末梢血管、提振力量</td>
+                        <td><span class="badge badge-cyan">工作挫折鬱悶、手腕關節炎、精神不濟</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>八、收勢定神</strong></td>
+                        <td>歸元吸、抱丹呼</td>
+                        <td>任脈、丹田（百會至湧泉）</td>
+                        <td>萬念歸一、將氣血導引回原點、放鬆中樞</td>
+                        <td><span class="badge badge-purple">高壓失眠、思慮過度、夜間安定心神</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 八式詳細教學卡片 -->
+        <div class="section-title"><span>🥋</span> 太極氣功經典八式：動作分解與內功心法</div>
+        <div class="movement-grid">
+
+            <!-- 第一式 -->
+            <div class="movement-card">
+                <h2>第一式：起勢調息 <span class="number">01</span></h2>
+                <div class="formula">口訣：兩手徐徐起，調息意安寧。氣沉下丹田，萬念自歸零。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>雙腳平行站立，與肩同寬。兩手自然下垂。吸氣時，雙手手心朝下、徐徐向前平舉至肩膀高度；呼氣時，雙手自然屈肘、手掌緩緩下按至腹前。重複執行 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「起吸落呼，意在丹田」。此式務必配合慢、細、勻、長的橫膈膜腹式呼吸[1]。吸氣時感受腹部自然向外擴張，帶動內氣自湧泉升起；呼氣時腹部內收，將氣息溫和地導引入肚臍下三寸處，達成「氣沉丹田」，啟動副交感神經，消除體內雜念與焦躁[1]。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>最適合<strong>早晨起床，思緒仍有些混沌、昏沉的上班族</strong>。在出門前花三分鐘靜心站立、調息，能快速穩定心率、大口交換新鮮氧氣，充滿能量地迎接新的一天。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二式 -->
+            <div class="movement-card">
+                <h2>第二式：開闊胸懷 <span class="number">02</span></h2>
+                <div class="formula">口訣：胸懷無限寬，心氣自悠然。吐故納新切，神清意自安。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>接上式，當手平舉至胸前時，吸氣，雙臂向兩側水平張開（掌心相對），胸廓極力擴展；呼氣時，雙手臂向中間合攏，隨後手掌翻轉朝下，徐徐按至腹前。重複 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「開吸合呼，胸廓擴張」。手臂外開時深吸氣，感覺氣息充滿胸腔（上焦），活化心肺；雙臂合攏時吐氣，排除胸中鬱悶。這對改善心肺通氣、宣通任脈與手太陰肺經極有助益。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>適合<strong>長期在高壓、高競爭力環境下的專案經理或業務主管</strong>。當面對業績壓力或緊急問題，感覺胸口有一股氣悶住、大腦缺氧時，以此動作擴胸深呼吸，能立刻緩解胸悶與焦慮。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三式 -->
+            <div class="movement-card">
+                <h2>第三式：揮舞彩虹 <span class="number">03</span></h2>
+                <div class="formula">口訣：彩虹高空舞，兩肋盡舒展。肝氣得宣洩，神清體泰然。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>吸氣時，雙手自胸前平舉高過頭頂，手臂微彎。隨後重心移至右腿，身體微向左側彎，右臂伸直，左臂彎曲下落至頭側（掌心向下）。隨後重心移至左腿，做相反動作。左右交替，配合呼吸各 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「重心轉換，拉伸兩肋」。雙臂高舉時，意念如揮舞美麗彩虹。側彎時充分拉開身體側面的「膽經」與兩肋肌群。中醫認為「肝膽主疏泄」，藉由對拉牽引，能宣通因壓力造成的肝膽氣鬱、疏通氣血。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>適合<strong>經常因壓力大而出現太陽穴偏頭痛、兩肋脹痛、情緒起伏大且容易暴躁的人</strong>。練習此式，能使身體側邊經絡獲得大面積拉伸，釋放長期壓抑的身體張力。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第四式 -->
+            <div class="movement-card">
+                <h2>第四式：左右分水 <span class="number">04</span></h2>
+                <div class="formula">口訣：掌向兩旁分，關節得舒伸。氣走四梢處，周身皆輕靈。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>雙手交叉於腹前。吸氣時，雙手沿身體中線向上提舉至頭頂前方，隨後掌心朝外，兩手向左右兩側下方劃大圓平分撥水（呼氣），同時雙腿微蹲。重複 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「分吸合呼，其根在腳」。雙手劃大圓分水時，力量要從腳掌發起，經過腰部的旋轉與引導，最後行於手指。雙臂大範圍劃圓，能鬆弛僵硬的肩關節、暢通大腸經與手部三陽經絡，促進淋巴循環。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>特別拯救<strong>天天敲擊鍵盤、使用滑鼠而導致手腕、手臂、肩膀處酸痛緊繃的硬漢工程師與低頭族</strong>。這招撥水動作能有效鬆動肩胛與手臂的小肌肉群，防止五十肩或滑鼠手。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第五式 -->
+            <div class="movement-card">
+                <h2>第五式：左右倒捲肱 <span class="number">05</span></h2>
+                <div class="formula">口訣：轉腰避風險，倒步化重力。脊柱柔如水，中正不歪斜。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>呈微蹲馬步，右手掌心朝上平推於前，左手抱於腰側。吸氣時，左手向後方劃半圓拉開，身體隨之向左轉，雙眼目視左掌；呼氣時，左手屈肘自耳側向前平推（掌心向前），右手則順勢收回腰際。左右交替各 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「用意不用力，主宰於腰」。太極拳經云：「其根在腳，發於腿，主宰於腰，行於手指」。此式藉由腰椎的緩慢旋轉，催發手臂的開合，能放鬆背部脊椎周邊的神經與督脈，降低背肌痙攣，活動背部深層筋膜。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>適合<strong>久坐導致整條脊椎、腰椎、骨盆腔僵硬沉重的辦公室白領</strong>。透過這種類似太極拳「倒攆猴」的輕柔扭轉，能重新找回脊柱的柔軟度與姿勢的動態平衡。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第六式 -->
+            <div class="movement-card">
+                <h2>第六式：湖心划船 <span class="number">06</span></h2>
+                <div class="formula">口訣：俯身撈湖水，起立撐木槳。固腎腰膝健，氣血遍全身。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>雙腳平行直立。呼氣時，上身緩緩前俯，雙手順勢向下、向後方劃圓平推（如划船搖槳），身體盡力前俯拉伸腰背（膝蓋可微屈，量力而為）；吸氣時，雙手帶動身體緩緩起立，雙臂高舉過頭，隨後由兩側落回。重複 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「意守命門（後腰）與足太陽膀胱經」。前俯時頭頂百會向下，拉伸整條膀胱經與大腿後側肌群。起立時，以腰部命門為軸，緩慢帶起。此式旨在補腎固本、固腰健骨，打通下肢氣血循环。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>針對<strong>經常腰痠背痛、下肢畏寒、或一到秋冬就手腳冰冷的老年長者與久站工作者</strong>。此俯仰動作可溫和拉開大腿後側經絡，使氣血順暢抵達末梢，改善冰冷。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第七式 -->
+            <div class="movement-card">
+                <h2>第七式：轉腕推掌 <span class="number">07</span></h2>
+                <div class="formula">口訣：攢拳復推掌，怒目激氣力。肝氣自外達，身心皆健壯。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>雙腳跨開站成馬步，兩拳抱於腰際，掌心朝上。吸氣準備，呼氣時，左拳化掌，轉腕向前猛力推出，同時雙眼「怒目圓睜」狠狠注視前方掌心；吸氣時，左手握拳收回，再換右掌。左右交替各 8 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「肝主筋，開竅於目」。推掌時要「怒目瞪視」，這能刺激眼睛與肝膽經絡；出掌時意念全身氣力由腰脊灌注於掌根，螺旋轉腕能舒肝理氣、激發體內潛藏的勁力，強健手腕與四肢筋骨。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>特別適合<strong>在職場上感到壓抑、受挫、或常有負面情緒無法排解的高壓工作者</strong>。透過有節奏地「吐氣推掌、睜眼瞪視」，能將體內的鬱悶之氣狠狠發洩出來，重獲清爽與氣力。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第八式 -->
+            <div class="movement-card">
+                <h2>第八式：收勢定神 <span class="number">08</span></h2>
+                <div class="formula">口訣：抱球歸丹田，定心入三昧。氣血調和順，百病不相侵。</div>
+                <div class="movement-details">
+                    <div class="item">
+                        <div class="item-title">動作分解</div>
+                        <p>兩腳併攏。吸氣時，雙手自兩側緩緩向上捧球至頭頂前方；呼氣時，雙手手心朝下，順著身體中線緩緩按至小腹（丹田），隨後雙手重疊疊放於下腹處（男左手在內、女右手在內）[3]，保持靜止呼吸，靜心收功。重複 3 次。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">心法要領</div>
+                        <p>「萬念歸一，一念歸零」。收功是氣功最關鍵的環節。將全身活動開來的熱量與氣血緩緩引導、封存回下丹田。意守丹田，呼吸調勻，讓心神慢慢進入「三昧禪定」的平靜之中，達到心靈與肉體的高度合一[1, 3]。</p>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">現代情境應用</div>
+                        <p>非常適合作為<strong>睡前半小時的「大腦關機仪式」</strong>。當躺在床上依然思緒翻騰、無法入睡時，起身做三遍收勢，隨後進行5-10分鐘的盤腿打坐調息，能極大程度放鬆神經、消除失眠[2]。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 結論與修煉指南 -->
+        <div class="section-title"><span>📝</span> 修煉指南與養生建議</div>
+        <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--accent-green);">
+            <div class="card-body">
+                <p><strong>太極氣功</strong> 的核心奧秘在於「放鬆」與「協調」。「鬆」不是軟弱，而是鬆中有勁、柔中帶剛；「協調」則是肢體動作、橫膈膜腹式呼吸與意念專注的三位一體[1, 5]。</p>
+                <p><strong>【日常修煉核心建議】</strong></p>
+                <p>1. <strong>練習時間：</strong>最建議於<strong>清晨起床後</strong>或<strong>睡前一小時</strong>演練。清晨練習可提神醒腦、舒展筋骨；睡前慢速練習，則能平復過度興奮的交感神經，幫助深度睡眠。</p>
+                <p>2. <strong>環境與穿著：</strong>選擇安靜、通風良好且避開穿堂風的環境。穿著寬鬆、有彈性的衣物。打坐時可使用薄坐墊墊高臀部，有助保持脊椎直立並減輕膝關節負擔[2]。</p>
+                <p>3. <strong>禁忌與注意事項：</strong>正在感冒發燒或有急性發炎者應暫停。<strong>飯後一小時內不宜打坐與練氣功</strong>，避免影響胃腸消化血流[2]。動作幅度需「量力而為」，不可勉強硬撐[2]。</p>
+                <p><em>註：隱私與資安是最高原則。本教學網頁採用純靜態 RWD HTML/CSS 程式碼，無任何外部不安全腳本，方便您一鍵複製、安全保存使用。</em></p>
+            </div>
+        </div>
+
+        <!-- 驗證連結 -->
+        <div class="validation-box">
+            <h4>🔍 參考來源與科學驗證網站連結</h4>
+            <ul>
+                <li>• 腹式呼吸（橫膈膜呼吸）生理機制、好處與打坐要領：<a href="https://ocw.lib.ntnu.edu.tw/file.php/2/OC-CHM081119.pdf" target="_blank">國立台灣師範大學開放式課程 (NTNU OCW) - 氣功與禪定講義</a></li>
+                <li>• 太極養心功法、心血管保健與老年人防摔復健：<a href="https://edh.tw/articles/G3VZWGd" target="_blank">早安健康 - 太極養心功法，簡易4式讓血管變年輕</a></li>
+                <li>• 太極拳論、十三勢心法與內勁導引原理：<a href="https://www.taichivip.com/%E5%A4%AA%E6%A5%B5%E5%BF%83%E6%B3%95" target="_blank">允軒陳氏太極拳研究會 - 太極心法全解</a></li>
+                <li>• 內功心法口訣、上下相隨、用意不用力之科學分析：<a href="https://www.taijizhe.com/topic.php?vid=1101" target="_blank">太極者 - 練好太極62條內功心法要訣</a></li>
+                <li>• 太極拳十要、24式動作圖解與現代自律神經調節：<a href="https://www.inzense.com.tw/tai-chi-mind-method-complete-guide-from-taichi-classics-to-internal-cultivation-principles/" target="_blank">音禪太極 - 太極拳心法全解析指南</a></li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>2026 養生太極氣功</p>
+        </footer>
+    </div>
+</body>
+</html>
