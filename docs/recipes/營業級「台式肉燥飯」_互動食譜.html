@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台式滷肉燥 — 互動食譜</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+:root {
+  --soy:       #2c1505;
+  --caramel:   #7a3b10;
+  --gold:      #c47f17;
+  --gold-lt:   #f5c842;
+  --cream:     #fdf8f0;
+  --steam:     #e8dcc8;
+  --ink:       #1a1108;
+  --red:       #c0392b;
+  --green:     #2e7d32;
+  --white:     #ffffff;
+  --shadow:    0 4px 20px rgba(44,21,5,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.hero {
+  background: linear-gradient(160deg, var(--soy) 0%, #5a2008 100%);
+  color: white;
+  padding: 40px 24px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '🍚';
+  position: absolute;
+  font-size: 180px;
+  opacity: 0.04;
+  right: -20px; bottom: -30px;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  border: 1px solid var(--gold);
+  color: var(--gold-lt);
+  font-size: 10px;
+  letter-spacing: 3px;
+  padding: 3px 14px;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(26px, 7vw, 46px);
+  font-weight: 900;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-desc { font-size: 13px; color: #d4b896; margin-bottom: 28px; }
+
+/* ── SERVINGS CONTROL ── */
+.servings-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  padding: 10px 24px;
+  display: inline-flex;
+  margin-bottom: 0;
+}
+.srv-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: transparent;
+  color: var(--gold-lt);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.srv-btn:hover { background: var(--gold); color: var(--soy); }
+.srv-num {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  min-width: 44px;
+  text-align: center;
+}
+.srv-label { font-size: 12px; color: #d4b896; letter-spacing: 1px; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  background: var(--soy);
+  border-bottom: 2px solid var(--gold);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 14px 10px;
+  background: transparent;
+  border: none;
+  color: #a08060;
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.tab-btn.active {
+  color: var(--gold-lt);
+  font-weight: 700;
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--gold-lt);
+}
+
+/* ── PANELS ── */
+.panel { display: none; padding: 20px 16px 40px; max-width: 700px; margin: 0 auto; }
+.panel.active { display: block; }
+
+/* ── INGREDIENTS ── */
+.ing-note-bar {
+  background: #fff8e8;
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--caramel);
+  margin-bottom: 16px;
+  border-radius: 0 6px 6px 0;
+}
+.ing-group { margin-bottom: 20px; }
+.ing-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--caramel);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--steam);
+}
+.ing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 4px;
+  border-bottom: 1px dashed var(--steam);
+  font-size: 14px;
+  gap: 8px;
+}
+.ing-item:last-child { border-bottom: none; }
+.ing-name { color: var(--ink); flex: 1; }
+.ing-qty {
+  color: var(--caramel);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: 15px;
+}
+.ing-tag {
+  font-size: 10px;
+  background: var(--steam);
+  color: var(--caramel);
+  padding: 1px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ── COOKING MODE ── */
+.step-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.step-progress {
+  flex: 1;
+  height: 4px;
+  background: var(--steam);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.step-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.step-counter { font-size: 12px; color: var(--caramel); white-space: nowrap; }
+
+.step-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+.step-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.step-circle {
+  width: 48px; height: 48px;
+  background: var(--soy);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-lt);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step-title-text {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--soy);
+}
+.step-content { font-size: 14px; line-height: 2; color: #3a2a1a; flex: 1; }
+.step-content .imp { color: var(--red); font-weight: 700; }
+.step-content .tip {
+  display: inline-block;
+  background: #fff8e8;
+  border-left: 3px solid var(--gold);
+  padding: 6px 12px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--caramel);
+  border-radius: 0 6px 6px 0;
+  width: 100%;
+}
+
+/* ── TIMER ── */
+.timer-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: #f0f8f0;
+  border-radius: 10px;
+  border: 1px solid #b8ddb8;
+}
+.timer-display {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+  min-width: 72px;
+}
+.timer-label { font-size: 12px; color: #5a9a5a; flex: 1; }
+.timer-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  background: var(--green);
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.timer-btn:hover { background: #1b5e20; }
+.timer-btn.running { background: var(--red); }
+
+.step-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.btn-prev, .btn-next {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-prev {
+  background: var(--steam);
+  color: var(--caramel);
+}
+.btn-prev:hover { background: #d4c4a8; }
+.btn-next {
+  background: var(--soy);
+  color: var(--gold-lt);
+}
+.btn-next:hover { background: var(--caramel); }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── TIPS PANEL ── */
+.tip-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(44,21,5,0.07);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.tip-icon { font-size: 26px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.tip-head { font-weight: 700; font-size: 14px; color: var(--soy); margin-bottom: 4px; }
+.tip-body { font-size: 13px; color: #5a3a1a; line-height: 1.7; }
+.tip-imp { color: var(--red); font-weight: 700; }
+
+/* ── COMPARE PANEL ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: 13px;
+}
+.compare-table th {
+  background: var(--soy);
+  color: var(--gold-lt);
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 700;
+}
+.compare-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--steam);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:nth-child(even) td { background: #faf5ec; }
+.compare-table td.good { color: var(--green); font-weight: 500; }
+.compare-table td.bad  { color: var(--red); }
+.compare-table td.label { font-weight: 700; color: var(--caramel); }
+
+/* ── DONE SCREEN ── */
+.done-screen {
+  text-align: center;
+  padding: 40px 20px;
+}
+.done-emoji { font-size: 64px; margin-bottom: 16px; }
+.done-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--soy);
+  margin-bottom: 8px;
+}
+.done-sub { color: var(--caramel); font-size: 14px; line-height: 1.8; }
+.restart-btn {
+  margin-top: 24px;
+  padding: 12px 32px;
+  background: var(--soy);
+  color: var(--gold-lt);
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── COMPLETION CHECK ── */
+.step-check {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--steam);
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.step-check.checked { border-color: var(--green); background: var(--green); }
+.step-card { position: relative; }
+
+@media (max-width: 480px) {
+  .hero { padding: 30px 16px 24px; }
+  .step-card { padding: 20px 16px; }
+  .panel { padding: 16px 12px 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">店家級配方</div>
+  <h1>台式<em>滷肉燥</em></h1>
+  <p class="hero-desc">黃金比例炸紅蔥酥・深色醬汁慢滷・油香濃郁・膠質豐厚</p>
+  <p class="hero-desc">研究組員：李世權 Claude Gemini</p>
+  <div class="servings-bar">
+    <button class="srv-btn" onclick="changeServings(-1)">−</button>
+    <span class="srv-num" id="srv-num">12</span>
+    <span class="srv-label">人份</span>
+    <button class="srv-btn" onclick="changeServings(1)">+</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('ingredients', this)">🧂 食材</button>
+  <button class="tab-btn" onclick="showTab('cooking', this)">👨‍🍳 烹飪模式</button>
+  <button class="tab-btn" onclick="showTab('tips', this)">🔑 秘訣</button>
+  <button class="tab-btn" onclick="showTab('compare', this)">📊 差異比較</button>
+</div>
+
+<!-- PANEL: 食材 -->
+<div class="panel active" id="panel-ingredients">
+  <div class="ing-note-bar">⚖️ 以下用量依 <strong id="ing-srv">12</strong> 人份計算，調整上方人份數可自動換算</div>
+
+  <div class="ing-group">
+    <div class="ing-group-title">主食材</div>
+    <div class="ing-item"><span class="ing-name">豬絞肉（粗絞，三肥七瘦）</span><span class="ing-qty" data-base="1800" data-unit="g">1800 g</span></div>
+    <div class="ing-item"><span class="ing-name">紅蔥頭（切薄片）</span><span class="ing-qty" data-base="200" data-unit="g">200 g</span></div>
+    <div class="ing-item">
+      <span class="ing-name">豬皮</span>
+      <span style="display:flex;gap:6px;align-items:center;">
+        <span class="ing-tag">強烈建議</span>
+        <span class="ing-qty" data-base="300" data-unit="g">300 g</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="ing-group">
+    <div class="ing-group-title">醬汁調味</div>
+    <div class="ing-item"><span class="ing-name">醬油（豆油伯金丸 / 萬家香）</span><span class="ing-qty" data-base="150" data-unit="ml">150 ml</span></div>
+    <div class="ing-item"><span class="ing-name">醬油膏</span><span class="ing-qty" data-base="50" data-unit="ml">50 ml</span></div>
+    <div class="ing-item"><span class="ing-name">米酒</span><span class="ing-qty" data-base="100" data-unit="ml">100 ml</span></div>
+    <div class="ing-item"><span class="ing-name">冰糖</span><span class="ing-qty" data-base="40" data-unit="g">40 g</span></div>
+    <div class="ing-item"><span class="ing-name">水或高湯</span><span class="ing-qty" data-base="600" data-unit="ml">600 ml</span></div>
+  </div>
+
+  <div class="ing-group">
+    <div class="ing-group-title">香料</div>
+    <div class="ing-item"><span class="ing-name">五香粉</span><span class="ing-qty" data-base="3" data-unit="tsp">3 tsp</span></div>
+    <div class="ing-item"><span class="ing-name">白胡椒粉</span><span class="ing-qty" data-base="1" data-unit="tsp">1 tsp</span></div>
+    <div class="ing-item"><span class="ing-name">滷包（八角2顆、桂皮1片、月桂葉2片）</span><span class="ing-qty" data-base="1" data-unit="包">1 包</span></div>
+  </div>
+
+  <div class="ing-group">
+    <div class="ing-group-title">輔助材料</div>
+    <div class="ing-item"><span class="ing-name">食用油（炸紅蔥頭用）</span><span class="ing-qty" data-base="150" data-unit="ml">150 ml</span></div>
+    <div class="ing-item"><span class="ing-name">油蔥酥（市售，補充香氣）</span><span class="ing-qty" data-base="30" data-unit="g">30 g</span></div>
+  </div>
+</div>
+
+<!-- PANEL: 烹飪模式 -->
+<div class="panel" id="panel-cooking">
+  <div class="step-nav">
+    <span class="step-counter" id="step-counter">步驟 1 / 7</span>
+    <div class="step-progress"><div class="step-progress-fill" id="progress-fill" style="width:14%"></div></div>
+  </div>
+  <div id="step-display"></div>
+</div>
+
+<!-- PANEL: 秘訣 -->
+<div class="panel" id="panel-tips">
+  <div class="tip-card">
+    <div class="tip-icon">🥩</div>
+    <div>
+      <div class="tip-head">絞肉要粗絞</div>
+      <div class="tip-body">請肉販用「粗孔」絞一次，或手工切小丁。<span class="tip-imp">細絞肉滷出來口感像肉泥</span>，粗絞才有層次嚼感。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">⚖️</div>
+    <div>
+      <div class="tip-head">肥瘦比例 3：7</div>
+      <div class="tip-body">純瘦肉會太乾柴，純肥肉太油膩。<span class="tip-imp">三分肥七分瘦是黃金比例</span>，油脂在慢滷時融入湯汁，香氣濃郁不膩口。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">🧅</div>
+    <div>
+      <div class="tip-head">紅蔥頭不可省、不可替代</div>
+      <div class="tip-body">這是台式肉燥與其他肉醬的最大差異。<span class="tip-imp">千萬不能用洋蔥替代</span>，香氣完全不同。自炸的紅蔥酥比市售罐裝香氣高出數倍。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">🐷</div>
+    <div>
+      <div class="tip-head">豬皮帶來膠質光澤</div>
+      <div class="tip-body">豬皮含大量膠原蛋白，慢滷後完全融化，讓醬汁自然濃稠發亮。<span class="tip-imp">不需勾芡</span>，光澤感就是豬皮賦予的。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">🔥</div>
+    <div>
+      <div class="tip-head">火候：最小火、只能微微冒泡</div>
+      <div class="tip-body"><span class="tip-imp">大火滾煮是最常見的失敗原因</span>：肉質變老、湯汁混濁、香氣散失。轉最小火後鍋內只能微微冒泡，這是決定口感的關鍵。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">🌙</div>
+    <div>
+      <div class="tip-head">隔夜冷藏更好吃</div>
+      <div class="tip-body">放涼後冷藏一夜，油脂凝固後撈去表面多餘白油，再加熱。<span class="tip-imp">風味濃縮集中，比當天吃更好吃</span>。這是店家常用的「熟成」手法。</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">📦</div>
+    <div>
+      <div class="tip-head">大量製作・分裝冷凍</div>
+      <div class="tip-body">冷藏可放 5 天，分裝小袋冷凍可保存 3 個月。1800g 一次做足，隨時取用，<span class="tip-imp">是節省時間的最佳策略</span>。</div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL: 比較 -->
+<div class="panel" id="panel-compare">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>項目</th>
+        <th>家庭版</th>
+        <th>店家版（本配方）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">絞肉粗細</td>
+        <td class="bad">超市細絞肉（口感如肉泥）</td>
+        <td class="good">粗絞或手切小丁（有嚼感）</td>
+      </tr>
+      <tr>
+        <td class="label">紅蔥酥</td>
+        <td class="bad">市售罐裝（香氣薄弱）</td>
+        <td class="good">現炸紅蔥頭（香氣提升 3 倍）</td>
+      </tr>
+      <tr>
+        <td class="label">豬皮</td>
+        <td class="bad">不加（湯汁稀、無光澤）</td>
+        <td class="good">加 300g（自然膠質濃稠）</td>
+      </tr>
+      <tr>
+        <td class="label">醬油種類</td>
+        <td class="bad">單一醬油</td>
+        <td class="good">醬油 + 醬油膏雙醬（層次豐富）</td>
+      </tr>
+      <tr>
+        <td class="label">滷製時間</td>
+        <td class="bad">30–40 分鐘（不足）</td>
+        <td class="good">90–120 分鐘（風味完全釋放）</td>
+      </tr>
+      <tr>
+        <td class="label">火候控制</td>
+        <td class="bad">中火（肉老、湯混濁）</td>
+        <td class="good">最小火微微冒泡（軟嫩清亮）</td>
+      </tr>
+      <tr>
+        <td class="label">靜置熟成</td>
+        <td class="bad">當天立即食用</td>
+        <td class="good">冷藏隔夜再加熱（風味濃縮）</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// ── 資料 ──
+const BASE_SERVINGS = 12;
+let currentServings = 12;
+let currentStep = 0;
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+const checkedSteps = new Set();
+
+const steps = [
+  {
+    title: '炸紅蔥酥（靈魂步驟）',
+    icon: '🧅',
+    content: `鍋中倒入 <strong>150ml 食用油</strong>，<strong>冷油</strong>放入 200g 紅蔥頭薄片。
+開中小火慢炸，過程中持續攪拌，炸至金黃焦香。
+<span class="imp">關鍵：顏色剛轉深金色就要撈起，餘熱會讓顏色再加深！</span>
+<span class="tip">💡 油與蔥酥分開保留，兩者後面都會用到。</span>`,
+    timer: 9 * 60,
+    timerLabel: '建議炸 8–10 分鐘'
+  },
+  {
+    title: '處理豬皮（增加膠質）',
+    icon: '🐷',
+    content: `豬皮先<strong>汆燙 5 分鐘</strong>去腥，撈起切成 0.5cm 小丁或細條。
+<span class="imp">豬皮是讓肉燥有濃稠光澤感的秘訣，強烈建議加入！</span>
+<span class="tip">💡 豬皮可在肉攤直接購買，通常很便宜甚至免費索取。</span>`,
+    timer: 5 * 60,
+    timerLabel: '汆燙計時 5 分鐘'
+  },
+  {
+    title: '爆香炒肉（建立鍋底焦香）',
+    icon: '🥩',
+    content: `取炸蔥的香油約 3 大匙留鍋，開<strong>大火</strong>。
+放入 1800g 絞肉，用鍋鏟撥散，炒至肉色全白、水分收乾（約 5–7 分鐘）。
+<span class="imp">不要太早翻動！讓底部微微焦香，這層鍋底焦香是店家味道的關鍵。</span>`,
+    timer: 6 * 60,
+    timerLabel: '炒肉計時 5–7 分鐘'
+  },
+  {
+    title: '嗆酒與調味',
+    icon: '🍶',
+    content: `肉炒香後，沿<strong>鍋邊</strong>倒入 100ml 米酒嗆鍋（會有香氣噴出）。
+依序加入：醬油 150ml → 醬油膏 50ml → 冰糖 40g → 五香粉 3tsp → 白胡椒粉 1tsp。
+翻炒均勻，讓醬汁包覆每一粒肉，炒至肉色變<strong>深褐色</strong>。
+<span class="tip">💡 沿鍋邊下米酒，酒香揮發更完全，不會有酒臭味。</span>`,
+    timer: 2 * 60,
+    timerLabel: '調味翻炒 2 分鐘'
+  },
+  {
+    title: '加入紅蔥酥與豬皮',
+    icon: '✨',
+    content: `加入步驟一炸好的<strong>全部紅蔥酥</strong>、市售油蔥酥 30g（增加層次），
+以及切好的<strong>豬皮丁</strong>。翻炒均勻讓所有食材混合。
+<span class="tip">💡 此時鍋內香氣會非常濃郁，是整個製作過程最香的時刻！</span>`,
+    timer: null,
+    timerLabel: null
+  },
+  {
+    title: '加水慢滷（最關鍵階段）',
+    icon: '⏳',
+    content: `倒入 600ml 水或高湯（水位需蓋過肉），放入滷包。
+大火煮滾後，轉<strong>最小火</strong>加蓋慢滷。
+<span class="imp">鍋內只能微微冒泡！大火滾煮會讓肉變老、湯汁混濁。時間越長越好。</span>
+<span class="tip">💡 建議最少 90 分鐘，2 小時最佳。可利用這段時間去休息！</span>`,
+    timer: 90 * 60,
+    timerLabel: '慢滷計時（建議 90 分鐘起）'
+  },
+  {
+    title: '收汁調味（最終定稿）',
+    icon: '🏆',
+    content: `滷至 90 分鐘後開蓋，取出滷包。
+試味道調整：
+• 顏色不夠深 → 再加少許醬油
+• 不夠鹹 → 加醬油膏
+• 需要光澤感 → 加少許醬油膏
+轉中火<strong>不加蓋</strong>收汁 10–15 分鐘，至湯汁濃郁、表面有油光即完成！
+<span class="tip">💡 放涼冷藏隔夜後撈去白油，再加熱風味更集中，更好吃！</span>`,
+    timer: 12 * 60,
+    timerLabel: '收汁計時 10–15 分鐘'
+  }
+];
+
+// ── 人份換算 ──
+function changeServings(delta) {
+  currentServings = Math.max(1, currentServings + delta);
+  document.getElementById('srv-num').textContent = currentServings;
+  document.getElementById('ing-srv').textContent = currentServings;
+  const ratio = currentServings / BASE_SERVINGS;
+  document.querySelectorAll('[data-base]').forEach(el => {
+    const base = parseFloat(el.dataset.base);
+    const unit = el.dataset.unit;
+    let val = base * ratio;
+    // 整數單位不顯示小數
+    if (['包'].includes(unit)) {
+      val = Math.ceil(val);
+      el.textContent = val + ' ' + unit;
+    } else {
+      val = Math.round(val * 10) / 10;
+      el.textContent = val + ' ' + unit;
+    }
+  });
+}
+
+// ── 分頁切換 ──
+function showTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'cooking') renderStep();
+}
+
+// ── 烹飪模式 ──
+function renderStep() {
+  const total = steps.length;
+  const s = steps[currentStep];
+  const isDone = currentStep >= total;
+
+  document.getElementById('step-counter').textContent =
+    isDone ? '全部完成！' : `步驟 ${currentStep + 1} / ${total}`;
+  document.getElementById('progress-fill').style.width =
+    (((currentStep + (isDone ? 1 : 0)) / total) * 100) + '%';
+
+  if (isDone) {
+    document.getElementById('step-display').innerHTML = `
+      <div class="done-screen">
+        <div class="done-emoji">🍚</div>
+        <div class="done-title">肉燥完成！</div>
+        <div class="done-sub">
+          恭喜你完成了台式滷肉燥！<br>
+          放涼冷藏隔夜後，撈去表面白油再加熱，<br>
+          風味會更集中濃郁。<br><br>
+          <strong>冷藏保存 5 天・冷凍保存 3 個月</strong>
+        </div>
+        <button class="restart-btn" onclick="restartCooking()">↩ 重新開始</button>
+      </div>`;
+    return;
+  }
+
+  const checked = checkedSteps.has(currentStep);
+  const timerHtml = s.timer ? `
+    <div class="timer-box">
+      <div class="timer-display" id="timer-disp">${formatTime(s.timer)}</div>
+      <div class="timer-label">${s.timerLabel}</div>
+      <button class="timer-btn" id="timer-btn" onclick="toggleTimer(${s.timer})">開始計時</button>
+    </div>` : '';
+
+  document.getElementById('step-display').innerHTML = `
+    <div class="step-card">
+      <div class="step-check ${checked ? 'checked' : ''}" onclick="toggleCheck()" title="標記完成">
+        ${checked ? '✓' : ''}
+      </div>
+      <div class="step-badge">
+        <div class="step-circle">${currentStep + 1}</div>
+        <div class="step-title-text">${s.icon} ${s.title}</div>
+      </div>
+      <div class="step-content">${s.content}</div>
+      ${timerHtml}
+      <div class="step-btns">
+        <button class="btn-prev" onclick="goStep(-1)" ${currentStep === 0 ? 'disabled' : ''}>← 上一步</button>
+        <button class="btn-next" onclick="goStep(1)">${currentStep === total - 1 ? '完成 🎉' : '下一步 →'}</button>
+      </div>
+    </div>`;
+
+  stopTimer();
+}
+
+function goStep(dir) {
+  stopTimer();
+  currentStep = Math.max(0, Math.min(steps.length, currentStep + dir));
+  renderStep();
+}
+
+function restartCooking() {
+  currentStep = 0;
+  checkedSteps.clear();
+  stopTimer();
+  renderStep();
+}
+
+function toggleCheck() {
+  if (checkedSteps.has(currentStep)) checkedSteps.delete(currentStep);
+  else checkedSteps.add(currentStep);
+  renderStep();
+}
+
+// ── 計時器 ──
+let timerTotal = 0;
+let timerRemain = 0;
+
+function toggleTimer(total) {
+  if (!timerRunning) {
+    if (timerRemain === 0) timerRemain = total;
+    timerTotal = total;
+    timerRunning = true;
+    const btn = document.getElementById('timer-btn');
+    btn.textContent = '暫停';
+    btn.classList.add('running');
+    timerInterval = setInterval(() => {
+      timerRemain--;
+      if (timerRemain <= 0) {
+        timerRemain = 0;
+        stopTimer();
+        document.getElementById('timer-disp').textContent = '完成！';
+        document.getElementById('timer-btn').textContent = '重設';
+        return;
+      }
+      document.getElementById('timer-disp').textContent = formatTime(timerRemain);
+    }, 1000);
+  } else {
+    stopTimer();
+    document.getElementById('timer-btn').textContent = '繼續';
+  }
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerRemain = 0;
+  timerTotal = 0;
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2, '0');
+  const s = (sec % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+</script>
+</body>
+</html>
