@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>專業級溏心蛋｜互動式製作工具 v1.0</title>
+<style>
+:root{
+  --bg:#f7f3ec;--card:#fffdf9;--ink:#2b2926;--muted:#746f68;
+  --accent:#b76e2b;--accent2:#7d3f20;--line:#e4dbcf;--soft:#f2e7d8;
+  --ok:#3f7351;--danger:#a33f32;--shadow:0 12px 30px rgba(61,45,31,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f4eee5 0,#fbfaf7 35%,#f7f3ec 100%);
+font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--ink);line-height:1.75}
+.container{max-width:1000px;margin:auto;padding:24px 18px 60px}
+.hero{background:linear-gradient(135deg,#4d2d20,#8d4c29);color:#fff;padding:38px 28px;border-radius:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"🥚";position:absolute;right:28px;bottom:-18px;font-size:130px;opacity:.15}
+.eyebrow{letter-spacing:.12em;font-size:.82rem;opacity:.85}
+h1{font-size:clamp(2rem,5vw,3.4rem);margin:.15em 0 .25em;line-height:1.15}
+h2{font-size:1.45rem;margin:0 0 16px}
+h3{font-size:1.08rem;margin:16px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin-top:20px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{padding:30px 22px}}
+.input-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+input[type=number]{width:120px;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:1.15rem;text-align:center;background:#fff}
+button{border:0;border-radius:12px;padding:11px 15px;font-size:1rem;cursor:pointer;background:var(--accent);color:#fff;font-weight:700}
+button.secondary{background:var(--soft);color:var(--accent2)}
+button.ghost{background:#fff;color:var(--accent2);border:1px solid var(--line)}
+button:active{transform:translateY(1px)}
+.recipe-table{width:100%;border-collapse:collapse}
+.recipe-table th,.recipe-table td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+.recipe-table th{color:var(--muted);font-size:.9rem}
+.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:var(--soft);color:var(--accent2);font-size:.85rem;font-weight:700}
+.notice{background:#fff5e8;border-left:5px solid var(--accent);padding:14px 16px;border-radius:10px}
+.micro{background:#eef5ed;border-left:5px solid var(--ok);padding:15px 16px;border-radius:10px}
+.warning{background:#fff0ee;border-left:5px solid var(--danger);padding:15px 16px;border-radius:10px}
+.steps{counter-reset:step;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:step;display:grid;grid-template-columns:42px 1fr;gap:12px;margin:14px 0}
+.steps li:before{content:counter(step);width:34px;height:34px;border-radius:50%;background:var(--accent);color:white;display:grid;place-items:center;font-weight:800}
+.timer{text-align:center;background:#2e2925;color:#fff;border-radius:18px;padding:22px}
+.time{font-variant-numeric:tabular-nums;font-size:clamp(3.2rem,12vw,6rem);font-weight:800;letter-spacing:.04em;line-height:1.1}
+.adjust{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+label{font-weight:700}
+.small{font-size:.9rem;color:var(--muted)}
+ul{padding-left:1.3em}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:30px}
+
+.table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+
+
+
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  
+  <h1>專業級溏心蛋</h1><div class="eyebrow">INTERACTIVE RECIPE · v1.0</div>
+  <div>把「食譜」變成可以實際操作、計時與校正的製作工具。照著買，照著做，超easy! </div>
+  <div>研究組員：李世權 Gemini Chatgpt</div>
+</header>
+
+<section class="card">
+  <h2>① 輸入雞蛋顆數</h2>
+  <div class="input-row">
+    <label for="eggs">雞蛋</label>
+    <input id="eggs" type="number" min="1" max="60" value="6" step="1">
+    <span>顆</span>
+    <span class="badge" id="multiplier">1.00× 基準配方</span>
+  </div>
+  <p class="small">基準配方為 6 顆蛋。食材會依比例自動換算；烹煮時間不會因顆數倍增。</p>
+</section>
+
+<section class="card">
+  <h2>② 自動換算食材</h2>
+  <table class="recipe-table">
+    <thead><tr><th>食材</th><th>基準（6顆）</th><th>本次用量</th></tr></thead>
+    <tbody id="ingredients"></tbody>
+  </table>
+  <div class="notice" style="margin-top:16px">
+    <strong>比例原則：</strong>雞蛋顆數只負責換算食材。鍋子、水量與下蛋方式要配合實際數量調整，不能把煮蛋時間直接乘上顆數。
+  </div>
+</section>
+
+<section class="card">
+  <h2>③ 烹煮條件與建議時間</h2>
+  <div class="grid">
+    <div>
+      <h3>建議基準</h3>
+      <ul>
+        <li>雞蛋：每顆約 55～65 g</li>
+        <li>起始狀態：常溫蛋</li>
+        <li>水：足量，完全淹過雞蛋</li>
+        <li>下蛋時機：沸水後下蛋</li>
+        <li>微滾烹煮：轉小火以「微滾」狀態烹煮約6:00</li>
+      </ul>
+    </div>
+    <div>
+      <h3>什麼叫「微滾」？</h3>
+      <div class="micro">
+        <strong>看水，不看爐火刻度：</strong><br>
+        水面持續緩慢有氣泡冒出，而不是猛烈滾沸的樣子。
+      </div>
+     
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>④ 個人化烹煮時間</h2>
+  <div class="timer">
+    <div class="small" style="color:#ddd">目前設定時間</div>
+    <div class="time" id="timeDisplay"> 06:00 </div>
+    <div class="adjust">
+      <button class="secondary" id="minus10">− 10 秒</button>
+      <button class="secondary" id="plus10">＋ 10 秒</button>
+      <button class="ghost" id="resetTime">恢復建議值 06:00</button>
+    </div>
+    <div class="small" style="color:#ddd">系統建議值是起始基準；可依您的蛋重、設備與實務結果，以 10 秒為單位自行校正。</div>
+    <div style="margin-top:18px">
+      <button id="start">▶ 開始倒數計時</button>
+      <button class="secondary" id="pause">Ⅱ 暫停</button>
+      <button class="ghost" id="restart">↻ 重設</button>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>⑤ 製作 SOP</h2>
+  <ol class="steps">
+    <li><div><strong>備料退溫：</strong>雞蛋放置常溫，，避免煮蛋時受熱不均導致破殼。緩慢放入，避免蛋殼撞擊鍋底或彼此碰撞。</div></li>
+    <li><div><strong>清水煮沸：</strong>將足量清水以大火煮至沸騰，水量須足以完全淹過雞蛋。</div></li>
+    <li><div><strong>下蛋：</strong>水滾後下白醋與鹽，下蛋後水溫會下降；維持大火煮至水出現微滾狀態。</div></li>
+    <li><div><strong>微滾後開始計時：</strong>水微滾後，立即轉小火保持微滾狀態（細小氣泡持續冒出、水面輕輕流動），並立即使用上方「個人化烹煮時間」倒數計時 <strong>6分 ~ 6分30秒</strong>。前 2 分鐘需持續攪拌，讓蛋黃保持在正中央。</div></li>
+    <li><div><strong>立即冰鎮：</strong>計時結束後立刻撈出，放入預先準備好的冰水中，快速停止持續熟化。</div></li>
+    <li><div><strong>剝蛋：</strong>完全冷卻後，輕敲蛋殼使其均勻裂開，從較圓的大頭開始，在水中沿著蛋殼內膜慢慢剝離。</div></li>
+    <li><div><strong>醃製：</strong>將剝好的蛋放入已冷卻的醬汁中，冷藏醃製約 6～8 小時。</div></li>
+  </ol>
+</section>
+
+<section class="card">
+  <h2>⑥ 醬汁比例</h2>
+  <div class="grid">
+    <div>
+      <h3>日式基準醬汁</h3>
+      <ul>
+        <li>日式醬油：60 mL／6顆</li>
+        <li>味醂：60 mL／6顆</li>
+        <li>水：60 mL／6顆</li>
+        <li>砂糖：10～15 g／6顆</li>
+        <li>米酒或清酒：10 mL／6顆</li>
+      </ul>
+    </div>
+    <div class="notice">
+      <strong>醬汁製作：</strong>加熱至砂糖溶解即可，不需長時間沸煮；完成後務必冷卻，再與雞蛋接觸。
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>⑦ 店家級成功 Tips</h2>
+  <div class="grid">
+    <div>
+      <h3>防止蛋殼破裂</h3>
+      <ul>
+        <li>氣室端（大屁股）用針刺小孔。</li>
+        <li>緩慢下蛋。</li>
+        <li>水中加白醋與鹽幫助蛋白凝結。</li>
+        <li>避免雞蛋彼此猛烈碰撞。</li>
+      </ul>
+    </div>
+    <div>
+      <h3>防止蛋白破損</h3>
+      <ul>
+        <li>煮好立即冰鎮。</li>
+        <li>完全冷卻後再剝。</li>
+        <li>從較圓的大頭開始。</li>
+        <li>找到蛋殼內膜後沿膜剝離。</li>
+        <li>在水中剝，減少蛋白被拉扯。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warning" style="margin-top:16px">
+    <strong>食品安全提醒：</strong>溏心蛋屬蛋黃未完全熟透的食品。幼童、孕婦、長者及免疫力較弱者等高風險族群，應依所在地食品安全建議選擇充分加熱的蛋品。蛋品全程應妥善冷藏，並避免使用有裂痕或來源不明的蛋。
+  </div>
+</section>
+
+<footer>專業級溏心蛋互動式製作工具 v1.0 · 本頁為家庭料理的製程參考，不取代食品安全規範。</footer>
+</div>
+
+<script>
+const baseEggs=6;
+const base=[
+  ["雞蛋","6 顆","egg",6],
+  ["日式醬油","60 mL","soy",60],
+  ["味醂","60 mL","mirin",60],
+  ["水","60 mL","water",60],
+  ["砂糖","10～15 g","sugar",null],
+  ["米酒／清酒","10 mL","sake",10]
+];
+const eggs=document.getElementById("eggs");
+const ing=document.getElementById("ingredients");
+const mult=document.getElementById("multiplier");
+let recommended=360;
+let current=360;
+let remaining=360;
+let timer=null;
+
+function fmt(v){return v%1===0?String(v):v.toFixed(1);}
+function render(){
+  let n=Math.max(1,Math.min(60,parseInt(eggs.value)||6));
+  eggs.value=n;
+  const m=n/baseEggs;
+  mult.textContent=m.toFixed(2)+"× 基準配方";
+  ing.innerHTML="";
+  ing.innerHTML += `<tr><td>雞蛋</td><td>6 顆</td><td><strong>${n} 顆</strong></td></tr>`;
+  ing.innerHTML += `<tr><td>日式醬油</td><td>60 mL</td><td><strong>${fmt(60*m)} mL</strong></td></tr>`;
+  ing.innerHTML += `<tr><td>味醂</td><td>60 mL</td><td><strong>${fmt(60*m)} mL</strong></td></tr>`;
+  ing.innerHTML += `<tr><td>水</td><td>60 mL</td><td><strong>${fmt(60*m)} mL</strong></td></tr>`;
+  ing.innerHTML += `<tr><td>砂糖</td><td>10～15 g</td><td><strong>${fmt(10*m)}～${fmt(15*m)} g</strong></td></tr>`;
+  ing.innerHTML += `<tr><td>米酒／清酒</td><td>10 mL</td><td><strong>${fmt(10*m)} mL</strong></td></tr>`;
+}
+function showTime(s){
+  s=Math.max(0,Math.round(s));
+  const m=String(Math.floor(s/60)).padStart(2,"0");
+  const sec=String(s%60).padStart(2,"0");
+  document.getElementById("timeDisplay").textContent=`${m}:${sec}`;
+}
+function stop(){if(timer){clearInterval(timer);timer=null;}}
+function reset(){stop();remaining=current;showTime(remaining);}
+eggs.addEventListener("input",render);
+document.getElementById("minus10").onclick=()=>{current=Math.max(60,current-10);remaining=current;showTime(remaining)};
+document.getElementById("plus10").onclick=()=>{current+=10;remaining=current;showTime(remaining)};
+document.getElementById("resetTime").onclick=()=>{current=recommended;reset()};
+document.getElementById("restart").onclick=()=>reset();
+document.getElementById("pause").onclick=()=>stop();
+document.getElementById("start").onclick=()=>{
+  stop();
+  if(remaining<=0) remaining=current;
+  timer=setInterval(()=>{
+    remaining--;
+    showTime(remaining);
+    if(remaining<=0){
+      stop();
+      alert("時間到！立即撈出雞蛋，放入冰水中快速冰鎮。");
+    }
+  },1000);
+};
+render();showTime(current);
+</script>
+</body>
+</html>
