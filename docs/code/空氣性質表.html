@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飽和空氣性質表（公制）</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+</head>
+<body>
+
+
+
+<h1>飽和空氣性質表（公制）</h1>
+<p>本表為標準大氣壓下，各溫度對應之飽和空氣含水率（$W_s$）、比容積（$V_s$）及焓值（飽和液焓 $H_a$、潛熱 $H_{as}$、飽和汽焓 $H_s$），單位為 $kJ/kg\ dry\ air$，常用於空調系統焓濕圖（Psychrometric Chart）計算與露點分析。</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">溫度 $°C$</th>
+<th style="text-align: right;">含水率 $W_s$ $(kg_w/kg_a)$</th>
+<th style="text-align: right;">比容積 $V_s$ ($m^3$/kg dry air)</th>
+<th style="text-align: right;">飽和液焓 $H_a$ (kJ/kg)</th>
+<th style="text-align: right;">潛熱 $H_{as}$ (kJ/kg)</th>
+<th style="text-align: right;">飽和汽焓 $H_s$ (kJ/kg)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">-10</td>
+<td style="text-align: right;">0.0016062</td>
+<td style="text-align: right;">0.7469</td>
+<td style="text-align: right;">-10.057</td>
+<td style="text-align: right;">3.986</td>
+<td style="text-align: right;">-6.072</td>
+</tr>
+<tr>
+<td style="text-align: right;">-9</td>
+<td style="text-align: right;">0.0017551</td>
+<td style="text-align: right;">0.7499</td>
+<td style="text-align: right;">-9.052</td>
+<td style="text-align: right;">4.358</td>
+<td style="text-align: right;">-4.693</td>
+</tr>
+<tr>
+<td style="text-align: right;">-8</td>
+<td style="text-align: right;">0.0019166</td>
+<td style="text-align: right;">0.7530</td>
+<td style="text-align: right;">-8.046</td>
+<td style="text-align: right;">4.764</td>
+<td style="text-align: right;">-3.283</td>
+</tr>
+<tr>
+<td style="text-align: right;">-7</td>
+<td style="text-align: right;">0.0020916</td>
+<td style="text-align: right;">0.7560</td>
+<td style="text-align: right;">-7.040</td>
+<td style="text-align: right;">5.202</td>
+<td style="text-align: right;">-1.838</td>
+</tr>
+<tr>
+<td style="text-align: right;">-6</td>
+<td style="text-align: right;">0.0022811</td>
+<td style="text-align: right;">0.7591</td>
+<td style="text-align: right;">-6.035</td>
+<td style="text-align: right;">5.677</td>
+<td style="text-align: right;">-0.357</td>
+</tr>
+<tr>
+<td style="text-align: right;">-5</td>
+<td style="text-align: right;">0.0024862</td>
+<td style="text-align: right;">0.7622</td>
+<td style="text-align: right;">-5.029</td>
+<td style="text-align: right;">6.192</td>
+<td style="text-align: right;">1.164</td>
+</tr>
+<tr>
+<td style="text-align: right;">-4</td>
+<td style="text-align: right;">0.0027081</td>
+<td style="text-align: right;">0.7653</td>
+<td style="text-align: right;">-4.023</td>
+<td style="text-align: right;">6.751</td>
+<td style="text-align: right;">2.728</td>
+</tr>
+<tr>
+<td style="text-align: right;">-3</td>
+<td style="text-align: right;">0.0029480</td>
+<td style="text-align: right;">0.7685</td>
+<td style="text-align: right;">-3.017</td>
+<td style="text-align: right;">7.353</td>
+<td style="text-align: right;">4.336</td>
+</tr>
+<tr>
+<td style="text-align: right;">-2</td>
+<td style="text-align: right;">0.0032074</td>
+<td style="text-align: right;">0.7717</td>
+<td style="text-align: right;">-2.011</td>
+<td style="text-align: right;">8.007</td>
+<td style="text-align: right;">5.995</td>
+</tr>
+<tr>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">0.0034874</td>
+<td style="text-align: right;">0.7749</td>
+<td style="text-align: right;">-1.006</td>
+<td style="text-align: right;">8.712</td>
+<td style="text-align: right;">7.706</td>
+</tr>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0037895</td>
+<td style="text-align: right;">0.7781</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">9.473</td>
+<td style="text-align: right;">9.473</td>
+</tr>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0037890</td>
+<td style="text-align: right;">0.7781</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">9.473</td>
+<td style="text-align: right;">9.473</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0040760</td>
+<td style="text-align: right;">0.7813</td>
+<td style="text-align: right;">1.006</td>
+<td style="text-align: right;">10.197</td>
+<td style="text-align: right;">11.203</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0043810</td>
+<td style="text-align: right;">0.7845</td>
+<td style="text-align: right;">2.012</td>
+<td style="text-align: right;">10.970</td>
+<td style="text-align: right;">12.982</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0047070</td>
+<td style="text-align: right;">0.7878</td>
+<td style="text-align: right;">3.018</td>
+<td style="text-align: right;">11.793</td>
+<td style="text-align: right;">14.811</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.0050540</td>
+<td style="text-align: right;">0.7911</td>
+<td style="text-align: right;">4.024</td>
+<td style="text-align: right;">12.672</td>
+<td style="text-align: right;">16.696</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.0054240</td>
+<td style="text-align: right;">0.7944</td>
+<td style="text-align: right;">5.029</td>
+<td style="text-align: right;">13.610</td>
+<td style="text-align: right;">18.639</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.0058180</td>
+<td style="text-align: right;">0.7978</td>
+<td style="text-align: right;">6.036</td>
+<td style="text-align: right;">14.608</td>
+<td style="text-align: right;">20.644</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.0062370</td>
+<td style="text-align: right;">0.8012</td>
+<td style="text-align: right;">7.041</td>
+<td style="text-align: right;">15.671</td>
+<td style="text-align: right;">22.713</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.0066830</td>
+<td style="text-align: right;">0.8046</td>
+<td style="text-align: right;">8.047</td>
+<td style="text-align: right;">16.805</td>
+<td style="text-align: right;">24.852</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.0071570</td>
+<td style="text-align: right;">0.8081</td>
+<td style="text-align: right;">9.053</td>
+<td style="text-align: right;">18.010</td>
+<td style="text-align: right;">27.064</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.0076610</td>
+<td style="text-align: right;">0.8116</td>
+<td style="text-align: right;">10.059</td>
+<td style="text-align: right;">19.293</td>
+<td style="text-align: right;">29.352</td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.0081970</td>
+<td style="text-align: right;">0.8152</td>
+<td style="text-align: right;">11.065</td>
+<td style="text-align: right;">20.658</td>
+<td style="text-align: right;">31.724</td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.0087660</td>
+<td style="text-align: right;">0.8188</td>
+<td style="text-align: right;">12.071</td>
+<td style="text-align: right;">22.108</td>
+<td style="text-align: right;">34.179</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.0093700</td>
+<td style="text-align: right;">0.8225</td>
+<td style="text-align: right;">13.077</td>
+<td style="text-align: right;">23.649</td>
+<td style="text-align: right;">36.726</td>
+</tr>
+<tr>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0.0100120</td>
+<td style="text-align: right;">0.8262</td>
+<td style="text-align: right;">14.084</td>
+<td style="text-align: right;">25.286</td>
+<td style="text-align: right;">39.370</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.0106920</td>
+<td style="text-align: right;">0.8300</td>
+<td style="text-align: right;">15.090</td>
+<td style="text-align: right;">27.023</td>
+<td style="text-align: right;">42.113</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.0114130</td>
+<td style="text-align: right;">0.8338</td>
+<td style="text-align: right;">16.096</td>
+<td style="text-align: right;">28.867</td>
+<td style="text-align: right;">44.963</td>
+</tr>
+<tr>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0.0121780</td>
+<td style="text-align: right;">0.8377</td>
+<td style="text-align: right;">17.102</td>
+<td style="text-align: right;">30.824</td>
+<td style="text-align: right;">47.926</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.0129890</td>
+<td style="text-align: right;">0.8417</td>
+<td style="text-align: right;">18.108</td>
+<td style="text-align: right;">32.900</td>
+<td style="text-align: right;">51.008</td>
+</tr>
+<tr>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.0138480</td>
+<td style="text-align: right;">0.8457</td>
+<td style="text-align: right;">19.114</td>
+<td style="text-align: right;">35.101</td>
+<td style="text-align: right;">52.216</td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.0147580</td>
+<td style="text-align: right;">0.8498</td>
+<td style="text-align: right;">20.121</td>
+<td style="text-align: right;">37.434</td>
+<td style="text-align: right;">57.555</td>
+</tr>
+<tr>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.0157210</td>
+<td style="text-align: right;">0.8540</td>
+<td style="text-align: right;">21.127</td>
+<td style="text-align: right;">39.908</td>
+<td style="text-align: right;">61.035</td>
+</tr>
+<tr>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0.0167410</td>
+<td style="text-align: right;">0.8583</td>
+<td style="text-align: right;">21.133</td>
+<td style="text-align: right;">42.527</td>
+<td style="text-align: right;">64.660</td>
+</tr>
+<tr>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.0178210</td>
+<td style="text-align: right;">0.8627</td>
+<td style="text-align: right;">23.140</td>
+<td style="text-align: right;">45.301</td>
+<td style="text-align: right;">68.440</td>
+</tr>
+<tr>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.0189630</td>
+<td style="text-align: right;">0.8671</td>
+<td style="text-align: right;">24.146</td>
+<td style="text-align: right;">48.239</td>
+<td style="text-align: right;">72.385</td>
+</tr>
+<tr>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0.0201700</td>
+<td style="text-align: right;">0.8717</td>
+<td style="text-align: right;">25.153</td>
+<td style="text-align: right;">51.347</td>
+<td style="text-align: right;">76.500</td>
+</tr>
+<tr>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0.0214480</td>
+<td style="text-align: right;">0.8764</td>
+<td style="text-align: right;">26.159</td>
+<td style="text-align: right;">54.638</td>
+<td style="text-align: right;">80.798</td>
+</tr>
+<tr>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0.0227980</td>
+<td style="text-align: right;">0.8811</td>
+<td style="text-align: right;">27.165</td>
+<td style="text-align: right;">58.120</td>
+<td style="text-align: right;">85.285</td>
+</tr>
+<tr>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">0.2422600</td>
+<td style="text-align: right;">0.8860</td>
+<td style="text-align: right;">28.172</td>
+<td style="text-align: right;">61.804</td>
+<td style="text-align: right;">89.976</td>
+</tr>
+<tr>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0.0257350</td>
+<td style="text-align: right;">0.8910</td>
+<td style="text-align: right;">29.179</td>
+<td style="text-align: right;">65.699</td>
+<td style="text-align: right;">94.878</td>
+</tr>
+<tr>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.0273290</td>
+<td style="text-align: right;">0.8962</td>
+<td style="text-align: right;">30.185</td>
+<td style="text-align: right;">69.820</td>
+<td style="text-align: right;">100.006</td>
+</tr>
+<tr>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">0.0290140</td>
+<td style="text-align: right;">0.9015</td>
+<td style="text-align: right;">31.192</td>
+<td style="text-align: right;">74.177</td>
+<td style="text-align: right;">105.369</td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0.0307930</td>
+<td style="text-align: right;">0.9069</td>
+<td style="text-align: right;">32.198</td>
+<td style="text-align: right;">78.780</td>
+<td style="text-align: right;">110.979</td>
+</tr>
+<tr>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0.0326740</td>
+<td style="text-align: right;">0.9125</td>
+<td style="text-align: right;">33.205</td>
+<td style="text-align: right;">83.652</td>
+<td style="text-align: right;">116.857</td>
+</tr>
+<tr>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.0346600</td>
+<td style="text-align: right;">0.9183</td>
+<td style="text-align: right;">34.212</td>
+<td style="text-align: right;">88.799</td>
+<td style="text-align: right;">123.011</td>
+</tr>
+<tr>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0.0367560</td>
+<td style="text-align: right;">0.9242</td>
+<td style="text-align: right;">35.219</td>
+<td style="text-align: right;">94.236</td>
+<td style="text-align: right;">129.455</td>
+</tr>
+<tr>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0.0389710</td>
+<td style="text-align: right;">0.9303</td>
+<td style="text-align: right;">36.226</td>
+<td style="text-align: right;">99.983</td>
+<td style="text-align: right;">136.209</td>
+</tr>
+<tr>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">0.0413090</td>
+<td style="text-align: right;">0.9366</td>
+<td style="text-align: right;">37.233</td>
+<td style="text-align: right;">106.058</td>
+<td style="text-align: right;">143.290</td>
+</tr>
+<tr>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.0437780</td>
+<td style="text-align: right;">0.9431</td>
+<td style="text-align: right;">38.239</td>
+<td style="text-align: right;">112.474</td>
+<td style="text-align: right;">150.713</td>
+</tr>
+<tr>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.0463860</td>
+<td style="text-align: right;">0.9498</td>
+<td style="text-align: right;">39.246</td>
+<td style="text-align: right;">119.258</td>
+<td style="text-align: right;">158.504</td>
+</tr>
+<tr>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.0491410</td>
+<td style="text-align: right;">0.9568</td>
+<td style="text-align: right;">40.253</td>
+<td style="text-align: right;">126.430</td>
+<td style="text-align: right;">166.683</td>
+</tr>
+<tr>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0.0520490</td>
+<td style="text-align: right;">0.9640</td>
+<td style="text-align: right;">41.261</td>
+<td style="text-align: right;">134.005</td>
+<td style="text-align: right;">175.265</td>
+</tr>
+<tr>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">0.0551190</td>
+<td style="text-align: right;">0.9714</td>
+<td style="text-align: right;">42.268</td>
+<td style="text-align: right;">142.007</td>
+<td style="text-align: right;">184.275</td>
+</tr>
+<tr>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.0583650</td>
+<td style="text-align: right;">0.9792</td>
+<td style="text-align: right;">43.275</td>
+<td style="text-align: right;">150.475</td>
+<td style="text-align: right;">193.749</td>
+</tr>
+<tr>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.0617910</td>
+<td style="text-align: right;">0.9872</td>
+<td style="text-align: right;">44.282</td>
+<td style="text-align: right;">159.417</td>
+<td style="text-align: right;">203.699</td>
+</tr>
+<tr>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.0654110</td>
+<td style="text-align: right;">0.9955</td>
+<td style="text-align: right;">45.289</td>
+<td style="text-align: right;">168.874</td>
+<td style="text-align: right;">214.164</td>
+</tr>
+<tr>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0.0692390</td>
+<td style="text-align: right;">1.0042</td>
+<td style="text-align: right;">46.296</td>
+<td style="text-align: right;">178.882</td>
+<td style="text-align: right;">225.179</td>
+</tr>
+<tr>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">0.0732820</td>
+<td style="text-align: right;">1.0132</td>
+<td style="text-align: right;">47.304</td>
+<td style="text-align: right;">189.455</td>
+<td style="text-align: right;">236.759</td>
+</tr>
+<tr>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.0775560</td>
+<td style="text-align: right;">1.0226</td>
+<td style="text-align: right;">48.311</td>
+<td style="text-align: right;">200.644</td>
+<td style="text-align: right;">248.955</td>
+</tr>
+<tr>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.0820770</td>
+<td style="text-align: right;">1.0323</td>
+<td style="text-align: right;">49.319</td>
+<td style="text-align: right;">212.485</td>
+<td style="text-align: right;">261.803</td>
+</tr>
+<tr>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0868580</td>
+<td style="text-align: right;">1.0425</td>
+<td style="text-align: right;">50.326</td>
+<td style="text-align: right;">225.019</td>
+<td style="text-align: right;">275.345</td>
+</tr>
+</tbody>
+</table>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
