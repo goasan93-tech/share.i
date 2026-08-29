@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>居家燈具與照明改裝 DIY v1.1</title>
+  <style>
+    :root {
+      --bg: #f6f8f5;
+      --panel: #ffffff;
+      --panel-2: #f3f7f4;
+      --ink: #1d2a2f;
+      --muted: #55666d;
+      --line: #dfe8e5;
+      --primary: #0e7a6a;
+      --primary-deep: #0b5d52;
+      --primary-soft: #e6f5f1;
+      --amber: #f4a93b;
+      --amber-soft: #fff3db;
+      --red: #d8664c;
+      --red-soft: #fdeae4;
+      --shadow: 0 18px 40px rgba(11, 93, 82, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(32, 140, 119, 0.10), transparent 28%),
+        linear-gradient(180deg, #f8faf8 0%, #f1f6f4 100%);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    a { color: inherit; }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(14,122,106,0.12);
+      border-radius: 999px;
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      box-shadow: 0 8px 18px rgba(17, 40, 36, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--primary-deep);
+      letter-spacing: 0.05em;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, #5ec0a6 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: 0.2s ease;
+    }
+
+    .nav a:hover {
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+    }
+
+    .hero {
+      margin-top: 26px;
+      background: linear-gradient(135deg, #0f172a 0%, #0e7a6a 55%, #62bca8 100%);
+      border-radius: 32px;
+      padding: 54px 42px 36px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 20%, rgba(255,255,255,0.18), transparent 16%),
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.14), transparent 22%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e9fffb;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      padding: 8px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.18;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0;
+      font-size: 18px;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: rgba(255,255,255,0.78);
+      font-size: 14px;
+    }
+
+    .content {
+      margin-top: 28px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 28px rgba(20, 31, 38, 0.04);
+      padding: 30px 28px;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: clamp(24px, 3vw, 32px);
+      color: var(--primary-deep);
+      letter-spacing: 0.02em;
+    }
+
+    .lead {
+      background: var(--primary-soft);
+      border-left: 5px solid var(--primary);
+      border-radius: 18px;
+      padding: 18px 20px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .lead strong {
+      color: var(--primary-deep);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary-deep);
+      font-weight: 800;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, #77c7aa 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 6px rgba(14, 122, 106, 0.08);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .info-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f6faf8 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 12px;
+      color: var(--primary-deep);
+      font-size: 20px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: #fff;
+    }
+
+    thead {
+      background: linear-gradient(180deg, #edf7f4 0%, #e4f1ee 100%);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th:last-child, td:last-child { border-right: none; }
+
+    th {
+      color: var(--primary-deep);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 0;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .badge.green { background: var(--primary-soft); color: var(--primary-deep); }
+    .badge.amber { background: var(--amber-soft); color: #a35f00; }
+    .badge.red { background: var(--red-soft); color: var(--red); }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .project-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary) 0%, #66b9a2 100%);
+    }
+
+    .project-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      color: var(--ink);
+    }
+
+    .project-card .mini-title {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary-deep);
+      margin-bottom: 14px;
+    }
+
+    .project-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--ink);
+    }
+
+    .project-card li + li { margin-top: 8px; }
+
+    .project-card .product {
+      background: #f5faf7;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 14px 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .faq {
+      display: grid;
+      gap: 14px;
+    }
+
+    .warn-box {
+      background: var(--red-soft);
+      border-left: 5px solid var(--red);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .warn-box strong {
+      color: var(--red);
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      padding: 18px 20px;
+      font-weight: 800;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f9fbfa 0%, #f3f7f6 100%);
+    }
+
+    .faq-a {
+      padding: 18px 20px 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .faq-a ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .footnote {
+      padding-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        border-radius: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 22px 18px;
+      }
+
+      .hero {
+        padding: 40px 22px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">💡</span>
+        <span>DIY 照明改裝</span>
+      </div>
+      <nav class="nav" aria-label="導覽">
+        <a href="#guide">選購指南</a>
+        <a href="#tool">工具清單</a>
+        <a href="#sop">施工 SOP</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">品質要好，價格其次</div>
+        <h1>居家燈具與照明改裝 DIY v1.1</h1>
+        <p class="subtitle">
+          依照空間照度、色溫選擇與安全施工流程，幫助您用對燈具、買對材料、避免踩雷。
+          從客廳、書房到走道與廚房，每個照明場景都有可直接套用的實作方法。
+        </p>
+
+        <div class="hero-grid">
+          <div class="stat">
+            <strong>150–300</strong>
+            <span>客廳 / 主臥建議照度（Lux）</span>
+          </div>
+          <div class="stat">
+            <strong>3000K</strong>
+            <span>暖白，適合臥室與休息空間</span>
+          </div>
+          <div class="stat">
+            <strong>4000K</strong>
+            <span>自然光，適合客廳、書房、廚房</span>
+          </div>
+          <p>研究組員：李世權 Gemini Claude</p>
+        </div>
+      </div>
+    </section>
+
+    <main class="content">
+      <section class="panel" id="guide">
+        <div class="section-title">免責與選品聲明</div>
+        <div class="lead">
+          <strong>【品質要好，價格其次】</strong>
+          非廠商商業贊助與業配。水電改裝關乎居家安全與眼睛健康，
+          我們推薦的燈具與工具均以「品質好、耐用、新手零失敗率」為唯一選品標準。
+        </div>
+        <br />
+        <div class="grid-2">
+          <div class="info-card">
+            <h3>照度與總流明</h3>
+            <p>先依據空間坪數與國家標準照度計算所需總流明，才能避免買到太暗或過亮的燈具。</p>
+            <div class="tag-list">
+              <span class="pill">客廳 / 主臥：150–300 Lux</span>
+              <span class="pill">書房：500–750 Lux</span>
+              <span class="pill">廚房切菜檯：300–500 Lux</span>
+              <span class="pill">走道 / 夜燈：10–50 Lux</span>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>色溫建議</h3>
+            <p>不同房間適合不同的光色，避免長時間照明造成視覺疲勞或晚間睡眠干擾。</p>
+            <div class="tag-list">
+              <span class="pill">3000K：暖白</span>
+              <span class="pill">4000K：自然光</span>
+              <span class="pill">6500K：晝光</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="tool">
+        <h2>工具與通用耗材採購清單</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>類別</th>
+                <th>項目名稱</th>
+                <th>推薦品牌與指定型號</th>
+                <th>選用理由與備註</th>
+                <th>賣場 / 採購</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>工具</td>
+                <td>數位測電筆</td>
+                <td>寶工 (Pro'sKit) NT-309</td>
+                <td>聲光雙重提醒，施工前確認斷電的生命保障。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+              <tr>
+                <td>工具</td>
+                <td>多功能絕緣剝線鉗</td>
+                <td>富士矢 (FUJIYA) 或 寶工 CP-301G</td>
+                <td>精準切口，不傷銅線線芯。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+              <tr>
+                <td>工具</td>
+                <td>絕緣螺絲起子組</td>
+                <td>VESSEL 電工絕緣起子 (PH2 / 一字)</td>
+                <td>手感佳、防意外導電。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+              <tr>
+                <td>工具</td>
+                <td>安全 A 字梯</td>
+                <td>4 層以上加厚 A 字鋁梯</td>
+                <td>高空安全第一，切勿使用塑膠椅替代。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+              <tr>
+                <td>耗材</td>
+                <td>電工絕緣膠帶</td>
+                <td>3M Super 33+ 耐高溫電工膠帶</td>
+                <td>包覆力強、長期使用不發黏脫膠。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+              <tr>
+                <td>耗材</td>
+                <td>快速接線端子</td>
+                <td>WAGO 221 系列 (2 線 / 3 線 / 5 線款)</td>
+                <td>免纏膠帶、免壓接，拆裝更安全順手。</td>
+                <td>線上賣場搜尋</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn-box">
+          <strong>測電筆使用提醒：</strong>NT-309 屬於「非接觸感應式」測電筆，只能偵測是否仍有交流電場，<strong>無法百分之百保證迴路完全無電</strong>（例如迴路接線異常、或筆具本身電池不足時仍可能誤判）。正確驗電方式請採「三步驟驗電法」：① 先在已知有電處測試筆具是否正常反應 → ② 再測目標迴路確認無反應 → ③ 施工前再回已知有電處複測筆具仍正常，三步驟都確認後才視為安全無電。
+        </div>
+      </section>
+
+      <section class="panel" id="sop">
+        <h2>四大常用家庭燈具改裝 SOP</h2>
+        <div class="project-list">
+          <article class="project-card">
+            <div class="mini-title">專案 1</div>
+            <h3>客廳 / 主臥：舊燈升級為 LED 快拆吸頂燈</h3>
+            <div class="product">
+              推薦產品：Panasonic 松下 5.5W~50W 雙色無極調光 LED 吸頂燈<br />
+              或主臥 30W LED 快拆吸頂燈（約 3200–3800 lm）
+            </div>
+            <ul>
+              <li>切斷該迴路 NFB（無熔絲斷路器）後，<strong>務必以三步驟驗電法確認完全無電</strong>（NFB 跳開只是第一步，配電盤標示不清、迴路交叉或斷路器故障都可能誤判，若不確定迴路對應關係，建議直接切總開關施工）。</li>
+              <li>拆除舊燈具，拉出天花板預留火線與零線，並靜置約 10–30 秒讓驅動器內部電容自然放電。</li>
+              <li>安裝引掛底座，將燈體扣上並重新上電測試。</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge green">適用空間</span>
+              <span class="badge amber">客廳 / 主臥</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="mini-title">專案 2</div>
+            <h3>房間 / 書房：高品質護眼 LED 球泡燈</h3>
+            <div class="product">
+              推薦產品：飛利浦 EyeComfort 護眼高演色 LED 球泡燈<br />
+              E27 接口 / 10W–13W / 1000–1500 lm / Ra &gt; 90
+            </div>
+            <ul>
+              <li>確認燈具螺口為標準 E27，並檢查最大耐受瓦數。</li>
+              <li>關閉開關待冷卻後，逆時針旋出舊燈泡，換上新燈泡。</li>
+              <li>以書桌或讀書區照度計測試，確保桌面達 500 Lux 以上。</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge green">適用空間</span>
+              <span class="badge amber">書房 / 兒童房</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="mini-title">專案 3</div>
+            <h3>走道 / 床邊：防跌感應夜燈加裝</h3>
+            <div class="product">
+              推薦產品：米家人體感應夜燈 2 或飛利浦 LED 磁吸感應夜燈<br />
+              暖光 3000K，柔光不刺激眼睛
+            </div>
+            <ul>
+              <li>選擇離地約 30 cm 的牆角或床邊下緣安裝。</li>
+              <li>用 75% 酒精擦淨牆面後貼附底座並按壓 30 秒。</li>
+              <li>走過測試感應靈敏度與自動熄滅時間。</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge green">適用空間</span>
+              <span class="badge amber">走廊 / 夜燈</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="mini-title">專案 4</div>
+            <h3>廚房切菜區 / 書桌：手掃感應 LED 硬燈條</h3>
+            <div class="product">
+              推薦產品：Yeelight 或飛利浦廚櫃手掃感應超薄 LED 硬燈條套組<br />
+              鋁合金散熱、自然光 4000K、免改電線直插式適配器
+            </div>
+            <ul>
+              <li>量測吊櫃或層板長度，挑選適合尺寸燈條。</li>
+              <li>用酒精擦淨貼附面後將燈條平整黏貼固定。</li>
+              <li>整理線材，接上電源後測試感應與無段調光。</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge green">適用空間</span>
+              <span class="badge amber">廚房 / 書桌</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="faq">
+        <h2>常見疑難雜症 FAQ</h2>
+        <div class="faq">
+          <div class="faq-item">
+            <div class="faq-q">Q：換了新 LED 燈泡後，明明關掉開關，燈泡卻還會發微光（鬼火／殘光現象）？</div>
+            <div class="faq-a">
+              <strong>原因解析：</strong> 若家中開關是帶指示燈的夜光單切開關，關閉時仍可能有微弱電流透過指示燈迴路洩漏，經過 LED 驅動電路後在燈珠上呈現微亮。
+              <ul>
+                <li><strong>方案 A（優先推薦，新手最安全）：</strong> 將牆面開關面板更換為「無指示燈」的普通開關，從源頭切斷漏電路徑，且施工僅涉及開關本身，風險較低。</li>
+                <li><strong>方案 B（進階，需電匠協助）：</strong> 於燈具電源輸入端（火線與零線之間）並聯一顆額定電壓 ≥400V 的抑制／消荷電容（俗稱「LED 消除殘光電容」，容值常見 0.1–0.47μF，電料行可洽詢），以吸收洩漏電流。此做法需拆開燈具、直接處理火線與零線接點，<strong>務必先確實斷電並完成驗電確認，若不熟悉配線，建議委由持有技術士證照之電匠施作</strong>，不建議新手自行嘗試。</li>
+              </ul>
+              <div class="warn-box">
+                <strong>提醒：</strong>市售抑制電容多為電料行通路的一般規格零件，並非特定電器大廠的專屬型號商品；選購時請確認電容「額定電壓」與「容值」是否適合家用 110V/220V 迴路，並優先向實體電料行或有信譽的賣家洽詢，避免購買來源不明、無耐壓標示的產品。
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q：我該如何選擇色溫，不會買錯？</div>
+            <div class="faq-a">
+              一般建議：臥室與休息空間選 3000K 暖白；客廳、書房、廚房選 4000K 自然光；需要高專注作業時可考慮 6500K 晝光。
+              關鍵是「功能空間」與「使用時段」一起考慮，而不是單看燈泡牌價。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">Q：為什麼有些 LED 燈具會頻閃？</div>
+            <div class="faq-a">
+              常見原因包括驅動電源品質差、低價無名品牌、開關調光器相容性不佳、以及安裝環境發熱過高。選購時優先選擇有認證、演色指數較高、無可視頻閃的產品。
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footnote">
+      本報告為技術參考文件，正式使用前請依照實際空間條件與電工安全規範、地方法規另行覆核。
+    </footer>
+  </div>
+</body>
+</html>
