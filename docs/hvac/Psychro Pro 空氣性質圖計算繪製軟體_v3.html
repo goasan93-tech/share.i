@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>空氣性質工程計算系統 v3.0</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --bg:#0B1420;--panel:#111D2E;--card:#162335;--card2:#1C2D42;
+  --border:#253D58;--border2:#3A6080;
+  --accent:#00E5FF;--accent2:#29B6F6;--accent3:#FF7043;--accent4:#69F0AE;--accent5:#CE93D8;
+  --warn:#FFD740;--red:#FF5252;
+  --text:#F0F8FF;--dim:#8BB8D4;--dim2:#5A90B0;
+  --mono:'Courier New',monospace;--ui:'Segoe UI',system-ui,sans-serif;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);min-height:100vh;display:flex;flex-direction:column;max-width:500px;margin:0 auto;}
+header{background:var(--panel);padding:12px 16px 8px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.hdr-top{display:flex;align-items:center;gap:10px;}
+.hdr-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.hdr-title{font-size:15px;font-weight:700;}
+.hdr-sub{font-size:10px;color:var(--dim);margin-top:1px;}
+.unit-toggle{margin-left:auto;display:flex;background:var(--card2);border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.unit-btn{padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;color:var(--dim);transition:.2s;}
+.unit-btn.active{background:var(--accent2);color:#fff;}
+.tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:9px 12px;font-size:11px;font-weight:600;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.2s;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.section{display:none;flex-direction:column;flex:1;overflow-y:auto;}
+.section.active{display:flex;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:10px 12px 0;padding:13px;}
+.card-title{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card-title span{flex:1;}
+.badge{background:var(--accent);color:#000;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:700;}
+/* Altitude input */
+.alt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.alt-row label{font-size:11px;color:var(--dim);flex:1;}
+.alt-input{width:80px;background:var(--card2);border:1px solid var(--border2);border-radius:6px;color:var(--text);padding:5px 8px;font-size:13px;font-weight:700;font-family:var(--mono);text-align:right;}
+.alt-input:focus{outline:none;border-color:var(--accent);}
+.alt-unit{font-size:11px;color:var(--dim);width:30px;}
+.patm-display{font-size:11px;color:var(--accent);font-family:var(--mono);}
+/* Table */
+.sp-table{width:100%;border-collapse:collapse;font-size:11px;}
+.sp-table th{background:var(--card2);color:var(--accent);padding:5px 6px;text-align:center;font-weight:700;border:1px solid var(--border);white-space:nowrap;}
+.sp-table td{padding:5px 6px;text-align:center;border:1px solid var(--border);vertical-align:middle;}
+.sp-table tr:hover td{background:rgba(0,229,255,.05);}
+.sp-table input[type=number]{width:100%;background:transparent;border:none;color:var(--text);font-size:11px;text-align:center;outline:none;font-family:var(--mono);}
+.sp-table input[type=number]:focus{background:rgba(0,229,255,.1);border-radius:3px;}
+.sp-row-label{font-weight:700;color:var(--accent);font-size:11px;cursor:pointer;}
+.del-btn{background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;padding:0 3px;}
+.add-btn{width:100%;margin:8px 0 0;padding:8px;background:transparent;border:1px dashed var(--border2);border-radius:6px;color:var(--accent);font-size:12px;cursor:pointer;transition:.2s;}
+.add-btn:hover{background:rgba(0,229,255,.08);}
+.field-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.field-row:last-child{margin-bottom:0;}
+.field-label{font-size:11px;color:var(--dim);flex:1;}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.res-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.res-label{font-size:9px;color:var(--dim);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.res-value{font-size:18px;font-weight:700;font-family:var(--mono);}
+.res-unit{font-size:10px;color:var(--dim);margin-top:1px;}
+.c-cyan{color:var(--accent);}
+.c-blue{color:var(--accent2);}
+.c-orange{color:var(--accent3);}
+.c-green{color:var(--accent4);}
+.c-purple{color:var(--accent5);}
+.state-pill{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;margin:8px 12px 0;}
+.state-dot{width:8px;height:8px;border-radius:50%;}
+/* Mix */
+.mix-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.mix-row select,.mix-row input{background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:6px 8px;font-size:12px;flex:1;}
+.mix-label{font-size:11px;color:var(--dim);width:60px;flex-shrink:0;}
+/* Process flow */
+.flow-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:8px 12px 0;overflow:hidden;}
+.flow-header{display:flex;align-items:center;gap:8px;padding:12px;cursor:pointer;border-bottom:1px solid var(--border);}
+.flow-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.flow-title{font-size:13px;font-weight:700;flex:1;}
+.flow-subtitle{font-size:10px;color:var(--dim);}
+.flow-toggle{color:var(--dim);font-size:12px;}
+.flow-body{display:none;padding:12px;}
+.flow-body.open{display:block;}
+.flow-result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px dashed var(--border);}
+.flow-result-row:last-child{border:none;}
+.flow-result-row .fk{font-size:11px;color:var(--dim);}
+.flow-result-row .fv{font-size:13px;font-weight:700;font-family:var(--mono);}
+.flow-sel-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.flow-sel-row label{font-size:11px;color:var(--dim);width:40px;}
+.flow-sel-row select{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:5px 7px;font-size:11px;}
+/* Template selector */
+.tpl-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.tpl-btn{padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--dim);font-size:11px;cursor:pointer;transition:.2s;}
+.tpl-btn:hover,.tpl-btn.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+/* Chart */
+.chart-wrap{margin:10px 12px 0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px;}
+canvas{width:100%;display:block;border-radius:6px;}
+.chart-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--dim);}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+.legend-line{width:16px;height:2px;}
+/* Report */
+.report-section{margin:10px 12px 0;}
+.report-block{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+.report-block-header{background:var(--card2);padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+.report-block-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.report-block-title{font-size:12px;font-weight:700;}
+.report-block-sub{font-size:10px;color:var(--dim);margin-left:auto;}
+.report-table{width:100%;border-collapse:collapse;font-size:11px;}
+.report-table td{padding:6px 10px;border-bottom:1px solid var(--border);}
+.report-table td:first-child{color:var(--dim);width:45%;}
+.report-table td:last-child{font-weight:700;font-family:var(--mono);color:var(--text);}
+.report-table tr:last-child td{border:none;}
+.export-row{display:flex;gap:10px;margin:10px 12px;}
+.export-btn{flex:1;padding:9px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-html{background:var(--accent3);color:#fff;}
+.btn-csv{background:var(--accent2);color:#fff;}
+/* Formula page */
+.formula-page{padding:12px;}
+.formula-chapter{margin-bottom:18px;}
+.formula-chapter h3{font-size:13px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:8px;}
+.formula-item{margin-bottom:12px;}
+.formula-item h4{font-size:11px;color:var(--accent2);margin-bottom:4px;}
+.formula-item p{font-size:11px;color:var(--dim);line-height:1.7;}
+.formula-item code{font-family:var(--mono);color:var(--text);background:rgba(0,0,0,.3);padding:2px 5px;border-radius:3px;font-size:11px;}
+.sym-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:6px;}
+.sym-table td{padding:3px 6px;border-bottom:1px solid var(--border);}
+.sym-table td:first-child{color:var(--accent2);font-family:var(--mono);width:30%;}
+.sym-table td:nth-child(2){color:var(--dim);width:50%;}
+.sym-table td:last-child{color:var(--warn);width:20%;text-align:right;}
+/* Misc */
+.inline-sel{background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:4px 7px;font-size:11px;}
+.pb24{padding-bottom:24px;}
+.eng-input{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:5px;color:var(--text);padding:5px 8px;font-size:11px;margin-top:3px;}
+.eng-input:focus{outline:none;border-color:var(--accent);}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-top">
+    <div class="hdr-logo">🌬</div>
+    <div>
+      <div class="hdr-title">空氣性質工程計算</div>
+      <div class="hdr-sub">Psychrometric Engineering System v3.0</div>
+      <div class="hdr-sub">研究組員：李世權 Claude</p>
+    </div>
+    <div class="unit-toggle">
+      <div class="unit-btn active" id="si-btn" onclick="setUnit('SI')">SI</div>
+      <div class="unit-btn" id="ip-btn" onclick="setUnit('IP')">IP</div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('states')">📋 狀態點</div>
+  <div class="tab" onclick="switchTab('mix')">🔀 混風</div>
+  <div class="tab" onclick="switchTab('flow')">🔁 處理流程</div>
+  <div class="tab" onclick="switchTab('chart')">📊 圖表</div>
+  <div class="tab" onclick="switchTab('report')">📄 報表</div>
+  <div class="tab" onclick="switchTab('formula')">📖 公式</div>
+</div>
+
+<!-- ══ STATES ══ -->
+<div class="section active" id="tab-states">
+  <div class="card">
+    <div class="card-title"><span>環境條件</span></div>
+    <div class="alt-row">
+      <label>🏔 海拔高度</label>
+      <input class="alt-input" type="number" id="alt-input" value="0" min="0" max="5000" step="10" oninput="onAltChange()">
+      <span class="alt-unit" id="alt-unit-lbl">m</span>
+    </div>
+    <div class="alt-row">
+      <label style="color:var(--dim)">⬛ 大氣壓力（自動）</label>
+      <span class="patm-display" id="pAtm-display">101.325 kPa</span>
+    </div>
+    <div class="field-row" style="margin-top:4px;">
+      <span class="field-label">輸入模式</span>
+      <select class="inline-sel" id="input-mode" onchange="renderTable()">
+        <option value="db-rh">乾球 + 相對濕度</option>
+        <option value="db-wb">乾球 + 濕球</option>
+        <option value="db-dp">乾球 + 露點</option>
+        <option value="db-w">乾球 + 含濕量</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card" style="padding:10px;">
+    <div class="card-title"><span>空氣狀態點</span><span class="badge" id="sp-count-badge">0 點</span></div>
+    <div style="overflow-x:auto;">
+      <table class="sp-table"><thead id="sp-thead"></thead><tbody id="sp-tbody"></tbody></table>
+    </div>
+    <button class="add-btn" onclick="addPoint()">＋ 新增狀態點</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>計算結果</span>
+      <select class="inline-sel" id="sel-point" onchange="renderResults()"></select>
+    </div>
+    <div class="res-grid" id="res-grid"></div>
+  </div>
+  <div class="state-pill" id="comfort-pill">
+    <div class="state-dot" id="comfort-dot" style="background:#4CAF50"></div>
+    <span id="comfort-text">—</span>
+  </div>
+  <div class="pb24"></div>
+</div>
+
+<!-- ══ MIX ══ -->
+<div class="section" id="tab-mix">
+  <div class="card">
+    <div class="card-title"><span>混風計算</span></div>
+    <p style="font-size:11px;color:var(--dim);margin-bottom:10px;">選擇兩個或多個狀態點，輸入各自風量，自動計算混合後狀態。</p>
+    <div id="mix-rows-container"></div>
+    <button class="add-btn" onclick="addMixRow()">＋ 新增混風源</button>
+  </div>
+  <div class="card">
+    <div class="card-title"><span>混風結果</span></div>
+    <div class="res-grid" id="mix-results"></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span>混風過程線</span></div>
+    <canvas id="mix-canvas" width="440" height="220"></canvas>
+  </div>
+  <div class="pb24"></div>
+</div>
+
+<!-- ══ FLOW ══ -->
+<div class="section" id="tab-flow">
+  <div class="card">
+    <div class="card-title"><span>空氣處理流程</span></div>
+    <!-- Template -->
+    <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">標準樣板快速套用：</div>
+    <div class="tpl-row">
+      <button class="tpl-btn" onclick="applyTemplate('AHU')">AHU</button>
+      <button class="tpl-btn" onclick="applyTemplate('MAU')">MAU</button>
+      <button class="tpl-btn" onclick="applyTemplate('FCU')">FCU</button>
+      <button class="tpl-btn" onclick="applyTemplate('clear')">清除</button>
+    </div>
+    <!-- Wind flow input -->
+    <div class="field-row">
+      <span class="field-label">系統風量</span>
+      <input type="number" id="sys-flow" value="1000" min="1" step="100"
+        style="width:90px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:4px 6px;font-size:12px;"
+        oninput="calcAllFlows()">
+      <span class="field-label" id="sys-flow-unit" style="flex:0;margin-left:4px;">CMH</span>
+    </div>
+  </div>
+
+  <!-- Flow segments -->
+  <div id="flow-segments-container"></div>
+  <button class="add-btn" style="margin:8px 12px 0;width:calc(100% - 24px);" onclick="addFlowSegment()">＋ 新增處理程序</button>
+  <div class="pb24"></div>
+</div>
+
+<!-- ══ CHART ══ -->
+<div class="section" id="tab-chart">
+  <div class="chart-wrap">
+    <canvas id="psych-canvas" width="460" height="460"></canvas>
+  </div>
+  <div class="card" style="margin-top:8px;padding:10px 13px;">
+    <div class="card-title"><span>圖例</span></div>
+    <div class="chart-legend" id="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#00E5FF"></div>等RH線</div>
+      <div class="legend-item"><div class="legend-line" style="background:#29B6F6;opacity:.5"></div>等焓線</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#69F0AE"></div>舒適區</div>
+    </div>
+  </div>
+  <div class="pb24"></div>
+</div>
+
+<!-- ══ REPORT ══ -->
+<div class="section" id="tab-report">
+  <div class="card">
+    <div class="card-title"><span>工程資訊</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div><div style="font-size:10px;color:var(--dim);">專案名稱</div>
+        <input id="rpt-project" class="eng-input" value="空調工程計畫" oninput="renderReport()"></div>
+      <div><div style="font-size:10px;color:var(--dim);">計算者</div>
+        <input id="rpt-engineer" class="eng-input" value="工程師" oninput="renderReport()"></div>
+    </div>
+  </div>
+  <div class="report-section" id="report-body"></div>
+  <div class="export-row">
+    <button class="export-btn btn-csv" onclick="exportCSV()">⬇ 匯出 CSV</button>
+    <button class="export-btn btn-html" onclick="exportHTML()">🖨 列印報表</button>
+  </div>
+  <div class="pb24"></div>
+</div>
+
+<!-- ══ FORMULA ══ -->
+<div class="section" id="tab-formula">
+  <div class="formula-page" id="formula-content"></div>
+  <div class="pb24"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CONSTANTS & STATE
+// ══════════════════════════════════════════
+let unitSys='SI';
+let pAtm=101.325;
+let altitude=0; // m
+
+let statePoints=[
+  {id:1,label:'OA',db:35,rh:70,wb:28,dp:28,w:10,flow:500},
+  {id:2,label:'RA',db:26,rh:55,wb:18,dp:16,w:10,flow:800},
+  {id:3,label:'SA',db:13,rh:95,wb:12,dp:12,w:10,flow:1000},
+  {id:4,label:'MA',db:28,rh:63,wb:22,dp:20,w:10,flow:1000},
+];
+let nextId=5;
+let computed={};
+
+// Flow segments
+let flowSegments=[];
+let nextFlowId=1;
+
+// Mix rows
+let mixRows=[{ptId:1,flow:500},{ptId:2,flow:800}];
+
+// Colour palette for state points & flow segments
+const PT_COLORS=['#FF7043','#29B6F6','#69F0AE','#FFD740','#CE93D8','#FF5252','#00E5FF','#FFAB40','#80CBC4','#F48FB1'];
+
+// ══════════════════════════════════════════
+// UNIT SYSTEM
+// ══════════════════════════════════════════
+function setUnit(u){
+  unitSys=u;
+  document.getElementById('si-btn').classList.toggle('active',u==='SI');
+  document.getElementById('ip-btn').classList.toggle('active',u==='IP');
+  document.getElementById('alt-unit-lbl').textContent=u==='SI'?'m':'ft';
+  document.getElementById('sys-flow-unit').textContent=u==='SI'?'CMH':'CFM';
+  renderAll();
+}
+const toF=c=>c*1.8+32;
+const toFt=m=>m*3.28084;
+function dispT(c){return unitSys==='SI'?c.toFixed(1)+' °C':toF(c).toFixed(1)+' °F';}
+function dispW(kgkg){return unitSys==='SI'?(kgkg*1000).toFixed(2)+' g/kg':(kgkg*7000).toFixed(2)+' gr/lb';}
+function dispH(kJkg){return unitSys==='SI'?kJkg.toFixed(2)+' kJ/kg':(kJkg*0.429923).toFixed(2)+' BTU/lb';}
+function dispV(m3kg){return unitSys==='SI'?m3kg.toFixed(4)+' m³/kg':(m3kg*16.0185).toFixed(3)+' ft³/lb';}
+function dispRho(kgm3){return unitSys==='SI'?kgm3.toFixed(4)+' kg/m³':(kgm3*0.062428).toFixed(4)+' lb/ft³';}
+function dispFlow(cmh){return unitSys==='SI'?cmh.toFixed(0)+' CMH':(cmh*0.588578).toFixed(0)+' CFM';}
+function dispP(kPa){return unitSys==='SI'?kPa.toFixed(4)+' kPa':(kPa*0.145038).toFixed(4)+' psi';}
+function dispQ(kW){return unitSys==='SI'?kW.toFixed(2)+' kW':(kW*3412.14).toFixed(0)+' BTU/h';}
+function dispAlt(m){return unitSys==='SI'?m+' m':toFt(m).toFixed(0)+' ft';}
+
+// ══════════════════════════════════════════
+// ALTITUDE → PRESSURE
+// ══════════════════════════════════════════
+function altToPressure(m){return 101.325*Math.exp(-m/8000);}
+
+function onAltChange(){
+  let raw=parseFloat(document.getElementById('alt-input').value)||0;
+  if(unitSys==='IP') raw=raw/3.28084; // convert ft→m internally
+  raw=Math.max(0,Math.min(5000,raw));
+  altitude=raw;
+  pAtm=altToPressure(raw);
+  const dispPAtm=unitSys==='SI'?pAtm.toFixed(3)+' kPa':(pAtm*0.145038).toFixed(3)+' psi';
+  document.getElementById('pAtm-display').textContent=dispPAtm;
+  renderAll();
+}
+
+// ══════════════════════════════════════════
+// PSYCHROMETRIC CORE
+// ══════════════════════════════════════════
+function satPres(T){
+  if(T>=0) return 0.6112*Math.exp(17.67*T/(T+243.5));
+  return 0.6112*Math.exp(22.46*T/(T+272.62));
+}
+function W_from_RH(T,rh,P){const pw=rh/100*satPres(T);return 0.622*pw/(P-pw);}
+function W_from_WB(T,Twb,P){const Ws=W_from_RH(Twb,100,P);return((2501-2.381*Twb)*Ws-1.006*(T-Twb))/(2501+1.805*T-4.186*Twb);}
+function W_from_DP(Td,P){const p=satPres(Td);return 0.622*p/(P-p);}
+function RH_from_W(T,W,P){const Pw=W*P/(0.622+W);return Math.min(100,Pw/satPres(T)*100);}
+function dewPoint(T,rh){if(rh<=0)return-99;const g=Math.log(rh/100)+17.67*T/(T+243.5);return 243.5*g/(17.67-g);}
+function wetBulb(T,rh){return T*Math.atan(0.151977*Math.sqrt(rh+8.313659))+Math.atan(T+rh)-Math.atan(rh-1.676331)+0.00391838*Math.pow(rh,1.5)*Math.atan(0.023101*rh)-4.686035;}
+function enthalpy(T,W){return 1.006*T+W*(2501+1.86*T);}
+function specVol(T,W,P){return 0.287055*(T+273.15)/P*(1+W/0.622);}
+function Cp_air(W){return 1.006+1.86*W;}
+
+function computePoint(pt){
+  const mode=document.getElementById('input-mode').value;
+  let W,rh;
+  if(mode==='db-rh'){W=W_from_RH(pt.db,pt.rh,pAtm);rh=pt.rh;}
+  else if(mode==='db-wb'){W=W_from_WB(pt.db,pt.wb||pt.db-3,pAtm);rh=RH_from_W(pt.db,W,pAtm);}
+  else if(mode==='db-dp'){W=W_from_DP(pt.dp!=null?pt.dp:pt.db-5,pAtm);rh=RH_from_W(pt.db,W,pAtm);}
+  else{W=(pt.w||10)/1000;rh=RH_from_W(pt.db,W,pAtm);}
+  const Td=dewPoint(pt.db,rh);
+  const Twb=wetBulb(pt.db,rh);
+  const Pws=satPres(pt.db);
+  const Pw=rh/100*Pws;
+  const h=enthalpy(pt.db,W);
+  const v=specVol(pt.db,W,pAtm);
+  const rho=(1+W)/v;
+  const cp=Cp_air(W);
+  return{W,rh,Td,Twb,Pws,Pw,h,v,rho,cp};
+}
+
+// ══════════════════════════════════════════
+// RENDER ALL
+// ══════════════════════════════════════════
+function renderAll(){
+  computed={};
+  statePoints.forEach(pt=>{computed[pt.id]=computePoint(pt);});
+  renderTable();
+  renderResults();
+  renderMix();
+  calcAllFlows();
+  drawPsychChart();
+  renderReport();
+}
+
+// ══════════════════════════════════════════
+// STATE POINTS TABLE
+// ══════════════════════════════════════════
+const modeHdr={'db-rh':['T DB','RH%'],'db-wb':['T DB','T WB'],'db-dp':['T DB','T DP'],'db-w':['T DB','W g/kg']};
+const modeFld={'db-rh':['db','rh'],'db-wb':['db','wb'],'db-dp':['db','dp'],'db-w':['db','w']};
+
+function renderTable(){
+  const mode=document.getElementById('input-mode').value;
+  const [h1,h2]=modeHdr[mode];
+  const tu=unitSys==='SI'?'°C':'°F';
+  document.getElementById('sp-thead').innerHTML=`<tr>
+    <th>編號</th><th>${h1}(${tu})</th><th>${h2}</th>
+    <th>風量<small>${unitSys==='SI'?'CMH':'CFM'}</small></th><th></th></tr>`;
+  const tbody=document.getElementById('sp-tbody');
+  tbody.innerHTML='';
+  statePoints.forEach((pt,i)=>{
+    const[f1,f2]=modeFld[mode];
+    let v1=unitSys==='IP'?toF(pt.db):pt.db;
+    let v2=mode==='db-rh'?pt.rh:mode==='db-wb'?(pt.wb||pt.db-3):mode==='db-dp'?(pt.dp??pt.db-5):(pt.w||10);
+    if((mode==='db-wb'||mode==='db-dp')&&unitSys==='IP') v2=toF(v2);
+    let fv=unitSys==='IP'?pt.flow*0.588578:pt.flow;
+    const col=PT_COLORS[i%PT_COLORS.length];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="sp-row-label" style="color:${col}">${pt.label||'P'+pt.id}</td>
+      <td><input type="number" step="0.5" value="${v1.toFixed(1)}" onchange="updateField(${pt.id},'${f1}',this.value)"></td>
+      <td><input type="number" step="${mode==='db-w'?'0.1':'1'}" value="${typeof v2==='number'?v2.toFixed(mode==='db-w'?1:1):v2}" onchange="updateField(${pt.id},'${f2}',this.value)"></td>
+      <td><input type="number" step="10" value="${fv.toFixed(0)}" onchange="updateFlow(${pt.id},this.value)"></td>
+      <td><button class="del-btn" onclick="deletePoint(${pt.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('sp-count-badge').textContent=statePoints.length+' 點';
+  updateSelectors();
+}
+
+function updateField(id,field,raw){
+  const pt=statePoints.find(p=>p.id===id);if(!pt)return;
+  let val=parseFloat(raw);if(isNaN(val))return;
+  if(unitSys==='IP'&&(field==='db'||field==='wb'||field==='dp')) val=(val-32)/1.8;
+  pt[field]=val;
+  computed[id]=computePoint(pt);
+  renderResults();calcAllFlows();drawPsychChart();renderReport();
+}
+function updateFlow(id,raw){
+  const pt=statePoints.find(p=>p.id===id);if(!pt)return;
+  let val=parseFloat(raw);if(isNaN(val))return;
+  if(unitSys==='IP') val=val/0.588578;
+  pt.flow=val;
+  renderResults();calcAllFlows();renderReport();
+}
+function addPoint(){
+  const id=nextId++;
+  statePoints.push({id,label:'P'+id,db:25,rh:50,wb:18,dp:14,w:10,flow:500});
+  renderAll();
+}
+function deletePoint(id){
+  statePoints=statePoints.filter(p=>p.id!==id);
+  delete computed[id];
+  flowSegments=flowSegments.filter(s=>s.fromId!==id&&s.toId!==id);
+  renderAll();
+}
+function updateSelectors(){
+  const opts=statePoints.map(p=>`<option value="${p.id}">${p.label||'P'+p.id}</option>`).join('');
+  ['sel-point'].forEach(sid=>{
+    const el=document.getElementById(sid);if(!el)return;
+    const prev=el.value;el.innerHTML=opts;
+    if(statePoints.find(p=>p.id==prev))el.value=prev;
+  });
+  document.querySelectorAll('.mix-pt-sel,.flow-from-sel,.flow-to-sel').forEach(sel=>{
+    const prev=sel.value;sel.innerHTML=opts;
+    if(statePoints.find(p=>p.id==prev))sel.value=prev;
+  });
+  renderResults();
+}
+
+// ══════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════
+function renderResults(){
+  const sel=document.getElementById('sel-point');
+  if(!sel||!statePoints.length)return;
+  const id=parseInt(sel.value)||statePoints[0]?.id;
+  const c=computed[id];const pt=statePoints.find(p=>p.id===id);
+  if(!c||!pt)return;
+  document.getElementById('res-grid').innerHTML=`
+    <div class="res-card"><div class="res-label">含濕量 W</div>
+      <div class="res-value c-cyan">${unitSys==='SI'?(c.W*1000).toFixed(2):(c.W*7000).toFixed(2)}</div>
+      <div class="res-unit">${unitSys==='SI'?'g/kg dry':'gr/lb'}</div></div>
+    <div class="res-card"><div class="res-label">露點 Td</div>
+      <div class="res-value c-blue">${unitSys==='SI'?c.Td.toFixed(1):toF(c.Td).toFixed(1)}</div>
+      <div class="res-unit">${unitSys==='SI'?'°C':'°F'}</div></div>
+    <div class="res-card"><div class="res-label">濕球 Twb</div>
+      <div class="res-value c-orange">${unitSys==='SI'?c.Twb.toFixed(1):toF(c.Twb).toFixed(1)}</div>
+      <div class="res-unit">${unitSys==='SI'?'°C':'°F'}</div></div>
+    <div class="res-card"><div class="res-label">焓值 h</div>
+      <div class="res-value c-green">${dispH(c.h)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">比容 v</div>
+      <div class="res-value" style="font-size:14px;">${dispV(c.v)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">密度 ρ</div>
+      <div class="res-value" style="font-size:14px;">${dispRho(c.rho)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">飽和蒸氣壓 Pws</div>
+      <div class="res-value" style="font-size:13px;">${dispP(c.Pws)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">比熱 Cp</div>
+      <div class="res-value" style="font-size:13px;">${c.cp.toFixed(4)}</div>
+      <div class="res-unit">kJ/(kg·K)</div></div>`;
+  // Comfort
+  const T=pt.db,rh=c.rh;
+  let dot,txt;
+  if(T>=20&&T<=26&&rh>=40&&rh<=60){dot='#4CAF50';txt='🟢 舒適 (ASHRAE 55)';}
+  else if(T>30&&rh>70){dot='#EF5350';txt='🔴 高溫高濕';}
+  else if(T<10){dot='#42A5F5';txt='🔵 低溫';}
+  else if(rh>80){dot='#FF7043';txt='🟠 高濕';}
+  else if(rh<20){dot='#FF7043';txt='🟠 低濕乾燥';}
+  else{dot='#FFA726';txt='🟡 尚可接受';}
+  document.getElementById('comfort-dot').style.background=dot;
+  document.getElementById('comfort-text').textContent=txt;
+}
+
+// ══════════════════════════════════════════
+// MIXING
+// ══════════════════════════════════════════
+function renderMix(){
+  const c=document.getElementById('mix-rows-container');c.innerHTML='';
+  const opts=statePoints.map(p=>`<option value="${p.id}">${p.label||'P'+p.id}</option>`).join('');
+  mixRows.forEach((row,i)=>{
+    const div=document.createElement('div');div.className='mix-row';
+    div.innerHTML=`<span class="mix-label">來源 ${i+1}</span>
+      <select class="mix-pt-sel" onchange="mixRows[${i}].ptId=parseInt(this.value);calcMix();">${opts}</select>
+      <input type="number" value="${unitSys==='IP'?(row.flow*0.588578).toFixed(0):row.flow.toFixed(0)}"
+        style="width:80px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:6px;font-size:12px;"
+        oninput="mixRows[${i}].flow=${unitSys==='IP'?'parseFloat(this.value)/0.588578':'parseFloat(this.value)'};calcMix();">
+      ${mixRows.length>2?`<button class="del-btn" onclick="mixRows.splice(${i},1);renderMix();">✕</button>`:''}`;
+    c.appendChild(div);
+    // Set selected
+    const sel=div.querySelector('.mix-pt-sel');
+    if(statePoints.find(p=>p.id===row.ptId))sel.value=row.ptId;
+  });
+  calcMix();
+}
+function addMixRow(){mixRows.push({ptId:statePoints[0]?.id||1,flow:500});renderMix();}
+function calcMix(){
+  const valid=mixRows.filter(r=>r.flow>0&&computed[r.ptId]);
+  if(!valid.length){document.getElementById('mix-results').innerHTML='';return;}
+  const totalFlow=valid.reduce((s,r)=>s+r.flow,0);
+  let sumW=0,sumH=0;
+  valid.forEach(r=>{const c=computed[r.ptId];const f=r.flow/totalFlow;sumW+=c.W*f;sumH+=c.h*f;});
+  const Tmix=(sumH-2501*sumW)/(1.006+1.86*sumW);
+  const rhMix=RH_from_W(Tmix,sumW,pAtm);
+  document.getElementById('mix-results').innerHTML=`
+    <div class="res-card"><div class="res-label">混風溫度</div>
+      <div class="res-value c-orange">${unitSys==='SI'?Tmix.toFixed(1):toF(Tmix).toFixed(1)}</div>
+      <div class="res-unit">${unitSys==='SI'?'°C':'°F'}</div></div>
+    <div class="res-card"><div class="res-label">含濕量</div>
+      <div class="res-value c-cyan">${unitSys==='SI'?(sumW*1000).toFixed(2):(sumW*7000).toFixed(2)}</div>
+      <div class="res-unit">${unitSys==='SI'?'g/kg':'gr/lb'}</div></div>
+    <div class="res-card"><div class="res-label">焓值</div>
+      <div class="res-value c-green">${dispH(sumH)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">相對濕度</div>
+      <div class="res-value c-blue">${rhMix.toFixed(1)}</div><div class="res-unit">%</div></div>
+    <div class="res-card"><div class="res-label">總風量</div>
+      <div class="res-value">${dispFlow(totalFlow)}</div><div class="res-unit"></div></div>
+    <div class="res-card"><div class="res-label">露點溫度</div>
+      <div class="res-value">${dispT(dewPoint(Tmix,rhMix))}</div><div class="res-unit"></div></div>`;
+  drawMixChart(valid,{T:Tmix,W:sumW});
+}
+
+// ══════════════════════════════════════════
+// FLOW SEGMENTS (處理流程)
+// ══════════════════════════════════════════
+// Process types
+const PROC_TYPES=[
+  {id:'cool',    name:'冷卻盤管',   icon:'❄️', color:'#29B6F6'},
+  {id:'heat',    name:'加熱盤管',   icon:'🔥', color:'#EF5350'},
+  {id:'cooldeh', name:'冷卻除濕',   icon:'💧', color:'#5C6BC0'},
+  {id:'fog',     name:'水霧加濕',   icon:'🌊', color:'#26A69A'},
+  {id:'steam',   name:'蒸氣加濕',   icon:'♨️', color:'#FFA726'},
+  {id:'evap',    name:'蒸發冷卻',   icon:'🌿', color:'#66BB6A'},
+  {id:'chemdeh', name:'化學除濕',   icon:'🧪', color:'#AB47BC'},
+  {id:'refdeh',  name:'冷凍除濕',   icon:'🧊', color:'#42A5F5'},
+  {id:'room',    name:'室內空調負荷',icon:'🏢', color:'#FFD740'},
+  {id:'mix',     name:'混風箱',    icon:'🔀', color:'#80CBC4'},
+];
+
+function addFlowSegment(){
+  const id=nextFlowId++;
+  const fromId=statePoints[0]?.id||1;
+  const toId=statePoints[1]?.id||statePoints[0]?.id||1;
+  flowSegments.push({id,fromId,toId,procType:'cool'});
+  renderFlowSegments();calcAllFlows();drawPsychChart();
+}
+function deleteFlowSegment(id){
+  flowSegments=flowSegments.filter(s=>s.id!==id);
+  renderFlowSegments();drawPsychChart();renderReport();
+}
+
+function renderFlowSegments(){
+  const container=document.getElementById('flow-segments-container');
+  container.innerHTML='';
+  const opts=statePoints.map(p=>`<option value="${p.id}">${p.label||'P'+p.id}</option>`).join('');
+  const typeOpts=PROC_TYPES.map(t=>`<option value="${t.id}">${t.icon} ${t.name}</option>`).join('');
+
+  flowSegments.forEach((seg,idx)=>{
+    const proc=PROC_TYPES.find(t=>t.id===seg.procType)||PROC_TYPES[0];
+    const num=idx+1;
+    const div=document.createElement('div');
+    div.className='flow-card';
+    div.innerHTML=`
+      <div class="flow-header" onclick="toggleFlow(${seg.id})">
+        <div class="flow-num" style="background:${proc.color}33;border:1px solid ${proc.color};color:${proc.color}">
+          ${num}</div>
+        <div>
+          <div class="flow-title" style="color:${proc.color}">${proc.icon} ${proc.name}</div>
+          <div class="flow-subtitle" id="flow-sub-${seg.id}">— → —</div>
+        </div>
+        <div class="flow-toggle" id="flow-tgl-${seg.id}">▼</div>
+        <button class="del-btn" onclick="event.stopPropagation();deleteFlowSegment(${seg.id})">✕</button>
+      </div>
+      <div class="flow-body" id="flow-body-${seg.id}">
+        <div class="flow-sel-row">
+          <label>類型</label>
+          <select onchange="flowSegments[${idx}].procType=this.value;renderFlowSegments();calcAllFlows();drawPsychChart();">
+            ${PROC_TYPES.map(t=>`<option value="${t.id}" ${t.id===seg.procType?'selected':''}>${t.icon} ${t.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="flow-sel-row">
+          <label>起點</label>
+          <select class="flow-from-sel" onchange="flowSegments[${idx}].fromId=parseInt(this.value);calcAllFlows();drawPsychChart();">${opts}</select>
+        </div>
+        <div class="flow-sel-row">
+          <label>終點</label>
+          <select class="flow-to-sel" onchange="flowSegments[${idx}].toId=parseInt(this.value);calcAllFlows();drawPsychChart();">${opts}</select>
+        </div>
+        <div class="flow-result" id="flow-result-${seg.id}" style="margin-top:8px;background:var(--card2);border-radius:7px;padding:8px;"></div>
+      </div>`;
+    container.appendChild(div);
+    // Set selects
+    const fromSel=div.querySelector('.flow-from-sel');
+    const toSel=div.querySelector('.flow-to-sel');
+    if(statePoints.find(p=>p.id===seg.fromId))fromSel.value=seg.fromId;
+    if(statePoints.find(p=>p.id===seg.toId))toSel.value=seg.toId;
+  });
+}
+
+function toggleFlow(id){
+  const body=document.getElementById('flow-body-'+id);
+  const tgl=document.getElementById('flow-tgl-'+id);
+  const open=body.classList.toggle('open');
+  tgl.textContent=open?'▲':'▼';
+}
+
+function calcAllFlows(){
+  const sysFlow=parseFloat(document.getElementById('sys-flow').value)||1000;
+  let cmhFlow=unitSys==='IP'?sysFlow/0.588578:sysFlow;
+
+  flowSegments.forEach((seg,idx)=>{
+    const ptFrom=statePoints.find(p=>p.id===seg.fromId);
+    const ptTo=statePoints.find(p=>p.id===seg.toId);
+    const cFrom=computed[seg.fromId];
+    const cTo=computed[seg.toId];
+    const proc=PROC_TYPES.find(t=>t.id===seg.procType)||PROC_TYPES[0];
+    const num=idx+1;
+
+    // Update subtitle
+    const subEl=document.getElementById('flow-sub-'+seg.id);
+    if(subEl&&ptFrom&&ptTo) subEl.textContent=`${ptFrom.label||'P'+seg.fromId} → ${ptTo.label||'P'+seg.toId}`;
+
+    const resultEl=document.getElementById('flow-result-'+seg.id);
+    if(!resultEl||!ptFrom||!ptTo||!cFrom||!cTo)return;
+
+    const rhoAvg=(cFrom.rho+cTo.rho)/2;
+    const massFlow=cmhFlow*rhoAvg/3600; // kg/s
+    const CpAvg=(cFrom.cp+cTo.cp)/2;
+
+    let rows=[];
+    const dH=cFrom.h-cTo.h;
+    const dT=ptFrom.db-ptTo.db;
+    const dW=cFrom.W-cTo.W;
+
+    switch(seg.procType){
+      case'cool':
+        rows=[
+          {k:'顯熱冷卻量 Qs',v:dispQ(Math.max(0,massFlow*CpAvg*dT)),c:proc.color},
+          {k:'溫差 ΔT',v:(dT>=0?'-':'+')+(Math.abs(dT)).toFixed(1)+(unitSys==='SI'?' K':' °F')},
+          {k:'質量流量',v:(massFlow*3600).toFixed(1)+' kg/h'},
+          {k:'比熱 Cp(平均)',v:CpAvg.toFixed(4)+' kJ/(kg·K)'},
+        ];break;
+      case'cooldeh':
+        const Qt=massFlow*(dH);
+        const QL=massFlow*2501*Math.max(0,dW);
+        const Qs2=massFlow*CpAvg*dT;
+        const SHR=Qt>0?Math.max(0,Qs2)/Qt:0;
+        const mWater=massFlow*Math.max(0,dW)*3600;
+        rows=[
+          {k:'總冷卻量 Qt',v:dispQ(Math.max(0,Qt)),c:proc.color},
+          {k:'顯熱量 Qs',v:dispQ(Math.max(0,Qs2))},
+          {k:'潛熱量 QL',v:dispQ(Math.max(0,QL))},
+          {k:'顯熱比 SHR',v:SHR.toFixed(3)},
+          {k:'除水量',v:mWater.toFixed(2)+' kg/h'},
+        ];break;
+      case'heat':
+        rows=[
+          {k:'加熱量 Qh',v:dispQ(Math.max(0,massFlow*CpAvg*Math.abs(dT))),c:proc.color},
+          {k:'溫差 ΔT',v:Math.abs(dT).toFixed(1)+(unitSys==='SI'?' K':' °F')},
+          {k:'質量流量',v:(massFlow*3600).toFixed(1)+' kg/h'},
+        ];break;
+      case'fog':
+        const mFog=massFlow*Math.max(0,cTo.W-cFrom.W)*3600;
+        const dTFog=ptFrom.db-ptTo.db;
+        rows=[
+          {k:'加濕量',v:mFog.toFixed(2)+' kg/h',c:proc.color},
+          {k:'降溫效果',v:dTFog.toFixed(1)+(unitSys==='SI'?' °C':' °F')},
+          {k:'過程特性',v:'等焓絕熱'},
+        ];break;
+      case'steam':
+        const mSteam=massFlow*Math.max(0,cTo.W-cFrom.W)*3600;
+        const Qsteam=massFlow*Math.max(0,cTo.W-cFrom.W)*2258;
+        rows=[
+          {k:'蒸氣消耗量',v:mSteam.toFixed(2)+' kg/h',c:proc.color},
+          {k:'加濕耗能',v:dispQ(Math.max(0,Qsteam))},
+          {k:'過程特性',v:'等溫加濕'},
+        ];break;
+      case'evap':
+        const eff=ptFrom.db!==cFrom.Twb?(ptFrom.db-ptTo.db)/(ptFrom.db-cFrom.Twb):0;
+        const Qevap=massFlow*CpAvg*Math.max(0,dT);
+        rows=[
+          {k:'蒸發冷卻量',v:dispQ(Math.max(0,Qevap)),c:proc.color},
+          {k:'冷卻效率 ε',v:(eff*100).toFixed(1)+'%'},
+          {k:'濕球溫度 Twb',v:dispT(cFrom.Twb)},
+        ];break;
+      case'chemdeh':
+        const mChemDeh=massFlow*Math.max(0,dW)*3600;
+        rows=[
+          {k:'除濕量',v:mChemDeh.toFixed(2)+' kg/h',c:proc.color},
+          {k:'溫升 ΔT',v:Math.abs(dT).toFixed(1)+(unitSys==='SI'?' K':' °F')},
+          {k:'過程特性',v:'等焓，T↑ W↓'},
+        ];break;
+      case'refdeh':
+        const Qcool_ref=massFlow*Math.max(0,dH);
+        const mRefDeh=massFlow*Math.max(0,dW)*3600;
+        const Qreh=massFlow*1.006*Math.abs(dT);
+        rows=[
+          {k:'總冷卻量',v:dispQ(Math.max(0,Qcool_ref)),c:proc.color},
+          {k:'除水量',v:mRefDeh.toFixed(2)+' kg/h'},
+          {k:'回熱量',v:dispQ(Math.max(0,Qreh))},
+        ];break;
+      case'room':
+        const Qroom=massFlow*Math.max(0,dH*-1);
+        const Qs_room=massFlow*CpAvg*Math.max(0,-dT);
+        const QL_room=massFlow*2501*Math.max(0,-dW);
+        const SHF=Qroom>0?Qs_room/Qroom:0;
+        rows=[
+          {k:'室內空調負荷 Q',v:dispQ(Math.max(0,Qroom)),c:proc.color},
+          {k:'顯熱負荷 Qs',v:dispQ(Math.max(0,Qs_room))},
+          {k:'潛熱負荷 QL',v:dispQ(Math.max(0,QL_room))},
+          {k:'顯熱比 SHF',v:SHF.toFixed(3)},
+        ];break;
+      case'mix':
+        rows=[
+          {k:'詳細混風計算',v:'請至「混風」頁面',c:proc.color},
+          {k:'混風焓差 Δh',v:(Math.abs(dH)).toFixed(2)+' kJ/kg'},
+        ];break;
+    }
+
+    resultEl.innerHTML=rows.map(r=>`
+      <div class="flow-result-row">
+        <span class="fk">${r.k}</span>
+        <span class="fv" style="color:${r.c||'var(--text)'}">${r.v}</span>
+      </div>`).join('');
+  });
+  renderReport();
+}
+
+// ══════════════════════════════════════════
+// TEMPLATES
+// ══════════════════════════════════════════
+function applyTemplate(tpl){
+  // Remove active from all
+  document.querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if(tpl==='clear'){flowSegments=[];renderFlowSegments();drawPsychChart();renderReport();return;}
+
+  // Reset state points to template
+  if(tpl==='AHU'){
+    statePoints=[
+      {id:1,label:'OA',db:35,rh:70,wb:28,dp:28,w:10,flow:500},
+      {id:2,label:'RA',db:26,rh:55,wb:18,dp:16,w:10,flow:1000},
+      {id:3,label:'MA',db:29,rh:63,wb:22,dp:20,w:10,flow:1500},
+      {id:4,label:'CC',db:13,rh:95,wb:12,dp:12,w:10,flow:1500},
+      {id:5,label:'SA',db:16,rh:90,wb:15,dp:14,w:10,flow:1500},
+    ];nextId=6;
+    flowSegments=[
+      {id:nextFlowId++,fromId:1,toId:3,procType:'mix'},
+      {id:nextFlowId++,fromId:3,toId:4,procType:'cooldeh'},
+      {id:nextFlowId++,fromId:4,toId:5,procType:'heat'},
+      {id:nextFlowId++,fromId:5,toId:2,procType:'room'},
+    ];
+  }else if(tpl==='MAU'){
+    statePoints=[
+      {id:1,label:'OA',db:35,rh:70,wb:28,dp:28,w:10,flow:2000},
+      {id:2,label:'CC',db:13,rh:95,wb:12,dp:12,w:10,flow:2000},
+      {id:3,label:'HC',db:18,rh:75,wb:16,dp:13,w:10,flow:2000},
+      {id:4,label:'SA',db:18,rh:75,wb:16,dp:13,w:10,flow:2000},
+    ];nextId=5;
+    flowSegments=[
+      {id:nextFlowId++,fromId:1,toId:2,procType:'cooldeh'},
+      {id:nextFlowId++,fromId:2,toId:3,procType:'heat'},
+      {id:nextFlowId++,fromId:3,toId:4,procType:'steam'},
+    ];
+  }else if(tpl==='FCU'){
+    statePoints=[
+      {id:1,label:'RA',db:26,rh:55,wb:18,dp:16,w:10,flow:600},
+      {id:2,label:'CC',db:13,rh:95,wb:12,dp:12,w:10,flow:600},
+      {id:3,label:'SA',db:15,rh:90,wb:14,dp:13,w:10,flow:600},
+    ];nextId=4;
+    flowSegments=[
+      {id:nextFlowId++,fromId:1,toId:2,procType:'cooldeh'},
+      {id:nextFlowId++,fromId:2,toId:3,procType:'heat'},
+      {id:nextFlowId++,fromId:3,toId:1,procType:'room'},
+    ];
+  }
+  renderAll();
+  renderFlowSegments();
+}
+
+// ══════════════════════════════════════════
+// PSYCHROMETRIC CHART
+// ══════════════════════════════════════════
+function drawPsychChart(){
+  const canvas=document.getElementById('psych-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const CW=canvas.width,CH=canvas.height;
+  const pad={l:46,r:18,t:16,b:40};
+  const cw=CW-pad.l-pad.r,ch=CH-pad.t-pad.b;
+  const Tmin=-10,Tmax=50,Wmin=0,Wmax=30;
+  const tx=t=>pad.l+(t-Tmin)/(Tmax-Tmin)*cw;
+  const ty=w=>pad.t+ch-(w-Wmin)/(Wmax-Wmin)*ch;
+
+  ctx.clearRect(0,0,CW,CH);
+  ctx.fillStyle='#0B1420';ctx.fillRect(0,0,CW,CH);
+
+  // Grid
+  ctx.lineWidth=0.7;
+  for(let t=-10;t<=50;t+=5){
+    ctx.strokeStyle='rgba(0,229,255,0.1)';
+    ctx.beginPath();ctx.moveTo(tx(t),pad.t);ctx.lineTo(tx(t),pad.t+ch);ctx.stroke();
+    ctx.fillStyle='#5A90B0';ctx.font='9px system-ui';
+    ctx.fillText(unitSys==='SI'?t:toF(t).toFixed(0),tx(t)-8,pad.t+ch+14);
+  }
+  for(let w=0;w<=30;w+=5){
+    ctx.strokeStyle='rgba(0,229,255,0.1)';
+    ctx.beginPath();ctx.moveTo(pad.l,ty(w));ctx.lineTo(pad.l+cw,ty(w));ctx.stroke();
+    ctx.fillStyle='#5A90B0';ctx.font='9px system-ui';ctx.fillText(w,2,ty(w)+3);
+  }
+  ctx.fillStyle='#7AA8C4';ctx.font='10px system-ui';
+  ctx.fillText(unitSys==='SI'?'T (°C)':'T (°F)',pad.l+cw/2-15,CH-4);
+  ctx.save();ctx.translate(12,pad.t+ch/2+22);ctx.rotate(-Math.PI/2);
+  ctx.fillText('W (g/kg)',0,0);ctx.restore();
+
+  // RH curves — brighter
+  [10,20,30,40,50,60,70,80,90,100].forEach(rh=>{
+    ctx.beginPath();let first=true;
+    for(let t=Tmin;t<=Tmax;t+=0.5){
+      const wg=W_from_RH(t,rh,pAtm)*1000;
+      if(wg<Wmin||wg>Wmax){first=true;continue;}
+      first?ctx.moveTo(tx(t),ty(wg)):ctx.lineTo(tx(t),ty(wg));first=false;
+    }
+    ctx.strokeStyle=rh===100?'rgba(0,229,255,1)':`rgba(0,229,255,${0.18+rh*0.008})`;
+    ctx.lineWidth=rh===100?2:1;ctx.setLineDash([]);ctx.stroke();
+    if(rh%20===0&&rh<100){
+      const wg=W_from_RH(38,rh,pAtm)*1000;
+      if(wg>Wmin&&wg<Wmax){ctx.fillStyle='rgba(0,229,255,0.85)';ctx.font='bold 9px system-ui';ctx.fillText(rh+'%',tx(38)+2,ty(wg)-2);}
+    }
+  });
+
+  // Enthalpy lines — brighter
+  ctx.setLineDash([4,6]);ctx.lineWidth=0.8;
+  for(let hT=10;hT<=100;hT+=10){
+    ctx.strokeStyle='rgba(41,182,246,0.4)';
+    ctx.beginPath();let first=true;
+    for(let t=Tmin;t<=Tmax;t+=1){
+      const W_h=(hT-1.006*t)/(2501+1.86*t);const wg=W_h*1000;
+      if(wg<Wmin||wg>Wmax){first=true;continue;}
+      first?ctx.moveTo(tx(t),ty(wg)):ctx.lineTo(tx(t),ty(wg));first=false;
+    }
+    ctx.stroke();
+    // Label
+    const W_lbl=(hT-1.006*20)/(2501+1.86*20);const wg_lbl=W_lbl*1000;
+    if(wg_lbl>Wmin&&wg_lbl<Wmax){
+      ctx.fillStyle='rgba(41,182,246,0.7)';ctx.font='8px system-ui';
+      ctx.fillText(hT,tx(20)-14,ty(wg_lbl));
+    }
+  }
+  ctx.setLineDash([]);
+
+  // Comfort zone
+  ctx.fillStyle='rgba(105,240,174,0.07)';ctx.strokeStyle='rgba(105,240,174,0.4)';ctx.lineWidth=1.2;
+  const w1=W_from_RH(20,40,pAtm)*1000,w2=W_from_RH(26,60,pAtm)*1000;
+  ctx.fillRect(tx(20),ty(w2),tx(26)-tx(20),ty(w1)-ty(w2));
+  ctx.strokeRect(tx(20),ty(w2),tx(26)-tx(20),ty(w1)-ty(w2));
+  ctx.fillStyle='rgba(105,240,174,0.5)';ctx.font='8px system-ui';ctx.fillText('舒適',tx(20)+2,ty(w2)+10);
+
+  // ── Flow segment lines with arrows and numbers ──
+  flowSegments.forEach((seg,idx)=>{
+    const ptFrom=statePoints.find(p=>p.id===seg.fromId);
+    const ptTo=statePoints.find(p=>p.id===seg.toId);
+    const cFrom=computed[seg.fromId];const cTo=computed[seg.toId];
+    if(!ptFrom||!ptTo||!cFrom||!cTo)return;
+    const proc=PROC_TYPES.find(t=>t.id===seg.procType)||PROC_TYPES[0];
+    const x1=tx(ptFrom.db),y1=ty(cFrom.W*1000);
+    const x2=tx(ptTo.db),y2=ty(cTo.W*1000);
+    // Line
+    ctx.strokeStyle=proc.color;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    // Arrow
+    const ang=Math.atan2(y2-y1,x2-x1);
+    const mx=(x1+x2)/2,my=(y1+y2)/2;
+    ctx.fillStyle=proc.color;ctx.beginPath();
+    ctx.moveTo(mx+10*Math.cos(ang),my+10*Math.sin(ang));
+    ctx.lineTo(mx+10*Math.cos(ang+2.4),my+10*Math.sin(ang+2.4));
+    ctx.lineTo(mx+10*Math.cos(ang-2.4),my+10*Math.sin(ang-2.4));
+    ctx.closePath();ctx.fill();
+    // Circle number label
+    const num=idx+1;
+    const lx=mx+14*Math.cos(ang+Math.PI/2),ly=my+14*Math.sin(ang+Math.PI/2);
+    ctx.fillStyle=proc.color;ctx.beginPath();ctx.arc(lx,ly,9,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='#000';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(num,lx,ly);ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  });
+
+  // ── State points ──
+  statePoints.forEach((pt,i)=>{
+    const c=computed[pt.id];if(!c)return;
+    const wg=c.W*1000;if(wg<Wmin||wg>Wmax||pt.db<Tmin||pt.db>Tmax)return;
+    const px=tx(pt.db),py=ty(wg);
+    const col=PT_COLORS[i%PT_COLORS.length];
+    // Glow
+    const g=ctx.createRadialGradient(px,py,0,px,py,14);
+    g.addColorStop(0,col+'99');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,14,0,2*Math.PI);ctx.fill();
+    // Dot
+    ctx.fillStyle=col;ctx.beginPath();ctx.arc(px,py,5,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,2.2,0,2*Math.PI);ctx.fill();
+    // Label
+    ctx.fillStyle=col;ctx.font='bold 10px system-ui';
+    ctx.fillText(pt.label||'P'+pt.id,px+7,py-5);
+  });
+}
+
+// ══════════════════════════════════════════
+// MIX CHART
+// ══════════════════════════════════════════
+function drawMixChart(mixSources,mixResult){
+  const canvas=document.getElementById('mix-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  const pad={l:38,r:12,t:10,b:28};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  let Ts=mixSources.map(r=>statePoints.find(p=>p.id===r.ptId)?.db||25);Ts.push(mixResult.T);
+  let Ws=mixSources.map(r=>computed[r.ptId]?.W||0);Ws.push(mixResult.W);
+  const Tmin=Math.min(...Ts)-4,Tmax=Math.max(...Ts)+4;
+  const Wmin=Math.max(0,Math.min(...Ws)*1000-2),Wmax=Math.max(...Ws)*1000+3;
+  const tx=t=>pad.l+(t-Tmin)/(Tmax-Tmin)*cw;
+  const ty=w=>pad.t+ch-(w-Wmin)/(Wmax-Wmin)*ch;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#0B1420';ctx.fillRect(0,0,W,H);
+  // RH50
+  ctx.strokeStyle='rgba(0,229,255,.25)';ctx.lineWidth=1;
+  ctx.beginPath();let first=true;
+  for(let t=Tmin;t<=Tmax;t+=0.5){
+    const wg=W_from_RH(t,50,pAtm)*1000;
+    if(wg<Wmin||wg>Wmax){first=true;continue;}
+    first?ctx.moveTo(tx(t),ty(wg)):ctx.lineTo(tx(t),ty(wg));first=false;
+  }
+  ctx.stroke();
+  mixSources.forEach((r,i)=>{
+    const pt=statePoints.find(p=>p.id===r.ptId);if(!pt)return;
+    const c=computed[pt.id];if(!c)return;
+    const wg=c.W*1000;const col=PT_COLORS[i%PT_COLORS.length];
+    ctx.strokeStyle=col+'80';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(tx(pt.db),ty(wg));ctx.lineTo(tx(mixResult.T),ty(mixResult.W*1000));ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=col;ctx.beginPath();ctx.arc(tx(pt.db),ty(wg),5,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 9px system-ui';ctx.fillText(pt.label||'P'+pt.id,tx(pt.db)+7,ty(wg)-3);
+  });
+  const mx=tx(mixResult.T),my=ty(mixResult.W*1000);
+  const g2=ctx.createRadialGradient(mx,my,0,mx,my,12);
+  g2.addColorStop(0,'rgba(255,255,255,.5)');g2.addColorStop(1,'transparent');
+  ctx.fillStyle=g2;ctx.beginPath();ctx.arc(mx,my,12,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(mx,my,5,0,2*Math.PI);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 9px system-ui';ctx.fillText('混風',mx+8,my-3);
+}
+
+// ══════════════════════════════════════════
+// REPORT
+// ══════════════════════════════════════════
+function renderReport(){
+  const proj=document.getElementById('rpt-project')?.value||'—';
+  const eng=document.getElementById('rpt-engineer')?.value||'—';
+  const now=new Date().toLocaleString('zh-TW');
+  const sysFlow=parseFloat(document.getElementById('sys-flow')?.value)||1000;
+  let html='';
+
+  // ① State points table
+  html+=`<div style="font-size:11px;font-weight:700;color:var(--accent);margin:8px 0 6px;">📋 空氣狀態點</div>
+  <div class="report-block">
+    <table class="report-table">
+      <tr style="background:var(--card2);">
+        <td style="color:var(--accent);font-weight:700;">狀態點</td>
+        <td style="color:var(--accent);font-weight:700;">Tdb</td>
+        <td style="color:var(--accent);font-weight:700;">RH%</td>
+        <td style="color:var(--accent);font-weight:700;">W g/kg</td>
+        <td style="color:var(--accent);font-weight:700;">h kJ/kg</td>
+      </tr>`;
+  statePoints.forEach((pt,i)=>{
+    const c=computed[pt.id];if(!c)return;
+    const col=PT_COLORS[i%PT_COLORS.length];
+    html+=`<tr><td style="color:${col};font-weight:700;">${pt.label||'P'+pt.id}</td>
+      <td>${unitSys==='SI'?pt.db.toFixed(1)+'°C':toF(pt.db).toFixed(1)+'°F'}</td>
+      <td>${c.rh.toFixed(1)}%</td>
+      <td>${(c.W*1000).toFixed(2)}</td>
+      <td>${c.h.toFixed(2)}</td></tr>`;
+  });
+  html+=`</table></div>`;
+
+  // ② Flow segments
+  if(flowSegments.length>0){
+    html+=`<div style="font-size:11px;font-weight:700;color:var(--accent);margin:10px 0 6px;">⚙️ 空氣處理流程 — 設備容量計算</div>`;
+    flowSegments.forEach((seg,idx)=>{
+      const ptFrom=statePoints.find(p=>p.id===seg.fromId);
+      const ptTo=statePoints.find(p=>p.id===seg.toId);
+      const cFrom=computed[seg.fromId];const cTo=computed[seg.toId];
+      const proc=PROC_TYPES.find(t=>t.id===seg.procType)||PROC_TYPES[0];
+      const num=idx+1;
+      if(!ptFrom||!ptTo||!cFrom||!cTo)return;
+
+      const rhoAvg=(cFrom.rho+cTo.rho)/2;
+      const cmhFlow=unitSys==='IP'?sysFlow/0.588578:sysFlow;
+      const massFlow=cmhFlow*rhoAvg/3600;
+      const CpAvg=(cFrom.cp+cTo.cp)/2;
+      const dH=cFrom.h-cTo.h;
+      const dT=ptFrom.db-ptTo.db;
+      const dW=cFrom.W-cTo.W;
+
+      let details=[];
+      switch(seg.procType){
+        case'cool':
+          details=[['顯熱冷卻量 Qs',dispQ(Math.max(0,massFlow*CpAvg*dT))],['溫差 ΔT',Math.abs(dT).toFixed(1)+' K'],['系統風量',dispFlow(cmhFlow)],['質量流量',(massFlow*3600).toFixed(1)+' kg/h'],['比熱 Cp',CpAvg.toFixed(4)+' kJ/(kg·K)']];break;
+        case'cooldeh':
+          const Qt=massFlow*dH;const QL=massFlow*2501*Math.max(0,dW);const Qs2=massFlow*CpAvg*dT;const SHR=Qt>0?Math.max(0,Qs2)/Qt:0;
+          details=[['總冷卻量 Qt',dispQ(Math.max(0,Qt))],['顯熱量 Qs',dispQ(Math.max(0,Qs2))],['潛熱量 QL',dispQ(Math.max(0,QL))],['顯熱比 SHR',SHR.toFixed(3)],['除水量',(massFlow*Math.max(0,dW)*3600).toFixed(2)+' kg/h']];break;
+        case'heat':
+          details=[['加熱量 Qh',dispQ(Math.max(0,massFlow*CpAvg*Math.abs(dT)))],['溫差 ΔT',Math.abs(dT).toFixed(1)+' K']];break;
+        case'fog':
+          details=[['加濕量',(massFlow*Math.max(0,cTo.W-cFrom.W)*3600).toFixed(2)+' kg/h'],['降溫效果',Math.abs(dT).toFixed(1)+' °C'],['過程','等焓絕熱']];break;
+        case'steam':
+          details=[['蒸氣消耗量',(massFlow*Math.max(0,cTo.W-cFrom.W)*3600).toFixed(2)+' kg/h'],['加濕耗能',dispQ(Math.max(0,massFlow*(cTo.W-cFrom.W)*2258))],['過程','等溫加濕']];break;
+        case'evap':
+          const eff2=ptFrom.db!==cFrom.Twb?(ptFrom.db-ptTo.db)/(ptFrom.db-cFrom.Twb):0;
+          details=[['冷卻量',dispQ(Math.max(0,massFlow*CpAvg*dT))],['冷卻效率 ε',(eff2*100).toFixed(1)+'%'],['濕球溫度 Twb',dispT(cFrom.Twb)]];break;
+        case'chemdeh':
+          details=[['除濕量',(massFlow*Math.max(0,dW)*3600).toFixed(2)+' kg/h'],['溫升',Math.abs(dT).toFixed(1)+' K']];break;
+        case'refdeh':
+          details=[['冷卻量',dispQ(Math.max(0,massFlow*dH))],['除水量',(massFlow*Math.max(0,dW)*3600).toFixed(2)+' kg/h'],['回熱量',dispQ(Math.max(0,massFlow*1.006*Math.abs(dT)))]];break;
+        case'room':
+          const Qr=massFlow*Math.max(0,-dH);const Qsr=massFlow*CpAvg*Math.max(0,-dT);const QLr=massFlow*2501*Math.max(0,-dW);const SHFr=Qr>0?Qsr/Qr:0;
+          details=[['室內空調負荷 Q',dispQ(Math.max(0,Qr))],['顯熱負荷 Qs',dispQ(Math.max(0,Qsr))],['潛熱負荷 QL',dispQ(Math.max(0,QLr))],['顯熱比 SHF',SHFr.toFixed(3)]];break;
+        case'mix':
+          details=[['混風過程','詳見混風頁面'],['焓差 Δh',(Math.abs(dH)).toFixed(2)+' kJ/kg']];break;
+      }
+
+      html+=`<div class="report-block">
+        <div class="report-block-header">
+          <div class="report-block-num" style="background:${proc.color}33;color:${proc.color};border:1px solid ${proc.color}">${num}</div>
+          <div class="report-block-title" style="color:${proc.color}">${proc.icon} ${proc.name}</div>
+          <div class="report-block-sub">${ptFrom.label||'P'+seg.fromId} → ${ptTo.label||'P'+seg.toId}</div>
+        </div>
+        <table class="report-table">
+          ${details.map(d=>`<tr><td>${d[0]}</td><td>${d[1]}</td></tr>`).join('')}
+          <tr><td>進入條件</td><td>${unitSys==='SI'?ptFrom.db.toFixed(1)+'°C':toF(ptFrom.db).toFixed(1)+'°F'} / ${cFrom.rh.toFixed(0)}%RH / ${(cFrom.W*1000).toFixed(2)} g/kg</td></tr>
+          <tr><td>離開條件</td><td>${unitSys==='SI'?ptTo.db.toFixed(1)+'°C':toF(ptTo.db).toFixed(1)+'°F'} / ${cTo.rh.toFixed(0)}%RH / ${(cTo.W*1000).toFixed(2)} g/kg</td></tr>
+        </table>
+      </div>`;
+    });
+  }
+
+  // ③ Calc info
+  html+=`<div class="report-block" style="margin-top:6px;">
+    <table class="report-table">
+      <tr><td>專案</td><td>${proj}</td></tr>
+      <tr><td>計算者</td><td>${eng}</td></tr>
+      <tr><td>日期</td><td>${now}</td></tr>
+      <tr><td>單位制</td><td>${unitSys==='SI'?'SI 公制':'IP 英制'}</td></tr>
+      <tr><td>海拔</td><td>${dispAlt(altitude)}</td></tr>
+      <tr><td>大氣壓力</td><td>${pAtm.toFixed(3)} kPa</td></tr>
+      <tr><td>系統風量</td><td>${dispFlow(unitSys==='IP'?sysFlow/0.588578:sysFlow)}</td></tr>
+    </table>
+  </div>`;
+
+  document.getElementById('report-body').innerHTML=html;
+}
+
+function exportCSV(){
+  let csv='狀態點,Tdb(°C),RH%,W(g/kg),Twb(°C),Td(°C),h(kJ/kg),v(m³/kg),ρ(kg/m³),風量(CMH)\n';
+  statePoints.forEach(pt=>{
+    const c=computed[pt.id];if(!c)return;
+    csv+=`${pt.label||'P'+pt.id},${pt.db.toFixed(1)},${c.rh.toFixed(1)},${(c.W*1000).toFixed(2)},${c.Twb.toFixed(1)},${c.Td.toFixed(1)},${c.h.toFixed(2)},${c.v.toFixed(4)},${c.rho.toFixed(4)},${pt.flow}\n`;
+  });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='psychro_report.csv';a.click();
+}
+function exportHTML(){
+  const content=document.getElementById('report-body')?.innerHTML||'';
+  const proj=document.getElementById('rpt-project')?.value||'';
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>空氣性質計算報表</title>
+  <style>body{font-family:sans-serif;padding:20px;color:#111;background:#fff;}
+  h2{color:#0277BD;border-bottom:2px solid #0277BD;padding-bottom:5px;margin-bottom:16px;}
+  table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+  td{padding:5px 8px;border:1px solid #ddd;font-size:12px;}
+  td:first-child{background:#f5f9ff;color:#555;width:40%;}
+  .block{border:1px solid #ccc;border-radius:6px;margin-bottom:12px;overflow:hidden;}
+  .block-hdr{background:#e3f2fd;padding:7px 12px;font-weight:700;font-size:13px;}
+  </style></head><body>
+  <h2>空氣性質工程計算報表 — ${proj}</h2>
+  ${content.replace(/style="[^"]*color:[^"]*"/g,'').replace(/var\(--[^)]+\)/g,'#333')}
+  </body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='psychro_report.html';a.click();
+}
+
+// ══════════════════════════════════════════
+// FORMULA PAGE
+// ══════════════════════════════════════════
+function buildFormulaPage(){
+  const chapters=[
+    {title:'1. 基礎常數',items:[
+      {name:'通用氣體常數 Ru',formula:'Ru = 8.31446 kJ/(kmol·K)',syms:[['Ru','通用氣體常數','kJ/(kmol·K)']]},
+      {name:'乾空氣氣體常數 Rda',formula:'Rda = 8.31446 / 28.966 = 0.287055 kJ/(kg·K)',syms:[['Rda','乾空氣氣體常數','kJ/(kg·K)']]},
+      {name:'分子量比',formula:'Mv/Mda = 18.015/28.966 = 0.622',syms:[['Mv','水蒸氣分子量','g/mol'],['Mda','乾空氣分子量','g/mol']]},
+    ]},
+    {title:'2. 飽和蒸氣壓 Pvs（Magnus 公式）',items:[
+      {name:'T ≥ 0°C',formula:'Pvs = 0.6112 × exp(17.67·T / (T+243.5))  [kPa]',
+        syms:[['Pvs','飽和水蒸氣分壓','kPa'],['T','乾球溫度 Tdb','°C'],['0.6112','0°C基準值','kPa']]},
+      {name:'T < 0°C',formula:'Pvs = 0.6112 × exp(22.46·T / (T+272.62))  [kPa]',syms:[]},
+    ]},
+    {title:'3. 含濕量 W',items:[
+      {name:'由相對濕度計算',formula:'W = 0.622 × Pv / (Patm - Pv)  [kgv/kgda]',
+        syms:[['W','含濕量／比濕','kgv/kgda'],['Pv','水蒸氣分壓 = RH/100 × Pvs','kPa'],['Patm','大氣壓力','kPa'],['0.622','分子量比 Mv/Mda','—']]},
+      {name:'由濕球溫度反算（Sprung）',formula:'W = [(2501-2.381·Twb)·Ws,wb - 1.006·(T-Twb)] / [2501+1.805·T-4.186·Twb]',
+        syms:[['Twb','濕球溫度','°C'],['Ws,wb','濕球溫度下飽和含濕量','kgv/kgda']]},
+      {name:'由露點溫度反算',formula:'W = 0.622 × Pvs(Td) / (Patm - Pvs(Td))',
+        syms:[['Td','露點溫度','°C']]},
+    ]},
+    {title:'4. 露點溫度 Td',items:[
+      {name:'Magnus 反算',formula:'γ = ln(RH/100) + 17.67·T/(T+243.5)\nTd = 243.5·γ / (17.67 - γ)  [°C]',
+        syms:[['γ','中間變數','無因次'],['ln','自然對數','—']]},
+    ]},
+    {title:'5. 濕球溫度 Twb（Stull 2011）',items:[
+      {name:'近似公式',formula:'Twb = T·atan(0.151977√(RH+8.313659)) + atan(T+RH)\n     - atan(RH-1.676331) + 0.00391838·RH^1.5·atan(0.023101·RH) - 4.686035',
+        syms:[['atan','反正切函數 tan⁻¹','rad'],['適用範圍','-20°C≤T≤50°C，5%≤RH≤99%','—']]},
+    ]},
+    {title:'6. 焓值 h',items:[
+      {name:'濕空氣比焓',formula:'h = 1.006·T + W·(2501 + 1.86·T)  [kJ/kgda]',
+        syms:[['1.006','乾空氣定壓比熱 Cp,da','kJ/(kg·K)'],['2501','0°C水汽化潛熱 hfg,0','kJ/kg'],['1.86','水蒸氣定壓比熱 Cp,v','kJ/(kg·K)']]},
+    ]},
+    {title:'7. 比容 v 與密度 ρ',items:[
+      {name:'比容',formula:'v = 0.287055×(T+273.15)/Patm × (1 + W/0.622)  [m³/kgda]',
+        syms:[['0.287055','乾空氣氣體常數 Rda','kJ/(kg·K)'],['T+273.15','絕對溫度 Tabs','K']]},
+      {name:'密度（精算）',formula:'ρ = Patm/(Rda·Tabs) × (1+W)/(1+1.608·W)  [kg/m³]',
+        syms:[['1.608','分子量比倒數 Mda/Mv = 28.966/18.015','—']]},
+    ]},
+    {title:'8. 定壓比熱 Cp,air',items:[
+      {name:'含濕量修正比熱',formula:'Cp,air = 1.006 + 1.86 × W  [kJ/(kgda·K)]',syms:[]},
+    ]},
+    {title:'9. 顯熱負荷 Qs',items:[
+      {name:'顯熱冷卻／加熱',formula:'Qs = ṁ × Cp,air × ΔT  [kW]',
+        syms:[['ṁ','質量流量 = V̇·ρ/3600','kg/s'],['V̇','體積風量','CMH'],['ΔT','進出口溫差','K']]},
+    ]},
+    {title:'10. 混風計算',items:[
+      {name:'體積加權混合',formula:'Wmix = Σ(V̇i/ΣV̇i × Wi)\nhmix = Σ(V̇i/ΣV̇i × hi)\nTmix = (hmix - 2501·Wmix)/(1.006 + 1.86·Wmix)',
+        syms:[['V̇i','第i個來源之體積風量','CMH'],['Wi','第i個來源含濕量','kgv/kgda'],['hi','第i個來源比焓','kJ/kgda']]},
+    ]},
+    {title:'11. 參考文獻',items:[
+      {name:'',formula:'① ASHRAE Fundamentals Handbook 2021, Ch.1\n② Magnus, G. (1844)\n③ Stull, R. (2011). J. Appl. Meteor. Climatol., 50(11), 2267–2269\n④ Sprung (1888)\n⑤ IAPWS-IF97 (2007)',syms:[]},
+    ]},
+  ];
+
+  let html='';
+  chapters.forEach(ch=>{
+    html+=`<div class="formula-chapter"><h3>${ch.title}</h3>`;
+    ch.items.forEach(item=>{
+      html+=`<div class="formula-item">`;
+      if(item.name) html+=`<h4>${item.name}</h4>`;
+      html+=`<p><code>${item.formula.replace(/\n/g,'</code><br><code>')}</code></p>`;
+      if(item.syms.length>0){
+        html+=`<table class="sym-table">`;
+        item.syms.forEach(s=>{ html+=`<tr><td>${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td></tr>`; });
+        html+=`</table>`;
+      }
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('formula-content').innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// TAB
+// ══════════════════════════════════════════
+const TAB_IDS=['states','mix','flow','chart','report','formula'];
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',TAB_IDS[i]===id));
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active','tab-'+TAB_IDS[i]==='tab-'+id));
+  if(id==='chart')drawPsychChart();
+  if(id==='report')renderReport();
+  if(id==='mix')renderMix();
+  if(id==='flow')renderFlowSegments();
+  if(id==='formula')buildFormulaPage();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+onAltChange();
+renderAll();
+renderFlowSegments();
+</script>
+</body>
+</html>
