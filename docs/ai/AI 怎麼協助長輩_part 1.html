@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>認識我：您的 AI 小幫手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF5E9;
+    --paper-deep:#F3EAD6;
+    --card:#FFFEFA;
+    --ink:#3A2E22;
+    --ink-soft:#5C4E3E;
+    --jade:#2F5233;
+    --jade-light:#E4ECE2;
+    --gold:#C9A227;
+    --stamp:#B7362C;
+    --stamp-light:#F5DEDB;
+    --radius:22px;
+    --max:860px;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{
+    font-size:19px;
+    scroll-behavior:smooth;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important; transition:none !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* 紙張紋理感的淡淡背景層 */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(201,162,39,0.06), transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(47,82,51,0.05), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 1.4rem;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ---------- 印章徽記（本頁的核心識別元素） ---------- */
+  .stamp{
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:2.6rem;
+    height:2.6rem;
+    border-radius:50%;
+    background:var(--stamp);
+    color:#fff;
+    font-family:'Noto Serif TC', serif;
+    font-weight:900;
+    font-size:1.15rem;
+    box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--stamp-light);
+    position:relative;
+  }
+  .stamp.big{
+    width:4.6rem;
+    height:4.6rem;
+    font-size:1.9rem;
+    box-shadow:0 0 0 4px var(--paper), 0 0 0 6px var(--stamp-light);
+  }
+  .stamp.jade{ background:var(--jade); box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--jade-light); }
+
+  /* ---------- Header / Hero ---------- */
+  header.hero{
+    padding:3.2rem 0 2.4rem;
+    text-align:center;
+  }
+  .hero .stamp.big{ margin:0 auto 1.2rem; }
+  h1{
+    font-family:'Noto Serif TC', serif;
+    font-weight:900;
+    font-size:2.3rem;
+    line-height:1.5;
+    margin:0 0 0.9rem;
+    color:var(--ink);
+  }
+  .hero p.lead{
+    font-size:1.15rem;
+    color:var(--ink-soft);
+    max-width:34rem;
+    margin:0 auto;
+  }
+
+  .highlight{
+    color:var(--stamp);
+    font-weight:700;
+  }
+
+  /* ---------- 縫線式分隔（老相本裝訂感） ---------- */
+  .stitch{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    justify-content:center;
+    margin:2.6rem 0;
+    color:var(--gold);
+    opacity:0.75;
+  }
+  .stitch span{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--gold);
+  }
+  .stitch::before, .stitch::after{
+    content:"";
+    flex:1;
+    height:0;
+    border-top:2px dashed var(--gold);
+    max-width:5rem;
+  }
+
+  section{
+    margin-bottom:1rem;
+  }
+
+  h2{
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:1.55rem;
+    color:var(--jade);
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    margin:0 0 1.3rem;
+  }
+  h2 .stamp{ width:2.2rem; height:2.2rem; font-size:1rem; }
+
+  p{ margin:0 0 1rem; }
+
+  /* ---------- 對話泡泡（開場示範 + 各情境示範） ---------- */
+  .chat{
+    background:var(--card);
+    border:1px solid #ECE1CB;
+    border-radius:var(--radius);
+    padding:1.4rem 1.3rem;
+    margin:1.2rem 0;
+  }
+  .bubble-row{
+    display:flex;
+    align-items:flex-start;
+    gap:0.7rem;
+    margin-bottom:1rem;
+  }
+  .bubble-row:last-child{ margin-bottom:0; }
+  .bubble-row.me{ flex-direction:row-reverse; }
+  .bubble{
+    max-width:78%;
+    padding:0.75rem 1rem;
+    border-radius:16px;
+    font-size:1rem;
+    line-height:1.7;
+  }
+  .bubble-row.you .bubble{
+    background:var(--jade-light);
+    border-bottom-left-radius:4px;
+    color:var(--ink);
+  }
+  .bubble-row.me .bubble{
+    background:var(--stamp-light);
+    border-bottom-right-radius:4px;
+    color:var(--ink);
+  }
+  .who{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-top:-0.2rem;
+    flex-shrink:0;
+    width:2.6rem;
+  }
+
+  /* ---------- 對照表格（preference: 比較用表列） ---------- */
+  .compare-wrap{
+    background:var(--card);
+    border:1px solid #ECE1CB;
+    border-radius:var(--radius);
+    padding:0.4rem;
+    overflow:hidden;
+  }
+  table.compare{
+    width:100%;
+    border-collapse:collapse;
+  }
+  table.compare th{
+    background:var(--jade);
+    color:#fff;
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:0.9rem 0.8rem;
+    text-align:left;
+  }
+  table.compare th:first-child{ border-radius:16px 0 0 0; }
+  table.compare th:last-child{ border-radius:0 16px 0 0; }
+  table.compare td{
+    padding:0.9rem 0.8rem;
+    border-bottom:1px solid #EFE6D2;
+    vertical-align:top;
+    font-size:0.97rem;
+  }
+  table.compare tr:last-child td{ border-bottom:none; }
+  table.compare td.item{ font-weight:700; color:var(--ink); }
+  table.compare td.after{ color:var(--jade); }
+  table.compare td.after::before{ content:"✦ "; color:var(--gold); }
+
+  @media (max-width:640px){
+    table.compare thead{ display:none; }
+    table.compare, table.compare tbody, table.compare tr, table.compare td{ display:block; width:100%; }
+    table.compare tr{
+      padding:0.9rem 0.2rem;
+      border-bottom:1px solid #EFE6D2;
+    }
+    table.compare td{ border-bottom:none; padding:0.25rem 0.6rem; }
+    table.compare td::before{
+      content:attr(data-label);
+      display:block;
+      font-size:0.78rem;
+      color:var(--ink-soft);
+      margin-bottom:0.15rem;
+    }
+    table.compare td.after::before{ content:"✦ "attr(data-label); }
+    table.compare td.item::before{ content:none; }
+  }
+
+  /* ---------- SOP 步驟（印章編號） ---------- */
+  ol.sop{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:sop;
+  }
+  ol.sop li{
+    counter-increment:sop;
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
+    padding:0.9rem 0;
+    border-bottom:1px dashed #E4D8BC;
+  }
+  ol.sop li:last-child{ border-bottom:none; }
+  ol.sop li::before{
+    content:counter(sop);
+    flex-shrink:0;
+    width:2.4rem;
+    height:2.4rem;
+    border-radius:50%;
+    background:var(--stamp);
+    color:#f2f2ec;
+    font-family:'Noto Serif TC', serif;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--stamp-light);
+  }
+  ol.sop li .txt{ padding-top:0.3rem; }
+
+  /* ---------- 情境卡片 ---------- */
+  .scenario{
+    background:var(--card);
+    border:1px solid #ECE1CB;
+    border-radius:var(--radius);
+    padding:1.5rem 1.4rem;
+    margin-bottom:1.6rem;
+  }
+  .scenario h3{
+    font-family:'Noto Serif TC', serif;
+    font-size:1.2rem;
+    color:var(--ink);
+    margin:0 0 0.9rem;
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+  }
+  .scenario h3 .num{
+    flex-shrink:0;
+    width:2rem; height:2rem;
+    border-radius:50%;
+    background:var(--jade);
+    color:#fff;
+    font-size:0.95rem;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Serif TC', serif;
+  }
+
+  /* ---------- 結語 ---------- */
+  .closing{
+    text-align:center;
+    padding:2.6rem 1rem 3.6rem;
+  }
+  .closing .stamp.big{ margin:0 auto 1.1rem; }
+  .closing h2{ justify-content:center; }
+  .closing p{ font-size:1.1rem; max-width:32rem; margin-left:auto; margin-right:auto; }
+
+  /* ---------- 安裝方式選擇卡 ---------- */
+  .path-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
+    margin:1.2rem 0 1.6rem;
+  }
+  @media (max-width:640px){ .path-grid{ grid-template-columns:1fr; } }
+  .path-card{
+    background:var(--card);
+    border:1px solid #ECE1CB;
+    border-radius:var(--radius);
+    padding:1.3rem;
+  }
+  .path-card h4{
+    font-family:'Noto Serif TC', serif;
+    font-size:1.05rem;
+    color:var(--jade);
+    margin:0 0 0.5rem;
+  }
+  .path-card p{ font-size:0.95rem; color:var(--ink-soft); margin:0; }
+
+  /* ---------- 手機畫面示意圖 ---------- */
+  .phone-mockup{
+    width:15rem;
+    margin:1.6rem auto 1rem;
+    border:8px solid var(--ink);
+    border-radius:2.2rem;
+    background:#fff;
+    box-shadow:0 10px 28px rgba(58,46,34,0.18);
+    overflow:hidden;
+  }
+  .phone-topbar{
+    background:var(--paper-deep);
+    padding:0.7rem 0.9rem;
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    border-bottom:1px solid #E4D8BC;
+  }
+  .phone-topbar .dot{ width:1.1rem; height:1.1rem; border-radius:4px; background:var(--ink-soft); opacity:0.5; }
+  .phone-topbar span{ font-weight:700; font-size:0.9rem; color:var(--ink); }
+  .phone-screen{ padding:0.9rem 0.7rem; min-height:11rem; }
+  .phone-bubble{
+    max-width:80%;
+    padding:0.5rem 0.7rem;
+    border-radius:12px;
+    font-size:0.78rem;
+    margin-bottom:0.6rem;
+    line-height:1.5;
+  }
+  .phone-bubble.you{ background:var(--jade-light); margin-left:auto; border-bottom-right-radius:3px; }
+  .phone-bubble.me{ background:var(--stamp-light); border-bottom-left-radius:3px; }
+  .phone-inputbar{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    background:var(--paper-deep);
+    margin:0 0.7rem 0.9rem;
+    padding:0.55rem 0.8rem;
+    border-radius:999px;
+    border:1px solid #E4D8BC;
+  }
+  .phone-inputbar span{ font-size:0.75rem; color:var(--ink-soft); flex:1; }
+  .phone-inputbar .send{
+    width:1.5rem; height:1.5rem; border-radius:50%;
+    background:var(--stamp); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.75rem; flex-shrink:0;
+  }
+  .mockup-legend{
+    max-width:20rem;
+    margin:0 auto;
+    font-size:0.92rem;
+  }
+  .mockup-legend div{
+    display:flex;
+    gap:0.6rem;
+    align-items:flex-start;
+    margin-bottom:0.55rem;
+  }
+  .mockup-legend .dot-num{
+    flex-shrink:0;
+    width:1.5rem; height:1.5rem;
+    border-radius:50%;
+    background:var(--jade);
+    color:#fff;
+    font-size:0.8rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    padding:1.5rem 1rem 2.5rem;
+  }
+
+  /* 回到最上面 */
+  #topBtn{
+    position:fixed;
+    right:1.1rem;
+    bottom:1.1rem;
+    background:var(--jade);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:0.7rem 1.1rem;
+    font-size:0.95rem;
+    font-family:'Noto Sans TC', sans-serif;
+    font-weight:700;
+    box-shadow:0 4px 14px rgba(47,82,51,0.35);
+    cursor:pointer;
+    display:none;
+    z-index:5;
+  }
+
+  .fade-in{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.shown{
+    opacity:1;
+    transform:translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero fade-in">
+    
+    <h1>大哥、大姐您好</h1>
+    <h1>我是您的AI小幫手「Claude app」</h1>
+    <p class="lead">
+      把我想成：一位<span class="highlight">24 小時都在、耐心聽您說話</span>、
+      什麼都願意幫您查、幫您寫的好朋友。<br>
+      我沒有手腳，也不會自己打電話、跑腿——
+      一切都是<span class="highlight">您打字給我看，我打字回答您</span>，
+      就像現在用 LINE 跟親友聊天一樣簡單。
+    </p>
+  </header>
+
+  <div class="chat fade-in">
+    <div class="bubble-row you">
+      <div class="who">您</div>
+      <div class="bubble">我想跟孫子說生日快樂，可是不知道怎麼寫才好……</div>
+    </div>
+    <div class="bubble-row me">
+      <div class="bubble">來，您跟我說說孫子幾歲、平常喜歡什麼，我馬上幫您寫一段溫馨的祝福話！</div>
+      <div class="who stamp" style="width:2.2rem;height:2.2rem;font-size:0.9rem;">AI</div>
+    </div>
+  </div>
+
+  <div class="stitch"><span></span></div>
+
+  <!-- 一之二、怎麼開始使用我（安裝／開啟） -->
+  <section class="fade-in">
+    <h2><span class="stamp jade">2</span>怎麼開始使用我？</h2>
+    <p>
+      在跟我聊天以前，要先「找到我」。<span class="highlight">兩種方式任選一種都可以</span>，看您平常習慣用手機還是電腦：
+    </p>
+    <div class="path-grid">
+      <div class="path-card">
+        <h4>方法一：手機安裝 App</h4>
+        <p>適合平常想到就想問一下、喜歡隨身帶著用的人。</p>
+      </div>
+      <div class="path-card">
+        <h4>方法二：電腦／平板網頁版</h4>
+        <p>不用下載安裝，適合本來就常開電腦、想直接用的人。</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Noto Serif TC',serif;font-size:1.05rem;color:var(--ink);margin:0 0 0.6rem;">方法一的步驟：手機安裝 App</h3>
+    <ol class="sop">
+      <li><div class="txt">iPhone 打開「App Store」，Android 手機打開「Google Play 商店」</div></li>
+      <li><div class="txt">在搜尋欄打「Claude」，找開發者顯示<span class="highlight">「Anthropic」</span>的那一個（要認明清楚，避免點到長得很像的假 App）</div></li>
+      <li><div class="txt">點選「安裝」或「取得」，等待安裝完成（App 是免費的）</div></li>
+      <li><div class="txt">打開 App，用 Email 或 Google／Apple 帳號登入，<span class="highlight">免費版就能開始使用</span></div></li>
+    </ol>
+
+    <p style="margin-top:1.4rem;">
+      <strong>方法二的步驟：</strong>打開手機、平板或電腦的瀏覽器（例如 Safari、Chrome），
+      在網址列輸入 <span class="highlight">claude.ai</span>，一樣用 Email 或 Google／Apple 帳號登入即可，完全不用安裝任何東西。
+    </p>
+
+    <p style="margin-top:1.6rem;">不管用哪一種方法，登入後看到的畫面都差不多，長得像這樣（示意圖）：</p>
+
+    <div class="phone-mockup">
+      <div class="phone-topbar"><div class="dot"></div><span>Claude</span></div>
+      <div class="phone-screen">
+        <div class="phone-bubble you">今天天氣好冷，穿什麼比較好？</div>
+        <div class="phone-bubble me">今天氣溫偏低，建議穿保暖外套，出門記得戴圍巾喔！</div>
+      </div>
+      <div class="phone-inputbar"><span>輸入訊息…</span><div class="send">➤</div></div>
+    </div>
+    <div class="mockup-legend">
+      <div><div class="dot-num">1</div><div>上方是名稱列，確認自己打開的是「Claude」</div></div>
+      <div><div class="dot-num">2</div><div>中間是對話畫面，您和我說的話都會顯示在這裡</div></div>
+      <div><div class="dot-num">3</div><div>最下面的長條框就是打字的地方，打完字按右邊的箭頭送出</div></div>
+    </div>
+  </section>
+
+  <div class="stitch"><span></span></div>
+
+  <!-- 二、您本來就會的事，AI幫您更輕鬆 -->
+  <section class="fade-in">
+    <h2><span class="stamp jade">3</span>您本來就會的事，換我幫忙更輕鬆</h2>
+    <p>
+      您不用重新學什麼新東西，<span class="highlight">您平常本來就會做的事，交給我以後會多一點「智慧方便」</span>：
+    </p>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>您本來就會做的事</th>
+            <th>以前的做法</th>
+            <th>換我幫忙後，多了什麼</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">用 LINE 跟兒孫、朋友聊天</td>
+            <td data-label="以前的做法">想寫祝福留言，常常打了又刪、想不到詞</td>
+            <td class="after" data-label="換我幫忙後">說出心意，我幫您寫成溫馨完整的留言，還能挑「客氣」或「活潑」的語氣</td>
+          </tr>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">看到不懂的新聞、健康資訊</td>
+            <td data-label="以前的做法">看不懂專有名詞，只能用猜的或問子女</td>
+            <td class="after" data-label="換我幫忙後">直接問我「這是什麼意思」，像問孫子一樣，不怕問笨問題</td>
+          </tr>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">出國旅遊、收到外國訊息</td>
+            <td data-label="以前的做法">看不懂英文菜單或朋友傳的外文訊息</td>
+            <td class="after" data-label="換我幫忙後">拍張照或貼上文字，我立刻幫您翻成中文</td>
+          </tr>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">收到一長串群組公告</td>
+            <td data-label="以前的做法">要花時間慢慢讀完，才知道重點在哪</td>
+            <td class="after" data-label="換我幫忙後">請我「幫我整理重點」，幾秒鐘就看懂重要的地方</td>
+          </tr>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">想學手機新功能</td>
+            <td data-label="以前的做法">只能翻說明書，或反覆問子女同一個問題</td>
+            <td class="after" data-label="換我幫忙後">隨時問我，問幾次都不會不耐煩，還會一步一步教</td>
+          </tr>
+          <tr>
+            <td class="item" data-label="您本來就會做的事">生活小疑問（食譜、節日由來）</td>
+            <td data-label="以前的做法">靠記憶、翻書，或想到才問人</td>
+            <td class="after" data-label="換我幫忙後">隨口一問就有答案，還能繼續追問細節</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="stitch"><span></span></div>
+
+  <!-- 三、怎麼跟我說話 -->
+  <section class="fade-in">
+    <h2><span class="stamp jade">4</span>怎麼跟我「說話」？</h2>
+    <p>不用打得很正式，<span class="highlight">像跟朋友聊天一樣打字就好</span>，跟著下面做，就能順利完成：</p>
+    <ol class="sop">
+      <li><div class="txt">找到打字的地方（不管手機或電腦，通常在畫面下方，有個可以打字的長方框）</div></li>
+      <li><div class="txt">把您想問的事，用自己的話打出來（不用想標準答案，隨口問就好）</div></li>
+      <li><div class="txt">按下「送出」（通常是一個像紙飛機、或往上箭頭的小圖示）</div></li>
+      <li><div class="txt">稍等幾秒鐘，看我打字回答您</div></li>
+      <li><div class="txt">看不懂，或還想知道更多，直接繼續打字追問就好，<span class="highlight">我不會不耐煩</span>！</div></li>
+    </ol>
+  </section>
+
+  <div class="stitch"><span></span></div>
+
+  <!-- 四、跟著做一次看看 -->
+  <section class="fade-in">
+    <h2><span class="stamp jade">5</span>跟著做一次看看</h2>
+    <p>下面 4 個都是最常用得到的小情境，每一個都附上示範對話，照著步驟做，就能學會：</p>
+
+    <div class="scenario">
+      <h3><span class="num">1</span>幫孫子寫生日祝福留言</h3>
+      <ol class="sop">
+        <li><div class="txt">跟我說孫子的名字、年紀、平常喜歡什麼</div></li>
+        <li><div class="txt">我幫您寫出一段祝福留言初稿</div></li>
+        <li><div class="txt">覺得語氣要更活潑或更正式，直接跟我說一聲，我馬上改</div></li>
+        <li><div class="txt">滿意了，複製起來，貼到 LINE 傳給孫子就完成了</div></li>
+      </ol>
+      <div class="chat">
+        <div class="bubble-row you"><div class="who">您</div><div class="bubble">孫子叫小宇，明天滿 10 歲，很喜歡打棒球</div></div>
+        <div class="bubble-row me"><div class="bubble">小宇，祝你 10 歲生日快樂！願你打棒球一支支全壘打，功課、身體都棒棒！阿公阿嬤永遠支持你 ⚾</div><div class="who stamp" style="width:2.2rem;height:2.2rem;font-size:0.9rem;">我</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3><span class="num">2</span>看不懂新聞裡的「三高」是什麼意思</h3>
+      <ol class="sop">
+        <li><div class="txt">把看不懂的詞或整句話貼給我</div></li>
+        <li><div class="txt">問我「這是什麼意思？」</div></li>
+        <li><div class="txt">我用簡單白話跟您解釋</div></li>
+        <li><div class="txt">還想知道更多，可以繼續追問</div></li>
+      </ol>
+      <div class="chat">
+        <div class="bubble-row you"><div class="who">您</div><div class="bubble">新聞說要小心「三高」，這是什麼意思？</div></div>
+        <div class="bubble-row me"><div class="bubble">「三高」是指高血壓、高血糖、高血脂這三種常見的健康狀況。平常可以多注意飲食清淡、多活動，並定期給醫生檢查喔！</div><div class="who stamp" style="width:2.2rem;height:2.2rem;font-size:0.9rem;">我</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3><span class="num">3</span>出國拍菜單請我翻譯</h3>
+      <ol class="sop">
+        <li><div class="txt">打開手機相機，拍下菜單</div></li>
+        <li><div class="txt">把照片傳給我</div></li>
+        <li><div class="txt">跟我說「幫我翻譯成中文」</div></li>
+        <li><div class="txt">我列出每道菜的中文名稱和簡單說明，點餐不再猜謎</div></li>
+      </ol>
+      <div class="chat">
+        <div class="bubble-row you"><div class="who">您</div><div class="bubble">[傳了一張日文菜單照片] 幫我翻譯成中文</div></div>
+        <div class="bubble-row me"><div class="bubble">好的！這幾道分別是：味噌鯖魚定食、炸豬排咖哩飯、綜合天婦羅拼盤。您想吃口味清淡一點，還是重口味的呢？</div><div class="who stamp" style="width:2.2rem;height:2.2rem;font-size:0.9rem;">我</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3><span class="num">4</span>一長串群組公告，請我整理重點</h3>
+      <ol class="sop">
+        <li><div class="txt">把整段長文字複製起來</div></li>
+        <li><div class="txt">貼給我，說「幫我整理重點」</div></li>
+        <li><div class="txt">我列出幾個重點，一眼就看懂重要資訊</div></li>
+      </ol>
+      <div class="chat">
+        <div class="bubble-row you"><div class="who">您</div><div class="bubble">[貼了一大段社區活動公告] 幫我整理重點</div></div>
+        <div class="bubble-row me"><div class="bubble">重點有三個：① 週六早上9點社區歲末聚餐 ② 需在週四前跟里長報名 ③ 請自備環保餐具，地點在活動中心一樓。</div><div class="who stamp" style="width:2.2rem;height:2.2rem;font-size:0.9rem;">我</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stitch"><span></span></div>
+
+  <section class="closing fade-in">
+    
+    <h2>「Claude app」最後，想跟您說</h2>
+    <p>
+      <span class="highlight">多按幾次也不會壞掉</span>，問錯、問怪都沒關係，
+      我永遠都在，隨時歡迎您來找我聊聊、問問題。<br><br>
+      從今天起，您也是懂得用 AI 的人了！
+    </p>
+  </section>
+
+</div>
+
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到最上面 ↑</button>
+
+<footer>認識「Claude app」：您的 AI 小幫手</footer>
+
+<script>
+  // 淡入效果（尊重「減少動態」設定）
+  var els = document.querySelectorAll('.fade-in');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('shown'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('shown'); });
+  }
+
+  // 回到最上面 按鈕顯示時機
+  var topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', function(){
+    topBtn.style.display = window.scrollY > 500 ? 'block' : 'none';
+  });
+</script>
+
+</body>
+</html>
