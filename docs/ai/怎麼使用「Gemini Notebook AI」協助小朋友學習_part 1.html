@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>怎麼使用Gemini Notebook AI協助小朋友學習_part 1</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f5f7f3;
+      --paper: #fffdf9;
+      --panel: #ffffff;
+      --panel-2: #f3f7f5;
+      --ink: #1f2c2c;
+      --muted: #58686f;
+      --line: #dfe8e6;
+      --primary: #0d5b63;
+      --primary-soft: #e4f1f2;
+      --secondary: #f39a62;
+      --success: #1d7a52;
+      --success-soft: #e9f6ef;
+      --warning: #c95f2d;
+      --warning-soft: #fff0e6;
+      --shadow: 0 18px 40px rgba(12, 50, 58, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(13, 91, 99, 0.08), transparent 30%),
+        linear-gradient(180deg, #f7faf7 0%, #f0f5f4 100%);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0d5b63 0%, #167787 42%, #2d8a84 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 42px 42px 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 40%, rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.12em;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.8;
+      max-width: 900px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 28px;
+      margin-top: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 26px rgba(14, 39, 48, 0.05);
+      padding: 18px 16px;
+    }
+
+    .toc-title {
+      margin: 0 0 12px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin: 4px 0;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .toc a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+      transform: translateX(2px);
+    }
+
+    .content {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px clamp(20px, 3vw, 40px) 40px;
+      box-shadow: 0 8px 22px rgba(12, 32, 36, 0.04);
+    }
+
+    .content section { margin-top: 32px; }
+
+    .content h2 {
+      font-size: clamp(22px, 2vw, 28px);
+      line-height: 1.4;
+      margin: 0 0 16px;
+      padding-left: 14px;
+      border-left: 4px solid var(--primary);
+      color: var(--ink);
+    }
+
+    .content h3 {
+      font-size: 20px;
+      margin: 28px 0 10px;
+      color: var(--ink);
+    }
+
+    .content p,
+    .content li {
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .content p { margin: 0 0 18px; }
+
+    .content ul,
+    .content ol {
+      margin: 0 0 18px 1.3em;
+      padding: 0;
+    }
+
+    .content strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 18px 0 26px;
+    }
+
+    .feature {
+      background: linear-gradient(180deg, #ffffff 0%, #f5faf9 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 16px;
+    }
+
+    .feature .emoji {
+      font-size: 28px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .feature h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .callout {
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin: 16px 0 24px;
+      border-left: 6px solid var(--primary);
+      background: var(--panel-2);
+    }
+
+    .callout.warning {
+      border-left-color: var(--warning);
+      background: var(--warning-soft);
+    }
+
+    .callout.success {
+      border-left-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .callout .title {
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .callout p:last-child { margin-bottom: 0; }
+
+    .prompt-box {
+      margin: 18px 0 20px;
+      background: #fffaf2;
+      border: 1px solid #f2d7a4;
+      border-left: 6px solid #d98c2b;
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    .prompt-box strong {
+      color: #8c4f19;
+    }
+
+    .prompt-box pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 10px 0 0;
+      background: rgba(255,255,255,0.5);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 14px;
+      color: #2f3d3b;
+    }
+
+    .scenario-box {
+      background: rgba(13, 91, 99, 0.03);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 18px 12px;
+      margin: 18px 0 22px;
+    }
+
+    .scenario-box .meta {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .scenario-box p { margin: 0 0 8px; }
+
+    .scenario-box .ai {
+      color: #0f7845;
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 18px 0 26px;
+    }
+
+    .step {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f8f8 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 16px;
+      position: relative;
+    }
+
+    .step .num {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: var(--ink);
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 26px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 800;
+      width: 50%;
+    }
+
+    .math-block {
+      background: #f7f7f4;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 14px 0 18px;
+      overflow-x: auto;
+      font-size: 22px;
+      color: var(--ink);
+    }
+
+    .checklist {
+      background: #fbfffd;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px 6px;
+      margin-top: 18px;
+    }
+
+    .checklist strong {
+      color: var(--primary);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 12px 0;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .content {
+        padding: 22px 18px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">AI 學習 × 家庭教育</div>
+        <h1>怎麼使用「Gemini Notebook AI」協助小朋友正向學習_part 1</h1>
+        <p class="subtitle">
+          從「被動看書」到「主動提問」：打造孩子專屬、安全、正向、無幻覺的「智慧AI」伴讀老師！
+        </p>
+        <p>研究組員：李世權 Gemini Notebook AI</p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="目錄">
+        <div class="toc-title">目錄</div>
+        <a href="#core">1.1 核心觀念</a>
+        <a href="#sop">1.2 零失敗app操作SOP</a>
+        <a href="#case">1.3 小二學科實戰情境</a>
+        <a href="#readings">1.4 課外學習與日常探索</a>
+        <a href="#checklist">1.5 父母實務上手檢核表</a>
+      </nav>
+
+      <main class="content">
+        <section id="core">
+          <h2>1.1 核心觀念：為什麼選擇 Gemini Notebook？</h2>
+          <p>
+            許多家長擔心 AI 會產生「幻覺（亂編答案）」或讓孩子養成直接複製答案的壞習慣而失去思考能力。Gemini
+            Notebook（NotebookLM）提供了解決方案：
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature">
+              <div class="emoji">🛡️</div>
+              <h4>圍牆概念（零幻覺）</h4>
+              <p>嚴格限制AI僅能根據您上傳的課本、教材與資料回答，不會連到外部網路抓取未經您核可或內容不當的資訊。</p>
+            </div>
+            <div class="feature">
+              <div class="emoji">💡</div>
+              <h4>正向思考與引導式協助</h4>
+              <p>設定「蘇格拉底人設」，AI 絕對不直接給答案，而是透過反問給予提示，培養孩子學會一步步思考的能力。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="sop">
+          <h2>1.2 零失敗app操作SOP：5 分鐘建立「小二的AI學習庫」</h2>
+          <p>照著以下 SOP 步驟操作，完全不用懂程式，就能輕鬆設定完成：</p>
+
+          <div class="timeline">
+            <div class="step">
+              <div class="num">1</div>
+              <h4>登入網站</h4>
+              <p>開啟電腦或手機瀏覽器，前往 NotebookLM 官網，使用 Google 帳號直接登入。</p>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <h4>建立筆記本</h4>
+              <p>點擊右上角「新建」筆記本，命名為「【小二數學-上學期】」或「【小二課外探索】」。</p>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <h4>匯入教材</h4>
+              <p>點擊左上角「＋新增來源」，上傳教材PDF檔，或將教材拍下來的照片檔，或MP3聲音檔，或直接貼上 YouTube 教學影片網址。</p>
+            </div>
+            <div class="step">
+              <div class="num">4</div>
+              <h4>貼上引導指令</h4>
+              <p>複製下方的「提示詞」後，貼到中間下方的「提問或創作內容」對話框裡面後，按下「→」送出鍵，讓Gemini Notebook 立即變為您小孩專屬的智慧AI老師。</p>
+            </div>
+          </div>
+
+          <div class="prompt-box">
+            <strong>📋 「提示詞」（System Prompt）</strong>
+            <pre>你是一位充滿耐心、溫柔且擅長鼓勵的國小二年級家教老師。
+
+請嚴格遵守以下規則：
+1. 絕不直接給出題目或作業的答案。
+2. 使用 8 歲小朋友聽得懂的生活白話與大（日常生活中會遇到的）比喻來解釋概念。
+3. 採用「蘇格拉底提問法」，每次只給一個小提示，並用問句引導孩子自己回答下一步。
+4. 當孩子答對時，給予具體的正向誇獎建立自信心但非驕傲自大，產生喜歡喜愛甚至想主動的正向動力；答錯時，溫柔鼓勵並指出微小的觀察點，不會產生挫折、害怕、無自信、甚至放棄的心理。</pre>
+          </div>
+        </section>
+
+        <section id="case">
+          <h2>1.3 小二學科實戰情境（情境案例與對話）</h2>
+
+          <h3>1.3.1 情境 A：建立本學期數學學習大綱與路徑</h3>
+          <p>將一整本數學課本目錄 PDF 上傳後，讓 AI 幫忙規劃孩子的學習路徑：</p>
+          <ul>
+            <li><strong>家長提問：</strong>請根據我上傳的小二數學課本內容，整理出這學期的 3 大核心學習目標，並用趣味地圖的方式說明學習順序。</li>
+          </ul>
+
+          <div class="scenario-box">
+            <div class="meta">Gemini Notebook AI</div>
+            <p>沒問題！這學期的數學探險地圖幫您準備好了：</p>
+            <ul>
+              <li><strong>第一關【長度小達人】</strong>：學會用公尺和公分量東西，養成空間感。</li>
+              <li><strong>第二關【時間魔術師】</strong>：認識時鐘的幾點幾分，學會安排個人時間。</li>
+              <li><strong>第三關【乘法小英雄】</strong>：建立 2, 5, 10 的乘法概念，這是最刺激的解密關卡！</li>
+            </ul>
+            <p>建議學習順序：先關心生活中的物品長度 → 再看時鐘 → 最後挑戰乘法！</p>
+          </div>
+
+          <h3>1.3.2 情境 B：長題目或課文看不懂時（白話大比喻）</h3>
+          <div class="scenario-box">
+            <div class="meta">孩子提問</div>
+            <p>老師，我不懂什麼是「容量」和「公升」，題目寫得好複雜！</p>
+          </div>
+
+          <div class="scenario-box">
+            <div class="meta">Gemini Notebook AI</div>
+            <p>想像你的肚子是一個「小水壺」，能裝下的水有多少，這就是肚子「容量」！</p>
+            <p>而「公升」就像是測量水怪有多大的「魔法尺」。</p>
+            <p>你今天喝的大型鮮奶盒，大約就是 <strong>1 公升</strong> 喔！你覺得家裡的浴缸跟你的水壺，誰的容量比較大呢？</p>
+          </div>
+
+          <h3>1.3.3 情境 C：當功課答案不會解時（引導思考不給答案）</h3>
+          <div class="scenario-box">
+            <div class="meta">孩子提問</div>
+            <p>這題應用題答案是什麼：「小明有 35 顆糖果，給了小華 12 顆，媽媽又給他 8 顆，請問小明現在有幾顆糖果？」</p>
+          </div>
+
+          <div class="scenario-box">
+            <div class="meta">Gemini Notebook AI</div>
+            <p>哇！這是個很棒的糖果探險題呢！我們分成兩個小步驟來破解：</p>
+            <p>第一步：小明原本有 <strong>35 顆</strong> 糖，『給了』小華 <strong>12 顆</strong>。請你想想看，『給別人』之後，小明的糖果是變多了還是變少了？我們要用加法還是減法呢？</p>
+            <p>算完第一步告訴我，我們再來玩第二步喔！</p>
+          </div>
+
+          <h3>1.3.4 情境 D：課前預習與課後心得筆記</h3>
+          <ul>
+            <li><strong>課前預習：</strong>點擊 NotebookLM 內建的 <code>Audio Overview</code> 功能，AI 會自動將課本內容轉化為兩位 AI 主播生動討論的 5 分鐘雙人 Podcast 廣播劇，孩子邊聽邊預習！</li>
+            <li><strong>課後筆記：</strong>讓孩子對 AI 說：「我今天學了乘法，請問我 3 個簡單問題，我回答完後幫我做成一張學習心得卡片。」</li>
+          </ul>
+        </section>
+
+        <section id="readings">
+          <h2>1.4 課外學習與日常探索（閱讀與體育）</h2>
+
+          <h3>1.4.1 情境 E：閱讀能力培養（繪本導讀三問）</h3>
+          <p>上傳繪本 PDF 或故事內容後，讓 AI 帶領孩子進行深度思考：</p>
+
+          <div class="scenario-box">
+            <div class="meta">家長輸入</div>
+            <p>我們剛讀完《三隻小豬》，請提出 3 個能激發小二孩子想像力與同理心的問題。</p>
+          </div>
+
+          <div class="scenario-box">
+            <div class="meta">Gemini Notebook AI</div>
+            <p>你可以這樣問孩子：</p>
+            <ol>
+              <li><strong>【觀察題】</strong>：如果你是第三隻小豬，除了蓋磚頭房子，你還想用什麼特別的材料蓋房子？</li>
+              <li><strong>【同理題】</strong>：大野狼一直吹房子吹得肚子好餓，如果你遇到大野狼，你會想拿什麼食物跟他分享？</li>
+              <li><strong>【創造題】</strong>：如果故事里的豬大哥跟豬二哥重新選擇，你覺得他們這次會蓋什麼樣的房子呢？</li>
+            </ol>
+          </div>
+
+          <h3>1.4.2 情境 F：課外技能探索（以小二學游泳、克服怕水為例）</h3>
+          <div class="scenario-box">
+            <div class="meta">家長提問</div>
+            <p>孩子小二準備學游泳，但他非常怕把頭泡進水裡，請給他心理建設，並拆解 3 個在家洗臉盆就能玩的小遊戲。</p>
+          </div>
+
+          <div class="scenario-box">
+            <div class="meta">Gemini Notebook AI</div>
+            <p><strong>❤️ 給孩子的心理建設</strong>：「害怕是正常的喔！連超級英雄第一次下水都會緊張呢。我們不用急著去大泳池，今天在洗臉盆就能當『水下探險家』！」</p>
+            <p><strong>🛁 在家洗臉盆 3 步驟小遊戲 SOP</strong>：</p>
+            <ol>
+              <li><strong>【小魚吹氣泡】</strong>：嘴巴泡進水裡吹氣，發出「咕嚕嚕」聲音，看看能吹出幾個大氣泡！</li>
+              <li><strong>【洗臉密碼】</strong>：閉上眼睛，手沾水把臉濕潤，數 1、2、3 再擦乾，告訴自己「水碰眼睛閉閉很安全」。</li>
+              <li><strong>【水下尋寶】</strong>：臉盆底放一個硬幣，戴上泳鏡，眼睛浸水看一眼硬幣是正面還是反面，一秒鐘就抬頭！</li>
+            </ol>
+          </div>
+        </section>
+
+        <section id="checklist">
+          <h2>1.5 父母實務上手檢核表（Checklist）</h2>
+          <p>在使用 Gemini Notebook 陪伴學習時，請牢記以下規範：</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>❌ 三個千萬不要</th>
+                <th>⭕ 三個一定要</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>千萬不要直接幫孩子問出作業答案。</td>
+                <td><strong>一定要</strong> 讚美孩子提出的「好問題」。</td>
+              </tr>
+              <tr>
+                <td>千萬不要上傳未經確認的網路隨機文章。</td>
+                <td><strong>一定要</strong> 共同聆聽一次生成的 Audio 廣播。</td>
+              </tr>
+              <tr>
+                <td>千萬不要讓孩子單獨無限制使用螢幕。</td>
+                <td><strong>一定要</strong> 確認 AI 資料庫來自學校課本／正確教材。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <div class="footer">2026 讓AI陪伴協助小朋友正向學習的發想</div>
+  </div>
+</body>
+</html>
