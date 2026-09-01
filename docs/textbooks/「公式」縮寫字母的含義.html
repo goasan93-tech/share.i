@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>公式中縮寫字母的含義</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #20313a;
+      --ink-soft: #566a72;
+      --paper: #f6f3ee;
+      --panel: #ffffff;
+      --accent: #0f5c66;
+      --accent-2: #1e7c8c;
+      --accent-soft: #e5f0f1;
+      --rule: #dfe5e1;
+      --note-bg: #f2f3f4;
+      --note-border: #7c8e95;
+      --warn-bg: #fdf0e8;
+      --warn-border: #c55a2c;
+      --success-bg: #ebf6ef;
+      --success-border: #2f7a50;
+      --shadow: 0 10px 26px rgba(20, 34, 39, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.9;
+      font-size: 16px;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .report-header {
+      padding: 64px 32px 36px;
+      border-bottom: 1px solid var(--rule);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .report-title {
+      margin: 0;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.3;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+    }
+
+    .report-sub {
+      margin: 12px 0 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 36px;
+      padding: 36px 32px 72px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 24px;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 18px 18px 10px;
+      box-shadow: var(--shadow);
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 7px 0;
+      font-size: 14px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--rule);
+      transition: color 0.2s ease;
+    }
+
+    .toc-link:hover {
+      color: var(--accent);
+    }
+
+    .content {
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 18px;
+      padding: 42px 48px 28px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .content h1 {
+      margin: 28px 0 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+      font-size: 24px;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+    }
+
+    .content h1:first-child {
+      margin-top: 0;
+    }
+
+    .content h2 {
+      margin: 32px 0 14px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+      font-size: 20px;
+      color: var(--ink);
+    }
+
+    .content h3 {
+      margin: 22px 0 10px;
+      font-size: 17px;
+      color: var(--ink);
+    }
+
+    .content p,
+    .content li {
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .content p {
+      margin: 0 0 16px;
+    }
+
+    .content ul,
+    .content ol {
+      margin: 0 0 18px 24px;
+      padding-left: 10px;
+    }
+
+    .content li {
+      margin-bottom: 8px;
+    }
+
+    .content strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 22px;
+      font-size: 14.5px;
+      display: block;
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: var(--accent-soft);
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border: 1px solid var(--rule);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .math-block {
+      background: #f7f5f2;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 15px 18px;
+      margin: 14px 0 18px;
+      overflow-x: auto;
+    }
+
+    .callout {
+      margin: 16px 0 18px;
+      border-left: 4px solid var(--note-border);
+      background: var(--note-bg);
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+
+    .callout-warning {
+      border-left-color: var(--warn-border);
+      background: var(--warn-bg);
+    }
+
+    .callout-success {
+      border-left-color: var(--success-border);
+      background: var(--success-bg);
+    }
+
+    .callout-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .callout-warning .callout-title {
+      color: var(--warn-border);
+    }
+
+    .callout-success .callout-title {
+      color: var(--success-border);
+    }
+
+    .callout-note .callout-title {
+      color: var(--note-border);
+    }
+
+    .callout-body {
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #edf5f7, #f7faf9);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 12px 0 20px;
+    }
+
+    .summary-box strong {
+      color: var(--accent);
+    }
+
+    .report-footer {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 13px;
+      padding: 24px 20px 42px;
+      border-top: 1px solid var(--rule);
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+        max-height: none;
+      }
+
+      .content {
+        padding: 24px 18px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      
+      <h1 class="report-title">「公式」縮寫字母的含義</h1>
+      <p class="report-sub">Steam Table / Psychrometric Chart / Moist Air / Dry Air / Water Vapor</p>
+      <p class="report-sub">研究組員：李世權 Gemini，美工排版：Copilot</p>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="目錄">
+        <div class="toc-title">目錄</div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <main class="content">
+        <h1>1. 水蒸汽性質表（Steam Table）的代號理解</h1>
+
+        <p>這裡幫你把這三個區域與三條線對照得更結構化：</p>
+
+        <ul>
+          <li><strong>飽和液線（Saturated Liquid Line）及以下：</strong> 使用 <span>$f$</span>（fluid）或 <span>$l$</span>（liquid）。<span>$w$</span>（water）在某些特殊圖表（如歐美舊制）也會看到。這代表完全是液態水的狀態。</li>
+          <li><strong>液-氣飽和區（濕蒸汽區 / 未飽和汽區）：</strong> 使用 <span>$fg$</span>。它代表「從液態（<span>$f$</span>）轉變到氣態（<span>$g$</span>）的變化量或共存狀態」（例如 <span>$h_{fg} = h_g - h_f$</span>）。此區的未飽和蒸汽就是由 <span>$f$</span> 與 <span>$g$</span> 混合而成。</li>
+          <li><strong>飽和氣線（Saturated Vapor Line）及以上（過熱區）：</strong> 使用 <span>$g$</span>（gas / vapor）。代表水已經完全氣化。</li>
+          <li><strong>名詞稱呼：</strong> Steam 就是「水蒸氣」的專屬統稱。</li>
+        </ul>
+
+        <div class="summary-box">
+          <strong>重點：</strong> 在 Steam Table 中，<span>$f$</span> 表示液態，<span>$fg$</span> 表示液氣共存的相變化，<span>$g$</span> 表示完全氣態，三者連成完整相變路徑。
+        </div>
+
+        <h1>2. 空氣性質圖（Psychrometric Chart）的代號理解</h1>
+
+        <p>符合國際工程界（如 ASHRAE）的標準定義：</p>
+
+        <ul>
+          <li><strong>乾空氣：</strong> 用 <span>$da$</span>（dry air）或大氣計算中的 <span>$a$</span>。</li>
+          <li><strong>水分：</strong> 用 <span>$v$</span>（vapor）或 <span>$w$</span>（water / water vapor）。在未飽和的空氣中，水分是以完全氣態的狀態存在，所以公式寫 <span>$m_v$</span> 或 <span>$P_v$</span>。</li>
+          <li><strong>飽和水蒸氣：</strong> 用 <span>$w_s$</span> 或 <span>$v_s$</span>（下標 <span>$s$</span> 即代表 Saturated）。當空氣達到飽和比濕時，代號就會寫成 <span>$W_s$</span>。</li>
+        </ul>
+
+        <div class="callout callout-note">
+          <div class="callout-title">名詞說明</div>
+          <div class="callout-body">
+            <ul>
+              <li><strong>Air：</strong> 在圖表和空調工程中，單純講 Air 通常就是指「濕空氣（Moist air）」，也就是「乾空氣 + 水分」的混合體。</li>
+              <li><strong>Vapor：</strong> 指型態上完全是氣體的狀態。</li>
+              <li><strong>Water：</strong> 指濕空氣中含有的水分。</li>
+            </ul>
+          </div>
+        </div>
+
+        <h1>3. 一張表幫你完美理解</h1>
+
+        <p>所有代號與名詞，直接濃縮成這張終極對照表：</p>
+
+        <table aria-label="代號對照表">
+          <thead>
+            <tr>
+              <th>領域</th>
+              <th>物理狀態</th>
+              <th>你的代號理解</th>
+              <th>國際標準 / 公式常用代號</th>
+              <th>核心名詞稱呼</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>水蒸汽性質表<br />(Steam Table)</td>
+              <td>純液體（沸點 / 飽和液）</td>
+              <td><span>$f$</span> / <span>$l$</span> / <span>$w$</span></td>
+              <td><span>$f$</span>（如 <span>$v_f, h_f$</span>）</td>
+              <td>Water</td>
+            </tr>
+            <tr>
+              <td>水蒸汽性質表<br />(Steam Table)</td>
+              <td>氣-液共存（未飽和汽）</td>
+              <td><span>$fg$</span> / <span>$lg$</span></td>
+              <td><span>$fg$</span>（如 <span>$h_{fg}$</span>）</td>
+              <td>Wet Steam</td>
+            </tr>
+            <tr>
+              <td>水蒸汽性質表<br />(Steam Table)</td>
+              <td>純氣體（飽和 / 過熱氣）</td>
+              <td><span>$g$</span></td>
+              <td><span>$g$</span>（如 <span>$v_g, h_g$</span>）</td>
+              <td>Steam（本質就是 Vapor）</td>
+            </tr>
+            <tr>
+              <td>空氣性質圖<br />(Psychrometric Chart)</td>
+              <td>濕空氣（混合體主角）</td>
+              <td>air</td>
+              <td>Moist Air</td>
+              <td>Air（大氣 / 空氣）</td>
+            </tr>
+            <tr>
+              <td>空氣性質圖<br />(Psychrometric Chart)</td>
+              <td>濕空氣中的乾氣體成分</td>
+              <td>da</td>
+              <td><span>$a$</span> 或 <span>$da$</span>（如 <span>$m_a, P_a$</span>）</td>
+              <td>Dry Air</td>
+            </tr>
+            <tr>
+              <td>空氣性質圖<br />(Psychrometric Chart)</td>
+              <td>濕空氣中的水蒸氣成分</td>
+              <td>v / water</td>
+              <td><span>$v$</span>（如 <span>$m_v, P_v$</span>）</td>
+              <td>Water Vapor / Moisture</td>
+            </tr>
+            <tr>
+              <td>空氣性質圖<br />(Psychrometric Chart)</td>
+              <td>濕空氣達到極限的水分<br />＠100% RH</td>
+              <td>ws</td>
+              <td><span>$s$</span>（如 <span>$W_s, P_{ws}$</span>）</td>
+              <td>Saturated Vapor</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-success">
+          <div class="callout-title">結論</div>
+          <div class="callout-body">
+            最重要的脈絡是：<strong>Steam Table</strong> 以水本身的相態為主，<strong>Psychrometric Chart</strong> 以濕空氣的混合體為主。前者的 <span>$f, fg, g$</span> 描述的是「水的相變」；後者的 <span>$da, v, W_s$</span> 描述的是「空氣中乾氣與水汽的混合比例」。
+          </div>
+        </div>
+      </main>
+    </div>
+
+    
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var headers = document.querySelectorAll('.content h1');
+      var list = document.getElementById('toc-list');
+
+      headers.forEach(function (h, index) {
+        var id = 'sec-' + index;
+        h.id = id;
+
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = h.textContent;
+        a.className = 'toc-link';
+        list.appendChild(a);
+      });
+    });
+  </script>
+</body>
+</html>
