@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychro Pro 計算公式總覽</title>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* CSS resets & variables */
+        :root {
+            --primary: #0f172a; /* Slate 900 */
+            --primary-light: #1e293b; /* Slate 800 */
+            --accent-blue: #0284c7; /* Sky 600 */
+            --accent-blue-light: #e0f2fe; /* Sky 100 */
+            --accent-teal: #0d9488; /* Teal 600 */
+            --accent-teal-light: #f0fdfa; /* Teal 50 */
+            --accent-indigo: #4f46e5; /* Indigo 600 */
+            --accent-indigo-light: #e0e7ff; /* Indigo 100 */
+            --accent-purple: #7c3aed; /* Purple 600 */
+            --accent-purple-light: #f3e8ff; /* Purple 100 */
+            --accent-amber: #d97706; /* Amber 600 */
+            --accent-amber-light: #fef3c7; /* Amber 100 */
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-card: #ffffff;
+            --text-main: #334155; /* Slate 700 */
+            --text-heading: #0f172a;
+            --border-color: #e2e8f0; /* Slate 200 */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header design */
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(2,132,199,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-tag {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.35rem 1.25rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 1.25rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(2, 132, 199, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+            color: #f8fafc;
+        }
+
+        header p.subtitle {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.7;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .header-meta span {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Two-column Layout Container */
+        .app-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        /* Sidebar navigation */
+        aside {
+            position: sticky;
+            top: 2rem;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        aside h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 0.35rem;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .toc-link:hover {
+            background-color: var(--bg-body);
+            color: var(--accent-blue);
+            padding-left: 1rem;
+        }
+
+        .toc-link.active {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* Main Content styles */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 2.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            scroll-margin-top: 2rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Card color coding depending on categories */
+        .card-basic { border-left: 5px solid var(--accent-blue); }
+        .card-pvs { border-left: 5px solid var(--accent-teal); }
+        .card-property { border-left: 5px solid var(--accent-indigo); }
+        .card-hvac { border-left: 5px solid var(--accent-purple); }
+        .card-ref { border-left: 5px solid #64748b; }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h4 {
+            font-size: 1.15rem;
+            color: var(--primary-light);
+            margin: 1.75rem 0 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .card-basic h3 { color: var(--accent-blue); }
+        .card-pvs h3 { color: var(--accent-teal); }
+        .card-property h3 { color: var(--accent-indigo); }
+        .card-hvac h3 { color: var(--accent-purple); }
+
+        /* Paragraphs */
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        p strong {
+            color: var(--text-heading);
+        }
+
+        /* Formulas block formatting */
+        .formula-box {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.25rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .formula-box::after {
+            content: 'FORMULA';
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+        }
+
+        /* Highlight formulas */
+        .formula-box.highlight {
+            background-color: var(--accent-teal-light);
+            border-color: #99f6e4;
+        }
+
+        /* Callout Styles */
+        .callout {
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .callout-info {
+            background-color: var(--accent-blue-light);
+            border-left: 4px solid var(--accent-blue);
+            color: #0369a1;
+        }
+
+        .callout-warning {
+            background-color: var(--accent-amber-light);
+            border-left: 4px solid var(--accent-amber);
+            color: #b45309;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tables Styles */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 1.25rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.85rem 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Styling for symbols column */
+        td.symbol-col {
+            font-family: Consolas, "Fira Code", Monaco, monospace;
+            font-weight: 600;
+            color: var(--accent-indigo);
+            width: 15%;
+        }
+
+        td.value-col {
+            font-family: Consolas, "Fira Code", Monaco, monospace;
+            font-weight: 500;
+            color: var(--accent-teal);
+            width: 20%;
+        }
+
+        td.unit-col {
+            font-style: italic;
+            color: #475569;
+            width: 18%;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid #334155;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Custom Scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            aside {
+                display: none; /* Hide sidebar on tablet & mobile */
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="tex2jax_ignore">
+
+    <header>
+        <div class="header-content">
+            
+            <h1>Psychro Pro 計算公式總覽</h1>
+            <span>本文件為 Psychro Pro 空氣性質工程計算系統之公式說明，供讀者了解各計算數據的由來與物理意義。</p>
+            <span>研究組員：李世權 Claude  ， 美工排版：Gemini</p>
+            <div class="header-meta">
+                <span><strong>參考標準：</strong>ASHRAE Fundamentals Handbook 2021 Ch.1</span>
+                <span><strong>單位制：</strong>SI 公制</span>
+                <span><strong>文件版本：</strong>v1.0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Table of Contents -->
+        <aside>
+            <h2>📋 目錄導覽</h2>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#section-1" class="toc-link">1. 基礎常數</a></li>
+                <li class="toc-item"><a href="#section-2" class="toc-link">2. 濕空氣_飽和蒸氣壓</a></li>
+                <li class="toc-item"><a href="#section-3" class="toc-link">3. 水蒸氣分壓</a></li>
+                <li class="toc-item"><a href="#section-4" class="toc-link">4. 乾空氣分壓</a></li>
+                <li class="toc-item"><a href="#section-5" class="toc-link">5. 比濕（含濕量）</a></li>
+                <li class="toc-item"><a href="#section-6" class="toc-link">6. 相對濕度反算</a></li>
+                <li class="toc-item"><a href="#section-7" class="toc-link">7. 露點溫度</a></li>
+                <li class="toc-item"><a href="#section-8" class="toc-link">8. 濕球溫度</a></li>
+                <li class="toc-item"><a href="#section-9" class="toc-link">9. 濕空氣定壓比熱</a></li>
+                <li class="toc-item"><a href="#section-10" class="toc-link">10. 焓值</a></li>
+                <li class="toc-item"><a href="#section-11" class="toc-link">11. 比容</a></li>
+                <li class="toc-item"><a href="#section-12" class="toc-link">12. 濕空氣密度</a></li>
+                <li class="toc-item"><a href="#section-13" class="toc-link">13. 質量流量</a></li>
+                <li class="toc-item"><a href="#section-14" class="toc-link">14. 處理程序計算式</a></li>
+                <li class="toc-item"><a href="#section-15" class="toc-link">15. 混風計算</a></li>
+                <li class="toc-item"><a href="#section-16" class="toc-link">16. 參考文獻</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="tex2jax_process">
+            
+            <!-- Section 1 -->
+            <section id="section-1" class="card card-basic">
+                <h3>1. 基礎常數</h3>
+                <p>以下為本系統進行熱力學運算與空氣性質推導所使用的關鍵基礎物理與氣體常數：</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>名稱</th>
+                                <th>數值</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(R_u\)</td>
+                                <td>通用_氣體常數</td>
+                                <td class="value-col">8.31446</td>
+                                <td class="unit-col">\(kJ/(kmol \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(R_{da}\)</td>
+                                <td>乾空氣_氣體常數</td>
+                                <td class="value-col">0.287055</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(M_v\)</td>
+                                <td>水蒸氣_分子量</td>
+                                <td class="value-col">18.015</td>
+                                <td class="unit-col">\(g/mol\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(M_{da}\)</td>
+                                <td>乾空氣_分子量</td>
+                                <td class="value-col">28.966</td>
+                                <td class="unit-col">\(g/mol\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(C_{p,da}\)</td>
+                                <td>乾空氣_定壓比熱</td>
+                                <td class="value-col">1.006</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(C_{p,v}\)</td>
+                                <td>水蒸氣_定壓比熱</td>
+                                <td class="value-col">1.86</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(h_{fg,0^\circ\text{C}}\)</td>
+                                <td>0°C 水_汽化潛熱</td>
+                                <td class="value-col">2501</td>
+                                <td class="unit-col">\(kJ/kg\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 2 -->
+            <section id="section-2" class="card card-pvs">
+                <h3>2. 濕空氣_飽和蒸氣壓 \(P_{vs}\) （Magnus 公式）</h3>
+                <p><strong>[本軟體採用]</strong> 計算以乾球溫度 \(T_{db}\) 為自變數。適用範圍為：\(-40^\circ\text{C} \sim 60^\circ\text{C}\)。根據溫度正負採用分段係數計算：</p>
+                
+                <div class="formula-box highlight">
+                    $$\text{當 } T_{db} \ge 0^\circ\text{C} : \quad P_{vs,T_{db}} = 0.6112 \times e^{\frac{17.67 \cdot T_{db}}{T_{db} + 243.5}} \quad [\text{kPa}]$$
+                </div>
+                <div class="formula-box highlight">
+                    $$\text{當 } T_{db} < 0^\circ\text{C} : \quad P_{vs,T_{db < 0^\circ\text{C}}} = 0.6112 \times e^{\frac{22.46 \cdot T_{db}}{T_{db} + 272.62}} \quad [\text{kPa}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(P_{vs}\)</td>
+                                <td>飽和水蒸氣分壓（Saturated Vapor Pressure）：空氣在溫度 \(T\) 下能容納水蒸氣的最大分壓</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度（Dry-Bulb Temperature）：一般溫度計所量測的空氣溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(e\)</td>
+                                <td>自然對數底數，\(e \approx 2.71828\)</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.6112\)</td>
+                                <td>0°C 時的飽和蒸氣壓基準值</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(17.67 \ / \ 22.46\)</td>
+                                <td>Magnus 公式擬合係數（0°C 以上／以下分別適用）</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(243.5 \ / \ 272.62\)</td>
+                                <td>Magnus 公式擬合係數</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">💡 補充說明：飽和蒸氣壓公式（Antoine 公式）</div>
+                    <p>在許多化學工程或傳統計算中，亦常採用 Antoine 方程式（1888）進行估算：</p>
+                    <p>$$P_{vs} = 10^{\left(A - \frac{B}{T_{db}+ C}\right)} = 10^{\left(8.07131 - \frac{1730.63}{T_{db} + 233.426}\right)} \quad [\text{mmHg}]$$</p>
+                    <p>此係數來源為 <strong>Dortmund Data Bank（DDB）</strong> 對水的擬合，適用溫度範圍約為 <strong>1°C ~ 100°C</strong>。</p>
+                </div>
+
+                <h4>飽和蒸氣壓不同公式之工程特性對比</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>對比項目</th>
+                                <th>Antoine 公式</th>
+                                <th>Magnus 公式（本 App 目前使用）</th>
+                                <th>ASHRAE / IAPWS-IF97</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>來源</strong></td>
+                                <td>Antoine 1888 / DDB</td>
+                                <td>Magnus 1844</td>
+                                <td>ASHRAE 2021 / IAPWS</td>
+                            </tr>
+                            <tr>
+                                <td><strong>\(T_{db}\) 適用範圍</strong></td>
+                                <td>1 ~ 100°C</td>
+                                <td>-40 ~ 60°C</td>
+                                <td>-100 ~ 374°C</td>
+                            </tr>
+                            <tr>
+                                <td><strong>精度</strong></td>
+                                <td>±0.1%</td>
+                                <td>±0.1%</td>
+                                <td style="color: var(--accent-teal); font-weight: bold;">最高精度（工業標準）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>單位</strong></td>
+                                <td>mmHg（計算時需經換算）</td>
+                                <td>\(kPa\)</td>
+                                <td>\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>工程應用</strong></td>
+                                <td>常見於化工與製程工程</td>
+                                <td>常見於空調與大氣工程</td>
+                                <td>最嚴謹之研究級精度</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">👉 專業工程建議</div>
+                    <p>前兩種公式在 HVAC 常用範圍（0 ~ 50°C）內之計算精度相當。若採用 Antoine 公式，計算結果需除以 <strong>7.50062</strong> 方可換算為標準 \(kPa\) 單位。</p>
+                </div>
+            </section>
+
+            <!-- Section 3 -->
+            <section id="section-3" class="card card-property">
+                <h3>3. 水蒸氣分壓 \(P_v\)</h3>
+                <p>藉由相對濕度與當前乾球溫度下之飽和蒸氣壓，即可推導出實際的水蒸氣分壓：</p>
+                <div class="formula-box">
+                    $$P_v = \frac{RH}{100} \times P_{vs} \quad [\text{kPa}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(P_v\)</td>
+                                <td>水蒸氣分壓（Vapor Pressure）：空氣中實際水蒸氣所產生的分壓</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(RH\)</td>
+                                <td>相對濕度（Relative Humidity）：實際水蒸氣壓與同溫飽和蒸氣壓之比值</td>
+                                <td class="unit-col">\%</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{vs}\)</td>
+                                <td>飽和水蒸氣分壓，見第 2 節</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 4 -->
+            <section id="section-4" class="card card-property">
+                <h3>4. 乾空氣分壓 \(P_{da}\)</h3>
+                <p>根據道爾頓分壓定律（Dalton's Law of Partial Pressures），大氣總壓為乾空氣分壓與水蒸氣分壓之和：</p>
+                <div class="formula-box">
+                    $$P_{da} = P_{atm} - P_v \quad [\text{kPa}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(P_{da}\)</td>
+                                <td>乾空氣分壓（Dry Air Partial Pressure）：大氣壓力中扣除水蒸氣分壓後的乾空氣壓力</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{atm}\)</td>
+                                <td>大氣壓力（Atmospheric Pressure）：海平面標準值為 101.325 kPa，隨海拔升高而遞減</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_v\)</td>
+                                <td>水蒸氣分壓，見第 3 節</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 5 -->
+            <section id="section-5" class="card card-property">
+                <h3>5. 比濕（含濕量） \(W_{air}\)</h3>
+                <p>含濕量表示每公斤乾空氣中所攜帶的水蒸氣質量。系統提供三種計算路徑：</p>
+                
+                <h4>(1) 由相對濕度計算（主要公式）：</h4>
+                <div class="formula-box highlight">
+                    $$W_{air} = 0.622 \times \frac{P_v}{P_{atm} - P_v} = 0.622 \times \frac{P_v}{P_{da}} \quad [\text{kg}_v/\text{kg}_{da}]$$
+                </div>
+
+                <h4>(2) 由濕球溫度反算（Sprung 公式）：</h4>
+                <p>常使用於乾濕球溫度計之測量數據換算：</p>
+                <div class="formula-box">
+                    $$W_{air} = \frac{(2501 - 2.381 \cdot T_{wb}) \cdot W_{s,wb} - 1.006 \cdot (T_{db} - T_{wb})}{2501 + 1.805 \cdot T_{db} - 4.186 \cdot T_{wb}}$$
+                </div>
+
+                <h4>(3) 由露點溫度反算：</h4>
+                <div class="formula-box">
+                    $$W_{air} = 0.622 \times \frac{P_{vs,T_{dp}}}{P_{atm} - P_{vs,T_{dp}}}$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>含濕量／比濕（Humidity Ratio）：每公斤乾空氣中所含水蒸氣的質量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.622\)</td>
+                                <td>水蒸氣與乾空氣之分子量比值 \(M_v/M_{da} = 18.015/28.966\)</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_v\)</td>
+                                <td>水蒸氣分壓，見第 3 節</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{da}\)</td>
+                                <td>乾空氣分壓，見第 4 節</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{atm}\)</td>
+                                <td>大氣壓力，海平面標準值 101.325 kPa</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{wb}\)</td>
+                                <td>濕球溫度（Wet-Bulb Temperature）</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{s,wb}\)</td>
+                                <td>濕球溫度下之飽和含濕量，即 \(W_{s,wb} \ @T_{wb, 100\%RH}\)</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{dp}\)</td>
+                                <td>露點溫度（Dew-Point Temperature）：空氣冷卻至開始結露的溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{vs,T_{dp}}\)</td>
+                                <td>露點溫度下之飽和蒸氣壓</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度（Dry-Bulb Temperature）：一般溫度計所量測的空氣溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem;">來源標準：ASHRAE Fundamentals 2021 Ch.1 ； Sprung (1888)</p>
+            </section>
+
+            <!-- Section 6 -->
+            <section id="section-6" class="card card-property">
+                <h3>6. 相對濕度反算 \(RH\)</h3>
+                <p>若已知含濕量 \(W_{air}\) 與大氣壓力，可反算相對濕度：</p>
+                <div class="formula-box">
+                    $$RH = \frac{W_{air} \cdot P_{atm}}{(0.622 + W_{air}) \cdot P_{vs,T_{db}}} \times 100 \quad [\%]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(RH\)</td>
+                                <td>相對濕度（Relative Humidity）</td>
+                                <td class="unit-col">\%</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>比濕（含濕量），見第 5 節</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{atm}\)</td>
+                                <td>大氣壓力</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{vs,T_{db}}\)</td>
+                                <td>乾球溫度 \(T\ ^\circ\text{C}\) 下之飽和蒸氣壓，見第 2 節</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.622\)</td>
+                                <td>分子量比值 \(M_v/M_{da}\)</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度（Dry-Bulb Temperature）：一般溫度計所量測的空氣溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 7 -->
+            <section id="section-7" class="card card-property">
+                <h3>7. 露點溫度 \(T_{dp}\) （Magnus 反算）</h3>
+                <p>露點溫度代表空氣在定壓冷卻下，相對濕度達到 100% 開始結露之臨界溫度。本系統採用 Magnus 公式反算：</p>
+                <div class="formula-box">
+                    $$\gamma = \ln\!\left(\frac{RH}{100}\right) + \frac{17.67 \cdot T_{db}}{T_{db} + 243.5}$$
+                </div>
+                <div class="formula-box">
+                    $$T_{dp} = \frac{243.5 \cdot \gamma}{17.67 - \gamma} \quad [^\circ\text{C}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(T_{dp}\)</td>
+                                <td>露點溫度（Dew-Point Temperature）：空氣在定壓下冷卻至相對濕度達 100% 時的溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\gamma\) （gamma）</td>
+                                <td>Magnus 反算中間變數，無實體物理意義</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\ln\)</td>
+                                <td>自然對數（以 e 為底數）</td>
+                                <td class="unit-col">—</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(RH\)</td>
+                                <td>相對濕度</td>
+                                <td class="unit-col">\%</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(17.67 \ , \ 243.5\)</td>
+                                <td>Magnus 公式擬合係數</td>
+                                <td class="unit-col">無因次、\(^\circ\text{C}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 8 -->
+            <section id="section-8" class="card card-property">
+                <h3>8. 濕球溫度 \(T_{wb}\) （Stull 2011 近似公式）</h3>
+                <p>濕球溫度為濕砂布包裹之溫度計在蒸發平衡下所量測之極限冷卻溫度。系統使用 Stull (2011) 高精度經驗公式：</p>
+                <div class="formula-box highlight">
+                    $$\begin{align}
+                    T_{wb} &= T_{db} \cdot \tan^{-1} \!\left(0.151977\sqrt{RH + 8.313659}\right) \\
+                    &+ \tan^{-1}(T_{db} + RH) \\
+                    &- \tan^{-1}(RH - 1.676331) \\
+                    &+ 0.00391838 \cdot RH^{1.5} \cdot \tan^{-1}(0.023101 \cdot RH) \\
+                    &- 4.686035
+                    \end{align}$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(T_{wb}\)</td>
+                                <td>濕球溫度（Wet-Bulb Temperature）：濕紗布包裹溫度計在自然蒸發下的平衡溫度，代表空氣的冷卻極限</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(RH\)</td>
+                                <td>相對濕度</td>
+                                <td class="unit-col">\%</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\tan^{-1}\)</td>
+                                <td>反正切函數（計算採用弧度制 rad）</td>
+                                <td class="unit-col">—</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.151977 , 8.313659 \text{ 等}\)</td>
+                                <td>Stull (2011) 統計迴歸擬合係數</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col"><strong>適用範圍</strong></td>
+                                <td>\(-20^\circ\text{C} \le T \le 50^\circ\text{C}\) ， \(5\% \le RH \le 99\%\)</td>
+                                <td class="unit-col">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem;">文獻來源：Stull, R. (2011). <em>Journal of Applied Meteorology and Climatology</em>, 50(11), 2267–2269</p>
+            </section>
+
+            <!-- Section 9 -->
+            <section id="section-9" class="card card-property">
+                <h3>9. 濕空氣定壓比熱 \(C_{p,air}\)</h3>
+                <p>定壓比熱代表每公斤乾空氣及其攜帶之水蒸氣共同升高 1 K 時所需之熱量：</p>
+                <div class="formula-box">
+                    $$C_{p,air} = 1.006 + 1.86 \times W_{air} \quad [\text{kJ/(kg}_{da}\text{·K)}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(C_{p,air}\)</td>
+                                <td>濕空氣定壓比熱（Moist Air Specific Heat）：每公斤乾空氣（含攜帶水蒸氣）升溫 1 K 所需熱量</td>
+                                <td class="unit-col">\(kJ/(kg_{da} \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.006\)</td>
+                                <td>乾空氣定壓比熱 \(C_{p,da}\)</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.86\)</td>
+                                <td>水蒸氣定壓比熱 \(C_{p,v}\)</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>比濕（含濕量），見第 5 節</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 10 -->
+            <section id="section-10" class="card card-property">
+                <h3>10. 焓值 \(h\)</h3>
+                <p>濕空氣比焓定義為以 0°C 乾空氣為基準，每公斤乾空氣所含之總熱量。該值包含「乾空氣顯熱」、「水蒸氣潛熱」與「水蒸氣顯熱」三項之和：</p>
+                <div class="formula-box highlight">
+                    $$h_{air,T_{db}} = 1.006 \cdot T_{db} + W_{air} \cdot (2501 + 1.86 \cdot T_{db}) \quad [\text{kJ/kg}_{da}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(h_{air,T_{db}}\)</td>
+                                <td>濕空氣比焓（Specific Enthalpy）：以 0°C 乾空氣為基準，每公斤乾空氣所含的總熱量（顯熱＋潛熱）。</td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db}\)</td>
+                                <td>乾球溫度</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>含濕量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.006\)</td>
+                                <td>乾空氣定壓比熱 \(C_{p,da}\)</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(2501\)</td>
+                                <td>0°C 時水的汽化潛熱 \(h_{fg,0^\circ\text{C}}\)</td>
+                                <td class="unit-col">\(kJ/kg\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.86\)</td>
+                                <td>水蒸氣定壓比熱 \(C_{p,v}\)</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.006 \times T_{db}\)</td>
+                                <td><strong>乾空氣顯熱項</strong></td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air} \times 2501\)</td>
+                                <td><strong>水蒸氣潛熱項</strong>（在 0°C 基準下）</td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air} \times 1.86 \times T_{db}\)</td>
+                                <td><strong>水蒸氣顯熱項</strong></td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 11 -->
+            <section id="section-11" class="card card-property">
+                <h3>11. 比容 \(v_{air}\)</h3>
+                <p>比容表示每公斤乾空氣（及其攜帶的水蒸氣）在當前狀態下所佔據之體積，為密度之倒數關係：</p>
+                <div class="formula-box">
+                    $$v_{air} = \frac{0.287055 \times (T_{db} + 273.15)}{P_{atm}} \times \left(1 + \frac{W_{air}}{0.622}\right) \quad [\text{m}^3/\text{kg}_{da}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(v_{air}\)</td>
+                                <td>濕空氣比容（Specific Volume）：每公斤乾空氣（含攜帶水蒸氣）所佔的體積</td>
+                                <td class="unit-col">\(m^3/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.287055\)</td>
+                                <td>乾空氣氣體常數 \(R_{da}\)</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{db} + 273.15\)</td>
+                                <td>絕對溫度 \(T_{abs}\)，將攝氏溫度轉換為克耳文溫度</td>
+                                <td class="unit-col">\(K\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{atm}\)</td>
+                                <td>大氣壓力，海平面標準值 101.325 kPa</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>含濕量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(0.622\)</td>
+                                <td>分子量比值 \(M_v/M_{da}\)</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 12 -->
+            <section id="section-12" class="card card-property">
+                <h3>12. 濕空氣密度 \(\rho_{air}\)</h3>
+                <p>濕空氣密度為單位體積內濕空氣的總質量，考量了乾空氣與水蒸氣分子量之差異：</p>
+                
+                <h4>精算公式（理想氣體方程式）：</h4>
+                <div class="formula-box highlight">
+                    $$\rho_{air} = \frac{P_{atm}}{R_{da} \cdot T_{abs}} \times \frac{1 + W_{air}}{1 + 1.608 \times W_{air}} \quad [\text{kg/m}^3]$$
+                </div>
+
+                <h4>等價表示（由比容推導）：</h4>
+                <div class="formula-box">
+                    $$\rho_{air} = \frac{1 + W_{air}}{v_{air}} \quad [\text{kg/m}^3]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(\rho_{air}\)</td>
+                                <td>濕空氣密度（Moist Air Density）：每立方公尺濕空氣的質量（含乾空氣與水蒸氣）</td>
+                                <td class="unit-col">\(kg/m^3\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(P_{atm}\)</td>
+                                <td>大氣壓力</td>
+                                <td class="unit-col">\(kPa\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(R_{da}\)</td>
+                                <td>乾空氣氣體常數，0.287055</td>
+                                <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{abs}\)</td>
+                                <td>絕對溫度 \(= T_{db} + 273.15\)</td>
+                                <td class="unit-col">\(K\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_{air}\)</td>
+                                <td>含濕量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(1.608\)</td>
+                                <td>乾空氣與水蒸氣分子量比之倒數 \(M_{da}/M_v = 28.966/18.015\)</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(v_{air}\)</td>
+                                <td>濕空氣比容，見第 11 節</td>
+                                <td class="unit-col">\(m^3/kg_{da}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 13 -->
+            <section id="section-13" class="card card-property">
+                <h3>13. 質量流量 \(\dot{m}_{air}\)</h3>
+                <p>在熱工計算中，採用質量流量而非體積流量能確保在不同溫度、壓力下之流體質量守恆律：</p>
+                <div class="formula-box">
+                    $$\dot{m}_{air} = \frac{\dot{V}_{air} \times \rho_{air}}{3600} \quad [\text{kg/s}]$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(\dot{m}_{air}\)</td>
+                                <td>質量流量（Mass Flow Rate）：每秒通過截面的空氣質量</td>
+                                <td class="unit-col">\(kg/s\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\dot{V}_{air}\)</td>
+                                <td>體積風量（Volumetric Flow Rate）</td>
+                                <td class="unit-col">\(CMH \ (m^3/h)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\rho_{air}\)</td>
+                                <td>濕空氣密度，見第 12 節</td>
+                                <td class="unit-col">\(kg/m^3\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(3600\)</td>
+                                <td>單位換算係數（1 h = 3600 s）</td>
+                                <td class="unit-col">\(s/h\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 14 -->
+            <section id="section-14" class="card card-hvac">
+                <h3>14. 處理程序計算式</h3>
+                <p>本章節彙整各種常見空氣處理程序（HVAC Processes）之能力、熱負荷與流體轉化計算式，供系統功能模組與工程設計使用：</p>
+
+                <!-- 14.1 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold; margin-top: 0;">14.1 顯熱冷卻／加熱能力 \(Q_s\)</h4>
+                    <p>適用於不發生水分凝結（無潛熱變化）之純顯熱升降溫過程：</p>
+                    <div class="formula-box">
+                        $$Q_s = \dot{m}_{air} \times (1.006 + 1.86 \times W_{air}) \times (T_{db1} - T_{db2}) \quad [\text{kW}]$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(Q_s\)</td>
+                                    <td>顯熱量（Sensible Heat）：引起空氣溫度變化、不改變含濕量的熱量</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{air}\)</td>
+                                    <td>質量流量，見第 13 節</td>
+                                    <td class="unit-col">\(kg/s\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(1.006 + 1.86 \ W_{air}\)</td>
+                                    <td>濕空氣定壓比熱 \(C_{p,air}\)，見第 9 節</td>
+                                    <td class="unit-col">\(kJ/(kg \cdot K)\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{db1}\)</td>
+                                    <td>進入空氣乾球溫度</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{db2}\)</td>
+                                    <td>離開空氣乾球溫度（冷卻時 \(T_2 < T_1\)，加熱時 \(T_2 > T_1\)）</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\Delta T\)</td>
+                                    <td>溫差 \(= T_{db1} - T_{db2}\)</td>
+                                    <td class="unit-col">\(K\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.2 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.2 冷卻除濕</h4>
+                    <p>當空氣經冷卻降溫至其露點溫度以下，會產生顯熱冷卻與潛熱除濕之雙重效應：</p>
+                    <div class="formula-box highlight">
+                        $$\begin{align} 
+                        Q_t &= \dot{m}_{air} \times (h_1 - h_{adp}) \quad [\text{kW}] \\
+                        Q_L &= \dot{m}_{air} \times 2501 \times (W_1 - W_{adp}) \quad [\text{kW}] \\
+                        Q_s &= \dot{m}_{air} \times 1.006 \times (T_1 - T_{adp}) \quad [\text{kW}] \\
+                        SHR &= \frac{Q_s}{Q_t} \\
+                        \dot{m}_{water} &= \dot{m}_{air} \times (W_1 - W_{adp}) \times 3600 \quad [\text{kg/h}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(Q_t\)</td>
+                                    <td>總冷卻量（Total Cooling Capacity）：顯熱與潛熱負荷之總和</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(Q_L\)</td>
+                                    <td>潛熱量（Latent Heat）：引起水蒸氣凝結、不改變溫度的熱量</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(SHR\)</td>
+                                    <td>顯熱比（Sensible Heat Ratio）：顯熱佔總冷卻量之比例，範圍 0～1</td>
+                                    <td class="unit-col">無因次</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(h_1\)</td>
+                                    <td>進入空氣比焓</td>
+                                    <td class="unit-col">\(kJ/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(h_{adp}\)</td>
+                                    <td>機械露點（ADP, Apparatus Dew Point）狀態之比焓，本工具預設 ADP = 10°C</td>
+                                    <td class="unit-col">\(kJ/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_1\)</td>
+                                    <td>進入空氣含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{adp}\)</td>
+                                    <td>ADP 溫度下飽和含濕量（100% RH 狀態）</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{water}\)</td>
+                                    <td>凝結除水量（冷凝排水量）</td>
+                                    <td class="unit-col">\(kg/h\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(2501\)</td>
+                                    <td>0°C 水之汽化潛熱</td>
+                                    <td class="unit-col">\(kJ/kg_{v}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{air}\)</td>
+                                    <td>質量流量，見第 13 節</td>
+                                    <td class="unit-col">\(kg/s\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.3 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.3 水霧加濕（絕熱蒸發冷卻）</h4>
+                    <p>噴灑細微液態水霧至空氣中。水霧吸收空氣顯熱蒸發，導致空氣溫度下降、濕度上升，此過程近似為等焓過程：</p>
+                    <div class="formula-box">
+                        $$\begin{align}
+                        &T_{out} \approx T_{wb,in} \quad \text{（等焓過程，出口趨近濕球溫度）} \\
+                        &\dot{m}_{water} = \dot{m}_{air} \times \left[W_{s,T_{wb}} - W_{in}\right] \times 3600 \quad [\text{kg/h}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(T_{out}\)</td>
+                                    <td>出口空氣乾球溫度（趨近濕球溫度）</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{wb,in}\)</td>
+                                    <td>進入空氣濕球溫度（等焓絕熱過程的終點極限）</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{s,T_{wb}}\)</td>
+                                    <td>濕球溫度下之飽和含濕量（100% RH）</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{in}\)</td>
+                                    <td>進入空氣含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{water}\)</td>
+                                    <td>霧化加濕量（即系統消耗之水量）</td>
+                                    <td class="unit-col">\(kg/h\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col"><strong>等焓過程</strong></td>
+                                    <td>水分蒸發所需潛熱完全來自空氣本身之顯熱，總焓值在過程中維持不變</td>
+                                    <td class="unit-col">—</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{air}\)</td>
+                                    <td>質量流量，見第 13 節</td>
+                                    <td class="unit-col">\(kg/s\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.4 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.4 蒸氣加濕（等溫加濕）</h4>
+                    <p>直接注入高溫蒸汽進行加濕。因蒸汽本身具有大量熱能，此過程空氣乾球溫度幾乎維持不變：</p>
+                    <div class="formula-box">
+                        $$\begin{align}
+                        \dot{m}_{steam} &= \dot{m}_{air} \times (W_{out} - W_{in}) \times 3600 \quad [\text{kg/h}] \\
+                        Q_{steam} &= \dot{m}_{air} \times (W_{out} - W_{in}) \times (2676 - 418) \quad [\text{kW}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{steam}\)</td>
+                                    <td>蒸氣加濕量（消耗蒸汽量）</td>
+                                    <td class="unit-col">\(kg/h\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{out}\)</td>
+                                    <td>目標出口含濕量，由目標 \(RH_{target}\) 及 \(T_{in}\) 反算</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{in}\)</td>
+                                    <td>進入空氣含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(Q_{steam}\)</td>
+                                    <td>蒸氣加濕所需熱能</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(2676\)</td>
+                                    <td>100°C 飽和蒸氣比焓 \(h_g\) （參考 IAPWS-IF97 標準）</td>
+                                    <td class="unit-col">\(kJ/kg\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(418\)</td>
+                                    <td>液態水從 0°C 加熱至 100°C 之顯熱項（\(4.18 \times 100\)）</td>
+                                    <td class="unit-col">\(kJ/kg\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(2676 - 418 = 2258\)</td>
+                                    <td>100°C 時水的實際汽化潛熱 \(h_{fg}\)</td>
+                                    <td class="unit-col">\(kJ/kg\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col"><strong>等溫過程</strong></td>
+                                    <td>注入高溫蒸氣後，空氣溫度幾乎維持不變，而含濕量顯著增加</td>
+                                    <td class="unit-col">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.5 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.5 直接蒸發冷卻</h4>
+                    <p>利用蒸發介質進行直接絕熱冷卻之過程：</p>
+                    <div class="formula-box">
+                        $$\begin{align}
+                        T_{out} &= T_{in} - \varepsilon \times (T_{in} - T_{wb}) \quad [^\circ\text{C}] \\
+                        Q_{cool} &= \dot{m}_{air} \times (1.006 + 1.86 \times W_{air}) \times (T_{in} - T_{out}) \quad [\text{kW}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(T_{out}\)</td>
+                                    <td>出口空氣乾球溫度</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{in}\)</td>
+                                    <td>進入空氣乾球溫度</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\varepsilon\) （epsilon）</td>
+                                    <td>蒸發冷卻效率（Effectiveness）：典型工程設計值為 70%～90%；當 \(\varepsilon = 1.0\) 時，出口溫度達到濕球溫度極限</td>
+                                    <td class="unit-col">無因次</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{wb}\)</td>
+                                    <td>進入空氣濕球溫度（蒸發冷卻之理論極限溫度）</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{in} - T_{wb}\)</td>
+                                    <td>乾濕球溫差（Wet-Bulb Depression）：該差值越大，代表當前空氣蒸發冷卻之潛力越高</td>
+                                    <td class="unit-col">\(K\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(Q_{cool}\)</td>
+                                    <td>蒸發冷卻量</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.6 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.6 化學除濕（等焓過程，T↑ W↓）</h4>
+                    <p>固體或液體吸濕乾燥劑吸收水分並釋放吸附熱之絕熱程序：</p>
+                    <div class="formula-box">
+                        $$\begin{align}
+                        &h_{out} \approx h_{in} \quad \text{（假設絕熱）} \\
+                        &T_{out} = \frac{h_{in} - 2501 \times W_{out}}{1.006 + 1.86 \times W_{out}} \quad [^\circ\text{C}] \\
+                        &\dot{m}_{water} = \dot{m}_{air} \times (W_{in} - W_{out}) \times 3600 \quad [\text{kg/h}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(T_{out}\)</td>
+                                    <td>出口空氣乾球溫度（化學除濕為等焓過程，含濕量 W 下降會釋放潛熱使溫度 T 上升）</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(h_{in}\)</td>
+                                    <td>進入空氣比焓（假設絕熱狀態下：\(h_{out} \approx h_{in}\)）</td>
+                                    <td class="unit-col">\(kJ/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{out}\)</td>
+                                    <td>目標出口含濕量（由系統設計需求決定）</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{in}\)</td>
+                                    <td>進入空氣含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{water}\)</td>
+                                    <td>除濕吸附水量</td>
+                                    <td class="unit-col">\(kg/h\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col"><strong>等焓過程</strong></td>
+                                    <td>乾燥劑吸附水分時釋放化學吸附熱，使空氣溫度顯著上升、含濕量下降，而總焓值近似不變</td>
+                                    <td class="unit-col">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 14.7 -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                    <h4 style="color: var(--accent-purple); font-weight: bold;">14.7 冷凍除濕（冷卻凝結→回熱）</h4>
+                    <p>空氣經由冷凝盤管除濕至機械露點後，再通過再熱盤管加熱升溫，使其達到送風設計溫度：</p>
+                    <div class="formula-box highlight">
+                        $$\begin{align}
+                        T_{adp} &= T_{d,in} - 2 \quad [^\circ\text{C}] \\
+                        W_{adp} &= 0.622 \times \frac{P_{vs}(T_{adp})}{P_{atm} - P_{vs}(T_{adp})} \\
+                        Q_{cool} &= \dot{m}_{air} \times (h_{in} - h_{adp}) \quad [\text{kW}] \\
+                        Q_{reheat} &= \dot{m}_{air} \times 1.006 \times (T_{in} - T_{adp}) \quad [\text{kW}] \\
+                        \dot{m}_{water} &= \dot{m}_{air} \times (W_{in} - W_{adp}) \times 3600 \quad [\text{kg/h}]
+                        \end{align}$$
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>符號</th>
+                                    <th>說明</th>
+                                    <th>單位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="symbol-col">\(T_{adp}\)</td>
+                                    <td>機械露點溫度（Apparatus Dew Point）：盤管表面溫度，設定略低於露點以確保水蒸氣完全凝結</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(T_{d,in}\)</td>
+                                    <td>進入空氣之露點溫度</td>
+                                    <td class="unit-col">\(^\circ\text{C}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(-2\)</td>
+                                    <td>確保盤管表面低於露點之安全設計裕度</td>
+                                    <td class="unit-col">\(K\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(Q_{cool}\)</td>
+                                    <td>冷凍除濕之總冷卻量（顯熱與潛熱之總和負荷）</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(Q_{reheat}\)</td>
+                                    <td>再熱量（Reheat）：除濕後空氣溫度偏低時，回熱至送風設計溫度之熱負荷</td>
+                                    <td class="unit-col">\(kW\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(h_{in}\)</td>
+                                    <td>進入空氣比焓</td>
+                                    <td class="unit-col">\(kJ/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(h_{adp}\)</td>
+                                    <td>機械露點狀態之比焓（100% RH @ \(T_{ADP}\)）</td>
+                                    <td class="unit-col">\(kJ/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{in}\)</td>
+                                    <td>進入空氣含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(W_{adp}\)</td>
+                                    <td>機械露點溫度下之飽和含濕量</td>
+                                    <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="symbol-col">\(\dot{m}_{water}\)</td>
+                                    <td>凝結除水量</td>
+                                    <td class="unit-col">\(kg/h\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 15 -->
+            <section id="section-15" class="card card-property">
+                <h3>15. 混風計算</h3>
+                <p>多股不同風量與性質之空氣源進行混合時的物理性質計算法。系統採用流量加權法進行精算：</p>
+                <div class="formula-box highlight">
+                    $$\begin{align}
+                    W_{mix} &= \sum_{i} \left(\frac{\dot{V}_i}{\sum \dot{V}_i} \times W_i\right) \quad [\text{kg}_v/\text{kg}_{da}] \\
+                    h_{mix} &= \sum_{i} \left(\frac{\dot{V}_i}{\sum \dot{V}_i} \times h_i\right) \quad [\text{kJ/kg}_{da}] \\
+                    T_{mix} &= \frac{h_{mix} - 2501 \times W_{mix}}{1.006 + 1.86 \times W_{mix}} \quad [^\circ\text{C}]
+                    \end{align}$$
+                </div>
+
+                <h4>符號說明</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>符號</th>
+                                <th>說明</th>
+                                <th>單位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="symbol-col">\(W_{mix}\)</td>
+                                <td>混合空氣含濕量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(h_{mix}\)</td>
+                                <td>混合空氣比焓</td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(T_{mix}\)</td>
+                                <td>混合空氣乾球溫度（由混合之比焓與含濕量反算推導）</td>
+                                <td class="unit-col">\(^\circ\text{C}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\dot{V}_i\)</td>
+                                <td>第 i 個空氣來源之體積風量</td>
+                                <td class="unit-col">\(CMH \ (m^3/h)\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\sum \dot{V}_i\)</td>
+                                <td>各混風源體積風量之總和</td>
+                                <td class="unit-col">\(CMH\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(W_i\)</td>
+                                <td>第 i 個空氣來源之含濕量</td>
+                                <td class="unit-col">\(kg_v/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(h_i\)</td>
+                                <td>第 i 個空氣來源之比焓</td>
+                                <td class="unit-col">\(kJ/kg_{da}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol-col">\(\dot{V}_i / \sum \dot{V}_i\)</td>
+                                <td>體積加權比例（當各混風點空氣密度接近時，此法與質量加權計算差異小於 1%）</td>
+                                <td class="unit-col">無因次</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 16 -->
+            <section id="section-16" class="card card-ref">
+                <h3>16. 參考文獻</h3>
+                <p>本計算系統之所有常數、核心公式、擬合係數均嚴格參照並考證自國內外權威學術文獻與行業標準規範：</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">編號</th>
+                                <th style="width: 35%;">文獻來源</th>
+                                <th>技術內容說明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td>ASHRAE Fundamentals Handbook 2021, Ch.1</td>
+                                <td>濕空氣基本熱力學性質、含濕量、焓值、比容標準計算公式</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2</strong></td>
+                                <td>Magnus, G. (1844)</td>
+                                <td>飽和蒸氣壓近似公式（0°C 以上及以下分段擬合係數）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3</strong></td>
+                                <td>Stull, R. (2011). J. Appl. Meteor. Climatol., 50(11), 2267–2269</td>
+                                <td>高精度濕球溫度統計近似公式及多項式擬合迴歸係數</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4</strong></td>
+                                <td>Sprung (1888)</td>
+                                <td>由濕球溫度反算乾空氣含濕量之 Sprung 經驗公式與熱量關係</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5</strong></td>
+                                <td>IAPWS-IF97 (2007)</td>
+                                <td>精確水蒸氣熱力學性質（本計算系統暫未採用，供高階工程運算進階驗證參考）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>本文件版本：v1.0 &nbsp;|&nbsp; 產出工具：Psychro Pro v2.0 &nbsp;|&nbsp; 單位制：SI 公制標準</p>
+            <p> 2026 Psychro Pro 空氣性質工程計算系統. </p>
+        </div>
+    </footer>
+
+    <!-- Dynamic Scroll Detection and TOC Link Highlighting Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('main .card');
+
+            function changeActiveLink() {
+                let index = sections.length;
+
+                // Adjust offset to detect the scrolled-to card
+                while(--index && window.scrollY + 120 < sections[index].offsetTop) {}
+                
+                links.forEach((link) => link.classList.remove('active'));
+                if (index >= 0 && index < links.length) {
+                    links[index].classList.add('active');
+                }
+            }
+
+            changeActiveLink();
+            window.addEventListener('scroll', changeActiveLink);
+
+            // Smooth scrolling to sections
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 30,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
