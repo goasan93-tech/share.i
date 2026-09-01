@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人究極「黃金脆底爆汁水煎包」</title>
+    <style>
+        /* 現代科技感深色漸層主題 CSS */
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #131b2e;
+            --bg-card: #1e2942;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #3a86ff;
+            --accent-purple: #9b5de5;
+            --accent-gold: #ffb703;
+            --accent-green: #06d6a0;
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.2);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #070a12 100%);
+            color: var(--text-primary);
+            font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 科技感簡報封面 */
+        header.cover {
+            text-align: center;
+            padding: 80px 24px;
+            background: radial-gradient(circle at center, rgba(58, 134, 255, 0.15) 0%, transparent 75%);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header.cover h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        header.cover p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* 明亮霓虹章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 16px;
+            margin: 50px 0 25px 0;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* Bento Grid 核心重點卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h3 span {
+            font-size: 0.8rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card-body .label {
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        /* 雙欄食材與配方卡片 */
+        .ingredient-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .ingredient-card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .ingredient-card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ingredient-list {
+            list-style: none;
+        }
+
+        .ingredient-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            font-size: 1rem;
+        }
+
+        .ingredient-list li .name {
+            color: var(--text-primary);
+        }
+
+        .ingredient-list li .amount {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background-color: rgba(255, 183, 3, 0.08);
+            border-left: 4px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #ffca3a;
+        }
+
+        /* 步驟導引 (SOP) */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sop-step {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .sop-step:hover {
+            border-color: rgba(0, 242, 254, 0.25);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: var(--bg-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .step-content p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .secret-point {
+            background-color: rgba(6, 214, 160, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 12px 15px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.95rem;
+            color: var(--accent-green);
+            margin-top: 10px;
+        }
+
+        /* 響應式比較表格 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.2);
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 標籤 */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-cyan { background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .badge-purple { background: rgba(131, 56, 236, 0.1); color: var(--accent-purple); border: 1px solid rgba(131, 56, 236, 0.2); }
+        .badge-green { background: rgba(6, 214, 160, 0.1); color: var(--accent-green); border: 1px solid rgba(6, 214, 160, 0.2); }
+
+        /* 頁尾與來源驗證 */
+        footer {
+            text-align: center;
+            padding: 50px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .validation-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .validation-box h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .validation-box ul {
+            list-style-type: none;
+        }
+
+        .validation-box li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .validation-box a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+
+        .validation-box a:hover {
+            text-decoration: underline;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 簡報封面區 -->
+        <header class="cover">
+            <h1>職人究極「黃金脆底爆汁水煎包」</h1>
+            <p>融合殺青、油封阻水工藝與花椒水打水技術，為您解密外酥內嫩、湯汁豐盈的生煎包殿堂配方。</p>
+            <p>研究組員：李世權 Gemini</p>
+        </header>
+
+        <!-- 核心重點摘要卡片 -->
+        <div class="section-title"><span>🌟</span> 專業級水煎包三大核心技術</div>
+        <div class="grid-container">
+            <!-- 觀念 1 -->
+            <div class="card">
+                <h3>花椒水「打水」爆汁法 <span>內餡篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">秘訣：</span>肉餡爆汁的秘密在於將高達肉重 25% 的高濃度蔥薑花椒水，分次、同方向大力攪打融入豬肉纖維中，促使肉質起膠拉絲。</p>
+                    <p><span class="label">效果：</span>攪打出膠的肉餡能緊緊鎖住水分，加熱時高溫融化成鮮美的高湯，咬下一口瞬間爆汁，絕不乾澀鬆散。</p>
+                </div>
+            </div>
+            <!-- 觀念 2 -->
+            <div class="card">
+                <h3>高麗菜「殺青與油封」 <span>食材篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">秘訣：</span>高麗菜直接切碎加入肉餡會因菜的水分析出，使包子皮變得溼爛。所以，必須先用 2% 鹽巴殺青擠乾，再拌入香油進行「油脂封鎖」。</p>
+                    <p><span class="label">效果：</span>油封能形成保護膜阻斷高麗菜繼續出水，在與鹹肉餡混合時依然保持鮮甜爽脆又juice。</p>
+                </div>
+            </div>
+            <!-- 觀念 3 -->
+            <div class="card">
+                <h3>職人「半發麵」麵皮 <span>麵皮篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">秘訣：</span>水煎包外皮最忌像饅頭般過於厚重，亦不能像水餃皮般毫無彈性。最頂級的工法是「半發麵」。</p>
+                    <p><span class="label">效果：</span>揉好的麵糰僅需在室溫下稍作醒麵鬆弛 30 分鐘，包製後再發酵 15 分鐘即下鍋，使麵皮既能吸飽肉汁，又帶有Q彈與嚼勁。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 食材清單 Section -->
+        <div class="section-title"><span>🛒</span> 專業級水煎包黃金配方 (約可製作 15 顆大水煎包)</div>
+        <div class="ingredient-section">
+            <!-- 包子皮食材 -->
+            <div class="ingredient-card">
+                <h2>A. 職人Q彈「半發麵」麵皮</h2>
+                <ul class="ingredient-list">
+                    <li><span class="name">中筋麵粉 (All-Purpose Flour)</span><span class="amount">300 克</span></li>
+                    <li><span class="name">冷水 (室溫水)</span><span class="amount">165 克 (55% 黃金含水量)</span></li>
+                    <li><span class="name">細砂糖</span><span class="amount">10 克</span></li>
+                    <li><span class="name">速發乾酵母 (Instant Yeast)</span><span class="amount">3 克</span></li>
+                    <li><span class="name">純白豬油 (或優質沙拉油)</span><span class="amount">5 克 (增香且皮色白亮)</span></li>
+                    <li><span class="name">鹽巴</span><span class="amount">2 克 (穩定筋性)</span></li>
+                </ul>
+                <div class="tip-box">
+                    💡 <strong>麵粉水比例調配（黃金冰花底）：</strong><br>
+                    準備 180 克清水、12 克中筋麵粉、1 小匙白醋，均勻調和成「冰花麵粉水」。白醋能促使澱粉在油煎時更加酥脆、不黏牙！
+                </div>
+            </div>
+
+            <!-- 內餡食材 -->
+            <div class="ingredient-card">
+                <h2>B. 爆汁鮮肉高麗菜內餡</h2>
+                <ul class="ingredient-list">
+                    <li><span class="name">豬梅花肉或後腿絞肉 (肥瘦比 3:7)</span><span class="amount">300 克</span></li>
+                    <li><span class="name">新鮮高麗菜 (切碎丁)</span><span class="amount">300 克</span></li>
+                    <li><span class="name">青蔥 (洗淨晾乾，切細蔥花)</span><span class="amount">50 克</span></li>
+                    <li><span class="name">新鮮老薑 (磨成細薑泥)</span><span class="amount">10 克</span></li>
+                    <li><span class="name">純芝麻香油</span><span class="amount">25 克 (用於高麗菜油封)</span></li>
+                    <li><span class="name">優質醬油 & 蠔油</span><span class="amount">20 克 / 15 克</span></li>
+                    <li><span class="name">紅砂糖 & 鹽</span><span class="amount">6 克 / 3 克 (肉餡用)</span></li>
+                    <li><span class="name">白胡椒粉 & 五香粉</span><span class="amount">5 克 / 1 克</span></li>
+                    <li><span class="name">高濃度蔥花椒水 (打水用)</span><span class="amount">80cc (蔥、花椒泡熱水後放涼)</span></li>
+                </ul>
+                <div class="tip-box">
+                    💡 <strong>高麗菜殺青鹽分：</strong><br>
+                    使用 6 克的鹽巴均勻撒在切好的高麗菜丁上。殺青 1 小時後抓乾多餘水分，能完美鎖住蔬菜甜脆。
+                </div>
+            </div>
+        </div>
+
+        <!-- 製作步驟 SOP -->
+        <div class="section-title"><span>👨‍🍳</span> 專業店家級「水煎包」製作 SOP (標準作業程序)</div>
+        <div class="sop-timeline">
+
+            <!-- 步驟 1 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">1</div>
+                    <div class="step-title">高麗菜去水與香油「封水」</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 高麗菜洗淨，切成約 0.8 公分寬的碎丁。</p>
+                    <p>2. 均勻撒入 6 克鹽，用手輕抓均勻，靜置 40~60 分鐘進行「殺青」出水。</p>
+                    <p>3. 將高麗菜丁放入蔬果脫水袋（或雙手用力）徹底捏乾水分，將多餘鹽分水倒掉。</p>
+                    <p>4. <strong>關鍵阻水步驟：</strong>將擠乾的高麗菜丁、蔥花倒入大碗中，淋上 25 克的芝麻香油輕輕拌勻。利用油脂將菜丁切面緊密包覆，防止與帶鹽分的肉餡接觸後繼續吐水。</p>
+                    <div class="secret-point">
+                        🔑 <strong>阻水心法：</strong>此步驟能確保高麗菜蒸熟後依舊爽脆、不軟爛，完美保持包子內部的乾爽與湯汁鮮美。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 2 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">2</div>
+                    <div class="step-title">肉餡調味、花椒水「打水」起膠</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 將 300 克豬絞肉放入盆中，加入 3 克鹽、醬油、蠔油、砂糖、白胡椒粉、五香粉與薑泥，朝同一方向高速攪打 2 分鐘，至絞肉有些微黏性。</p>
+                    <p>2. <strong>蔥花椒水打水：</strong>將準備好的 80cc 蔥花椒水（蔥 1 支、花椒 1 小匙用熱水浸泡 10 分鐘後瀝乾放涼的冷水）分 4 次緩緩倒入肉餡中。</p>
+                    <p>3. 每次倒入水分時，皆需用手或攪拌棒順時針用力攪打，直到肉完全將水「吃」進去，呈現濕潤、拉絲、起膠的狀態。</p>
+                    <p>4. 將打好水的肉餡蓋上保鮮膜，放入冰箱冷藏冰鎮 1 小時，使油脂與湯汁凝固，利於後續包製。</p>
+                    <div class="secret-point">
+                        🔑 <strong>爆汁心法：</strong>花椒水能完美去除豬肉腥味、提振鮮度，並在蒸煎時融化成滾燙的高湯，是咬開爆汁的最核心來源！
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 3 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">3</div>
+                    <div class="step-title">「半發麵」揉麵與麵糰鬆弛</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 將 300 克中筋麵粉、砂糖、酵母、鹽混合均勻，徐徐倒入 165 克冷水，用筷子攪拌成雪花狀。</p>
+                    <p>2. 加入 5 克豬油，用手開始揉製，用力揉約 8~10 分鐘，直到麵糰表面呈現「三光狀態」（盆光、手光、麵糰光滑）。</p>
+                    <p>3. 揉好後，將麵糰蓋上濕布，在室溫下靜置鬆弛 30 分鐘即可（此時麵皮僅呈現半發酵狀態，保留了中式麵點特有的Q彈軔性）。</p>
+                    <div class="secret-point">
+                        🔑 <strong>揉麵心法：</strong>豬油不僅能增添麵皮的乳香，更能在油煎時形成亮麗的外表，使麵皮更Q、不乾硬。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 4 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">4</div>
+                    <div class="step-title">麵皮桿製、合體包包子</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 取出冷藏冰鎮的肉餡，將「油封高麗菜蔥花」與「冰鎮肉餡」倒在一起，以極其溫和、輕柔的手勢拌勻即可（切勿大力揉搓，否則蔬菜會被擠壓出水）。</p>
+                    <p>2. 將鬆弛好的麵糰搓成長條，分割成 15 個小劑子（每個約 30~32 克），稍微拍上麵粉防粘。</p>
+                    <p>3. 取一劑子壓扁，用桿麵棍從邊緣往中間桿，桿成「中間厚、四周薄」的圓形麵皮（直徑約 10 公分）。</p>
+                    <p>4. 包入約 45 克的肉餡，右手食指拉起邊緣捏出均勻摺子（約 15 摺以上），最後將收口完全捏緊捏實，整型成高聳的白胖包子。</p>
+                    <div class="secret-point">
+                        🔑 <strong>桿皮心法：</strong>中間一定要保留適當厚度（約 0.35 公分），這樣在水煎的高溫氣壓下，底部才不會因為湯汁浸潤而破皮漏底。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 5 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">5</div>
+                    <div class="step-title">大火水煎、粉水生煎與黃金冰花收乾</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 準備一個不沾平底鍋，倒入適量食用油（油量需均勻鋪滿鍋底）。將包好的水煎包稍微間隔排入鍋中（包子會膨脹，需留點空隙），蓋上鍋蓋，先開中小火「乾煎 2 分鐘」，讓底部微微定型並上淡黃色。</p>
+                    <p>2. <strong>澆灌冰花粉水：</strong>將調勻的「黃金冰花麵粉水」攪拌均勻，徐徐倒入鍋中（水量高度需達到包子的 1/3 處），並立即蓋緊鍋蓋。</p>
+                    <p>3. 轉中大火，利用鍋內高壓蒸汽將包子完全蒸熟，計時 8~10 分鐘。</p>
+                    <p>4. <strong>開蓋收乾收尾：</strong>當聽到鍋內發出「吱吱作響」的油煎聲時，代表水分已基本蒸發。此時打開鍋蓋，轉小火，讓殘留的水氣完全散失，使鍋底的麵粉水慢慢凝結成一片一片如蜂窩狀、金黃酥脆的「黃金冰花網」。</p>
+                    <p>5. 灑上一點黑芝麻與蔥花增香，用鍋鏟輕輕將煎包鏟起，翻轉盛盤，即可呈現完美的黃金脆底！</p>
+                    <div class="secret-point">
+                        🔑 <strong>煎焙心法：</strong>開蓋收乾時，若發現局部受熱不均，可輕輕旋轉平底鍋，確保每一顆水煎包的底部都能均勻呈現美麗的金黃色澤。
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 比較表格 -->
+        <div class="section-title"><span>📊</span> 傳統家常水煎包 vs. 專業名店級黃金脆底水煎包</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>評估項目</th>
+                        <th>傳統家常水煎包</th>
+                        <th>專業名店級水煎包 (本 SOP)</th>
+                        <th>背後的烹飪與中醫科學原理</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>底部酥脆感</strong></td>
+                        <td>底部僅是泛油黃色，放涼後容易變軟、濕粘。</td>
+                        <td><strong style="color: var(--accent-cyan);">黃金焦脆、帶有蜂窩狀冰花網絡，口感極為酥脆。</strong></td>
+                        <td>麵粉水中加入微量「白醋」，能中和麵粉的黏性，使高溫油煎時更容易形成鬆脆、多孔的冰花薄片。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>內餡爆汁度</strong></td>
+                        <td>肉餡乾柴、結成硬硬的肉丸，沒有任何湯汁。</td>
+                        <td><strong style="color: var(--accent-gold);">咬下去湯汁瞬間在嘴裡噴發，肉質軟嫩多汁。</strong></td>
+                        <td>高濃度的「花椒水」以「打水工藝」融入豬肉中，與肉類蛋白質乳化，加熱時融化成極為鮮美的濃郁高湯。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>蔬菜爽脆度</strong></td>
+                        <td>高麗菜軟爛發黃，帶有水悶味，口感不佳。</td>
+                        <td><strong style="color: var(--accent-green);">高麗菜色澤翠綠、質地依舊鮮甜、爽脆。</strong></td>
+                        <td>高麗菜先經鹽巴「殺青」出水，再用「香油進行油封包覆」，防止鹽分滲透，鎖住蔬菜天然甜脆與水分。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>麵皮咬勁與吸汁</strong></td>
+                        <td>全發麵（厚重如饅頭）或未發麵（過硬），吸汁後糊化。</td>
+                        <td><strong style="color: var(--accent-cyan);">Q彈有嚼勁，內皮吸附滿滿肉汁，外皮白胖不塌陷。</strong></td>
+                        <td>堅持「半發麵」與「中間厚外圍薄」手藝。半發酵麵糰保氣性好，既能澎起吸汁，又具有極佳筋骨。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 結論與情境應用實例 -->
+        <div class="section-title"><span>📝</span> 結論與現代生活情境應用實例</div>
+        <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--accent-green);">
+            <div class="card-body">
+                <p>要煎出一鍋令人讚嘆的專業水煎包，關鍵並非昂貴的食材，而是高麗菜殺青油封的細節、肉餡打水出膠的硬實功夫，以及最後冰花粉水比與火候的精準控制。</p>
+                <br>
+                <p>💡 <strong>情境應用一：全家人的完美週末活力早餐</strong></p>
+                <p>週末早上是拉近全家人距離的最好時刻。您可以在週六晚上與家人一起著手，洗菜、殺青、打水、揉麵，全家圍在餐桌前一起包水煎包。包好後，整齊排放在撒有薄粉的托盤上，直接放入冷凍庫冷凍定型，隨後裝入密封袋保存。週日清晨，無需解凍，直接將冷凍的水煎包排入平底鍋中，倒入調好的冰花麵粉水，煎法完全相同（唯獨需多燜蒸 2 分鐘）。開蓋那一刻，熱氣騰騰、金黃酥脆的煎包上桌，這不僅僅是一頓早餐，更是一家人最溫暖的美味鄉愁與美好記憶。</p>
+                <br>
+                <p>💡 <strong>情境應用二：深夜高壓寫程式與加班的靈魂救贖消夜</strong></p>
+                <p>當深夜十二點，大腦因為高強度的專案、報告、或是寫程式而疲憊不堪，胃袋空虛、飢腸轆轆時。這時吃高油高鈉的泡麵只會帶來負擔。此時，從冰箱取出兩顆自製的高麗菜鮮肉水煎包，用平底鍋花十分鐘小火生煎。咬開那薄Q的半發麵外皮，滾燙鮮甜的鮮肉與高麗菜高湯在口中爆開。中醫學上，青蔥能通陽散寒、高麗菜健脾益胃，溫熱的煎包下肚，能瞬間安撫焦慮的靈魂，溫暖中焦脾胃，給您最踏實、最具質感的深夜能量補給！</p>
+                <br>
+                
+            </div>
+        </div>
+
+
+        <footer>
+            <p>2026 中式麵點教學</p>
+        </footer>
+    </div>
+</body>
+</html>
