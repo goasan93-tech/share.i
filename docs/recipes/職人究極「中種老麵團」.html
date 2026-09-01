@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人麵糰黃金比例與工藝</title>
+    <style>
+        /* 現代科技感深色主題 CSS */
+        :root {
+            --bg-primary: #0a0d16;
+            --bg-secondary: #111726;
+            --bg-card: #1c2438;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #3a86ff;
+            --accent-purple: #8338ec;
+            --accent-gold: #ffb703;
+            --accent-green: #06d6a0;
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #02040a 100%);
+            color: var(--text-primary);
+            font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 科技感簡報封面 */
+        header.cover {
+            text-align: center;
+            padding: 80px 24px;
+            background: radial-gradient(circle at center, rgba(58, 134, 255, 0.15) 0%, transparent 75%);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header.cover h1 {
+            font-size: 2.6rem;
+            background: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        header.cover p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* 明亮霓虹章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 16px;
+            margin: 50px 0 25px 0;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* Bento Grid 核心重點卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h3 span {
+            font-size: 0.8rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card-body .label {
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        /* 雙欄設計：主推配方 */
+        .formula-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .formula-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .formula-card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .formula-card h2 {
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .formula-list {
+            list-style: none;
+        }
+
+        .formula-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .formula-list li .name {
+            color: var(--text-primary);
+        }
+
+        .formula-list li .amount {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background-color: rgba(6, 214, 160, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--accent-green);
+        }
+
+        /* 專業 SOP */
+        .sop-step {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: var(--bg-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .step-content p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* 響應式比較表格 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 18px 15px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.2);
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 頁尾與驗證資訊 */
+        footer {
+            text-align: center;
+            padding: 50px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .validation-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .validation-box h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .validation-box ul {
+            list-style-type: none;
+        }
+
+        .validation-box li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .validation-box a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+
+        .validation-box a:hover {
+            text-decoration: underline;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 簡報封面區 -->
+        <header class="cover">
+            <h1>職人究極「中種老麵團」</h1>
+            <p>打破單一發酵的偏硬與乾柴，打造多層次、極致Q彈與抗老化的職人發酵工藝。</p>
+            <p>研究組員：李世權 Gemini</p>
+        </header>
+
+        <!-- 核心重點摘要卡片 -->
+        <div class="section-title"><span>🌟</span> 職人麵糰進階發酵三劍客</div>
+        <div class="grid-container">
+            <!-- 觀念 1 -->
+            <div class="card">
+                <h3>70/30 職人中種法 <span>風味層次</span></h3>
+                <div class="card-body">
+                    <p><span class="label">原理：</span>將總配方 70% 的麵粉與全部酵母、液體先行混合發酵（中種），待其發酵至3~4倍大後，再加入剩下 30% 的主麵粉與副材料揉合。</p>
+                    <p><span class="label">優勢：</span>酵母有極充裕的時間分解小麥澱粉、釋放多層次的酸甜風味與醇香，使成品氣孔細密均勻、小麥芳香濃郁。</p>
+                </div>
+            </div>
+            <!-- 觀念 2 -->
+            <div class="card">
+                <h3>黃金比例活性老麵 <span>咬勁骨架</span></h3>
+                <div class="card-body">
+                    <p><span class="label">原理：</span>在揉製主麵糰時，揉入約 15% 經低溫慢速發酵一整晚的「天然老麵種（Old Dough）」。</p>
+                    <p><span class="label">優勢：</span>老麵中富含的乳酸菌能微幅調整麵糰酸鹼度，強化麵筋的彈性與延展性，提供熱騰騰時澎鬆、冷掉後Q彈有嚼勁的完美骨架。</p>
+                </div>
+            </div>
+            <!-- 觀念 3 -->
+            <div class="card">
+                <h3>燙種（燙麵）技術 <span>保水保濕抗老化</span></h3>
+                <div class="card-body">
+                    <p><span class="label">原理：</span>用 90°C 以上的滾水沖入部分中筋麵粉中，攪拌至澱粉完全「糊化（Gelatinization）」，放涼後揉入主麵糰。</p>
+                    <p><span class="label">優勢：</span>糊化澱粉能鎖住高達自身重量 2 倍以上的水分，這會使包子在出爐放涼 6~12 小時後，依然保持濕潤、完全不乾硬。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 推薦黃金複方配方比例 -->
+        <div class="section-title"><span>📊</span>職人究極「中種結合老麵」配方 (麵粉總重 1000g 比例)</div>
+        <div class="formula-section">
+            <!-- 中種與老麵 -->
+            <div class="formula-card">
+                <h2>第一階段：低溫發酵預備種</h2>
+                <ul class="formula-list">
+                    <li><span class="name">A. 70% 中種麵糰 - 中筋麵粉</span><span class="amount">700 克</span></li>
+                    <li><span class="name">A. 70% 中種麵糰 - 冰牛奶或冷水</span><span class="amount">380cc (54% 比例)</span></li>
+                    <li><span class="name">A. 70% 中種麵糰 - 速發乾酵母</span><span class="amount">6 克 (0.6%)</span></li>
+                    <li><span class="name">B. 活性老麵種 (前一天做，取用)</span><span class="amount">150 克 (約 15%) </span></li>
+                </ul>
+                <div class="highlight-box">
+                    ✨ <strong>中種低溫熟成法：</strong><br>
+                    將中種材料揉成糰，放入 4°C 冰箱冷藏發酵 12-15 小時。這種「低溫慢速發酵」是產生極致麵香、杜絕酵母味的不二秘訣。
+                </div>
+            </div>
+
+            <!-- 主麵糰 -->
+            <div class="formula-card">
+                <h2>第二階段：合體主麵糰 (Main Dough)</h2>
+                <ul class="formula-list">
+                    <li><span class="name">中種麵糰全部 + 活性老麵全部</span><span class="amount">合體揉合</span></li>
+                    <li><span class="name">中筋麵粉 (補足其餘 30%)</span><span class="amount">300 克</span></li>
+                    <li><span class="name">冷牛奶或冷水 (調整硬度用)</span><span class="amount">140cc~150cc</span></li>
+                    <li><span class="name">細砂糖 (提升甜味與幫助發酵增加風味)</span><span class="amount">80 克 (8%)</span></li>
+                    <li><span class="name">鹽巴 (強化麵筋，防糖回軟)</span><span class="amount">6 克 (0.6%)</span></li>
+                    <li><span class="name">純白豬油 (使皮亮白、Q軟)</span><span class="amount">25 克 (2.5%)</span></li>
+                </ul>
+                <div class="highlight-box">
+                    ✨ <strong>總比例解析 (Total Baker's %)：</strong><br>
+                    總麵粉 1000g、總水分約 530cc (53%)、總糖 8%、總鹽 0.6%、純豬油 2.5%、老麵 15%。此配方能承受爆汁內餡，久放不漏、不縮水。
+                </div>
+            </div>
+        </div>
+
+        <!-- 製作步驟SOP -->
+        <div class="section-title"><span>⚙️</span> 專業店家級「雙重複合麵糰」製作 SOP</div>
+        
+        <!-- 步驟 1 -->
+        <div class="sop-step">
+            <div class="step-header">
+                <div class="step-num">1</div>
+                <div class="step-title">老麵與中種的孕育 (Pre-Fermentation)</div>
+            </div>
+            <div class="step-content">
+                <p>1. <strong>活性老麵（前一晚準備）：</strong> 100g 麵粉、50g 水、0.5g 酵母揉勻，室溫發酵 2 小時後，放入 4°C 冰箱低溫發酵 15 小時備用。</p>
+                <p>2. <strong>中種麵糰：</strong> 將中種配方中的麵粉、水、酵母用慢速攪拌成糰（不需揉至光滑，成糰即可），隨後放入冷藏（4°C）慢速發酵 12~18 小時，此時中種體積會膨脹至 3-4 倍大，內部呈細密蜂窩網狀。</p>
+            </div>
+        </div>
+
+        <!-- 步驟 2 -->
+        <div class="sop-step">
+            <div class="step-header">
+                <div class="step-num">2</div>
+                <div class="step-title">合體高速攪打與「壓麵排氣」</div>
+            </div>
+            <div class="step-content">
+                <p>1. 將發酵好的「中種麵糰」撕成小塊，與「活性老麵」一同投入螺旋攪拌機中，再加入第二階段的主麵粉、水、糖、鹽。</p>
+                <p>2. 開慢速攪拌 3 分鐘，接著轉中快速攪打，當麵糰成糰且不黏盆時，加入豬油，繼續攪打至麵糰能拉出「半透明、具軔性的厚膜」狀態。</p>
+                <p>3. <strong>排氣關鍵：</strong> 將揉好的大麵糰送入專業壓麵機/手工，反覆折疊、壓延 5~6 次。此步驟能徹底壓碎發酵產生的大氣孔，使水分與筋性分布極度均勻。</p>
+            </div>
+        </div>
+
+        <!-- 步驟 3 -->
+        <div class="sop-step">
+            <div class="step-header">
+                <div class="step-num">3</div>
+                <div class="step-title">分割、鬆弛與低溫包製</div>
+            </div>
+            <div class="step-content">
+                <p>1. 將壓好氣的麵糰分割成所需劑子（例如水煎包 32g / 大肉包 75g），滾圓後覆蓋濕布，在工作台鬆弛 15 分鐘。</p>
+                <p>2. 桿皮時務必「中間高、四周薄」。包入冰鎮好的爆汁肉餡（肉餡中含有打入的花椒水，因冰鎮呈凝固狀，極好操作）。</p>
+                <p>3. 包好後，放入發酵箱中（35°C、濕度 75%），進行二次發酵 25~35 分鐘。拿起來感覺「輕飄飄如棉花糖」即可開蒸/開煎。</p>
+            </div>
+        </div>
+
+        <!-- 比較表格 -->
+        <div class="section-title"><span>⚖️</span> 四大發酵工藝職人指標全方位對照表</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>發酵工藝</th>
+                        <th>麥香與風味層次</th>
+                        <th>麵皮抗老化性 (放涼後變硬柴)</th>
+                        <th>操作難度與時間</th>
+                        <th>優勢與缺點</th>
+                        <th>成品口感特色</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>直接法 (Direct Method)</strong></td>
+                        <td>較淡，僅有單純酵母與淡淡麵香。</td>
+                        <td>差，放涼超過 3 小時開始變乾硬、掉粉。</td>
+                        <td><strong style="color: var(--accent-green);">極低 (2小時內完工)</strong></td>
+                        <td>適合廉價、大量快速生產，但產品缺乏競爭壁壘。</td>
+                        <td>蓬鬆，但缺乏彈性，容易發黏。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>純老麵法 (Old Dough)</strong></td>
+                        <td><strong style="color: var(--accent-gold);">極強，帶有老麵微酸與濃郁小麥熟成甘甜。</strong></td>
+                        <td>優，保水度佳，復熱後口感依舊 [zKba6j9JdMg]。</td>
+                        <td>高，需精準控制酸鹼度與發酵時間。</td>
+                        <td>風味絕佳、建立極強的技術壁壘。但發酵過頭容易產生酸味。</td>
+                        <td>咬勁強、越嚼越香、Q彈十足。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>70/30 中種法 (Sponge)</strong></td>
+                        <td><strong style="color: var(--accent-cyan);">強，具微醺酵母果香與細密甜味。</strong></td>
+                        <td><strong style="color: var(--accent-cyan);">極優，內部網狀結構多，鎖水度高。</strong></td>
+                        <td>中等，需提前發酵中種。</td>
+                        <td><strong style="color: var(--accent-green);">發酵容許時間寬，成品穩定性極佳。</strong></td>
+                        <td>蓬鬆綿軟、富有彈性而不乾癟。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>中種老麵複合法 (本配方)</strong></td>
+                        <td><strong style="color: var(--accent-gold);">結合中種之甜與老麵之濃郁小麥香的究極風味。</strong></td>
+                        <td><strong style="color: var(--accent-cyan);">無懈可擊，放冷 12 小時依然軟Q不黏牙。</strong></td>
+                        <td>偏高，需要前置備料。</td>
+                        <td>專業職人的配方。</td>
+                        <td><strong style="color: var(--accent-cyan);">皮薄Q彈、外層綿密有嚼勁、完美吸附爆汁湯汁。</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 結論與情境應用 -->
+        <div class="section-title"><span>📝</span> 結論：適用情境的抉擇</div>
+        <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--accent-green);">
+            <div class="card-body">
+                <p>「中種老麵複合法」，這是目前職人推崇的麵糰製程。其背後的科學在於中種負責提供「膨起與細密氣孔」以吸飽肉汁，而老麵則負責提供「麵筋強度與成熟麥香」。</p>
+                <br>
+                <p>💡 <strong>情境應用實例：</strong></p>
+                <p>傳統直接法做出來的水煎包與包子，客人「剛出爐現場吃」很美味，但一旦外帶放涼 1 小時後，皮就會開始發硬、黏牙、甚至因為底下的爆汁湯汁浸潤而軟爛破底。這時，若改用本「中種老麵複合法」：</p>
+                <p>1. <strong>外帶 2 小時後：</strong> 享用時，麵皮因為含有老麵與中種的細密多孔彈性結構，依然保持Q彈有嚼勁，且完全不黏牙、不破底。</p>
+                <p>2. <strong>隔天加熱：</strong> 直接用電鍋或微波爐復熱，麵皮能瞬間恢復像剛出爐一樣白胖、飽滿、充滿麥香，這就是職人究極好吃的撇步！</p>
+                <br>
+                
+            </div>
+        </div>
+
+        <footer>
+            <p>2026 中式麵點教學</p>
+        </footer>
+    </div>
+</body>
+</html>
