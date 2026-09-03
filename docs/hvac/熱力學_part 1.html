@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熱力學與冷凍工程應用技術報告</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+  text-align: left;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); text-align: left; }
+.content li { text-align: left; }
+.content, .content div { text-align: left; }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+  text-align: left;
+}
+.math-block mjx-container[display="true"] {
+  text-align: left !important;
+  margin: 0 !important;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">熱力學與冷凍工程應用技術報告</h1>
+  <p class="report-sub">熱力學狀態變數、焓熵分析、冷凍循環特性與濕空氣性質工程應用</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+<h1>1. 熱力學基礎與狀態變數定義</h1>
+<h2>1.1 基本狀態方程式與物理量定義</h2>
+<p>在熱力學分析中，描述系統狀態與能量轉移的基本物理量與單位定義如下：</p>
+<p><strong>表1.1　基本狀態變數定義表</strong></p>
+<table>
+<thead>
+<tr>
+<th>物理量名稱</th>
+<th>符號</th>
+<th>單位</th>
+<th>說明與定義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>理想氣體狀態方程式</td>
+<td>$P \cdot V = m \cdot R \cdot T$</td>
+<td>—</td>
+<td>描述氣體壓力、容積與絕對溫度之基本關係式，見 (1.1)</td>
+</tr>
+<tr>
+<td>質量 (Mass)</td>
+<td>$m$</td>
+<td>$\text{kg}$</td>
+<td>系統內物質之總質量</td>
+</tr>
+<tr>
+<td>莫耳數 (Amount of Substance)</td>
+<td>$n$</td>
+<td>$\text{kmol}$</td>
+<td>系統內物質之總莫耳數，$m=n \cdot M$（$M$ 為分子量）</td>
+</tr>
+<tr>
+<td>通用氣體常數 (Universal Gas Constant)</td>
+<td>$R_u$</td>
+<td>$\text{kJ/(kmol·K)}$</td>
+<td>與氣體種類無關之常數，$R_u=8.314\ \text{kJ/(kmol·K)}$，搭配 $n$（kmol）使用</td>
+</tr>
+<tr>
+<td>特定氣體常數 (Specific Gas Constant)</td>
+<td>$R$</td>
+<td>$\text{kJ/(kg·K)}$</td>
+<td>$R=R_u/M$，因氣體種類而異，搭配 $m$（kg）使用，本報告後續公式皆採此定義</td>
+</tr>
+<tr>
+<td>壓力 (Pressure)</td>
+<td>$P$</td>
+<td>$\text{kPa}$（SI）或 $\text{kgf/m}^2$（工程慣用制）</td>
+<td>系統內部流體施加於單位面積之作用力，兩制單位不可混用，換算須另行標明</td>
+</tr>
+<tr>
+<td>容積 (Volume)</td>
+<td>$V$</td>
+<td>$\text{m}^3$</td>
+<td>系統佔據之空間體積</td>
+</tr>
+<tr>
+<td>絕對溫度 (Temperature)</td>
+<td>$T$</td>
+<td>$\text{K}$</td>
+<td>系統微觀粒子熱運動之平均動能指標</td>
+</tr>
+<tr>
+<td>比內能 (Specific Internal Energy)</td>
+<td>$u$</td>
+<td>$\text{kJ/kg}$</td>
+<td>物質單位質量之內部能量，對<strong>理想氣體</strong>而言僅為溫度之單值函數 $u=u(T)$</td>
+</tr>
+<tr>
+<td>比焓 (Specific Enthalpy)</td>
+<td>$h$</td>
+<td>$\text{kJ/kg}$</td>
+<td>定義為 $h=u+P \cdot v$（$v$ 為比容），見 (1.2)</td>
+</tr>
+<tr>
+<td>功 (Work)</td>
+<td>$W$</td>
+<td>$\text{kJ}$</td>
+<td>封閉系統邊界功 $W=\int P\,dV$；開放（穩流）系統則用軸功 $w$，見 1.2 節說明</td>
+</tr>
+<tr>
+<td>微小熵變 (Entropy Differential)</td>
+<td>$dS$</td>
+<td>$\text{kJ/(kg·K)}$</td>
+<td>微小<strong>可逆</strong>熱量轉移量除以絕對溫度，見 (1.3)</td>
+</tr>
+</tbody>
+</table>
+<div class="math-block">$$ P \cdot V = m \cdot R \cdot T \tag{1.1} $$</div>
+<div class="math-block">$$ h = u + P \cdot v \tag{1.2} $$</div>
+<div class="math-block">$$ dS = \left(\frac{\delta Q}{T}\right)_{rev} \tag{1.3} $$</div>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">公式 (1.1)～(1.3) 為<strong>封閉系統／單一質點性質</strong>的基礎定義式。第 1.2 節將說明：壓縮機、膨脹閥等冷凍循環設備屬於<strong>穩流開放系統（Steady-Flow Open System）</strong>，須改用穩流能量方程式（SFEE）分析，不可直接套用封閉系統的邊界功公式 W=∫P dV。</div></div>
+
+<h2>1.2 狀態變化推導邏輯：壓縮與膨脹過程</h2>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">本節分析對象為冷凍循環中的壓縮機與膨脹閥，兩者皆屬<strong>穩流開放系統</strong>（流體連續進出控制容積），能量分析應採<strong>穩流能量方程式（SFEE, Steady Flow Energy Equation）</strong>，見公式 (1.4)，而非封閉系統的邊界功 W=∫P dV，避免與後續冷凍循環章節（第 3 章）分析框架不一致。</div></div>
+
+<div class="math-block">$$ q - w = h_{out} - h_{in} \tag{1.4} $$</div>
+<p><strong>壓縮過程（以壓縮機為例）：</strong></p>
+<p><strong>步驟1：外力作功輸入</strong> — 壓縮機由外部電力驅動，對冷媒氣體輸入軸功（Shaft Work），依 SFEE (1.4)，在絕熱條件（$q=0$）下：</p>
+<div class="math-block">$$ w_{c} = h_2 - h_1 \tag{1.5} $$</div>
+<p><strong>步驟2：焓與溫度同步升高</strong> — 軸功轉為冷媒之焓值增加（$h_2 &gt; h_1$），對理想氣體而言 $h=h(T)$，焓升高直接對應溫度升高（$T_2 &gt; T_1$）。</p>
+<p><strong>步驟3：理想等熵狀態</strong> — 在絕熱（$q=0$）且<strong>可逆</strong>（無摩擦、無渦流，$s_{gen}=0$）的理想假設下，依熵平衡方程式：</p>
+<div class="math-block">$$ s_2 - s_1 = \int \frac{\delta q}{T} + s_{gen} = 0 + 0 = 0 \tag{1.6} $$</div>
+<p>故此過程為<strong>等熵過程（$s_2=s_1$）</strong>。實務上因機械摩擦、氣體渦流等不可逆因素，$s_{gen}&gt;0$，實際耗功會高於理論等熵耗功，兩者之比即為<strong>等熵效率（Isentropic Efficiency, $\eta_{is}$）</strong>。</p>
+<p><strong>膨脹過程（以膨脹閥節流為例）：</strong></p>
+<p><strong>步驟1：絕熱、不做功</strong> — 膨脹閥體積極小，來不及與外界進行熱交換（$q=0$）；且無葉輪、無軸功輸出（$w=0$）。<strong>這是本過程分析的關鍵前提，與壓縮機同屬絕熱過程，但物理機制截然不同。</strong></p>
+<p><strong>步驟2：等焓過程</strong> — 將 $q=0,\ w=0$ 代入 SFEE (1.4)：</p>
+<div class="math-block">$$ 0 - 0 = h_4 - h_3 \quad \Rightarrow \quad h_3 = h_4 \tag{1.7} $$</div>
+<p>即焓值在節流前後<strong>維持不變</strong>。實務上冷媒（非理想氣體）通過節流閥後溫度會下降，此現象源自分子間作用力導致的<strong>焦耳-湯姆森效應（Joule-Thomson Effect）</strong>，並非「消耗自身能量對外做功」所致——事實上本過程 $w=0$，完全沒有對外做功這回事。</p>
+<p><strong>步驟3：非等熵、不可逆增熵</strong> — 高壓流體通過狹小孔口時，因<strong>內部黏滯摩擦與劇烈渦流</strong>產生顯著的不可逆性，依熵平衡方程式（絕熱，$\int \delta q/T=0$）：</p>
+<div class="math-block">$$ s_4 - s_3 = 0 + s_{gen} \ ,\quad s_{gen} > 0 \quad \Rightarrow \quad s_4 > s_3 \tag{1.8} $$</div>
+<p><span style="color:#dc2626;font-weight:700;">此為整段推導最重要的觀念：節流過程的熵增，純粹來自流體內部摩擦與渦流所產生的熵產生量（$s_{gen}$），與熱量傳遞、對外做功均無關聯——這正是「絕熱」不等於「等熵」的典型範例。</span></p>
+<h2>1.3 補充說明：焦耳-湯姆森效應完整推導（Joule-Thomson Effect）</h2>
+<p><strong>定義</strong></p>
+<p>焦耳-湯姆森效應（Joule-Thomson Effect，亦稱焦耳-開爾文效應 Joule-Kelvin Effect）係指真實氣體（Real Gas）在絕熱條件下，通過多孔塞或膨脹閥等窄通道產生節流膨脹時，壓力下降的同時，溫度隨之升高或降低的現象。此過程之數學核心為<strong>等焓過程（Isenthalpic Process）</strong>，廣泛應用於冰箱、空調系統及氣體液化等技術領域。</p>
+<p><strong>基本原理</strong></p>
+<ul>
+<li>真實氣體分子間存在<strong>引力</strong>與<strong>斥力</strong>（凡得瓦力，Van der Waals Force）。</li>
+<li>當氣體膨脹、壓力減小時，分子間距離隨之改變。</li>
+<li>若分子間<strong>勢能</strong>（Potential Energy）效應佔主導，膨脹將使內能轉化或補償，導致溫度隨之改變。</li>
+</ul>
+<p><strong>核心特點</strong></p>
+<ul>
+<li><strong>反轉溫度（Inversion Temperature）：</strong> 每一種氣體皆存在特定之反轉溫度。</li>
+<li>低於反轉溫度：氣體膨脹時溫度<strong>下降</strong>（產生致冷效果）。</li>
+<li>高於反轉溫度：氣體膨脹時溫度<strong>上升</strong>。</li>
+<li><strong>理想氣體：</strong> 因分子間無作用力，焦耳-湯姆森係數恆為零，膨脹時溫度不發生變化。</li>
+</ul>
+<p><strong>主要應用</strong></p>
+<ul>
+<li>冷凍系統與大型工業氣體液化製程（如液態氮、液態氧之製造）。</li>
+</ul>
+<h3>1.3.1 焦耳-湯姆森係數的定義</h3>
+<p>為描述氣體節流過程中溫度隨壓力之變化率，定義焦耳-湯姆森係數 $\mu_{JT}$：</p>
+<div class="math-block">$$ \mu_{JT} = \left( \frac{\partial T}{\partial P} \right)_H \tag{1.9} $$</div>
+<ul>
+<li>$dH=0$：代表過程於絕熱、不做功條件下進行，焓值維持不變（呼應 1.2 節公式 1.7 之推導結論）。</li>
+<li>$dP&lt;0$：氣體由高壓流向低壓，壓力必定下降。</li>
+<li>當 $\mu_{JT}&gt;0$：壓力下降（$dP&lt;0$）時，溫度隨之下降（$dT&lt;0$），產生致冷效應。</li>
+<li>當 $\mu_{JT}&lt;0$：壓力下降（$dP&lt;0$）時，溫度反而上升（$dT&gt;0$），產生致熱效應。</li>
+</ul>
+<h3>1.3.2 熱力學公式推導</h3>
+<p>依熱力學基本方程式，焓之全微分式為：</p>
+<div class="math-block">$$ dH = T\,dS + V\,dP \tag{1.10} $$</div>
+<p>利用馬克士威關係式（Maxwell Relations），可將 $dH$ 改寫為以溫度 $T$ 與壓力 $P$ 為自變數之表達式：</p>
+<div class="math-block">$$ dH = C_{p}\,dT - \left[ T \left( \frac{\partial V}{\partial T} \right)_P - V \right] dP \tag{1.11} $$</div>
+<p>其中 $C_p$ 為定壓比熱容。節流過程中 $dH=0$，代入上式：</p>
+<div class="math-block">$$ C_{p}\,dT = \left[ T \left( \frac{\partial V}{\partial T} \right)_P - V \right] dP \tag{1.12} $$</div>
+<p>移項後即得焦耳-湯姆森係數之熱力學通用公式：</p>
+<div class="math-block">$$ \mu_{JT} = \left( \frac{\partial T}{\partial P} \right)_H = \frac{1}{C_{p}} \left[ T \left( \frac{\partial V}{\partial T} \right)_P - V \right] \tag{1.13} $$</div>
+<h3>1.3.3 三種氣體行為之公式驗證</h3>
+<p><strong>表1.2　理想氣體與真實氣體節流行為比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>情況</th>
+<th>主導機制</th>
+<th>關鍵條件</th>
+<th>$\mu_{JT}$ 結果</th>
+<th>節流後溫度變化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 理想氣體</td>
+<td>無分子間作用力</td>
+<td>$T(\partial V/\partial T)_P = V$</td>
+<td>$\mu_{JT}=0$，見 (1.15)</td>
+<td>溫度不變（$dT=0$）</td>
+</tr>
+<tr>
+<td>② 真實氣體：引力主導</td>
+<td>凡得瓦力吸引項 $a$（低溫或中壓）</td>
+<td>$T(\partial V/\partial T)_P &gt; V$</td>
+<td>$\mu_{JT}&gt;0$</td>
+<td>溫度下降（致冷）</td>
+</tr>
+<tr>
+<td>③ 真實氣體：斥力主導</td>
+<td>凡得瓦力排斥項 $b$（高溫或極高壓）</td>
+<td>$T(\partial V/\partial T)_P &lt; V$</td>
+<td>$\mu_{JT}&lt;0$</td>
+<td>溫度上升（致熱）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>① 理想氣體驗證：</strong> 理想氣體狀態方程式 $PV=nRT$，對 $T$ 偏微分：</p>
+<div class="math-block">$$ \left( \frac{\partial V}{\partial T} \right)_P = \frac{nR}{P} = \frac{V}{T} \tag{1.14} $$</div>
+<p>代入公式 (1.13)：</p>
+<div class="math-block">$$ \mu_{JT} = \frac{1}{C_{p}} \left[ T \left( \frac{V}{T} \right) - V \right] = \frac{1}{C_{p}}(V-V) = 0 \tag{1.15} $$</div>
+<p><span style="color:#dc2626;font-weight:700;">結論：因 $μ_{JT}=0$，理想氣體節流膨脹時溫度完全不變，此結果與本報告 1.2 節「膨脹過程」中『理想氣體 h=h(T)，節流溫度不變』之推導完全一致，兩節結果互相驗證。</span></p>
+<p><strong>②③ 真實氣體驗證：</strong> 見上方表1.2，括號項 $T(\partial V/\partial T)_P - V$ 是否為零，取決於真實氣體對理想氣體狀態方程式之偏離程度，此即為僅有「真實氣體」才會於絕熱節流膨脹時發生溫度變化的數學根源。</p>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">本節公式推導與本報告第 1.2 節「膨脹過程」之結論完全吻合：節流過程恆為等焓過程（$dH=0$），且理想氣體節流不降溫，僅真實冷媒（因分子間作用力）才會產生焦耳-湯姆森降溫效應，此為冷凍循環得以利用膨脹閥產生低溫效果之根本物理機制。</div></div>
+
+<h3>1.3.4 分子作用力機制與反轉溫度（Inversion Temperature）</h3>
+<p><span style="color:#dc2626;font-weight:700;">這代表氣體膨脹時的溫升或降溫，取決於「分子間引力」與「分子間斥力」誰佔上風。</span>理想氣體分子間無作用力，降壓膨脹時溫度完全不變（見公式 1.15）；但真實氣體分子間同時存在引力與斥力（凡得瓦力，Van der Waals Force），當氣體通過閥門降壓膨脹、分子間距離拉大時，會產生以下兩種截然不同的能量轉移機制。</p>
+<p><strong>表1.3　引力主導與斥力主導之能量轉換機制對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>情況</th>
+<th>機制說明</th>
+<th>能量轉換</th>
+<th>溫度結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>引力佔主導（降溫效應）</td>
+<td>分子彼此存在吸引力，強行拉開需消耗能量以克服引力做功</td>
+<td>分子位能增加，代價來自消耗分子熱動能</td>
+<td>動能減少，<strong>溫度下降</strong>（大多數氣體在常溫常壓下節流膨脹皆會冷卻，此為冷氣與冰箱降溫之基礎）</td>
+</tr>
+<tr>
+<td>斥力佔主導（升溫效應）</td>
+<td>高壓或極低溫下，分子緊密擠壓相互排斥；壓力釋放時，斥力將分子推開，猶如釋放壓縮彈簧</td>
+<td>分子位能釋放並轉化為熱動能</td>
+<td>動能增加，<strong>溫度升高</strong>（例如氫氣、氦氣於常溫下節流膨脹反而會升溫）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>決定升溫或降溫的關鍵：反轉溫度（Inversion Temperature, $T_i$）</strong></p>
+<p>氣體節流膨脹後究竟是降溫還是升溫，取決於膨脹前的初始溫度是否低於該氣體的反轉溫度 $T_i$：</p>
+<p><strong>表1.4　反轉溫度與焦耳-湯姆森係數對照表</strong></p>
+<table>
+<thead>
+<tr>
+<th>狀態條件</th>
+<th>作用力主導</th>
+<th>節流膨脹結果（$\Delta P&lt;0$）</th>
+<th>焦耳-湯姆森係數 $\mu_{JT}=\left(\dfrac{\partial T}{\partial P}\right)_H$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始溫度 $T&lt;T_i$</td>
+<td>引力為主</td>
+<td><strong>溫度下降</strong>（冷卻區 Cooling Zone）</td>
+<td>$\mu_{JT}&gt;0$</td>
+</tr>
+<tr>
+<td>初始溫度 $T=T_i$</td>
+<td>引力與斥力平衡</td>
+<td><strong>溫度不變</strong>（反轉點 Inversion Point）</td>
+<td>$\mu_{JT}=0$</td>
+</tr>
+<tr>
+<td>初始溫度 $T&gt;T_i$</td>
+<td>斥力為主</td>
+<td><strong>溫度升高</strong>（加熱區 Heating Zone）</td>
+<td>$\mu_{JT}&lt;0$</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">氮氣與氧氣之反轉溫度皆高於常溫，故於常溫下直接降壓即可產生冷卻效果；氫氣之反轉溫度極低（約 $-68°C$），若欲於常溫下將其液化，必須先將氫氣預冷至反轉溫度以下，再進行降壓膨脹，方能產生降溫效果，此即工業氫氣液化製程須採「預冷＋節流」兩階段設計之根本原因。</div></div>
+
+<h3>1.3.5 反轉溫度曲線圖解：冷卻區與加熱區</h3>
+<p>前述 Ta、Tb、Ti、$T_{max}$ 四個特徵溫度的相對關係，透過 $P_r$–$T_r$（對比壓力－對比溫度）座標圖呈現如下：</p>
+<p><strong>圖1.1　反轉溫度曲線：冷卻區（Cooling）與加熱區（Heating）分布</strong></p>
+
+<div class="figure-block"><svg width="100%" viewBox="0 0 680 540" role="img" style="display:block;margin:10px 0;">
+<title>焦耳-湯姆森反轉溫度曲線示意圖</title>
+<desc>Pr-Tr 座標圖，顯示反轉溫度曲線內部為冷卻區、外部為加熱區，並標示同一壓力下的上下界溫度 Ta、Tb，曲線頂點 Ti，以及壓力趨近於零時的最大反轉溫度 Tmax。</desc>
+
+<rect x="100" y="60" width="460" height="380" fill="var(--warn-bg)" stroke="var(--rule)" stroke-width="1"/>
+<path d="M100,123.35 L165.71,139.17 L231.43,158.17 L297.14,183.5 L362.86,215.17 L428.57,253.17 L477.86,300.67 L428.57,329.17 L362.86,354.5 L297.14,373.5 L231.43,383.0 L165.71,388.07 L100,389.33 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+
+<line x1="100" y1="440" x2="560" y2="440" stroke="var(--ink-soft)" stroke-width="1"/>
+<line x1="100" y1="440" x2="100" y2="60" stroke="var(--ink-soft)" stroke-width="1"/>
+
+<g font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="13" fill="var(--ink-soft)">
+<line x1="100" y1="440" x2="100" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="100" y="458" text-anchor="middle">0</text>
+<line x1="165.71" y1="440" x2="165.71" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="165.71" y="458" text-anchor="middle">2</text>
+<line x1="231.43" y1="440" x2="231.43" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="231.43" y="458" text-anchor="middle">4</text>
+<line x1="297.14" y1="440" x2="297.14" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="297.14" y="458" text-anchor="middle">6</text>
+<line x1="362.86" y1="440" x2="362.86" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="362.86" y="458" text-anchor="middle">8</text>
+<line x1="428.57" y1="440" x2="428.57" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="428.57" y="458" text-anchor="middle">10</text>
+<line x1="494.29" y1="440" x2="494.29" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="494.29" y="458" text-anchor="middle">12</text>
+<line x1="560" y1="440" x2="560" y2="446" stroke="var(--ink-soft)" stroke-width="1"/><text x="560" y="458" text-anchor="middle">14</text>
+
+<line x1="94" y1="440" x2="100" y2="440" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="444" text-anchor="end">0</text>
+<line x1="94" y1="376.67" x2="100" y2="376.67" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="380.67" text-anchor="end">1</text>
+<line x1="94" y1="313.33" x2="100" y2="313.33" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="317.33" text-anchor="end">2</text>
+<line x1="94" y1="250" x2="100" y2="250" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="254" text-anchor="end">3</text>
+<line x1="94" y1="186.67" x2="100" y2="186.67" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="190.67" text-anchor="end">4</text>
+<line x1="94" y1="123.33" x2="100" y2="123.33" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="127.33" text-anchor="end">5</text>
+<line x1="94" y1="60" x2="100" y2="60" stroke="var(--ink-soft)" stroke-width="1"/><text x="88" y="64" text-anchor="end">6</text>
+</g>
+
+<text x="330" y="485" text-anchor="middle" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Pr（對比壓力）</text>
+<text x="66" y="46" text-anchor="start" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Tr（對比溫度）</text>
+
+<text x="250" y="90" text-anchor="middle" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--warn-border)">Heating（加熱區）</text>
+<text x="510" y="200" text-anchor="middle" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--warn-border)">Heating</text>
+<text x="250" y="320" text-anchor="middle" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--accent)">Cooling（冷卻區）</text>
+
+<line x1="297.14" y1="183.5" x2="297.14" y2="373.5" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="297.14" cy="183.5" r="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="307" y="181" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Tb</text>
+<circle cx="297.14" cy="373.5" r="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="307" y="380" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Ta</text>
+
+<circle cx="477.86" cy="300.67" r="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="490" y="292" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Ti</text>
+
+<circle cx="100" cy="123.35" r="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="108" y="112" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Tmax</text>
+
+<rect x="150" y="498" width="14" height="14" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+<text x="172" y="509" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="13" fill="var(--ink-soft)">冷卻區（曲線內部）</text>
+<rect x="380" y="498" width="14" height="14" rx="3" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1"/>
+<text x="402" y="509" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" font-size="13" fill="var(--ink-soft)">加熱區（曲線外部）</text>
+</svg>
+</div>
+<ul>
+<li><strong>Ta（下支曲線上的點）：</strong> 在特定壓力（圖中以 $P_r=6$ 為例）下，冷卻區之<strong>下邊界溫度</strong>。</li>
+<li><strong>Tb（上支曲線上的點）：</strong> 同一壓力下，冷卻區之<strong>上邊界溫度</strong>——虛線連接 Ta 與 Tb，代表在此壓力下，氣體實際溫度落在 Ta～Tb 區間內，節流膨脹即會<strong>降溫</strong>；落於區間外，則會<strong>升溫</strong>。</li>
+<li><strong>Ti（曲線頂點）：</strong> 上下支曲線於最大反轉壓力處合而為一之唯一交會點，超過此壓力，無論溫度多少皆無法再靠節流冷卻。</li>
+<li><strong>$T_{max}$（$P_r=0$ 處之上支端點）：</strong> 即壓力趨近於零時之最大反轉溫度（例如氫氣約 $-68°C$），與 Ti 為曲線上兩個不同端點，數值通常不相等。</li>
+</ul>
+<p><span style="color:#dc2626;font-weight:700;">判斷某氣體節流膨脹後是冷卻還是升溫，關鍵在於：實際溫度是否落在「該壓力下」曲線內部（冷卻區）或外部（加熱區），而非單純與頂點 Ti 比較。</span></p>
+<h1>2. 焓與熵的核心概念與計算</h1>
+<h2>2.1 焓（Enthalpy）與熵（Entropy）對比</h2>
+<p>焓（$h$）代表物質在特定狀態下所攜帶的<strong>能量總量</strong>（$h=u+Pv$，見公式 1.2），而熵（$S$）代表物質微觀狀態的<strong>混亂程度／能量分散程度</strong>。在<strong>定溫定壓</strong>的化學反應或相變化場合，自然界自發過程的方向可由吉布斯自由能（Gibbs Free Energy, $G$）判斷：</p>
+<div class="math-block">$$ \Delta G = \Delta H - T \cdot \Delta S \tag{2.1} $$</div>
+<p>當 $\Delta G &lt; 0$ 時，過程可<strong>自發進行</strong>。</p>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">公式 (2.1) 屬於<strong>化學熱力學／相變化分析</strong>的判準工具，適用於定溫定壓封閉系統（如冰塊融化）；本報告第 3、4 章的冷凍循環與濕空氣分析屬於<strong>穩流開放系統之能量與㶲分析</strong>，兩套框架適用場合不同，計算時請勿混用。</div></div>
+
+<p><strong>表2.1　焓與熵概念對比（以冰塊融化為例）</strong></p>
+<table>
+<thead>
+<tr>
+<th>物理量</th>
+<th>符號</th>
+<th>核心概念</th>
+<th>狀態變化範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>焓 (Enthalpy)</td>
+<td>$H$</td>
+<td>熱能與能量轉移總量</td>
+<td>冰塊吸收環境熱量融化成水（$\Delta H &gt; 0$，吸熱）</td>
+</tr>
+<tr>
+<td>熵 (Entropy)</td>
+<td>$S$</td>
+<td>混亂度與微觀自由度</td>
+<td>水分子從固態緊密排列變成液態自由運動（$\Delta S &gt; 0$）</td>
+</tr>
+</tbody>
+</table>
+<h2>2.2 熵變計算公式與物理意義</h2>
+<p>熵變化的基礎熱力學公式為：</p>
+<div class="math-block">$$ \Delta S = \left(\frac{Q}{T}\right)_{rev} \tag{2.2} $$</div>
+<p><span style="color:#dc2626;font-weight:700;">公式 (2.2) 僅適用於「可逆熱交換」且熱源維持定溫（Thermal Reservoir）之特例，並非熵變化的通用定義；通用定義仍為公式 (1.3) 的微分形式 dS=(δQ/T)，需對變溫過程積分。</span></p>
+<ul>
+<li><strong>衡量能量品質與可用性：</strong> 同樣 $1000\ \text{J}$ 的熱量，在高溫（如 $1000\ \text{K}$）下傳遞與在常溫（如 $300\ \text{K}$）下傳遞，其做功能力與品質完全不同，除以絕對溫度 $T$ 正好能反映能量品質衰退的程度。</li>
+<li><strong>判斷自發過程（熱力學第二定律）：</strong> 熱量僅會自發地從高溫傳向低溫。若全系統 $\Delta S_{總} &gt; 0$，代表該過程為自然發生且不可逆。</li>
+</ul>
+<h2>2.3 計算範例：熱傳導過程中的熵增</h2>
+<p><strong>【情境設定】</strong></p>
+<ul>
+<li>高溫物體 A：溫度 $T_A = 500\ \text{K}$（約 $227°C$），視為<strong>定溫熱庫</strong></li>
+<li>低溫物體 B：溫度 $T_B = 300\ \text{K}$（約 $27°C$），視為<strong>定溫熱庫</strong></li>
+<li>熱轉移量：物體 A 傳導 $Q = 1500\ \text{J}$ 之熱量給物體 B</li>
+</ul>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">本例將 A、B 簡化為<strong>定溫熱庫</strong>（假設兩者熱容量極大，傳熱過程中溫度不變），故可直接套用公式 (2.2) 之簡化形式；若為有限熱容量之物體，溫度會隨傳熱過程變化，須改用積分形式 ΔS=∫(δQ/T) 計算。</div></div>
+
+<p><strong>【標準 SOP 計算步驟】</strong></p>
+<p><strong>步驟1：計算高溫物體 A 的熵變化</strong> — 物體 A 釋放熱量（$Q_A = -1500\ \text{J}$）：</p>
+<div class="math-block">$$ \Delta S_{A} = \frac{Q_{A}}{T_{A}} = \frac{-1500\ \text{J}}{500\ \text{K}} = -3\ \text{J/K} \tag{2.3} $$</div>
+<p><strong>步驟2：計算低溫物體 B 的熵變化</strong> — 物體 B 吸收熱量（$Q_B = +1500\ \text{J}$）：</p>
+<div class="math-block">$$ \Delta S_{B} = \frac{Q_{B}}{T_{B}} = \frac{+1500\ \text{J}}{300\ \text{K}} = +5\ \text{J/K} \tag{2.4} $$</div>
+<p><strong>步驟3：計算系統總熵變化：</strong></p>
+<div class="math-block">$$ \Delta S_{\text{總}} = \Delta S_{A} + \Delta S_{B} = (-3) + (+5) = +2\ \text{J/K} \tag{2.5} $$</div>
+<p><strong>【結果分析與工程意義】</strong></p>
+<ol>
+<li><strong>熱傳導自發性：</strong> $\Delta S_{總} = +2\ \text{J/K} &gt; 0$，證實熱量自發從高溫流向低溫符合熱力學第二定律。</li>
+<li><strong>可用能損失（Exergy Loss）：</strong> 依據<strong>古伊-斯托多拉定理（Gouy-Stodola Theorem）</strong>，損失的最小有用功為公式 (2.6)：</li>
+</ol>
+<div class="math-block">$$ W_{lost} = T_0 \cdot \Delta S_{\text{總}} \tag{2.6} $$</div>
+<p>若環境溫度 $T_0 = 300\ \text{K}$，則 $W_{lost} = 300\ \text{K} \times 2\ \text{J/K} = 600\ \text{J}$。</p>
+<p><span style="color:#dc2626;font-weight:700;">這意味著原本這 1500 J 的熱量理論上最多可輸出 600 J 的可用功，直接傳熱後該作功能力永久消失。</span></p>
+<h1>3. 冷凍循環過程解析：壓縮與膨脹</h1>
+<h2>3.1 壓縮過程與膨脹過程對比分析</h2>
+<p><strong>表3.1　壓縮機與膨脹閥過程特性對比</strong></p>
+<table>
+<thead>
+<tr>
+<th>設備／過程</th>
+<th>理論假設名稱</th>
+<th>物理本質</th>
+<th>熵的變化</th>
+<th>能量／可用能損失狀況</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>壓縮機（壓縮過程）</td>
+<td>等熵／絕熱過程</td>
+<td>輸入軸功，將低壓蒸氣壓縮為高溫高壓氣體</td>
+<td>理論 $\Delta S=0$；實際 $\Delta S&gt;0$（摩擦渦流）</td>
+<td>有損失。實際耗功高於理論值，兩者之比為等熵效率 $\eta_{is}$</td>
+</tr>
+<tr>
+<td>膨脹閥（膨脹過程）</td>
+<td>等焓／節流過程</td>
+<td>不做功、不散熱，僅靠孔口阻力降壓降溫</td>
+<td>理論與實際皆 $\Delta S&gt;0$（純內部熵增）</td>
+<td>有損失。損失了高壓流體對外做功以回收能量之機會（㶲銷毀）</td>
+</tr>
+</tbody>
+</table>
+<h2>3.2 工程實務處理原則與選用原因</h2>
+<p><strong>表3.2　冷凍循環設備損失來源與工程處理方式</strong></p>
+<table>
+<thead>
+<tr>
+<th>設備名稱</th>
+<th>實際損失來源</th>
+<th>工程熱力學處理方式</th>
+<th>是否計算熵增？選用原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>壓縮機</td>
+<td>馬達電阻損失、軸承與螺桿/活塞機械摩擦、氣體流動阻力</td>
+<td>以「等熵過程」為理想基準，比較實際耗電偏離程度</td>
+<td><strong>必須計算</strong>。原因：壓縮機為系統唯一大量消耗高價電能之設備，直接影響運轉電費與系統性能係數 COP (Coefficient of Performance 性能係數)</td>
+</tr>
+<tr>
+<td>膨脹閥</td>
+<td>節流劇烈湍流、壓力陡降所致之熱力學不可逆損失（非機械摩擦）</td>
+<td>簡化為「等焓過程」，直接接受其熵增事實</td>
+<td><strong>無須計較／不另計算</strong>。原因：裝設膨脹機（Expander）回收能量之設備成本極高且易故障，用低成本膨脹閥即可獲得高系統穩定度與低維護成本，工程經濟上較划算</td>
+</tr>
+</tbody>
+</table>
+<h1>4. 濕空氣性質表之比熵工程應用</h1>
+<p>在 HVAC (Heating Ventilation and Air Conditioning 空調工程) 與冷凍工程實務中，濕空氣性質表（Psychrometric Properties of Moist Air）列出之三種比熵數據，統一以濕度比 $\omega$（Humidity Ratio 濕度比）表示，定義如下：</p>
+<ul>
+<li>$s_{da}$：乾空氣比熵，單位 $\text{kJ/(kg}_{da}\text{·K)}$</li>
+<li>$s_{as}$：飽和增量比熵（$s_s - s_{da}$），單位 $\text{kJ/(kg}_{da}\text{·K)}$</li>
+<li>$s_s$：飽和濕空氣總比熵，單位 $\text{kJ/(kg}_{da}\text{·K)}$</li>
+</ul>
+<h2>4.1 三大實務應用情境 SOP</h2>
+<p><strong>情境一：高空航空器與高海拔壓縮機之「等熵壓縮計算」</strong></p>
+<p><strong>步驟1：設定理想條件</strong> — 假設高速壓縮過程為絕熱等熵（$s_1=s_2$）。</p>
+<p><strong>步驟2：計算入口總比熵</strong> — 依據入口狀態（$T_1, RH_1, \omega_1$，其中 RH 為 Relative Humidity 相對濕度），利用公式計算：</p>
+<div class="math-block">$$ s_1 = s_{da1} + \omega_1 \cdot s_{w1} \tag{4.1} $$</div>
+<p><strong>步驟3：推算出口狀態</strong> — 設定出口壓力 $P_2$，在 $s_2=s_1$ 條件下反查性質表，求得理想出口溫度 $T_{2,is}$ 與出口焓值 $h_{2,is}$。</p>
+<p><strong>步驟4：評估功率與效率</strong> — 計算理想等熵功：</p>
+<div class="math-block">$$ W_{is} = m_{da} \cdot (h_{2,is} - h_1) \tag{4.2} $$</div>
+<p>並評估壓縮機之等熵效率 $\eta_{is}$。</p>
+<p><strong>情境二：大型空調與熱泵系統之「㶲（Exergy 可用能）分析」</strong></p>
+<p><strong>步驟1：建立㶲損耗公式</strong> — 計算元件之㶲損耗：</p>
+<div class="math-block">$$ X_{d} = T_0 \cdot \dot{S}_{gen} \tag{4.3} $$</div>
+<p><strong>步驟2：計算熵產生率</strong> — 利用進出口濕空氣總比熵差計算：</p>
+<div class="math-block">$$ \dot{S}_{gen} = \dot{m}_{da} \cdot (s_{out} - s_{in}) - \sum \left(\frac{\dot{Q}}{T}\right) \tag{4.4} $$</div>
+<p><strong>步驟3：評估不可逆損失</strong> — 精確量化冷卻盤管或除濕輪處因溫差傳熱產生之不可逆損失，進而優化冰水進水溫度與盤管設計。</p>
+<p><strong>情境三：冷卻塔與噴霧裝置之「絕熱飽和極限分析」</strong></p>
+<p><strong>步驟1：確定絕熱飽和點</strong> — 未飽和空氣與水直接接觸，沿等濕球溫度線達到 100% 飽和狀態。</p>
+<p><strong>步驟2：應用飽和比熵</strong> — 利用飽和濕空氣比熵 $s_s$ 建立熱質傳遞平衡方程式。</p>
+<p><strong>步驟3：預測出水極限</strong> — 精確推算冷卻塔在極端氣候條件下之趨近溫度（Approaching Temperature）與極限冷卻能力。</p>
+<h2>4.2 濕空氣比熵性質應用總結</h2>
+<p><strong>表4.1　濕空氣比熵性質定義與應用場景</strong></p>
+<table>
+<thead>
+<tr>
+<th>性質符號</th>
+<th>物理意義</th>
+<th>工程實務應用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$s_{da}$</td>
+<td>1 kg 乾空氣所帶之比熵</td>
+<td>計算非飽和空氣總比熵時之基準底數</td>
+</tr>
+<tr>
+<td>$s_{as}$</td>
+<td>達到飽和時水蒸氣帶來之「增量比熵」</td>
+<td>快速修飾並計算不同濕度下之總空氣比熵，見公式 (4.5)</td>
+</tr>
+<tr>
+<td>$s_s$</td>
+<td>100% 飽和濕空氣之總比熵</td>
+<td>應用於冷卻塔極限飽和點、噴霧冷凝器出口及冷凝水滴析出時之等熵基準計算</td>
+</tr>
+</tbody>
+</table>
+<div class="math-block">$$ s = s_{da} + \omega \cdot s_{as} \tag{4.5} $$</div>
+<h1>5. 參考文獻</h1>
+<ol>
+<li>Cengel, Y. A., Boles, M. A., <em>Thermodynamics: An Engineering Approach</em>, 9th ed., McGraw-Hill — Ch. 3（Properties of Pure Substances）、Ch. 7（Entropy）、Ch. 11（Refrigeration Cycles）。</li>
+<li>Moran, M. J., Shapiro, H. N., <em>Fundamentals of Engineering Thermodynamics</em>, Wiley — Ch. 6（Using Entropy）、Ch. 7（Exergy Analysis）。</li>
+<li>ASHRAE Handbook – Fundamentals, American Society of Heating, Refrigerating and Air-Conditioning Engineers — Ch. 1（Psychrometrics）、Ch. 2（Thermodynamics and Refrigeration Cycles）。網站：https://www.ashrae.org</li>
+<li>Bejan, A., <em>Advanced Engineering Thermodynamics</em>, Wiley — Ch. 3（Entropy Generation Minimization，古伊-斯托多拉定理原始推導）。</li>
+</ol>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">本報告公式與數據引用自上述教科書與 ASHRAE 標準之通則性推導，實際工程設計（如冷媒選型、濕空氣性質數值）請以原始文獻最新版本及當地適用法規（如 CNS 國家標準）為準，本報告僅供學習與方法論參考。</div></div>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本報告為知識學習參考文件，數據與公式請依參考文獻原始出處覆核後使用。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
