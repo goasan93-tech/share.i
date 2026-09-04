@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>空氣速度壓與密度差壓公式的由來</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #24323a;
+      --muted: #66777d;
+      --paper: #f4f1ea;
+      --panel: #fffdf9;
+      --teal: #176b6d;
+      --teal-dark: #104d52;
+      --teal-soft: #dceeed;
+      --gold: #c58a3a;
+      --gold-soft: #fbf0dc;
+      --line: #d8ddd7;
+      --blue-soft: #eaf2f5;
+      --shadow: 0 18px 50px rgba(36, 50, 58, 0.09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(23,107,109,.10), transparent 28rem),
+        linear-gradient(135deg, #f4f1ea 0%, #eef3f0 100%);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.9;
+    }
+    .page { max-width: 1420px; margin: 0 auto; }
+    .report-header {
+      padding: 72px 36px 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .18em;
+    }
+    .report-title {
+      max-width: 980px;
+      margin: 0 auto 16px;
+      color: var(--teal-dark);
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: clamp(30px, 4.5vw, 52px);
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .report-sub { margin: 0; color: var(--muted); font-size: 17px; }
+    .layout {
+      display: grid;
+      grid-template-columns: 255px minmax(0, 1fr);
+      gap: 34px;
+      align-items: start;
+      padding: 38px 30px 70px;
+    }
+    .toc {
+      position: sticky;
+      top: 22px;
+      max-height: calc(100vh - 44px);
+      overflow-y: auto;
+      padding: 20px;
+      background: rgba(255,253,249,.88);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(36,50,58,.05);
+    }
+    .toc-title { margin-bottom: 10px; color: var(--teal); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+    .toc-link { display: block; padding: 7px 0; color: var(--muted); border-bottom: 1px dashed var(--line); font-size: 14px; text-decoration: none; line-height: 1.5; }
+    .toc-link:hover { color: var(--teal); }
+    .content {
+      min-width: 0;
+      padding: 48px min(5vw, 70px) 62px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .intro {
+      margin: 0 0 38px;
+      padding: 22px 24px;
+      background: var(--teal-dark);
+      color: #f5fbf9;
+      border-left: 5px solid var(--gold);
+      border-radius: 6px;
+    }
+    .intro strong { color: #fff1c9; }
+    .intro mjx-container { color: #fff1c9 !important; }
+    .intro mjx-container svg { overflow: visible; fill: #fff1c9; }
+    .intro mjx-container svg path { fill: #fff1c9; }
+    .key-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 44px; }
+    .result { padding: 18px; background: var(--teal-soft); border-top: 3px solid var(--teal); border-radius: 5px; }
+    .result-label { display: block; color: var(--muted); font-size: 13px; }
+    .result-value { display: block; margin-top: 6px; color: var(--teal-dark); font-family: Georgia, serif; font-size: 24px; font-weight: 700; }
+    .content h1 {
+      margin: 54px 0 22px;
+      padding-bottom: 11px;
+      color: var(--teal-dark);
+      border-bottom: 2px solid var(--teal);
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 28px;
+      line-height: 1.4;
+    }
+    .content h1:first-of-type { margin-top: 0; }
+    .content h2 { margin: 34px 0 13px; padding-left: 12px; color: var(--ink); border-left: 4px solid var(--gold); font-size: 20px; line-height: 1.5; }
+    .content h3 { margin: 25px 0 9px; color: var(--teal-dark); font-size: 17px; }
+    .content p { margin: 0 0 16px; }
+    .content strong { color: var(--teal-dark); }
+    .formula { margin: 17px 0; padding: 15px 20px; overflow-x: auto; background: #f5f4ef; border: 1px solid var(--line); border-left: 4px solid var(--teal); border-radius: 5px; }
+    .formula > mjx-container { min-width: max-content; }
+    .unit-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 24px; }
+    .unit { padding: 14px 16px; background: #faf9f5; border: 1px solid var(--line); border-radius: 5px; }
+    .unit b { display: block; margin-bottom: 3px; color: var(--teal); }
+    ol, ul { padding-left: 1.5em; }
+    li { margin: 5px 0; }
+    table { width: 100%; margin: 15px 0 28px; border-collapse: collapse; font-size: 14.5px; }
+    th, td { padding: 11px 13px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--teal-dark); background: var(--teal-soft); white-space: nowrap; }
+    .table-caption { margin: 22px 0 7px; color: var(--teal-dark); font-weight: 700; }
+    .callout { margin: 20px 0; padding: 16px 19px; background: var(--blue-soft); border-left: 4px solid #5c8795; border-radius: 5px; }
+    .callout.warning { background: var(--gold-soft); border-color: var(--gold); }
+    .callout-title { margin-bottom: 4px; font-weight: 800; }
+    .callout p:last-child { margin-bottom: 0; }
+    .steps { counter-reset: step; list-style: none; padding: 0; }
+    .steps li { counter-increment: step; display: grid; grid-template-columns: 32px 1fr; gap: 12px; margin: 14px 0; }
+    .steps li::before { content: counter(step); display: grid; place-items: center; width: 28px; height: 28px; color: white; background: var(--teal); border-radius: 50%; font-weight: 700; line-height: 1; }
+    .report-footer { padding: 30px; color: var(--muted); border-top: 1px solid var(--line); text-align: center; font-size: 13px; }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; padding: 24px 16px 50px; }
+      .toc { position: static; max-height: none; }
+      .content { padding: 30px 22px 42px; }
+      .key-results, .unit-list { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: white; }
+      .layout { display: block; padding: 0; }
+      .toc { display: none; }
+      .content { border: 0; box-shadow: none; }
+      .report-header { padding: 30px 0; }
+      .formula, .callout, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      <p class="eyebrow">HVAC · FLUID MECHANICS · SI UNIT</p>
+      <h1 class="report-title">空氣速度壓 $P_v$ 與密度差壓 $\Delta P$ 公式的由來</h1>
+      <p class="report-sub">從單位驗證、功與能量到煙囪效應的完整推導與計算示範</p>
+      <p>研究組員：李世權 Gemini Claude，編排美工：Copilot</p>
+    </header>
+
+    <div class="layout">
+      <nav id="toc" class="toc" aria-label="報告目錄">
+        <div class="toc-title">報告目錄</div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <main class="content">
+        <div class="intro">
+          本報告以國際單位制（SI）整理空氣速度壓與密度差壓的來源，並說明動壓公式中的 $\frac{1}{2}$ 如何由質點動能與積分自然產生。核心關係式為：<strong>$P_v=\frac{1}{2}\rho v^2$</strong> 與 <strong>$\Delta P=\Delta\rho gh$</strong>。
+        </div>
+
+        <div class="key-results" aria-label="核心結果">
+          <div class="result"><span class="result-label">風速 10 m/s 的動壓</span><span class="result-value">60 Pa</span></div>
+          <div class="result"><span class="result-label">20 m 高度的密度差壓</span><span class="result-value">19.62 Pa</span></div>
+          <div class="result"><span class="result-label">風速 12 m/s 的 HVAC 範例</span><span class="result-value">86.4 Pa</span></div>
+        </div>
+
+        <h1>1. SI 單位與壓力公式</h1>
+        <h2>1.1 空氣速度壓 $P_v=\frac{1}{2}\rho v^2$</h2>
+        <p>速度壓（dynamic pressure）由空氣密度與速度決定。基本物理量及其 SI 單位如下：</p>
+        <div class="unit-list">
+          <div class="unit"><b>密度 $\rho$</b>$\mathrm{kg/m^3}$（公斤／立方公尺）</div>
+          <div class="unit"><b>速度 $v$</b>$\mathrm{m/s}$（公尺／秒）</div>
+          <div class="unit"><b>壓力 $P$</b>$\mathrm{Pa=N/m^2}$（帕斯卡）</div>
+        </div>
+        <p>將單位代入速度壓公式：</p>
+        <div class="formula">$$P_v=\frac{1}{2}\left[\frac{\mathrm{kg}}{\mathrm{m^3}}\right]\left[\frac{\mathrm{m}}{\mathrm{s}}\right]^2=\left[\frac{\mathrm{kg}}{\mathrm{m^3}}\right]\left[\frac{\mathrm{m^2}}{\mathrm{s^2}}\right] \tag{1.1}$$</div>
+        <p>重新整理單位，並使用 $1\,\mathrm{N}=1\,\mathrm{kg\cdot m/s^2}$：</p>
+        <div class="formula">$$P_v=\left[\frac{\mathrm{kg\cdot m}}{\mathrm{s^2}}\right]\left[\frac{\mathrm{m}}{\mathrm{m^3}}\right]=\left[\frac{\mathrm{N}}{\mathrm{m^2}}\right]=[\mathrm{Pa}] \tag{1.2}$$</div>
+        <h3>計算示範</h3>
+        <p>若管道內風速 $v=10\,\mathrm{m/s}$，標準空氣密度 $\rho=1.2\,\mathrm{kg/m^3}$：</p>
+        <div class="formula">$$P_v=\frac{1}{2}\times1.2\times10^2=60\,\mathrm{Pa} \tag{1.3}$$</div>
+
+        <h2>1.2 密度差壓 $\Delta P=\Delta\rho gh$</h2>
+        <p>密度差壓常用於煙囪效應與自然通風估算。令 $\Delta\rho=\rho_{out}-\rho_{in}$，其中 $g\approx9.81\,\mathrm{m/s^2}$ 為重力加速度，$h$ 為高度差。</p>
+        <div class="formula">$$\Delta P=\left[\frac{\mathrm{kg}}{\mathrm{m^3}}\right]\left[\frac{\mathrm{m}}{\mathrm{s^2}}\right][\mathrm{m}]=\left[\frac{\mathrm{kg\cdot m}}{\mathrm{s^2}}\right]\left[\frac{\mathrm{m}}{\mathrm{m^3}}\right]=\left[\frac{\mathrm{N}}{\mathrm{m^2}}\right]=[\mathrm{Pa}] \tag{1.4}$$</div>
+        <h3>煙囪效應計算示範</h3>
+        <p>假設建築高度 $h=20\,\mathrm{m}$，戶外冷空氣密度 $\rho_{out}=1.25\,\mathrm{kg/m^3}$，室內熱空氣密度 $\rho_{in}=1.15\,\mathrm{kg/m^3}$：</p>
+        <div class="formula">$$\Delta\rho=1.25-1.15=0.10\,\mathrm{kg/m^3} \tag{1.5}$$</div>
+        <div class="formula">$$\Delta P=0.10\times9.81\times20=19.62\,\mathrm{Pa} \tag{1.6}$$</div>
+
+        <p class="table-caption">表 1.1　工程常用壓力單位對照</p>
+        <table>
+          <thead><tr><th>單位名稱</th><th>符號／表示法</th><th>與 Pa 的換算</th><th>常用領域</th></tr></thead>
+          <tbody>
+            <tr><td>帕斯卡</td><td>$\mathrm{Pa=N/m^2}$</td><td>$1\,\mathrm{Pa}=1\,\mathrm{Pa}$</td><td>SI 國際標準制</td></tr>
+            <tr><td>公厘水柱</td><td>mmAq 或 $\mathrm{mmH_2O}$</td><td>$1\,\mathrm{mmAq}\approx9.81\,\mathrm{Pa}$</td><td>風機揚程、靜壓測量</td></tr>
+            <tr><td>巴</td><td>bar／mbar</td><td>$1\,\mathrm{mbar}=100\,\mathrm{Pa}$</td><td>氣象學、大氣壓力</td></tr>
+          </tbody>
+        </table>
+
+        <h1>2. 動壓公式中 $\frac{1}{2}$ 的由來</h1>
+        <h2>2.1 從牛頓第二定律到功與動能</h2>
+        <p>動壓公式中的 $\frac{1}{2}$，源自經典力學的功—能原理。由牛頓第二運動定律：</p>
+        <div class="formula">$$F=m a=m\frac{dv}{dt} \tag{2.1}$$</div>
+        <p>當力推動物體移動微小距離 $dx$ 時，所作的微小功為：</p>
+        <div class="formula">$$dW=F\,dx=m\frac{dv}{dt}\,dx \tag{2.2}$$</div>
+        <p>因為 $v=\frac{dx}{dt}$，所以 $dx=v\,dt$，代入後得到：</p>
+        <div class="formula">$$dW=m\frac{dv}{dt}(v\,dt)=m v\,dv \tag{2.3}$$</div>
+        <p>速度由 $0$ 增加到 $v$ 時：</p>
+        <div class="formula">$$W=\int_0^v m v\,dv=m\left[\frac{1}{2}v^2\right]_0^v=\frac{1}{2}mv^2 \tag{2.4}$$</div>
+        <p>因此，$\frac{1}{2}$ 是對一次速度項 $v^1$ 積分後，次方升為 $2$ 並除以新次方所產生的係數。</p>
+
+        <h2>2.2 定積分的四個步驟</h2>
+        <ol class="steps">
+          <li><div><strong>提出常數：</strong>質量 $m$ 不隨積分變數 $v$ 改變，因此 $W=m\int_0^v v\,dv$。</div></li>
+          <li><div><strong>套用冪次法則：</strong>$\int x^n dx=\frac{x^{n+1}}{n+1}+C$；當 $n=1$ 時，$\int v\,dv=\frac{1}{2}v^2$。</div></li>
+          <li><div><strong>代入上下限：</strong>$\left[F(v)\right]_0^v=F(v)-F(0)$，所以 $\left[\frac{1}{2}v^2\right]_0^v=\frac{1}{2}v^2-0$。</div></li>
+          <li><div><strong>化簡：</strong>$W=m(\frac{1}{2}v^2-0)=\frac{1}{2}mv^2$。</div></li>
+        </ol>
+        <div class="callout"><div class="callout-title">微積分基本法則</div><p>不定積分是微分的逆運算：對 $\frac{1}{n+1}x^{n+1}$ 微分，會得到 $x^n$。定積分則以「上限值減下限值」消除常數 $C$。</p></div>
+
+        <h2>2.3 質點動能的數值範例</h2>
+        <p>已知空氣團塊質量 $m=2.0\,\mathrm{kg}$，初速 $v_0=0\,\mathrm{m/s}$，末速 $v=10.0\,\mathrm{m/s}$：</p>
+        <div class="formula">$$W=\int_0^v mv\,dv=m\left[\frac{1}{2}v^2\right]_0^v \tag{2.5}$$</div>
+        <div class="formula">$$W=2.0\left[\frac{1}{2}(10.0)^2-\frac{1}{2}(0)^2\right]=2.0\times50=100\,\mathrm{J} \tag{2.6}$$</div>
+        <p>因為 $1\,\mathrm{J}=1\,\mathrm{N\cdot m}$，所以結果也可寫成 $100\,\mathrm{N\cdot m}$。</p>
+
+        <h1>3. 以兩種直觀方式理解積分</h1>
+        <h2>3.1 積分是微分的逆運算</h2>
+        <p>微分規則是「次方拉下來當係數，次方減 1」：</p>
+        <div class="formula">$$\frac{d}{dx}(x^k)=k x^{k-1} \tag{3.1}$$</div>
+        <p>反過來，要讓結果回到 $x^n$，原函數的次方要先加 1，再除以新次方：</p>
+        <div class="formula">$$\frac{d}{dx}\left(\frac{1}{n+1}x^{n+1}\right)=\frac{1}{n+1}(n+1)x^n=x^n \tag{3.2}$$</div>
+
+        <h2>3.2 $y=x$ 曲線下的三角形面積</h2>
+        <p>對 $y=x$ 從 $0$ 積分到 $x$，曲線下方正好形成底與高皆為 $x$ 的直角三角形：</p>
+        <div class="formula">$$\int_0^x t\,dt=\frac{1}{2}\times x\times x=\frac{1}{2}x^2 \tag{3.3}$$</div>
+        <p>這個幾何面積就是一次項積分後出現 $\frac{1}{2}$ 的直觀圖像。</p>
+        <div class="callout warning"><div class="callout-title">記憶口訣</div><p><strong>微分：</strong>次方拉下來，次方減 1。　<strong>積分：</strong>次方加 1，再除以新次方。</p></div>
+
+        <h1>4. 從質點動能延伸到流體動壓</h1>
+        <h2>4.1 轉換為單位體積能量</h2>
+        <p>流體可視為連續分布的質點。若體積為 $V$，密度為 $\rho$，則其質量為：</p>
+        <div class="formula">$$m=\rho V \tag{4.1}$$</div>
+        <p>將其代入動能公式，再除以體積，得到單位體積的動能：</p>
+        <div class="formula">$$E_k=\frac{1}{2}(\rho V)v^2 \tag{4.2}$$</div>
+        <div class="formula">$$P_v=\frac{E_k}{V}=\frac{\frac{1}{2}(\rho V)v^2}{V}=\frac{1}{2}\rho v^2 \tag{4.3}$$</div>
+        <div class="callout"><div class="callout-title">工程理解</div><p>$\frac{1}{2}\rho v^2$ 的量綱是能量密度，也是伯努利方程中速度水頭對應的壓力項；在風管設計與測量中通常稱為速度壓或動壓。</p></div>
+
+        <h2>4.2 HVAC 風管風速轉換範例</h2>
+        <p>假設標準空氣密度 $\rho=1.20\,\mathrm{kg/m^3}$，風管平均風速 $v=12.0\,\mathrm{m/s}$：</p>
+        <div class="formula">$$P_v=\frac{1}{2}\times1.20\times(12.0)^2=0.60\times144=86.4\,\mathrm{Pa} \tag{4.4}$$</div>
+        <p>換算為水柱高度：</p>
+        <div class="formula">$$86.4\,\mathrm{Pa}\div9.81\,\mathrm{Pa/mmAq}\approx8.81\,\mathrm{mmAq} \tag{4.5}$$</div>
+        <p>因此，該風管截面處的動壓約為 <strong>$86.4\,\mathrm{Pa}$（約 $8.81\,\mathrm{mmAq}$）</strong>。</p>
+
+        <h2>4.3 使用公式時的邊界條件</h2>
+        <ul>
+          <li>速度壓應使用同一截面上的代表性平均速度與當地空氣密度。</li>
+          <li>密度差壓的正負號取決於壓差定義；本報告採 $\Delta\rho=\rho_{out}-\rho_{in}$。</li>
+          <li>實際自然通風量還會受到開口面積、流量係數、摩擦損失、風壓與中性壓力面位置影響，$\Delta P=\Delta\rho gh$ 是理想化的壓差估算。</li>
+        </ul>
+      </main>
+    </div>
+
+    <footer class="report-footer">本報告為 HVAC 基礎原理與計算教學文件；實際設計請依現場條件、設備性能及適用法規進一步覆核。</footer>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var headers = document.querySelectorAll('.content h1');
+      var list = document.getElementById('toc-list');
+      headers.forEach(function (header, index) {
+        var id = 'section-' + (index + 1);
+        header.id = id;
+        var link = document.createElement('a');
+        link.href = '#' + id;
+        link.textContent = header.textContent;
+        link.className = 'toc-link';
+        list.appendChild(link);
+      });
+    });
+  </script>
+</body>
+</html>
