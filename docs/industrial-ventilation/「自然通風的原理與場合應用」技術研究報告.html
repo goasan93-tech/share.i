@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自然通風的原理與場合應用 技術研究報告</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+  text-align: left;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">自然通風的原理與場合應用 技術研究報告</h1>
+  <p class="report-sub">以自然通風方式達成基本通風需求、散熱目的、節能減碳之精神</p>
+  <p>研究組員：李世權 Claude Gemini</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+<h1>1. 前言</h1>
+<h2>1.1 研究背景與動機</h2>
+<p>在全球節能減碳政策趨勢下，如何利用免電力的自然通風來調節室內的溫度是很值得研究探討的項目。依《氣候變遷因應法》及《能源管理法》相關規範，建築物節能已成為法定義務，其中自然通風（Natural Ventilation）作為一種無動力或低動力之被動式設計手段，能在不消耗額外電能的前提下，達成基本換氣需求、室內散熱及室內空氣品質（IAQ, Indoor Air Quality）維護之三重目的，是建築節能設計中最基礎、最經濟且最具永續精神的技術策略。</p>
+<p>台灣屬於亞熱帶氣候，春秋季氣候相對舒適涼爽，具備發展自然通風之氣候條件，惟實務設計上常因不了解如何應用、不清楚法規規定、建物開口設計不足或忽略風壓與浮力效應之交互作用，導致自然通風效果不彰，導致仍須依賴機械通風及空調，錯失利用大自然免費的風能。</p>
+<h2>1.2 研究目的與範疇</h2>
+<p>本報告旨在系統性地整理自然通風之物理原理、法定設計基準、計算方法及應用場合，做為規劃設計階段參考應用。研究範疇涵蓋：</p>
+<ul>
+<li>自然通風驅動力原理（風壓效應、浮力效應／煙囪效應）之公式推導</li>
+<li>台灣現行法規（建築技術規則、室內空氣品質管理法、綠建築評估手冊等）之自然通風設計基準</li>
+<li>開口面積、流量係數、換氣次數等設計參數之計算方法</li>
+<li>高溫廠房、一般建築、住宅、綠建築、消防排煙、地下室等六大應用場合之計算範例</li>
+<li>自然通風之設計條件說明</li>
+</ul>
+<h1>2. 自然通風基本概念</h1>
+<h2>2.1 自然通風之定義與功能</h2>
+<p>自然通風係指不依賴機械動力，僅利用建築物開口在風壓效應與浮力效應（煙囪效應）驅動下，使室內外空氣自然交換之通風方式。其核心精神涵蓋三大構面：</p>
+<ul>
+<li>基本換氣需求：稀釋室內二氧化碳（$CO_2$, Carbon Dioxide &lt; 1000ppm）及污染物濃度，維持室內空氣品質</li>
+<li>散熱目的：排除室內熱負荷（人員、設備機具等），降低空調負荷或取代空調運轉時間</li>
+<li>節能減碳精神：利用自然風以降低機械通風與空調系統之用電量，減少溫室氣體排放</li>
+</ul>
+<p>自然通風之法定核心依據為《建築技術規則建築設計施工編》第43條（通風），其明確規定：</p>
+<ul>
+<li>一般居室及浴廁：有效通風面積 ≥ 樓地板面積 5%</li>
+<li>廚房：有效通風開口面積 ≥ 樓地板面積 10%，且不得小於 0.8 m²；樓地板面積 ≥ 100 m² 應另設排除油煙設備</li>
+<li>戲院、電影院、演藝場、集會堂等：有效通風面積未達樓地板面積 10% 者，應設置機械通風設備</li>
+</ul>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">《職業安全衛生法規》體系下之《有機溶劑中毒預防規則》第2條，亦以開口面積未達底面積 1/20（5%）作為「通風不充分之室內作業場所」之法定認定門檻，與建築法規之5%基準相互印證，顯示台灣不同法規體系對自然通風開口比例之基本共識。</div></div>
+
+<p><strong>表2.1　室內空氣品質標準（判定通風是否充分之量化基準）</strong></p>
+<p>依《室內空氣品質標準》第2條，公告場所應符合下列管制值，可作為自然通風設計成效之驗證依據：</p>
+<table>
+<thead>
+<tr>
+<th>污染物項目</th>
+<th>標準值</th>
+<th>單位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>二氧化碳 (CO2)</td>
+<td>八小時值 1,000</td>
+<td>ppm</td>
+</tr>
+<tr>
+<td>一氧化碳 (CO)</td>
+<td>八小時值 9</td>
+<td>ppm</td>
+</tr>
+<tr>
+<td>甲醛 (HCHO)</td>
+<td>一小時值 0.08</td>
+<td>ppm</td>
+</tr>
+<tr>
+<td>總揮發性有機化合物 (TVOC)</td>
+<td>一小時值 0.56</td>
+<td>ppm</td>
+</tr>
+<tr>
+<td>細菌 (Bacteria)</td>
+<td>最高值 1,500</td>
+<td>CFU/m³</td>
+</tr>
+<tr>
+<td>真菌 (Fungi)</td>
+<td>最高值 1,000（室內外比值≦1.3者不在此限）</td>
+<td>CFU/m³</td>
+</tr>
+<tr>
+<td>懸浮微粒 PM10</td>
+<td>二十四小時值 75</td>
+<td>μg/m³</td>
+</tr>
+<tr>
+<td>懸浮微粒 PM2.5</td>
+<td>二十四小時值 35</td>
+<td>μg/m³</td>
+</tr>
+<tr>
+<td>臭氧 (O3)</td>
+<td>八小時值 0.06</td>
+<td>ppm</td>
+</tr>
+</tbody>
+</table>
+<p>依《室內空氣品質管理法》第6條及第一批、第二批公告場所公告，百貨賣場、學校、圖書館、醫院、車站等特定場所之所有人、管理人或使用人負有訂定室內空氣品質維護管理計畫、實施定期檢驗測定之法定義務；若場所以自然通風作為主要通風手段，該維護管理計畫應納入通風設計說明作為佐證文件。</p>
+<h2>2.2 自然通風與機械通風之比較</h2>
+<p><strong>表2.2　自然通風與機械通風比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>自然通風</th>
+<th>機械通風</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>動力來源</td>
+<td>風壓、浮力（無動力或低動力）</td>
+<td>風機等動力設備</td>
+</tr>
+<tr>
+<td>能源消耗</td>
+<td>極低（僅無動力扇軸承等維護）</td>
+<td>持續用電</td>
+</tr>
+<tr>
+<td>換氣量穩定性</td>
+<td>受風速、溫差影響，較不穩定</td>
+<td>可精確控制</td>
+</tr>
+<tr>
+<td>初設成本</td>
+<td>較低（開口、風道）</td>
+<td>較高（設備、風管、配電）</td>
+</tr>
+<tr>
+<td>維護成本</td>
+<td>低</td>
+<td>中至高（定期保養、耗材更換）</td>
+</tr>
+<tr>
+<td>適用場合</td>
+<td>一般居室、高溫廠房、地下室（開口充足時）</td>
+<td>密閉空間、無適當開口、有害氣體場所</td>
+</tr>
+<tr>
+<td>節能減碳效益</td>
+<td>高</td>
+<td>低（但可搭配變頻等技術降低耗能）</td>
+</tr>
+</tbody>
+</table>
+<h2>2.3 發展自然通風最理想的氣候條件</h2>
+<p>發展自然通風最理想的氣候條件，是溫帶氣候（Temperate Climate）或具有明顯過渡季（春秋兩季）的地區。在這些氣候條件下，戶外的溫度與濕度大多處於人體舒適範圍內，不需依賴空調就能達到良好的室內冷卻與換氣效果。</p>
+<p>要評估一個地區是否適合長期或季節性發展自然通風，主要取決於以下四大氣候指標：</p>
+<p><strong>(1) 溫度條件（最關鍵因素）</strong></p>
+<ul>
+<li>理想區間：戶外氣溫介於 24±3°C</li>
+<li>應用邏輯：<ul>
+<li>當戶外氣溫在此區間時，直接引進外氣（直接通風）能提供最舒適的體感</li>
+<li>日夜溫差大的地區（如大陸性氣候或半乾旱地區）也非常適合發展夜間通風（Night Ventilation），利用夜間涼爽的空氣冷卻建築結構物（如混凝土、磚牆），以降低隔天白天的空調負荷</li>
+<li>如果戶外氣溫過高（&gt;35°C）或過低（寒冬），自然通風會引進極端熱量或冷空氣，反而增加建築物的能源消耗</li>
+</ul>
+</li>
+</ul>
+<p><strong>(2) 濕度條件</strong></p>
+<ul>
+<li>理想區間：戶外相對濕度介於 50±10％RH</li>
+<li>應用邏輯：高濕度限制：像台灣等高溫高濕的熱帶/亞熱帶地區，夏季若相對濕度常年超過80%，即便有風，汗水也難以蒸發，人體便無法透過氣流達到顯著的散熱效果。此時硬要採用自然通風，反而會把高濕氣帶入室內，造成室內反潮或悶熱。</li>
+</ul>
+<p><strong>(3) 風速與風向（動力來源）</strong></p>
+<ul>
+<li>理想風速：環境風速介於 1.5 m/s 至 5.0 m/s 之間</li>
+<li>應用邏輯：<ul>
+<li>微風（&gt;1.5 m/s）：足以驅動建築物的「風壓通風」（對流風）。以台灣為例，過渡季或夏季的季風（如西南季風）若能配合良好的建築座向（如坐北朝南），通風潛力極高。</li>
+<li>風速過大（&gt;7～10 m/s）：風壓過大容易吹落室內物品、造成強風噪音或結構安全問題，必須關閉窗戶。</li>
+<li>無風狀態：若戶外完全無風，則必須依賴「熱壓通風」（利用室內外溫差產生的浮力效應，如煙囪效應），這需要室內、外具備一定的溫差才有辦法運作。</li>
+</ul>
+</li>
+</ul>
+<p><strong>(4) 空氣品質與環境雜音限制條件</strong></p>
+<ul>
+<li>理想條件：戶外空氣品質良好（低PM2.5、無過敏原或異味），且周邊環境安靜。</li>
+<li>應用邏輯：自然通風屬於非過濾式的空氣交換。如果基地鄰近大馬路、工業區（高噪音、高空污），即使氣候極為涼爽，也會因為無法開窗而失去發展自然通風的條件。</li>
+</ul>
+<p><strong>表2.3　綜合氣候適用性總覽</strong></p>
+<table>
+<thead>
+<tr>
+<th>氣候類型</th>
+<th>自然通風適用性</th>
+<th>主要策略與限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>溫帶/海洋性氣候</td>
+<td>⭐⭐⭐⭐⭐ (極佳)</td>
+<td>全年多數時間皆可直接開窗通風</td>
+</tr>
+<tr>
+<td>亞熱帶/季風氣候（如台灣、華南地區）</td>
+<td>⭐⭐⭐ (季節性)</td>
+<td>春秋過渡季（一年約有5~6個月）最適合利用自然通風；盛夏與寒冬則需搭配空調或機械通風（複合式通風）</td>
+</tr>
+<tr>
+<td>乾熱/沙漠氣候</td>
+<td>⭐⭐ (限夜間)</td>
+<td>白天高溫不適合，但夜間涼爽，極適合發展夜間通風或結合水蒸氣蒸發冷卻技術（如傳統風塔）</td>
+</tr>
+<tr>
+<td>赤道熱帶雨林氣候</td>
+<td>⭐ (效果有限)</td>
+<td>全年高溫高濕，單靠自然通風很難達到人體熱舒適，通常必須依賴機械除濕或空調降溫除濕</td>
+</tr>
+</tbody>
+</table>
+<h2>2.4 適用自然通風的條件</h2>
+<p>適合採用自然通風之場所，主要取決於兩大核心：場所的「空間使用特性」（如人員密度、發熱量、是否需要精密控制溫濕度）以及場所的「周邊環境條件」（如空氣品質、噪音程度）。以下依空間屬性與功能歸納分類：</p>
+<p><strong>(1) 低人員密度的住宅與生活空間</strong></p>
+<p>這類空間的使用人數固定、發熱量低，且使用者對室內環境有高度的自主控制權（可隨時開關窗）。</p>
+<ul>
+<li>一般住宅與公寓：客廳、臥室等，透過客廳與陽台的對向開窗，能形成良好的風徑（風壓通風）</li>
+<li>鄉村透天與中低層住宅：周邊遮蔽物少、風場較穩定，且通常遠離城市熱島效應，自然通風效果極佳</li>
+<li>宿舍居室：在非極端氣候的季節，能提供充足的新鮮空氣，維持健康的生活環境</li>
+</ul>
+<p><strong>(2) 間歇性使用或高挑高的公共與半戶外空間</strong></p>
+<p>這類空間通常體積龐大、樓高較高，極適合利用熱壓通風（煙囪效應），讓熱空氣從上方排氣窗排出，並由低位引入涼爽空氣。</p>
+<ul>
+<li>學校教室與圖書館閱覽室：特別是在春秋過渡季，自然通風能提供高換氣量，有助於維持學生專注力並降低二氧化碳濃度</li>
+<li>體育館與活動中心：挑高空間大，只要設置高位排氣窗與低位進氣窗，即使在無風的日子也能產生良好的熱對流</li>
+<li>交通樞紐的候車大廳：如高鐵站、火車站、捷運站等低熱負荷的半開放式月台或大廳，利用大面積開口引入自然風，可大幅節省空調能耗</li>
+<li>宗教建築（教堂、寺廟）：傳統上多具備挑高與厚重牆體的設計，能有效維持室內涼爽並自然排煙</li>
+</ul>
+<p><strong>(3) 特殊功能性與低污染的工業/農業場所</strong></p>
+<p>這類場所通常內部發熱量高，但不需要精密控制溫濕度，利用自然通風可以帶走大量餘熱。</p>
+<ul>
+<li>中低污染的工業廠房與倉庫：如傳統機械加工廠、物流倉庫、大型工業廠房，利用屋頂的屋脊型通風器（Vented Ridge）或無動力渦輪排風扇，配合牆面的百葉窗，能有效排除製程產生的熱量</li>
+<li>溫室與生態溫室：農業種植需要大量換氣與適度降溫，透過側牆與天窗的連動控制，可以達到成本最低的通風效果</li>
+<li>半開放式市場與展覽館：人潮與攤位發熱量大，通常會結合大型吊掛式軸流扇與大面積開窗，加速空氣流動</li>
+</ul>
+<p><strong>(4) 輔助性與非長期停留的空間</strong></p>
+<p>這類空間在建築中通常屬於過渡區域，不需要全天候維持嚴格的空調舒適度。</p>
+<ul>
+<li>建築物的中庭（Atrium）與走廊：現代綠建築常用大型中庭作為「建築的肺」，引導整棟建築的空氣循環。</li>
+<li>樓梯間與電梯廳：自然垂直的通道天然具備煙囪效應的條件，適合設置排氣窗。</li>
+<li>公共化妝室：透過常態性的自然通風，能有效排除異味並保持乾燥（但需注意防範風向倒灌）。</li>
+</ul>
+<h2>2.5 不適合採用自然通風之場所</h2>
+<p>與上述場所相反，以下空間出於安全、衛生、精密控制或高密度的考量，必須嚴格採用機械通風（AC/HVAC）：</p>
+<ul>
+<li>醫療場所（如手術室、隔離病房）：需要嚴格的落塵量控制、正負壓差管理與高效濾網（HEPA）過濾</li>
+<li>高科技晶圓廠、無塵室與實驗室：溫濕度與懸浮微粒必須控制在極小誤差範圍內</li>
+<li>資訊機房（Data Center）：伺服器對溫度與相對濕度極度敏感</li>
+<li>高噪音或高污染周邊的建物：若基地緊鄰高速公路、鐵道或石化廠，開窗會引進嚴重的噪音與空污</li>
+<li>百貨公司、電影院與地下街：人員極度密集且無外牆開窗條件，必須依賴機械空調</li>
+</ul>
+<h2>2.6 不適合採用自然通風之條件</h2>
+<p><strong>表2.4　自然通風不適宜條件</strong></p>
+<p>下列條件之空間，不宜僅仰賴自然通風，應改採機械通風或以自然通風作為輔助手段：</p>
+<table>
+<thead>
+<tr>
+<th>不適宜條件</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>無鄰外牆</td>
+<td>空間四周無外牆可設置開口，無法形成自然通風路徑</td>
+</tr>
+<tr>
+<td>樓層高度／深度受限</td>
+<td>室內深度過大之單側開窗空間，或樓層淨高受限無法形成有效浮力驅動高差</td>
+</tr>
+<tr>
+<td>密閉大平面建築</td>
+<td>巨大平面且密閉開窗之建築物，即使試行評估亦難有良好通風效果</td>
+</tr>
+<tr>
+<td>噪音／污染源鄰近開口</td>
+<td>開口鄰近道路噪音、廢氣或其他污染源，開窗將引入污染，得不償失</td>
+</tr>
+<tr>
+<td>有害氣體洩漏風險場所</td>
+<td>儲存可燃性、毒性氣體或化學品之場所，依高壓氣體相關法規宜採受控之機械通風而非仰賴自然開口</td>
+</tr>
+<tr>
+<td>室內溫濕度條件受限</td>
+<td>空間有嚴格溫濕度管制需求（如恆溫恆濕室、精密儀器室、無塵室、食品低溫作業區、藏書庫等），自然通風引入外氣易造成溫濕度波動超出容許範圍，不宜採用純自然通風，應改採機械空調或自然通風僅作為輔助換氣手段</td>
+</tr>
+<tr>
+<td>開口面積未達法定門檻</td>
+<td>開口面積低於第43條5%或職安法規5%門檻，即屬法規認定通風不充分場所</td>
+</tr>
+</tbody>
+</table>
+<h1>3. 自然通風驅動力原理</h1>
+<h2>3.1 風壓效應（Wind Pressure Effect）原理與公式推導</h2>
+<h3>3.1.1 風壓係數 $C_p$ 之定義與來源</h3>
+<p>風壓效應係建築物迎風面與背風面因風速差異形成之壓力差所驅動之通風現象。壓力差以無因次之風壓係數（$C_p$, Pressure Coefficient）表示，定義為建築物表面某點之風壓與參考動壓之比值。$C_p$ 值受風速、風向角、建築物幾何形狀及周圍地況影響，通常迎風面為正值（約+0.5至+0.8），背風面及側風面為負值（約-0.2至-0.6），須經風洞試驗或CFD（Computational Fluid Dynamics 計算流體力學）模擬取得，亦可參考AIVC（Air Infiltration and Ventilation Centre）或TPU（Tokyo Polytechnic University）風壓係數資料庫。</p>
+<h3>3.1.2 伯努利方程應用與風壓通風量公式推導</h3>
+<p>依伯努利方程，迎風面與背風面之壓力差可表示為：</p>
+<div class="math-block">$$
+\Delta P = \frac{1}{2} \times \rho \times V^2 \times (C_{p1} - C_{p2}) \tag{3.1}
+$$</div>
+<p>其中：$\Delta P$＝室內外壓力差（Pa）；$\rho$＝空氣密度（約1.2 kg/m³，非精密計算值）；$V$＝參考高度處之室外風速（m/s）；$C_{p1}$、$C_{p2}$＝迎風面與背風面之風壓係數。</p>
+<p>該壓力差驅動空氣流經開口，依流量係數關係，可得風壓通風量公式：</p>
+<div class="math-block">$$
+Q = C_{d} \times A \times \sqrt{\frac{2\Delta P}{\rho}} \tag{3.2}
+$$</div>
+<p>其中：$Q$＝風壓通風量（m³/s）；$C_d$＝開口流量係數（約0.6～0.65）；$A$＝開口有效面積（m²）。</p>
+<h3>3.1.3 風壓效應影響因子</h3>
+<ul>
+<li>室外風速：風速愈大，通風量愈大，惟台灣夏季常見無風或微風情況，風壓效應不穩定</li>
+<li>風向角：開口正對盛行風向時效果最佳，偏角增大則$C_p$差值下降</li>
+<li>建築物形狀與高寬比：影響迎背風面壓力分布</li>
+<li>開口位置：迎風面與背風面均設置開口，較單側開窗效果顯著提升（可達3倍以上，詳4.3節對流窗係數說明）</li>
+</ul>
+<h2>3.2 浮力效應／煙囪效應（Stack Effect）原理與公式推導</h2>
+<p>浮力效應源自室內外空氣溫度差異所形成之密度差，在重力場作用下產生自然熱對流，形成由低處進氣、高處排氣之氣流路徑，常見於高溫廠房重力天窗、垂直豎井通風等應用。</p>
+<h3>3.2.1 壓力差來自密度差</h3>
+<p>假設進、排氣口中心垂直高差為$H$，內部熱空氣密度為$\rho_{in}$，外部冷空氣密度為$\rho_{out}$，其壓力差為：</p>
+<div class="math-block">$$
+\Delta P = g \times H \times (\rho_{out} - \rho_{in}) \tag{3.3}
+$$</div>
+<h3>3.2.2 密度與溫度之關係（理想氣體定律）</h3>
+<p>由理想氣體定律 $P=\rho RT$，可得 $\rho \propto \dfrac{1}{T}$。在同一大氣壓下，密度差可近似表示為：</p>
+<div class="math-block">$$
+\rho_{out} - \rho_{in} \approx \rho \times \frac{\Delta T}{T} \tag{3.4}
+$$</div>
+<p>其中$\rho$為參考密度，$T$為外氣絕對溫度（K），$\Delta T$為內外空氣溫差。空氣密度與溫度之簡化關係式為：</p>
+<div class="math-block">$$
+\rho\,[\text{kg/m}^3] = \frac{1.2928 \times 273.15}{t[^\circ C]+273.15} = \frac{353.15}{t[^\circ C]+273.15} \tag{3.5}
+$$</div>
+<p>若考慮空氣中水蒸氣含量對密度之影響，可採用下列精算公式（濕空氣理想氣體方程式)：</p>
+<div class="math-block">$$
+\rho_{air}= \frac{P_{atm}}{R_{da} \cdot T_{abs}} \times \frac{1 + W_{air}}{1 + 1.608 \times W_{air}} \quad [\text{kg/m}^3] \tag{3.6}
+$$</div>
+<p><strong>表3.1　濕空氣密度精算公式符號定義</strong></p>
+<table>
+<thead>
+<tr>
+<th>符號</th>
+<th>單位</th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$P_{atm}$</td>
+<td>Pa</td>
+<td>大氣壓力</td>
+</tr>
+<tr>
+<td>$R_{da}$</td>
+<td>J/(kg·K)</td>
+<td>乾空氣氣體常數（287.055）</td>
+</tr>
+<tr>
+<td>$T_{abs}$</td>
+<td>K</td>
+<td>絕對溫度</td>
+</tr>
+<tr>
+<td>$W_{air}$</td>
+<td>kg水/kg乾空氣</td>
+<td>比濕（Humidity Ratio）</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">本精算公式適用於需精確考慮大氣壓力、濕度影響之場合（如高濕度地區之浮力效應計算），一般設計初估仍可採前述簡化式（式3.5）。參考來源：ASHRAE Fundamentals Handbook 2021, Ch.1（濕空氣性質）；Magnus, G. (1844)；Stull, R. (2011), <em>J. Appl. Meteor. Climatol.</em>, 50(11), 2267–2269（濕球溫度計算）。</div></div>
+
+<h3>3.2.3 應用伯努利方程轉換為流速</h3>
+<p>壓力差驅動空氣流動並轉換為動能，依伯努利方程：</p>
+<div class="math-block">$$
+\Delta P = \frac{1}{2}\rho V^2 \tag{3.7}
+$$</div>
+<p>代入前式並消去$\rho$，得浮力效應驅動之空氣流速：</p>
+<div class="math-block">$$
+V = \sqrt{2gH \times \frac{\Delta T}{T}} \tag{3.8}
+$$</div>
+<h3>3.2.4 氣流量公式</h3>
+<p>考慮開口有效面積$A$及經驗流量係數$C$（一般取0.6～0.7，反映開口形狀與摩擦損失），浮力效應氣流量公式為：</p>
+<div class="math-block">$$
+Q = C \times A \times V = C \times A \times \sqrt{\frac{2gH \times \Delta T}{T}} \tag{3.9}
+$$</div>
+<p><strong>表3.2　浮力效應氣流量公式符號定義</strong></p>
+<table>
+<thead>
+<tr>
+<th>符號</th>
+<th>單位</th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$Q$</td>
+<td>m³/s</td>
+<td>氣體體積流量</td>
+</tr>
+<tr>
+<td>$C$</td>
+<td>無單位</td>
+<td>開口流量阻力係數（約0.6～0.7）</td>
+</tr>
+<tr>
+<td>$A$</td>
+<td>m²</td>
+<td>開口有效面積</td>
+</tr>
+<tr>
+<td>$g$</td>
+<td>m/s²</td>
+<td>重力加速度（9.81）</td>
+</tr>
+<tr>
+<td>$H$</td>
+<td>m</td>
+<td>進／出氣口中心垂直高度差</td>
+</tr>
+<tr>
+<td>$\Delta T$</td>
+<td>K 或 °C</td>
+<td>內外空氣溫差（正值）</td>
+</tr>
+<tr>
+<td>$T$</td>
+<td>K</td>
+<td>外氣絕對溫度（攝氏+273.15）</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2.5 應用限制</h3>
+<ul>
+<li>本式為近似推估值，實際設計應考慮風壓干擾、開口摩擦損失與局部風道形狀</li>
+<li>$T$應以開口處參考之絕對溫度（K）計算</li>
+<li>若需更精準估算，可用CFD或現地量測佐證</li>
+</ul>
+<h2>3.3 風壓效應與浮力效應之混合作用機制</h2>
+<p>實務上兩效應多同時存在並相互疊加或抵銷。當風壓與浮力驅動方向一致時（如夏季迎風面低處進氣、屋頂高處排氣），通風量可顯著提升；反之若風壓由高處吹入而浮力欲由高處排出，兩者將互相干擾，降低整體通風效果。設計時應以較保守之單一效應計算作為最小保證值，並透過進排氣口配置（詳4.3節）使兩效應盡量同向疊加。</p>
+<h1>4. 自然通風系統設計參數與方法</h1>
+<h2>4.1 開口面積與流量係數</h2>
+<h3>4.1.1 法定基準對照</h3>
+<p>台灣自然通風開口面積之法定基準，以《建築技術規則建築設計施工編》第43條為最核心依據，其餘相關基準對照如下：</p>
+<p><strong>表4.1　開口面積法定基準對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>法規依據</th>
+<th>適用對象</th>
+<th>門檻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建築設計施工編第43條第1款</td>
+<td>一般居室及浴廁</td>
+<td>有效通風面積 ≥ 樓地板面積5%</td>
+</tr>
+<tr>
+<td>建築設計施工編第43條第2款</td>
+<td>廚房</td>
+<td>有效通風面積 ≥ 樓地板面積10%，且 ≥ 0.8 m²</td>
+</tr>
+<tr>
+<td>建築設計施工編第43條第3款</td>
+<td>戲院、電影院、演藝場等</td>
+<td>未達樓地板面積10%應設機械通風</td>
+</tr>
+<tr>
+<td>有機溶劑中毒預防規則第2條</td>
+<td>職安法規－室內作業場所</td>
+<td>開口 &lt; 底面積1/20（5%）或全面積3%者為「通風不充分」</td>
+</tr>
+<tr>
+<td>建築設計施工編第62條</td>
+<td>一般停車空間</td>
+<td>有效通風面積 ≥ 停車樓地板面積5%</td>
+</tr>
+</tbody>
+</table>
+<h3>4.1.2 自然開口（無遮蔽開口）有效開孔率</h3>
+<p>完全開放無遮蔽之開口（如推開窗、對開窗），其有效開孔率可視為開口面積之100%；橫拉窗因窗扇重疊，有效開孔率約為開口面積之50%（僅一半可同時開啟）。</p>
+<h3>4.1.3 進氣百葉有效開孔率（防雨型與非防雨型）</h3>
+<p>百葉進氣口之有效開孔率須依AMCA Standard 500-L（美國空調風管協會百葉測試標準）之測試數據認定或vendor data，不可逕以外觀面積計算：</p>
+<p><strong>表4.2　進氣百葉有效開孔率</strong></p>
+<table>
+<thead>
+<tr>
+<th>百葉型式</th>
+<th>有效開孔率（Free Area Ratio）</th>
+<th>適用場合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>非防雨型百葉（Non-storm-proof）</td>
+<td>約45%～55%</td>
+<td>室內或有遮簷保護之戶外開口</td>
+</tr>
+<tr>
+<td>防雨型百葉（Storm-proof / Wind-driven Rain Louver）</td>
+<td>約25%～40%（葉片加密以阻擋雨水滲入）</td>
+<td>直接暴露於風雨之戶外開口</td>
+</tr>
+</tbody>
+</table>
+<p>選用原因：防雨型百葉因葉片間距較密、角度較陡以阻擋風driven雨水滲入，其通風阻力較大、有效開孔率較低，設計時須以較大之百葉面積補償，方能達到所需通風量；非防雨型百葉阻力較小，但僅適用於有遮蔽保護之開口位置。</p>
+<h2>4.2 自然通風設備構造與排風管設計公式</h2>
+<p>《建築技術規則建築設計施工編》第44條規定自然通風設備之構造，並提供一套法定簡化設計公式，用於計算被動式排風豎管之有效斷面積，可作為第3.2節浮力效應理論公式之法規對照設計法：</p>
+<ul>
+<li>進風口、排風口及排風管道應具防雨、防蟲構造</li>
+<li>排風管道應以不燃材料建造，儘可能豎立並直通戶外</li>
+</ul>
+<div class="math-block">$$
+A_{v} = \frac{A_{f}}{250\sqrt{h}} \tag{4.1}
+$$</div>
+<p>其中：$A_v$＝排風管之有效斷面積（m²）；$A_f$＝居室之樓地板面積（m²）（該居室設有其他有效通風開口時，應為居室樓地板面積減去有效通風面積20倍後之差）；$h$＝自進風口中心量至排風管頂部出口中心之高度（m）。</p>
+<p>此外：進風口及排風口之有效面積不得小於排風管之有效斷面積；進風口位置應設於天花板高度1/2以下部份，並開向與外氣直流通之空間。</p>
+<h2>4.3 進排風口配置原則</h2>
+<ul>
+<li>單側開窗（僅能形成局部對流，通風效益較低）與雙向對流開窗（可形成貫穿室內之對流路徑，效益顯著較高）應優先採用後者</li>
+<li>依附錄一通風效益計算原則，可對流窗面積之通風效益係數為單側通風窗之3.0倍（詳6.3節VP公式）</li>
+<li>進、排氣口宜分設於建築物迎風面與背風面（或高低不同樓層），使風壓效應與浮力效應同向疊加</li>
+<li>對流通風路徑轉彎角度合計不得大於90°，且全程最小通道淨面積須確保1.0 m²以上，以維持有效對流</li>
+</ul>
+<h2>4.4 換氣次數（ACH）計算與需求對照</h2>
+<p>換氣次數（ACH, Air Changes per Hour）為空間每小時換氣量與空間體積之比值：</p>
+<div class="math-block">$$
+ACH = \frac{Q\,(\text{每小時通風量, m}^3/\text{hr})}{V\,(\text{空間體積, m}^3)} \tag{4.2}
+$$</div>
+<p>《建築技術規則建築設備編》第102條就各類用途空間之機械通風設計，訂有樓地板面積每平方公尺所需通風量基準（單位：m³/hr·m²），可作為自然通風設計換氣量之對照參考基準（節錄）：</p>
+<p><strong>表4.3　建築設備編第102條機械通風量基準（節錄）</strong></p>
+<table>
+<thead>
+<tr>
+<th>房間用途</th>
+<th>通風量 (m³/hr·m²)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>臥室、起居室、私人辦公室（容納人數不多）</td>
+<td>8</td>
+</tr>
+<tr>
+<td>辦公室、會客室</td>
+<td>10</td>
+</tr>
+<tr>
+<td>會議室、候車室、候診室（容納人數較多）</td>
+<td>15</td>
+</tr>
+<tr>
+<td>營業用餐廳、酒吧、咖啡館</td>
+<td>25</td>
+</tr>
+<tr>
+<td>戲院、電影院、演藝場、集會堂觀眾席</td>
+<td>75</td>
+</tr>
+<tr>
+<td>廚房（營業用）</td>
+<td>60</td>
+</tr>
+<tr>
+<td>汽車庫（機械通風時）</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+<h2>4.5 換氣次數（ACH）經驗值對照與國際標準補充</h2>
+<h3>4.5.1 常用空間換氣次數（ACH）經驗值對照表</h3>
+<p>換氣次數（ACH）是指單位時間（每小時）內，進入空間的風量與該空間淨體積的比值，為HVAC (Heating, Ventilation, and Air Conditioning 暖通空調) 工程中進行氣流組織規劃與「概算」的指標，下表數值為業界經驗參考值，非法規強制基準：</p>
+<p><strong>表4.4　常用空間換氣次數（ACH）經驗值對照表</strong></p>
+<table>
+<thead>
+<tr>
+<th>空間類別</th>
+<th>具體空間名稱</th>
+<th>建議換氣次數 (ACH)</th>
+<th>選用原因與說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>住宅空間</td>
+<td>住宅一般房間/臥室</td>
+<td>0.5～1.5</td>
+<td>滿足基本人體呼吸需求，維持基本IAQ</td>
+</tr>
+<tr>
+<td></td>
+<td>客廳/餐廳</td>
+<td>1.0～2.0</td>
+<td>因應人員活動與密集度變化微調</td>
+</tr>
+<tr>
+<td></td>
+<td>浴室/廁所</td>
+<td>6.0～10.0</td>
+<td>加速排除濕氣與異味（主要為負壓排風設計）</td>
+</tr>
+<tr>
+<td></td>
+<td>廚房</td>
+<td>10.0～15.0</td>
+<td>快速排除烹調油煙、燃氣廢氣與高顯熱</td>
+</tr>
+<tr>
+<td>商業/辦公</td>
+<td>一般辦公室</td>
+<td>2.0～4.0</td>
+<td>滿足一般密度辦公人員之舒適度與通風要求</td>
+</tr>
+<tr>
+<td></td>
+<td>會議室</td>
+<td>4.0～8.0</td>
+<td>人員高密度聚集，需較高風量以抑制CO2濃度累積</td>
+</tr>
+<tr>
+<td></td>
+<td>百貨公司/商場</td>
+<td>3.0～6.0</td>
+<td>因應高流動人潮帶來的熱負荷與空氣品質需求</td>
+</tr>
+<tr>
+<td></td>
+<td>百貨專櫃/餐廳堂食區</td>
+<td>6.0～10.0</td>
+<td>快速稀釋食物氣味與高密度人群之二氧化碳</td>
+</tr>
+<tr>
+<td>教育機構</td>
+<td>一般教室</td>
+<td>4.0～6.0</td>
+<td>避免學生因$CO_2$濃度過高而引發昏睡或注意力不集中</td>
+</tr>
+<tr>
+<td></td>
+<td>化學/生物實驗室</td>
+<td>8.0～12.0</td>
+<td>保持負壓控制，確保化學揮發物或氣膠及時排出</td>
+</tr>
+<tr>
+<td>醫療設施</td>
+<td>一般病房</td>
+<td>4.0～6.0</td>
+<td>兼顧溫濕度控制、潔淨度與基礎換氣</td>
+</tr>
+<tr>
+<td></td>
+<td>手術室 (Operating Room)</td>
+<td>15.0～25.0</td>
+<td>依ASHRAE Standard 170要求，維持高潔淨度與正壓控制</td>
+</tr>
+<tr>
+<td></td>
+<td>負壓隔離病房</td>
+<td>12.0～15.0</td>
+<td>確保病菌氣膠不外洩，符合感染控制標準</td>
+</tr>
+<tr>
+<td>工業/特殊</td>
+<td>機械房/變電室</td>
+<td>4.0～10.0</td>
+<td>以排除設備運轉產生之高顯熱為主要考量</td>
+</tr>
+<tr>
+<td></td>
+<td>地下停車場</td>
+<td>4.0～6.0</td>
+<td>稀釋並排除車輛廢氣與一氧化碳（CO）</td>
+</tr>
+</tbody>
+</table>
+<h3>4.5.2 通風量與換氣次數計算公式與情境範例</h3>
+<div class="math-block">$$
+ACH = \frac{Q}{V} \tag{4.3}
+$$</div>
+<p>情境範例：某中型會議室，長度$L=8\text{ m}$，寬度$W=6\text{ m}$，淨高度$H=3\text{ m}$。若預計選用換氣次數$ACH=6.0$次/hr，求所需之總通風量$Q$。</p>
+<p>由公式移項可得 $Q = ACH \times V$</p>
+<div class="math-block">$$
+V = 8\text{ m} \times 6\text{ m} \times 3\text{ m} = 144\text{ m}^3
+$$</div>
+<div class="math-block">$$
+Q = 6.0\,\text{次/hr} \times 144\text{ m}^3 = 864\text{ m}^3/\text{hr}
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：該會議室所需之設計通風風量為 <strong>864 m³/h (CMH)</strong>。</div></div>
+
+<h3>4.5.3 表格數據應用注意事項與法規合規性比較</h3>
+<p>在工程設計中使用ACH進行計算時，須注意其與法律規範及HVAC設計邊界條件的差異：</p>
+<ul>
+<li>空間淨高效應：ACH是基於體積估算。對於挑高空間（如6 m高的大廳），直接乘以高ACH會造成總風量過大，導致設備過度設計；反之，低天花板空間易導致估算風量不足。</li>
+<li>外氣量與總送風量的區分：衛生法規主要限制外氣量（新風量），目的在於稀釋二氧化碳及污染物；表格ACH一般指總送風量（包含循環風），用以處理顯熱、潛熱負荷及氣流組織。若直接將表中的ACH全數以100%外氣計算，將造成空調冰水主機負荷過高，大幅增加運轉能耗。</li>
+<li>動態人員密度變化：ACH為固定倍率，無法如VRP (Ventilation Rate Procedure) 般反映人員突增或減少之動態情境。</li>
+</ul>
+<p>與國內外標準比較（僅供參考，非逐條法規對照）：</p>
+<p><strong>表4.5　ACH經驗值與國內外標準比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>空間類型</th>
+<th>表格建議ACH</th>
+<th>相關參考基準</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>住宅/一般辦公室</td>
+<td>0.5～4.0</td>
+<td>—</td>
+<td>表列數值若作為外氣量參考，能有效輔助將CO2控制於1000 ppm以下（依《室內空氣品質標準》）</td>
+</tr>
+<tr>
+<td>浴室/廁所</td>
+<td>6.0～10.0</td>
+<td>—</td>
+<td>實務上提升至6~10 ACH係為了加速抽濕與除臭</td>
+</tr>
+<tr>
+<td>地下停車場</td>
+<td>4.0～6.0</td>
+<td>⚠️一氧化碳濃度需另外核實確認</td>
+<td>可作為尖峰時段車輛廢氣快速稀釋與排出之設計參考，正式設計仍應以第139條機械通風風量規定（25 m³/hr·m²）為法定依據</td>
+</tr>
+<tr>
+<td>醫療手術室</td>
+<td>15.0～25.0</td>
+<td>ANSI/ASHRAE/ASHE Standard 170-2025, Ventilation of Health Care Facilities</td>
+<td>總換氣次數≥20 ACH，外氣≥4 ACH，屬國際通行醫療空調規範；2025年版新增「醫療照護設施可選用自然通風」之最低要求規定</td>
+</tr>
+</tbody>
+</table>
+<h3>4.5.4 工程審核：防範計算經驗數據誤用與規範澄清說明</h3>
+<p>為避免將經驗數據誤用於正式規劃設計，特此說明潛在誤區：</p>
+<ol>
+<li>防範「外氣」與「循環風」混淆：經驗表格中之ACH多屬「總送風量」。在進行冰水主機與冰水盤管選型時，必須明確拆解外氣比率，否則將產生嚴重的負荷計算錯誤與設備選用不當。</li>
+<li>現代法規計算標準之轉變（VRP雙軌計算法）：依據ANSI/ASHRAE Standard 62.1-2019, Ventilation for Acceptable Indoor Air Quality，現代居室外氣量計算已採用VRP (Ventilation Rate Procedure) 取代單一ACH法：</li>
+</ol>
+<div class="math-block">$$
+V_{ot} = \frac{R_{p} \times P_{z} + R_{a} \times A_{z}}{E_{v}} \tag{4.4}
+$$</div>
+<p>其中：$R_p$＝人均外氣量需求（L/s·person）；$P_z$＝區域設計入住人數；$R_a$＝單位面積外氣量需求（L/s·m²）；$A_z$＝區域樓板面積（m²）；$E_v$＝區域通風效率（Zone Air Distribution Effectiveness）</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">上表等經驗換算說法，若無法明確溯源至條文原文，於正式設計文件中應避免逕引為法規規定，僅得作為經驗參考值使用。</div></div>
+
+<h1>5. 自然通風應用場合</h1>
+<h2>5.1 高溫廠房自然排風</h2>
+<p>高溫廠房（如鑄造、熱處理、鍋爐間等）以浮力效應（煙囪效應）為主要驅動力，透過重力天窗、屋脊型通風器或高低開口設計，將室內熱氣由高處排出、冷空氣由低處補入，達到無動力散熱。設計時須計算室內外溫差、進排氣口垂直高差，並可搭配無動力旋轉通風扇或屋脊型自然通風器加強排風效果（計算範例詳6.1節）。</p>
+<h2>5.2 一般建築自然通風設計（辦公空間）</h2>
+<p>辦公空間屬人員密度較高之居室空間，設計時應同時滿足第43條有效通風面積5%之法定基準，以及第102條每人所需外氣量（一般辦公室約10 m³/hr·m²）之換氣需求，並儘量採可對流窗配置以提升通風效益（計算範例詳6.2節）。</p>
+<h2>5.3 住宅型自然通風（EEWH日常節能）</h2>
+<p>依《2026綠建築評估手冊－基本型BC》附錄一「建築物採光通風效益與空調節能率評估原則」，住宅型建築物（H1、H2類）可透過自然通風潛力VP（Ventilation Potential）指標，同時取得：</p>
+<ul>
+<li>室內環境品質（IEQ）構面：通風換氣環境評分F11～F15（依VP級距給10、40、60、80、100分）</li>
+<li>日常節能（EAC）構面：自然通風空調節能率Vac，反映間歇空調可節省之空調耗能比例</li>
+</ul>
+<p>此評估法為EEWH日常節能加分之關鍵操作依據，設計規劃時應優先增加可對流窗面積（效益為單側通風窗3倍），以同時提升IEQ評分與節能率（計算範例詳6.3節）。</p>
+<h2>5.4 綠建築與永續設計中的無動力通風應用</h2>
+<p>永續建築設計常結合重力通風塔、太陽能煙囪、雙層帷幕通風層等無動力通風手法，強化浮力效應驅動力（提高進排氣口高差H或提高排氣口溫度以增大ΔT），在不增加用電負荷之前提下提升通風效能，為綠建築評估手冊「日常節能」及「室內環境」指標之重要加分項目（計算範例詳6.4節）。</p>
+<h2>5.5 防火避難逃生排煙設計初步估算</h2>
+<p>依《建築技術規則建築設計施工編》第101條，自然排煙口之開口面積須符合：排煙口開口面積 ≥ 防煙區劃部份樓地板面積2%，且區劃範圍內任一部份至排煙口之水平距離不得超過45公尺；第102條另規定特別安全梯排煙室之窗戶或排煙口面積門檻（可開向戶外之窗戶≥2m²，兼排煙室使用時≥3m²；排煙口未設窗戶時≥4m²，兼排煙室使用時≥6m²）（計算範例詳6.5節）。</p>
+<h2>5.6 地下室通風（依規模適用不同法定門檻）</h2>
+<p>地下室及地下停車空間之自然通風適用性，依規模不同分為三層次法定規定：</p>
+<p><strong>表5.1　地下室通風法定門檻</strong></p>
+<table>
+<thead>
+<tr>
+<th>法規依據</th>
+<th>適用情境</th>
+<th>規定內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建築設計施工編第62條</td>
+<td>一般停車空間</td>
+<td>戶外開口有效通風面積 ≥ 停車樓地板面積5%，否則應設機械通風</td>
+</tr>
+<tr>
+<td>建築設計施工編第138條</td>
+<td>地面以下（地下）車庫</td>
+<td>應有二面以上直通戶外之通風口，或以機械通風設備替代</td>
+</tr>
+<tr>
+<td>建築設計施工編第139條</td>
+<td>停車樓地板面積 &gt; 500 m² 之大型車庫</td>
+<td>有效通風開口 ≥ 樓地板面積10%方可免機械通風；未達者應設機械通風，風量 ≥ 25 m³/hr·m²</td>
+</tr>
+</tbody>
+</table>
+<p>另依《建築物節約能源設計技術規範》附錄一，自然通風評估法不適用於不臨接外氣之地下建築空間，故地下室自然通風之前提為該空間須具備臨接外氣之開口條件，無對外開口之全地下空間應直接採機械通風設計（計算範例詳6.6節）。</p>
+<h1>6. 情境應用與計算範例</h1>
+<h2>6.1 案例一：高溫廠房自然排風量估算（含無動力旋轉通風扇、屋脊型通風器、開窗式排氣窗）</h2>
+<p>情境說明：某鑄造廠房室內溫度35°C，室外氣溫25°C，進排氣口中心垂直高差H=6m，欲估算浮力效應自然排風量，並據以選型無動力旋轉通風扇。</p>
+<p><strong>(1) 浮力效應排風量估算</strong></p>
+<p>算式來源：第3.2.4節公式（式3.9）：$Q = C \times A \times \sqrt{2gH \times \Delta T / T}$</p>
+<p>已知：$C=0.65$（開口流量係數）；$A=2.0\text{ m}^2$（開口有效面積）；$g=9.81\text{ m/s}^2$；$H=6\text{ m}$；$\Delta T=10\text{ K}$；$T=298.15\text{ K}$（$25°C+273.15$）</p>
+<div class="math-block">$$
+Q = 0.65 \times 2.0 \times \sqrt{\frac{2\times9.81\times6\times10}{298.15}} = 1.30\times\sqrt{3.947}=1.30\times1.987\approx2.58\text{ m}^3/\text{s}
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：浮力效應自然排風量約 <strong>2.58 m³/s</strong>（約 <strong>9,290 m³/hr</strong>）</div></div>
+
+<p><strong>(2) 無動力旋轉通風扇選型</strong></p>
+<p>算式來源：以廠商性能曲線（風量隨風速與轉速變化）為依據；假設每台於現場平均風速條件下額定排風量為 1,500 m³/hr</p>
+<div class="math-block">$$
+\text{所需台數} = 9{,}290\text{ m}^3/\text{hr} \div 1{,}500\text{ m}^3/\text{hr/台} \approx 6.2\text{ 台}
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：選用 <strong>7</strong> 台無動力旋轉通風扇，均勻配置於屋頂高處，以保留安全餘裕</div></div>
+
+<p>選用原因：無動力旋轉通風扇利用風力自轉產生局部負壓抽吸效果，可與浮力效應疊加加強排風，且無需用電，符合高溫廠房節能減碳精神；屋脊型自然通風器則適用於屋脊線較長之廠房，以連續開口取代個別風扇，通風量更均勻，惟造價較高，選型時應依廠房跨距、屋脊長度及預算綜合評估。開窗式排氣窗（電動或手動開啟窗）則提供可調節之排氣路徑，宜設置於屋頂最高處，並與低處進氣百葉搭配形成完整浮力對流路徑。</p>
+<h2>6.2 案例二：辦公空間自然通風換氣次數評估</h2>
+<p>情境說明：某辦公室樓地板面積60 m²、淨高2.8 m，設有對流窗面積合計3.0 m²，室內外溫差5K，進排氣口高差1.5m，評估其自然通風換氣次數是否達第102條辦公室基準（10 m³/hr·m²）。</p>
+<p>算式來源：浮力效應公式（式3.9）$Q=C\times A\times\sqrt{2gH\Delta T/T}$；$ACH=Q/V$（式4.2）</p>
+<div class="math-block">$$
+V\,(\text{室內體積}) = 60\text{ m}^2\times2.8\text{ m}=168\text{ m}^3
+$$</div>
+<div class="math-block">$$
+Q = 0.65\times3.0\times\sqrt{\frac{2\times9.81\times1.5\times5}{293.15}}=1.95\times\sqrt{0.5019}=1.95\times0.7085\approx1.38\text{ m}^3/\text{s}=4{,}973\text{ m}^3/\text{hr}
+$$</div>
+<div class="math-block">$$
+\text{所需換氣量（依第102條）}=60\text{ m}^2\times10\text{ m}^3/\text{hr}\cdot\text{m}^2=600\text{ m}^3/\text{hr}
+$$</div>
+<div class="math-block">$$
+ACH_{\text{實際}}=4{,}973\div168\approx29.6\,\text{次/hr}
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：自然通風換氣量 <strong>4,973 m³/hr</strong> 遠高於法定所需之 <strong>600 m³/hr</strong>，通風設計合格，且具充裕餘裕</div></div>
+
+<h2>6.3 案例三：住宅自然通風潛力VP與空調節能率Vac計算（依EEWH附錄一）</h2>
+<p>情境說明：某住宅單元通風檢討面積$A_k=529.16\text{ m}^2$，單側通風窗總面積$A_{vi}=17.0\text{ m}^2$，可對流窗總面積$A_{cj}=29.5\text{ m}^2$。</p>
+<p><strong>(1) 自然通風潛力VP</strong></p>
+<p>算式來源：《2026綠建築評估手冊》附錄一公式：$VP=(\Sigma A_{vi}+\Sigma3.0\times A_{cj})/\Sigma A_k$</p>
+<div class="math-block">$$
+VP=\frac{17.0+3.0\times29.5}{529.16}=\frac{17.0+88.5}{529.16}=\frac{105.5}{529.16}\approx0.20
+$$</div>
+<p><strong>(2) 通風換氣環境（IEQ）評分</strong></p>
+<p>算式來源：評分級距：$VP\geq0.10\Rightarrow F_{11}=100$分</p>
+<p>$VP=0.20\geq0.10$</p>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：通風換氣環境評分 <strong>F11 = 100</strong> 分（滿分）</div></div>
+
+<p><strong>(3) 自然通風空調節能率Vac</strong></p>
+<p>算式來源：住宿類建築公式：$Vac=1.0-0.2\times(VP-0.05)/0.15$，且$Vac\geq0.8$</p>
+<div class="math-block">$$
+Vac=1.0-0.2\times\frac{0.20-0.05}{0.15}=1.0-0.2\times1.0=0.80
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：<strong>Vac = 0.80</strong>（已觸及規範下限值，即節能上限20%）</div></div>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">查證註記：手冊原文範例另載「VP為0.15時，Vac＝0.93」之敘述文字，惟依公式(4)實際代入計算應為$Vac=1.0-0.2\times(0.15-0.05)/0.15\approx0.87$，與手冊敘述文字之0.93不符（此矛盾不得而知）。本報告採依公式計算之結果為準，並保留此提醒查證註記。</div></div>
+
+<h2>6.4 案例四：綠建築無動力通風應用估算</h2>
+<p>情境說明：某綠建築案於中庭設置太陽能煙囪，透過提高排氣口溫度（受日射加熱）增大ΔT以強化浮力驅動力，煙囪高差H=8m，煙囪頂部因日射加熱後排氣溫度較室內高出額外8K（即總ΔT提升至18K，較被動式煙囪之10K顯著提升）。</p>
+<p>算式來源：$Q=C\times A\times\sqrt{2gH\Delta T/T}$（式3.9），$A=1.5\text{ m}^2$，$C=0.65$，$T=298.15\text{K}$</p>
+<div class="math-block">$$
+Q_1\,(\text{被動式},\Delta T=10\text{K})=0.65\times1.5\times\sqrt{\frac{2\times9.81\times8\times10}{298.15}}=0.975\times\sqrt{5.263}=0.975\times2.294\approx2.24\text{ m}^3/\text{s}
+$$</div>
+<div class="math-block">$$
+Q_2\,(\text{太陽能強化式},\Delta T=18\text{K})=0.65\times1.5\times\sqrt{\frac{2\times9.81\times8\times18}{298.15}}=0.975\times\sqrt{9.474}=0.975\times3.078\approx3.00\text{ m}^3/\text{s}
+$$</div>
+<div class="math-block">$$
+\text{提升比例}=\frac{3.00-2.24}{2.24}\approx34\%
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：太陽能煙囪較一般被動式煙囪可提升約 <strong>34%</strong> 排風量，且全程無額外用電</div></div>
+
+<h2>6.5 案例五：防火排煙開口面積初估</h2>
+<p>情境說明：某防煙區劃樓地板面積400 m²，依第101條估算所需自然排煙口最小開口面積。</p>
+<p>算式來源：第101條第1款：排煙口開口面積 ≥ 防煙區劃樓地板面積 × 2%</p>
+<div class="math-block">$$
+\text{排煙口面積}\geq400\text{ m}^2\times2\%=8.0\text{ m}^2
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：最小排煙口開口面積為 <strong>8.0 m²</strong>，且區劃內任一點至排煙口水平距離不得超過<strong>45</strong>公尺</div></div>
+
+<h2>6.6 案例六：地下室通風適用性判定與通風量估算</h2>
+<p>情境說明：某地下停車空間樓地板面積600 m²（&gt;500 m²，適用第139條），現況設有戶外開口共45 m²，判定是否可免設機械通風；若需設置機械通風，估算所需風量。</p>
+<p><strong>(1) 適用性判定</strong></p>
+<p>算式來源：第139條：開口 ≥ 樓地板面積10%方可免機械通風</p>
+<div class="math-block">$$
+\text{所需最小開口面積}=600\text{ m}^2\times10\%=60\text{ m}^2
+$$</div>
+<p>現況開口 $45\text{ m}^2&lt;60\text{ m}^2$</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">計算結果：現況開口面積不足，不符合免設機械通風之條件，須設置機械通風設備</div></div>
+
+<p><strong>(2) 機械通風風量估算</strong></p>
+<p>算式來源：第139條：機械通風量 ≥ 樓地板面積 × 25 m³/hr·m²</p>
+<div class="math-block">$$
+Q=600\text{ m}^2\times25\text{ m}^3/\text{hr}\cdot\text{m}^2=15{,}000\text{ m}^3/\text{hr}
+$$</div>
+<div class="callout callout-success"><div class="callout-title">已驗證修正</div><div class="callout-body">計算結果：應設置機械通風設備，最小設計風量為 <strong>15,000 m³/hr</strong>（<strong>250 CMM</strong>）</div></div>
+
+<h1>7. 設計限制與應用提醒</h1>
+<h2>7.1 公式適用範圍與近似假設之限制</h2>
+<p>本報告所列風壓效應與浮力效應公式，均為工程簡化之近似推估式，假設穩態流場、忽略局部渦流與紊流瞬時效應，實際自然通風行為受風速、風向、溫度等多變數動態影響，計算結果應視為設計參考值而非精確保證值。</p>
+<h2>7.2 風壓干擾、開口摩擦損失等實務誤差來源</h2>
+<ul>
+<li>周邊建築物、地形對風場之遮蔽或加速效應，未反映於簡化公式中</li>
+<li>開口形狀、百葉角度、紗窗等附加物造成之額外摩擦損失，須以實測流量係數修正</li>
+<li>室內隔間、家具擺設影響對流路徑之實際有效通道面積</li>
+</ul>
+<h2>7.3 精確化建議（CFD模擬、現地量測）</h2>
+<p>對於通風性能要求較高之案件（如大型公共建築、高溫特殊製程廠房），建議搭配CFD模擬或風洞試驗取得精確之風壓係數與流場分布，並於竣工後以現地量測（如熱線風速計、示蹤氣體法）驗證實際通風量是否符合設計預期。</p>
+<h1>8. 結論與建議</h1>
+<h2>8.1 研究總結</h2>
+<p>自然通風作為兼顧基本換氣需求、散熱目的與節能減碳精神之被動式設計策略，其技術核心在於正確理解並運用風壓效應與浮力效應兩大驅動力，並嚴格遵循台灣現行法規（建築技術規則第43、44、62、100～102、138、139條，室內空氣品質管理法規，以及綠建築評估手冊VP/Vac評估法）之量化基準。透過本報告六項應用場合之計算範例可知，只要開口面積、進排氣配置符合法定門檻，自然通風之通風效能與節能效益均相當可觀。</p>
+<h2>8.2 後續應用建議</h2>
+<ul>
+<li>實際案例應用時，建議先以本報告公式進行初步設計，再委託專業機構進行CFD模擬或風洞試驗驗證</li>
+<li>高溫廠房或特殊製程空間，可考慮自然通風與機械通風混合設計，於過渡季節優先使用自然通風，尖峰時段輔以機械通風，兼顧節能與作業環境需求</li>
+<li>方案效益與造價分析，建議納入生命週期成本（LCC, Life Cycle Cost）評估，比較自然通風、機械通風及混合方案之初設成本與長期節能效益</li>
+</ul>
+<h1>9. 參考文獻</h1>
+<ol>
+<li>《建築技術規則建築設計施工編》第43、44、45、48、62、100、101、102、138、139條，內政部國土管理署</li>
+<li>《建築技術規則建築設備編》第92～107條（空氣調節及通風設備），內政部國土管理署</li>
+<li>《建築物節約能源設計技術規範》附錄一「建築物採光通風效益與空調節能率評估原則」</li>
+<li>《2026綠建築評估手冊－基本型BC》，內政部建築研究所，2026年版</li>
+<li>《2019綠建築評估手冊－基本型BC》，內政部建築研究所（供新舊版比對用）</li>
+<li>《室內空氣品質管理法》及其施行細則、《室內空氣品質標準》，環境部</li>
+<li>應符合室內空氣品質管理法之第一批、第二批公告場所，環境部公告</li>
+<li>《各類場所消防安全設備設置標準》，內政部</li>
+<li>《職業安全衛生法》、《有機溶劑中毒預防規則》第2條，勞動部</li>
+<li>AMCA Standard 500-L, Laboratory Methods of Testing Louvers for Rating, Air Movement and Control Association International</li>
+<li>ANSI/ASHRAE Standard 62.1-2019: <em>Ventilation for Acceptable Indoor Air Quality</em>, American Society of Heating, Refrigerating and Air-Conditioning Engineers</li>
+<li>ANSI/ASHRAE/ASHE Standard 170-2025: <em>Ventilation of Health Care Facilities</em>，2025年修訂版（取代170-2021版，新增醫療照護設施可選用自然通風之最低要求規定）</li>
+<li>ASHRAE Handbook - HVAC Applications (2023), Chapter 8 <em>Health-Care Facilities</em> &amp; Chapter 4 <em>Commercial and Institutional Buildings</em></li>
+<li>ASHRAE Fundamentals Handbook 2021, Ch.1（濕空氣性質）；Magnus, G. (1844)；Stull, R. (2011), <em>J. Appl. Meteor. Climatol.</em>, 50(11), 2267–2269（濕球溫度計算）</li>
+</ol>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>@2026 本報告為自研參考用，引用法規也可能持續修正，若要據為正式設計依據，須自行查驗正確性。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
