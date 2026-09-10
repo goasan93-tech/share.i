@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人究極：咖啡豆全書（品種、處理法與風味科學）</title>
+    <style>
+        /* 現代科技感深色漸層主題 CSS */
+        :root {
+            --bg-primary: #0a0d1a;
+            --bg-secondary: #12182b;
+            --bg-card: #1c253d;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-gold: #ffb703;
+            --accent-green: #06d6a0;
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #030611 100%);
+            color: var(--text-primary);
+            font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 科技感簡報封面 */
+        header.cover {
+            text-align: center;
+            padding: 80px 24px;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 75%);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header.cover h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        header.cover p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* 霓虹章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 16px;
+            margin: 50px 0 25px 0;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* Bento Grid 核心重點卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h3 span {
+            font-size: 0.8rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card-body .label {
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        /* 雙欄與多欄詳細卡片 */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 992px) {
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .detail-card {
+            background-color: var(--bg-card);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .detail-card:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
+        }
+
+        .detail-card h2 {
+            font-size: 1.6rem;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .detail-card h2 .tag {
+            font-size: 0.85rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .item-box {
+            margin-bottom: 20px;
+        }
+
+        .item-box .title {
+            font-weight: bold;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-box {
+            background-color: rgba(6, 214, 160, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 12px 15px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.95rem;
+            color: var(--accent-green);
+            margin-top: 10px;
+        }
+
+        /* 比較表格 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-cyan);
+            padding: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.2);
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-cyan { background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .badge-purple { background: rgba(139, 92, 246, 0.1); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.2); }
+        .badge-green { background: rgba(6, 214, 160, 0.1); color: var(--accent-green); border: 1px solid rgba(6, 214, 160, 0.2); }
+        .badge-gold { background: rgba(255, 183, 3, 0.1); color: var(--accent-gold); border: 1px solid rgba(255, 183, 3, 0.2); }
+
+        /* 頁尾與驗證資訊 */
+        footer {
+            text-align: center;
+            padding: 50px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .validation-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .validation-box h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .validation-box ul {
+            list-style-type: none;
+        }
+
+        .validation-box li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .validation-box a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+
+        .validation-box a:hover {
+            text-decoration: underline;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 簡報封面區 -->
+        <header class="cover">
+            <h1>職人究極：咖啡豆全書</h1>
+            <p>從三大原種基因、傳奇明星豆起源、四大發酵處理法到養豆保存學，解密一顆咖啡豆從莊園樹上到杯中黑金的風味風味科學。</p>
+            <p>研究組員：李世權 Gemini</p>
+        </header>
+
+        <!-- 核心重點摘要卡片 (Bento Grid) -->
+        <div class="section-title"><span>🌟</span> 咖啡豆世界的三大核心維度</div>
+        <div class="grid-container">
+            <!-- 卡片 1 -->
+            <div class="card">
+                <h3>三大原生樹種 <span>植物基因篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">阿拉比卡 (Arabica)：</span>佔全球產量 60-70%，高海拔栽種，蔗糖與脂質豐富，具精緻花果酸香與低咖啡因。</p>
+                    <p><span class="label">羅布斯塔 (Robusta)：</span>佔產量 30-40%，低海拔抗病力強，咖啡因高（約2.2%），提供豐厚油脂 Crema 與濃烈苦香。</p>
+                    <p><span class="label">利比里卡 (Liberica)：</span>產量不足 1%，主要分佈於東南亞，豆型巨大，帶有獨特的木質調與波蘿蜜香氣。</p>
+                </div>
+            </div>
+            <!-- 卡片 2 -->
+            <div class="card">
+                <h3>三大傳奇明星豆 <span>風土品牌篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">藝妓/瑰夏 (Geisha)：</span>咖啡界天之驕子，源自衣索比亞、巴拿馬發揚光大，以驚艷的茉莉花香、佛手柑與佛手柑茶感著稱。</p>
+                    <p><span class="label">曼特寧 (Mandheling)：</span>印尼蘇門答臘獨特產區，經「濕剝法」處理，展現沉穩草本、松木香與厚實黑巧克力韻味。</p>
+                    <p><span class="label">藍山 (Blue Mountain)：</span>牙買加限定高海拔認證標章，以酸、苦、甘、甜「完美無瑕」的極致平衡與滑順感聞名於世。</p>
+                </div>
+            </div>
+            <!-- 卡片 3 -->
+            <div class="card">
+                <h3>四大發酵處理法 <span>風味塑造篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">水洗法 (Washed)：</span>發酵去除果肉，風味乾淨透亮、酸質明亮呈果香。</p>
+                    <p><span class="label">日曬法 (Natural)：</span>帶皮全果乾燥，吸收果皮糖分，醇厚度高、甜感濃郁呈熱帶水果香。</p>
+                    <p><span class="label">蜜處理/厭氧發酵：</span>保留果膠或於密封無氧桶中發酵，展現葡萄酒香、蜜桃與複雜的發酵甜韻。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一章：咖啡豆的三層身份證與三大傳奇豆 -->
+        <div class="section-title"><span>☕</span> 第一章：咖啡豆的三層身份證與傳奇明星豆</div>
+        <div class="detail-grid">
+
+            <!-- 阿拉比卡 vs 羅布斯塔 -->
+            <div class="detail-card">
+                <h2>物種對決：阿拉比卡 vs 羅布斯塔 <span class="tag">原生基因</span></h2>
+                <div class="item-box">
+                    <div class="title">🌿 阿拉比卡 (Arabica) —— 精品咖啡的主角</div>
+                    <p>主要生長於海拔 800~2,200 公尺的高山斜坡。由於高山日夜溫差大，果實成熟緩慢，醞釀出高達 8% 的蔗糖含量與豐富脂質。咖啡因含量較低（約 1.2%），口感柔和，充滿花香、柑橘、莓果與茶感層次。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">🪵 羅布斯塔 (Robusta) —— 強悍的提神戰士</div>
+                    <p>適應 0~800 公尺低海拔熱帶平原，抗病蟲害能力極強。為了抵抗害蟲，演化出比阿拉比卡高出一倍的咖啡因（約 2.2%）。風味直率濃烈，帶有烤堅果、煙燻麥芽與泥土調性，能產生極為厚實的油脂（Crema），是義式濃縮與配方豆的最佳支柱。</p>
+                </div>
+            </div>
+
+            <!-- 傳奇明星豆成分解析 -->
+            <div class="detail-card">
+                <h2>傳奇明星豆：曼特寧、藍山與藝妓 <span class="tag">風土與品質</span></h2>
+                <div class="item-box">
+                    <div class="title">🌸 藝妓/瑰夏 (Geisha) —— 「品種代名詞」</div>
+                    <p>起源於衣索比亞藝妓山，2004 年巴拿馬翡翠莊園將其獨立杯測參賽後一戰成名。翡翠莊園將其分為紅標（競標批次）、綠標與藍標等級。其獨特之處在於入口瞬間炸裂的茉莉花香、水蜜桃果香與細緻如頂級紅酒般的清亮餘韻。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">⛰️ 藍山 (Blue Mountain) —— 「嚴格地理認證標章」</div>
+                    <p>並非品種名，而是牙買加藍山山脈海拔 1,800 公尺以上限定產區的官方認證。因火山土壤肥沃且午後常年雲霧繚繞，造就其酸、苦、甘、甜無一偏廢的「黃金中庸之道」，口感細緻滑順。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">🌿 曼特寧 (Mandheling) —— 「印尼蘇門答臘產區」</div>
+                    <p>起源於日據時期日軍對印尼當地族人的誤稱，現為蘇門答臘阿拉比卡豆的統稱。因當地潮濕氣候採用獨特的「濕剝法（Giling Basah）」，賦予其獨一無二的草本沉香、松木香與低酸醇厚的黑巧克力味。</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 第二章：四大發酵處理法與烘焙科學 -->
+        <div class="section-title"><span>🧪</span> 第二章：四大處理法發酵科學與烘焙轉變</div>
+        <div class="detail-grid">
+
+            <!-- 四大處理法 -->
+            <div class="detail-card">
+                <h2>四大處理法：塑造風味的魔術師 <span class="tag">後處理工藝</span></h2>
+                <div class="item-box">
+                    <div class="title">💧 水洗法 (Washed Process)</div>
+                    <p>去除果皮與果肉後，將帶膠豆放入水槽發酵，洗淨果膠後曬乾。風味特徵：乾淨度極高、果酸明亮、層次清晰，能最純粹地展現產地風土。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">☀️ 日曬法 (Natural Process)</div>
+                    <p>將採收的完整咖啡果實直接鋪在陽光下曬乾，讓果肉的糖分滲入豆芯。風味特徵：甜感極高、醇厚度飽滿、帶有熱帶水果、葡萄乾與成熟果香。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">🍯 蜜處理 (Honey Process)</div>
+                    <p>去除果皮後，保留不同比例的果膠層直接曬乾（分為黃蜜、紅蜜、黑蜜）。風味特徵：酸度比水洗柔和，甜感比日曬清爽，兼具果香與蜂蜜甘甜。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">🍷 厭氧發酵 (Anaerobic Fermentation)</div>
+                    <p>將咖啡果實放入注入二氧化碳的密封不鏽鋼桶中，在無氧環境下控溫發酵。風味特徵：產生令人驚艷的熱帶水果酒香、優格酸甜與極其豐富複雜的香氣。</p>
+                </div>
+            </div>
+
+            <!-- 烘焙科學與養豆保存 SOP -->
+            <div class="detail-card">
+                <h2>職人選豆、養豆與保存 SOP <span class="tag">養豆與保存</span></h2>
+                <div class="item-box">
+                    <div class="title">🔥 烘焙度的梅納反應與焦糖化</div>
+                    <p><strong>淺焙 (Light)：</strong>保留最多果酸與原始花果香，抗氧化綠原酸高；<strong>中焙 (Medium)：</strong>梅納反應與焦糖化達到平衡，呈現堅果、可可與溫潤甜感；<strong>深焙 (Dark)：</strong>油脂豐富，帶有黑巧克力、煙燻與濃郁苦香。</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">⏳ 養豆期 (Degassing Period) 的科學原理</div>
+                    <p>剛出爐的咖啡豆內部含有大量二氧化碳，會阻礙沖煮時熱水與咖啡粉的接觸（導致萃取不均）。<strong>淺焙豆建議養豆 7~14 天；中深焙豆建議養豆 3~7 天</strong>，待二氧化碳適度排放後，風味發展最為圓潤！</p>
+                </div>
+                <div class="item-box">
+                    <div class="title">🛡️ 職人保存三大防線</div>
+                    <p>1. <strong>避光防潮：</strong>使用帶有單向排氣閥的避光密封袋存放於陰涼處。<br>2. <strong>嚴禁常溫重複進出冰箱：</strong>水氣冷凝會瞬間破壞咖啡豆風味。<br>3. <strong>長期保存法：</strong>若需存放超過一個月，可將未開封的咖啡豆密封分裝後直接放入「冷凍庫」，沖煮前不需解凍直接現磨！</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 綜合比較表格 -->
+        <div class="section-title"><span>📊</span> 咖啡豆四大處理法與三大原種全方位對照表</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>比較項目</th>
+                        <th>水洗法 (Washed)</th>
+                        <th>日曬法 (Natural)</th>
+                        <th>蜜處理 (Honey)</th>
+                        <th>厭氧發酵 (Anaerobic)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>發酵與乾燥方式</strong></td>
+                        <td>水中發酵去除果膠，乾燥帶殼豆</td>
+                        <td>保留完整果皮果肉直接陽光曬乾</td>
+                        <td>去除果皮、保留部分果膠黏液曬乾</td>
+                        <td>不鏽鋼桶注入 CO₂ 無氧封閉發酵</td>
+                    </tr>
+                    <tr>
+                        <td><strong>風味乾淨度</strong></td>
+                        <td><span class="badge badge-cyan">極高 (透亮無雜味)</span></td>
+                        <td><span class="badge badge-purple">中等 (醇厚豐滿)</span></td>
+                        <td><span class="badge badge-green">高 (滑順平衡)</span></td>
+                        <td><span class="badge badge-gold">極高 (特殊酒香與乳酸感)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>酸質與甜感表現</strong></td>
+                        <td>明亮果酸、花香清新、甜感適中</td>
+                        <td>甜感極高、帶熟果與莓果香、酸度溫和</td>
+                        <td>蜂蜜甘甜、果蜜滑順、酸甜平衡感佳</td>
+                        <td>紅酒香、波蘿蜜、熱帶水果酸甜層次劇烈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>代表產區與豆款</strong></td>
+                        <td>衣索比亞耶加雪菲、肯亞 AA</td>
+                        <td>衣索比亞西達摩、巴西莫吉安娜</td>
+                        <td>哥斯大黎加蜜處理、巴拿馬莊園豆</td>
+                        <td>哥倫比亞玫瑰谷、巴拿馬競標批次藝妓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 現代生活情境應用實例 -->
+        <div class="section-title"><span>📝</span> 現代生活情境應用實例</div>
+        <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--accent-green);">
+            <div class="card-body">
+                <p>了解咖啡豆的品種、處理法與養豆科學後，您可以根據不同的生活節奏與精神狀態，為自己打造最頂級的咖啡體驗：</p>
+                <br>
+                <p>💡 <strong>情境應用一：職場白領的高效晨起醒腦選豆法</strong></p>
+                <p>週一清晨 8:30，面對一整天緊湊的會議與專案。此時適合選擇一支**「衣索比亞耶加雪菲水洗淺焙豆（阿拉比卡）」**。經過 10 天養豆期的水洗豆，乾淨度極高，沖煮時綻放優雅的茉莉花香與檸檬柑橘果酸。一口喝下，明亮酸香能迅速刺激大腦副交感神經，清新提神且口中不留負擔，為高效率工作拉開序幕！</p>
+                <br>
+                <p>💡 <strong>情境應用二：週末居家的靈魂奢華手沖體驗</strong></p>
+                <p>週六下午 3:00，擺脫工作壓力，在家中享受慢生活。此時適合拿出收藏的**「巴拿馬翡翠莊園厭氧日曬藝妓豆」**。以 92°C 熱水細緻手沖，熱氣中噴發出濃郁的水蜜桃、佛手柑與紅酒香氣。細細品嚐，口感滑順如絲，甜感久久不散。這不僅是一杯咖啡，更是一場頂級的風味饗宴，給予靈魂最踏實的放鬆與療癒。</p>
+                <br>
+                
+            </div>
+        </div>
+
+       
+
+        <footer>
+            <p>2026 職人咖啡科普</p>
+        </footer>
+    </div>
+</body>
+</html>
