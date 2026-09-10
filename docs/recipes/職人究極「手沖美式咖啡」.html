@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人究極：手沖美式咖啡完美萃取指南 SOP</title>
+    <style>
+        /* 現代科技感深色漸層主題 CSS */
+        :root {
+            --bg-primary: #0a0d1a;
+            --bg-secondary: #12182b;
+            --bg-card: #1c253d;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-gold: #ffb703;
+            --accent-green: #06d6a0;
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #030611 100%);
+            color: var(--text-primary);
+            font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 科技感簡報封面 */
+        header.cover {
+            text-align: center;
+            padding: 80px 24px;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 75%);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header.cover h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        header.cover p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* 霓虹章節標題 */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 16px;
+            margin: 50px 0 25px 0;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* 核心摘要卡片 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h3 span {
+            font-size: 0.8rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card-body .label {
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        /* 食材與器材雙欄卡片 */
+        .list-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .list-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .list-card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .list-card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .item-list {
+            list-style: none;
+        }
+
+        .item-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            font-size: 1rem;
+        }
+
+        .item-list li .name {
+            color: var(--text-primary);
+        }
+
+        .item-list li .detail {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background-color: rgba(255, 183, 3, 0.08);
+            border-left: 4px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #ffca3a;
+        }
+
+        /* 步驟導引 SOP */
+        .sop-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .sop-step {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .sop-step:hover {
+            border-color: rgba(0, 242, 254, 0.25);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: var(--bg-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .step-content p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .secret-point {
+            background-color: rgba(6, 214, 160, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 12px 15px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.95rem;
+            color: var(--accent-green);
+            margin-top: 10px;
+        }
+
+        /* 比較表格 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-cyan);
+            padding: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.2);
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-cyan { background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .badge-purple { background: rgba(139, 92, 246, 0.1); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.2); }
+        .badge-green { background: rgba(6, 214, 160, 0.1); color: var(--accent-green); border: 1px solid rgba(6, 214, 160, 0.2); }
+
+        /* 頁尾與驗證資訊 */
+        footer {
+            text-align: center;
+            padding: 50px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .validation-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .validation-box h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .validation-box ul {
+            list-style-type: none;
+        }
+
+        .validation-box li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .validation-box a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+
+        .validation-box a:hover {
+            text-decoration: underline;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 簡報封面區 -->
+        <header class="cover">
+            <h1>職人究極：手沖美式咖啡萃取 SOP 指南</h1>
+            <p>融合咖啡職人精神、萃取理論與分段注水技巧，為您解密層次明亮、質地乾淨透亮的手沖美式咖啡。</p>
+            <p>研究組員：李世權 Gemini</p>
+        </header>
+
+        <!-- 核心重點摘要卡片 -->
+        <div class="section-title"><span>🌟</span> 手沖咖啡三大黃金變數</div>
+        <div class="grid-container">
+            <!-- 變數 1 -->
+            <div class="card">
+                <h3>黃金粉水比 (1:15) <span>比例篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">標準參數：</span>18g 咖啡粉萃取 270ml 水量（1:15 比例）。手沖美式可採濃縮萃取（15g 豆萃取 150ml），再加入 90ml 溫熱水（Bypass 稀釋）。</p>
+                    <p><span class="label">效果：</span>能完美保留精品豆的前段花果香與酸甜感，同時稀釋掉尾段可能的雜味與過度苦澀，口感極其乾淨順口。</p>
+                </div>
+            </div>
+            <!-- 變數 2 -->
+            <div class="card">
+                <h3>精密水溫控制 <span>控溫篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">標準參數：</span>淺焙/中淺焙豆建議 91°C ~ 93°C；中焙豆建議 88°C ~ 90°C；中深焙豆建議 85°C ~ 87°C。</p>
+                    <p><span class="label">效果：</span>高溫能充分釋放淺焙豆明亮的果酸與花香；適度降低水溫則能避免深焙豆產生焦苦味，提升甜感與醇厚度。</p>
+                </div>
+            </div>
+            <!-- 變數 3 -->
+            <div class="card">
+                <h3>均勻中細研磨 <span>研磨篇</span></h3>
+                <div class="card-body">
+                    <p><span class="label">標準參數：</span>顆粒大小如「白砂糖」（目數約 20~24 目）。顆粒均勻度是避免萃取不均與通道效應（Channeling）的核心關鍵。</p>
+                    <p><span class="label">效果：</span>現磨咖啡豆能防止香氣揮發流失，均勻的中細顆粒能創造流暢的過濾流速與豐富的風味層次。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 食材與器材清單 -->
+        <div class="section-title"><span>🛒</span> 職人手沖美式咖啡：食材與器材清單</div>
+        <div class="list-section">
+            <!-- 食材清單 -->
+            <div class="list-card">
+                <h2>A. 極致食材清單 (1人份)</h2>
+                <ul class="item-list">
+                    <li><span class="name">精品咖啡豆 (淺焙/中淺焙)</span><span class="detail">18 克 (新鮮烘焙7-21天)</span></li>
+                    <li><span class="name">過濾純淨水 / 礦泉水</span><span class="detail">約 400cc (TDS約 75-150ppm)</span></li>
+                    <li><span class="name">食用冰塊 (冰手沖美式專用)</span><span class="detail">120 克 (選用純淨冰塊)</span></li>
+                </ul>
+                <div class="tip-box">
+                    💡 <strong>選豆指南：</strong>偏好明亮花果酸香者，推薦衣索比亞（耶加雪菲/西達摩）日曬或水洗豆；偏好堅果可可甜感者，推薦哥倫比亞或瓜地馬拉中焙豆。
+                </div>
+            </div>
+
+            <!-- 器材清單 -->
+            <div class="list-card">
+                <h2>B. 職人專業器材清單</h2>
+                <ul class="item-list">
+                    <li><span class="name">錐形手沖濾杯 (如 Hario V60)</span><span class="detail">單孔流速快、層次分明</span></li>
+                    <li><span class="name">V60 專用錐形濾紙</span><span class="detail">無漂白或漂白無紙味濾紙</span></li>
+                    <li><span class="name">細口手沖壺 (Gooseneck)</span><span class="detail">穩定控流，水柱細勻</span></li>
+                    <li><span class="name">手動/電動磨豆機 (平刀/錐刀)</span><span class="detail">可調刻度、刀盤均勻度高</span></li>
+                    <li><span class="name">咖啡電子秤 (帶計時功能)</span><span class="detail">精確至 0.1g，控時控水</span></li>
+                    <li><span class="name">數位針溫計 / 控溫壺</span><span class="detail">精準測量水溫</span></li>
+                    <li><span class="name">透明玻璃咖啡下壺 & 馬克杯</span><span class="detail">便於觀察咖啡色澤與萃取量</span></li>
+                </ul>
+                <div class="tip-box">
+                    💡 <strong>器材叮嚀：</strong>細口手沖壺能確保注水時水柱垂直且穩定，避免水流直接沖刷濾紙邊緣造成過度稀釋。
+                </div>
+            </div>
+        </div>
+
+        <!-- 製作步驟 SOP -->
+        <div class="section-title"><span>☕</span> 職人級「手沖美式咖啡」製作 SOP</div>
+        <div class="sop-timeline">
+
+            <!-- 步驟 1 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">1</div>
+                    <div class="step-title">秤量研磨與熱水預備</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 秤取 18 克新鮮咖啡豆，使用磨豆機研磨至中細粗細（顆粒約同白砂糖大小）。</p>
+                    <p>2. 將純淨水加熱至 92°C（若為中焙豆可降至 89°C），倒入手沖壺中備用。</p>
+                    <div class="secret-point">
+                        🔑 <strong>職人金訣：</strong>咖啡豆務必「現磨現沖」，磨粉後超過 15 分鐘芳香物質會揮發失逾 50%！
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 2 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">2</div>
+                    <div class="step-title">溫杯濕紙與咖啡粉平整</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 將濾紙折好放入 V60 濾杯中，用少許熱水均勻繞圈沖濕濾紙，同時預熱濾杯與下壺，隨後將下壺的溫水倒掉。</p>
+                    <p>2. 將研磨好的 18 克咖啡粉倒入濾杯中，輕輕搖晃濾杯使粉層表面平整，置於電子秤上並歸零。</p>
+                    <div class="secret-point">
+                        🔑 <strong>濕紙好處：</strong>濕潤濾紙能洗去紙漿味，並使濾紙緊貼濾杯壁，同時預熱陶瓷/玻璃濾杯，防止萃取降溫。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 3 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">3</div>
+                    <div class="step-title">第一階段：黃金悶蒸 (Bloom)</div>
+                </div>
+                <div class="step-content">
+                    <p>1. 按下電子秤計時器，從中心開始向外輕柔繞圈注水約 40 克熱水（約粉重 2~2.5 倍），使所有咖啡粉完全浸濕。</p>
+                    <p>2. 靜置悶蒸 35 ~ 40 秒。此時咖啡粉層會如漢堡般微微膨脹並冒出氣泡，排解新鮮二氧化碳。</p>
+                    <div class="secret-point">
+                        🔑 <strong>悶蒸關鍵：</strong>悶蒸能開啟咖啡粉的微孔通道，若省略悶蒸，水流會直接穿透，導致萃取不足、口感稀薄發酸。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 4 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">4</div>
+                    <div class="step-title">第二階段：分段繞圈注水萃取</div>
+                </div>
+                <div class="step-content">
+                    <p>1. <strong>第一段注水（0:40 - 1:15）：</strong>自中心向外順時針螺旋繞圈注水至 150 克，水流保持穩定垂直，注入咖啡豆最精華的花果酸與甜感。</p>
+                    <p>2. <strong>第二段注水（1:20 - 2:00）：</strong>當水位下降三分之一時，進行第二次注水，自中心向外緩緩注水至總重 270 克。</p>
+                    <p>3. 當總時間達到約 2 分 15 秒 ~ 2 分 30 秒、濾杯內液體即將滴完時，<strong>立刻移開濾杯</strong>，切勿讓最後微細苦粉的殘水滴入下壺。</p>
+                    
+                    </div>
+                    <div class="secret-point">
+                        🔑 <strong>注水細節：</strong>水柱切勿直接沖刷濾紙邊緣，應始終在咖啡粉層中心 2/3 區域內優雅繞圈。
+                    </div>
+
+                    <div class="secret-point">
+                        🔑 <strong>防止「旁通水流」：</strong>避免咖啡稀薄味淡： 當熱水直接沖刷到沒有咖啡粉保護的邊緣濾紙或濾杯壁時，水流會順著濾杯壁上的溝槽（肋骨）快速直接流向下壺，完全不經過咖啡粉層。這種「沒有帶走任何咖啡風味」的熱水直接稀釋了咖啡液，會導致整杯咖啡口感變得水感重、稀薄，並帶有生硬不愉快的發酸感。 
+                    </div>
+
+                    <div class="secret-point">
+                        🔑 <strong>形成「粉牆」結構：</strong>避免粉層崩塌與過萃苦澀： 注水時，咖啡粉會自然向外緣推擠形成一層支撐結構（俗稱「粉牆」）。這層粉牆能起到擋水與均勻導流的作用。若水柱直接沖刷邊緣，會破壞並沖塌這層粉牆，熱水就會從破口處大量逃逸（即「通道效應」），造成破口處的粉萃取不足，而其他區域的粉卻因為水流停滯而過度萃取，產生焦苦與雜味。順應錐形濾杯物理結構，集中萃取最厚粉層： 以常見的 V60 錐形濾杯為例，中心 2/3 區域是咖啡粉層厚度最深的地方。把水柱維持在這個區域順暢繞圈，熱水才會在重力作用下，由上而下、由內向外均勻滲透整個咖啡粉餅，將精品咖啡豆中最優雅的花果香氣與甜感完整萃取出來。
+                    </div>
+
+                    <div class="secret-point">
+                        💡 <strong>情境應用實例：</strong>晨間趕時間時的穩定沖煮體驗 假設您在繁忙的上班前十分鐘手沖咖啡，若因心急而大水流隨意沖刷濾紙邊緣，沖出來的咖啡常常會一口苦澀、一口帶有水感。只要掌握「水柱只在中心 2/3 圓圈內細水穩定繞圈」的原則，即使不刻意計算複雜時間，也能穩定沖出一杯口感乾淨透亮、帶有明亮柑橘香氣的優質手沖美式！
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 步驟 5 -->
+            <div class="sop-step">
+                <div class="step-header">
+                    <div class="step-num">5</div>
+                    <div class="step-title">第三階段：Bypass 補水稀釋與完美盛裝</div>
+                </div>
+                <div class="step-content">
+                    <p>1. <strong>熱手沖美式：</strong>將下壺萃取出的 270ml 濃郁手沖咖啡輕柔搖勻。若喜好更乾淨清爽的口感，可加入 30~50ml 的 90°C 溫熱水進行 Bypass 稀釋，使風味更加明亮圓潤。</p>
+                    <p>2. <strong>冰手沖美式：</strong>若製作冰美式，可在下壺預先放入 120g 冰塊，注水量縮減為 180g 熱水進行「急冷萃取」，最後倒入裝滿冰塊的透明高腳杯中即告完成！</p>
+                    <div class="secret-point">
+                        🔑 <strong>搖勻提香：</strong>盛杯前先將下壺輕輕旋轉搖勻，使前段與後段的咖啡液完全融合，層次更佳。
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 比較表格 -->
+        <div class="section-title"><span>📊</span> 不同烘焙度手沖美式參數對照表</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>咖啡豆烘焙程度</th>
+                        <th>建議水溫</th>
+                        <th>研磨粗細度</th>
+                        <th>粉水比例</th>
+                        <th>風味表現特色</th>
+                        <th>適合品飲情境</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>淺焙 (Light Roast)</strong></td>
+                        <td>91°C - 93°C</td>
+                        <td>中細 (白砂糖大小)</td>
+                        <td>1:15 - 1:16</td>
+                        <td><span class="badge badge-cyan">花香、柑橘果酸、茶感清亮</span></td>
+                        <td>晨起提神、清爽無負擔、下午茶搭配甜點</td>
+                    </tr>
+                    <tr>
+                        <td><strong>中焙 (Medium Roast)</strong></td>
+                        <td>88°C - 90°C</td>
+                        <td>中度 (比白砂糖稍粗)</td>
+                        <td>1:15</td>
+                        <td><span class="badge badge-purple">堅果、焦糖甜感、奶油滑順</span></td>
+                        <td>日常工作專注、商務會談、全天候品飲</td>
+                    </tr>
+                    <tr>
+                        <td><strong>中深焙 (Dark Roast)</strong></td>
+                        <td>85°C - 87°C</td>
+                        <td>中粗 (接近粗鹽)</td>
+                        <td>1:14 - 1:15</td>
+                        <td><span class="badge badge-green">黑巧克力、煙燻香氣、醇厚濃郁</span></td>
+                        <td>深夜加班思考、搭配重乳酪蛋糕、佐餐飲用</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 結論與情境應用實例 -->
+        <div class="section-title"><span>📝</span> 結論與現代生活情境應用實例</div>
+        <div class="card" style="margin-bottom: 40px; border-left: 5px solid var(--accent-green);">
+            <div class="card-body">
+                <p>手沖美式咖啡不僅是一杯飲品，更是一種兼具科學精準度與生活儀式感的優雅體驗。掌握了**「1:15 黃金粉水比、92°C 水溫與 35 秒完美悶蒸」**，您就能在家中輕鬆重現精品咖啡館等級的澄澈口感。</p>
+                <br>
+                <p>💡 <strong>情境應用一：晨起專注與元氣工作儀式</strong></p>
+                <p>清晨 8:00，在展開高強度的工作之前，花 5 分鐘進行手沖美式儀式。當 92°C 的熱水緩緩注入耶加雪菲咖啡粉中，濃郁的花果香氣頓時飄滿整個房間。看著氣泡在悶蒸中微微膨脹，聽著咖啡液滴入下壺的清脆聲響，大腦在專注控流的過程中逐漸清醒，喝下一口酸甜明亮的手沖美式，為一整天的高效工作注入滿滿靈感。</p>
+                <br>
+                <p>💡 <strong>情境應用二：深夜高壓加班與靈魂放鬆伴侶</strong></p>
+                <p>深夜 11:00，面對繁重的專案報告與程式碼，大腦疲憊不堪時。選擇一款哥倫比亞中焙豆，以 88°C 的水溫沖煮一杯溫熱的手沖美式。微高的甜感與柔和的堅果可可香氣，不僅能提神醒腦，更能安撫焦慮不安的情緒，給您最質感、無負擔的深夜靈魂陪伴。</p>
+                <br>
+               
+            </div>
+        </div>
+
+      
+
+        <footer>
+            <p>2026 職人手沖咖啡教學</p>
+        </footer>
+    </div>
+</body>
+</html>
