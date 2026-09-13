@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>微積分入門：從次方規則到定積分</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #52636a;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --math-bg: #f6f5f0;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 68px 32px 42px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+  background: linear-gradient(135deg, #fbfaf6 0%, #eef5f2 100%);
+}
+.eyebrow {
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.35;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub { color: var(--ink-soft); font-size: 16px; margin: 0; }
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.55;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+}
+.content h1 {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: 27px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 50px 0 22px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 21px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 { font-size: 17px; margin: 26px 0 10px; color: var(--ink); }
+.content p { margin: 0 0 16px; }
+.content strong { color: var(--ink); }
+.content ul, .content ol { margin: 8px 0 20px; padding-left: 1.6em; }
+.content li { margin: 5px 0; }
+.math-block {
+  background: var(--math-bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 15px 18px;
+  margin: 16px 0 22px;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 15px 18px;
+  margin: 18px 0;
+}
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-title { font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 26px;
+  font-size: 14.5px;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); white-space: nowrap; }
+.table-wrap { overflow-x: auto; margin-bottom: 24px; }
+.figure-caption {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  margin: 20px 0 8px;
+}
+.summary-box {
+  background: linear-gradient(135deg, #eef7f4, #f8faf7);
+  border: 1px solid #c6ddd5;
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin: 20px 0;
+}
+.report-footer {
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: 13px;
+  padding: 32px;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding: 24px 16px 56px; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 26px 22px; }
+  .report-header { padding: 48px 22px 32px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 15px; }
+  .content h1 { font-size: 24px; }
+  .content h2 { font-size: 19px; }
+  .report-title { font-size: 29px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  <p class="eyebrow">空調原理・基礎數學</p>
+  <h1 class="report-title">微積分入門_part 1</h1>
+  <p class="report-sub">從次方規則、微分與積分，到常數 C 與定積分的完整理解</p>
+  <p class="report-sub">研究組員：李世權 Gemini Claude，編排美工：Copilot</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc" aria-label="文件目錄">
+    <div class="toc-title">內容導覽</div>
+    <div id="toc-list"></div>
+  </nav>
+
+  <main class="content">
+    <h1>1. 次方規則總覽</h1>
+    <p>對多項式 $x^k$ 而言，微分與積分的基本規則如下：</p>
+    <div class="summary-box">
+      <p><strong>微分：</strong>次方 $k$ 乘到前面，次方減 1。</p>
+      <div class="math-block">$$ \frac{d}{dx}x^k = kx^{k-1} $$</div>
+      <p><strong>定積分：</strong>次方加 1，再除以新的次方。</p>
+      <div class="math-block">$$ \int_a^b x^k\,dx = \left[\frac{x^{k+1}}{k+1}\right]_a^b $$</div>
+      <p><strong>不定積分：</strong>次方加 1，再除以新的次方，最後加上任意常數 $C$。</p>
+      <div class="math-block">$$ \int x^k\,dx = \frac{x^{k+1}}{k+1}+C, \qquad k\ne -1 $$</div>
+    </div>
+
+    <h1>2. 微分：為什麼次方變係數、次方再減 1</h1>
+    <p><strong>核心邏輯：</strong>微分是在計算「瞬時變化率」。$x^k$ 展開後，與增量 $h$ 同為一次的項，其係數正好是原來的次方 $k$。</p>
+    <p>從微分的定義，也就是極限來看：</p>
+    <div class="math-block">$$ \frac{d}{dx}x^k = \lim_{h\to 0}\frac{(x+h)^k-x^k}{h} $$</div>
+    <p>使用二項式展開：</p>
+    <div class="math-block">$$ (x+h)^k=x^k+kx^{k-1}h+\binom{k}{2}x^{k-2}h^2+\cdots+h^k $$</div>
+    <p>代回去、消掉 $x^k$，再除以 $h$：</p>
+    <div class="math-block">$$ \frac{(x+h)^k-x^k}{h}=kx^{k-1}+\binom{k}{2}x^{k-2}h+\cdots $$</div>
+    <p>當 $h\to0$ 時，所有仍含有 $h$ 的項都趨近於 0，因此只剩下：</p>
+    <div class="math-block">$$ \boxed{\frac{d}{dx}x^k=kx^{k-1}} $$</div>
+    <div class="callout callout-note">
+      <div class="callout-title">直觀理解</div>
+      <div class="callout-body">二項式展開中，唯一與 $h$ 同為一次、除以 $h$ 後會留下來的項是 $kx^{k-1}h$。因此次方 $k$ 變成前面的係數，而 $x$ 的次方減少 1。</div>
+    </div>
+
+    <h1>3. 積分：為什麼是微分的反運算</h1>
+    <p>積分公式可以直接由「微分後要還原」反推出來。若要找一個函數 $F(x)$，使得：</p>
+    <div class="math-block">$$ \frac{d}{dx}F(x)=x^k $$</div>
+    <p>先猜測 $F(x)=C\,x^{k+1}$，因為微分會讓次方減 1：</p>
+    <div class="math-block">$$ \frac{d}{dx}\left(Cx^{k+1}\right)=C(k+1)x^k $$</div>
+    <p>要使結果等於 $x^k$，必須有 $C(k+1)=1$，所以：</p>
+    <div class="math-block">$$ C=\frac{1}{k+1}, \qquad \int x^k\,dx=\frac{x^{k+1}}{k+1}+C $$</div>
+    <ol>
+      <li>次方先加 1，補回微分時減掉的次方。</li>
+      <li>再除以新次方 $k+1$，抵銷微分時產生的係數。</li>
+    </ol>
+    <div class="callout callout-success">
+      <div class="callout-title">概念修正</div>
+      <div class="callout-body">微分與積分在這裡是「互為反運算」，而非嚴格意義上的互為反函數。積分的答案是一族相差常數的函數。</div>
+    </div>
+
+    <h1>4. 數值範例：以 $k=3$ 驗證</h1>
+    <p>先對 $x^3$ 微分：</p>
+    <div class="math-block">$$ \frac{d}{dx}x^3=3x^2 $$</div>
+    <p>接著對 $x^2$ 積分：</p>
+    <div class="math-block">$$ \int x^2\,dx=\frac{x^3}{3}+C $$</div>
+    <p>再微分一次即可驗證還原：</p>
+    <div class="math-block">$$ \frac{d}{dx}\left(\frac{x^3}{3}+C\right)=\frac{3x^2}{3}+0=x^2 $$</div>
+    <div class="summary-box"><strong>一句話總結：</strong>微分是「次方掉下來變係數、次方減 1」；積分則是「次方先加 1、再除以新次方」。後者是為了讓微分能夠剛好還原原式。</div>
+
+    <h1>5. 科學家當初為什麼發展微積分</h1>
+    <p>微積分不是先有理論、再尋找用途，而是為了解決物理學與天文學中「傳統數學算不出來」的問題而逐步發展。</p>
+    <h2>5.1 瞬時變化率：微分的起源</h2>
+    <p>牛頓研究行星運動與受力後的軌跡時，需要知道「某一瞬間」的速度與加速度，而不只是整段時間的平均速度。</p>
+    <ul>
+      <li>平均速度可以用距離除以時間計算。</li>
+      <li>瞬時速度需要讓時間間隔無限趨近於 0。</li>
+      <li>牛頓發展出流數法，建立微分的雛形。</li>
+    </ul>
+    <p>這套方法讓他能計算行星的瞬時運動，並進一步驗證萬有引力定律。</p>
+
+    <h2>5.2 不規則面積與總量累積：積分的起源</h2>
+    <p>萊布尼茲從曲線下面積的問題出發：把不規則區域切成無數個無限薄的長方形，再將它們累加。積分符號 $\int$ 源自拉長的字母 S，表示求和（Summation）。</p>
+    <p>這種方法可用來研究拋物線下的面積、行星軌道掃過的面積，以及其他連續累積量。</p>
+
+    <h2>5.3 微分與積分的統一</h2>
+    <p>牛頓與萊布尼茲各自發展出這套系統，最重要的共同發現是：求瞬時變化率與求累積量，實際上是互為反運算的兩個方向。</p>
+    <div class="math-block">$$ \text{位移}\xrightarrow{\text{微分}}\text{速度}\xrightarrow{\text{微分}}\text{加速度} $$</div>
+    <div class="math-block">$$ \text{加速度}\xrightarrow{\text{積分}}\text{速度}\xrightarrow{\text{積分}}\text{位移} $$</div>
+    <div class="callout callout-note">
+      <div class="callout-title">歷史脈絡</div>
+      <div class="callout-body">微積分從一開始就是物理與數學共同發展的工具：微分回答「這一瞬間變化多快」，積分回答「整段過程累積多少」。</div>
+    </div>
+
+    <h1>6. 常數 $C$ 為什麼在微分後消失</h1>
+    <p>因為常數不隨 $x$ 改變，所以它的變化率永遠是 0：</p>
+    <div class="math-block">$$ \frac{d}{dx}(C)=\lim_{h\to0}\frac{C-C}{h}=0 $$</div>
+    <p>套用到積分結果：</p>
+    <div class="math-block">$$ \frac{d}{dx}\left(\frac{x^3}{3}+C\right)=\frac{3x^2}{3}+0=x^2 $$</div>
+    <p>因此微分會把常數項消除，只留下真正會隨 $x$ 變化的部分。</p>
+
+    <h2>6.1 $C$ 代表什麼</h2>
+    <p>若只知道導數是 $x^2$，則下列函數的微分結果完全相同：</p>
+    <div class="math-block">$$ \frac{d}{dx}\left(\frac{x^3}{3}\right)=x^2,\quad \frac{d}{dx}\left(\frac{x^3}{3}+5\right)=x^2,\quad \frac{d}{dx}\left(\frac{x^3}{3}-100\right)=x^2 $$</div>
+    <p>因此不定積分的 $C$ 代表一個無法由導數本身判定的任意常數。它就像不同的起始高度：雖然各條曲線的變化率相同，但整體上下位置可能不同。</p>
+
+    <h2>6.2 什麼時候可以求出 $C$</h2>
+    <p>只要再提供一個初始條件或邊界條件，例如曲線通過某個已知點，就能反推出 $C$。</p>
+
+    <h1>7. 情境應用：由已知點求完整函數</h1>
+    <p><strong>題目：</strong>已知 $F'(x)=x^2$，且函數曲線通過 $(x,F(x))=(3,10)$，求 $F(x)$。</p>
+    <p><strong>第一步：先做不定積分。</strong></p>
+    <div class="math-block">$$ F(x)=\int x^2\,dx=\frac{x^3}{3}+C $$</div>
+    <p><strong>第二步：代入已知點。</strong></p>
+    <div class="math-block">$$ 10=\frac{3^3}{3}+C=9+C $$</div>
+    <p><strong>第三步：解出常數。</strong></p>
+    <div class="math-block">$$ C=10-9=1 $$</div>
+    <div class="summary-box"><strong>計算結果：</strong><div class="math-block">$$ \boxed{F(x)=\frac{x^3}{3}+1} $$</div></div>
+
+    <h1>8. 不定積分與定積分的差異</h1>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>不定積分</th><th>定積分</th></tr></thead>
+        <tbody>
+          <tr><td>符號</td><td>$\displaystyle\int x^2\,dx$</td><td>$\displaystyle\int_0^v x^2\,dx$</td></tr>
+          <tr><td>結果</td><td>一族函數</td><td>一個確定的數值或累積量</td></tr>
+          <tr><td>是否需要 $C$</td><td>需要，因為起始位置未知</td><td>不需要，因為上下限相減時會抵銷</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>定積分有明確的上下限，計算的是兩個位置之間的差值：</p>
+    <div class="math-block">$$ \int_0^v m\,v\,dv=m\left[\frac{1}{2}v^2+C\right]_0^v $$</div>
+    <p>依序代入上限與下限：</p>
+    <div class="math-block">$$ m\left[\left(\frac{1}{2}v^2+C\right)-\left(\frac{1}{2}(0)^2+C\right)\right]=m\left(\frac{1}{2}v^2\right) $$</div>
+    <p>可以看到 $+C$ 與 $-C$ 自動抵銷，所以定積分不必在最後保留 $C$。</p>
+
+    <h2>8.1 物理範例：由定積分得到動能</h2>
+    <p>若質量為 $m$ 的物體由速度 0 加速到 $v$，其功可寫成：</p>
+    <div class="math-block">$$ W=m\left[\frac{1}{2}v^2\right]_0^v=\frac{1}{2}mv^2 $$</div>
+    <p>代入 $m=2.0\,\text{kg}$、$v=10.0\,\text{m/s}$：</p>
+    <div class="math-block">$$ W=\frac{1}{2}\times2.0\times(10.0)^2=100\,\text{J} $$</div>
+    <p>這就是動能公式 $KE=\frac{1}{2}mv^2$，也呈現了功—能定理：外力對物體所做的功，等於動能的變化量。</p>
+
+    <h1>9. 重點整理</h1>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>情況</th><th>$C$ 的狀態</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>只有 $\int x^2\,dx$</td><td>保留任意常數 $C$</td><td>沒有額外資訊，無法鎖定唯一函數。</td></tr>
+          <tr><td>提供一個已知點</td><td>可以求出具體數值</td><td>把點座標代入積分結果，反解 $C$。</td></tr>
+          <tr><td>使用定積分</td><td>$C$ 自動抵銷</td><td>上下限相減，計算的是兩點之間的差值。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="summary-box">
+      <strong>完整思路：</strong>從「次方減 1、次方加 1」的規則出發，可以一路理解微積分的物理起源、不定積分的常數 $C$，以及定積分中 $C$ 為什麼會自動消失。
+    </div>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本文件為微積分與工程物理的基礎學習筆記；公式與物理應用請依實際問題的變數定義與邊界條件使用。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function (header, index) {
+    var id = 'section-' + (index + 1);
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
