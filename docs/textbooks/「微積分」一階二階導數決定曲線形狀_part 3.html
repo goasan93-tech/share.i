@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「微積分」一階二階導數決定曲線形狀_part 3</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1600px; margin: 0; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 48px 0 20px;
+  text-align: center;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1040px);
+  gap: 32px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink);}
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">「微積分」一階二階導數決定曲線形狀_part 3</h1>
+  <p class="report-sub">研究組員：李世權 Gemini，編輯美工繪圖：Copilot</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+<p>微積分中<strong>一階導數</strong>決定函數曲線的「傾斜方向（遞增/遞減）」，<strong>二階導數</strong>則決定曲線的「彎曲方向（凹凸性）」。</p>
+<p>以下為您整理完整的<strong>導數正負號與曲線幾何形狀對照表</strong>，方便您日後對照閱讀任何工程與微積分圖表：</p>
+<table>
+<thead>
+<tr>
+<th><strong>一階導數 y′(x)（斜率/傾斜度）</strong></th>
+<th><strong>二階導數 y′′(x)（斜率變化率/凹凸性）</strong></th>
+<th><strong>幾何形狀特徵與趨勢描述</strong></th>
+<th><strong>圖形視覺示意</strong></th>
+<th><strong>熱力學與物理常見實例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>正數</strong> ($&gt;0$)</td>
+<td><strong>正數</strong> ($&gt;0$)</td>
+<td><strong>向上遞增 + 凹向上</strong><br><br>（越往右上升得越快）</td>
+<td><img alt="正斜率、凹向上的曲線" src="曲線示意_正增凹上.svg" /></td>
+<td>熱力學中過熱蒸氣的定壓熱容量曲線、指數成長曲線</td>
+</tr>
+<tr>
+<td><strong>正數</strong> ($&gt;0$)</td>
+<td><strong>負數</strong> ($&lt;0$)</td>
+<td><strong>向上遞增 + 凹向下</strong><br><br>（越往右上升得越慢）</td>
+<td><img alt="正斜率、凹向下的曲線" src="曲線示意_正增凹下.svg" /></td>
+<td>對數成長曲線、邊際效益遞減曲線</td>
+</tr>
+<tr>
+<td><strong>負數</strong> ($&lt;0$)</td>
+<td><strong>正數</strong> ($&gt;0$)</td>
+<td><strong>向下遞減 + 凹向上</strong><br><br>（越往右下降得越慢）</td>
+<td><img alt="負斜率、凹向上的曲線" src="曲線示意_負減凹上.svg" /></td>
+<td><strong>$P-v$ 圖中的多變壓縮線、等溫線、等熵線</strong></td>
+</tr>
+<tr>
+<td><strong>負數</strong> ($&lt;0$)</td>
+<td><strong>負數</strong> ($&lt;0$)</td>
+<td><strong>向下遞減 + 凹向下</strong><br><br>（越往右下降得越快）</td>
+<td><img alt="負斜率、凹向下的曲線" src="曲線示意_負減凹下.svg" /></td>
+<td>向下加速衰減曲線</td>
+</tr>
+<tr>
+<td><strong>等於 0</strong> ($=0$)</td>
+<td><strong>等於 0</strong> ($=0$)</td>
+<td><strong>水平直線</strong><br><br>（無傾斜度、無彎曲）</td>
+<td><img alt="水平直線" src="曲線示意_水平線.svg" /></td>
+<td><strong>$P-v$ 圖中兩相共存區（蒸發/冷凝）的等壓等溫線</strong></td>
+</tr>
+<tr>
+<td><strong>任意值</strong></td>
+<td><strong>等於 0</strong> ($=0$)</td>
+<td><strong>傾斜直線</strong><br><br>（固定斜率、無彎曲）</td>
+<td><img alt="斜直線" src="曲線示意_斜直線.svg" /></td>
+<td>理想氣體在 $V-T$ 圖上的定壓過熱線</td>
+</tr>
+</tbody>
+</table>
+<h3>速記技巧總結</h3>
+<ol>
+<li>
+<p><strong>看一階導數 $y'(x)$（決定方向）</strong>：</p>
+<ul>
+<li>
+<p><strong>正 $(+)$</strong> $\rightarrow$ 右高左低（向上斜）</p>
+</li>
+<li>
+<p><strong>負 $(-)$</strong> $\rightarrow$ 左高右低（向下斜）</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>看二階導數 $y''(x)$（決定碗口方向）</strong>：</p>
+<ul>
+<li>
+<p><strong>正 $(+)$</strong> $\rightarrow$ <strong>凹向上</strong>（像一個正常的碗，能裝水，開口朝上）</p>
+</li>
+<li>
+<p><strong>負 $(-)$</strong> $\rightarrow$ <strong>凹向下</strong>（像倒扣的碗，會漏水，開口朝下）</p>
+</li>
+</ul>
+</li>
+</ol>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本報告為技術參考文件，請於正式使用前另行覆核。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
