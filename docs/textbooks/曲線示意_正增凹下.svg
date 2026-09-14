@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" role="img" aria-label="正斜率、凹向下的曲線"><defs><pattern id="p" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#d8d8d8"/></pattern></defs><rect width="120" height="80" fill="url(#p)"/><path d="M18 66 C21 44 30 28 45 19 C60 10 79 7 102 5" fill="none" stroke="#111" stroke-width="2"/></svg>
