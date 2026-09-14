@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>「微積分」微分與偏微分解說暨熱力學狀態方程式推導研究報告</title>
+  
+  <!-- MathJax 公式渲染腳本 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --paper: #1e293b;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --line: #334155;
+      --accent: #38bdf8;
+      --accent-2: #0284c7;
+      --table-header: #0f172a;
+      --note-bg: #1e293b;
+      --highlight: #38bdf8;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .page {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: var(--bg);
+    }
+    .report-header {
+      padding: 40px 32px 24px;
+      border-bottom: 1px solid var(--line);
+      background: #0f172a;
+      text-align: center;
+    }
+    .report-header h1 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.35;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 32px;
+      padding: 32px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-2);
+    }
+    .toc a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--line);
+      transition: color 0.2s;
+    }
+    .toc a:hover {
+      color: var(--accent);
+    }
+    .content {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 40px;
+      min-width: 0;
+    }
+    .content h2 {
+      margin: 36px 0 18px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: left;
+    }
+    .content h3 {
+      margin: 24px 0 14px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: left;
+    }
+    .content p {
+      margin: 0 0 16px;
+      font-size: 15px;
+      color: #e2e8f0;
+      text-align: left;
+    }
+    .content ul, .content ol {
+      margin: 10px 0 18px;
+      padding-left: 24px;
+      text-align: left;
+    }
+    .content li {
+      margin: 8px 0;
+      color: #e2e8f0;
+    }
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+      background: #0f172a;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .content th, .content td {
+      border: 1px solid var(--line);
+      vertical-align: middle;
+      padding: 12px 14px;
+      text-align: left;
+    }
+    .content th {
+      background: #1e293b;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .content tr:nth-child(even) {
+      background-color: #172033;
+    }
+    .center-text {
+      text-align: center !important;
+    }
+    .math-block {
+      background-color: #0f172a;
+      border-left: 4px solid var(--accent-2);
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 4px;
+      text-align: center;
+      overflow-x: auto;
+    }
+    .note-box {
+      background: #0f172a;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 992px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+      .toc {
+        position: static;
+        max-height: none;
+      }
+      .content {
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      <h1>「微積分」微分與偏微分解說暨熱力學狀態方程式推導研究報告_part 4</h1>
+      <p class="report-sub">研究組員：李世權 Gemini</p>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="目錄">
+        <div class="toc-title">目錄</div>
+        <a href="#sec0">○、 計算函數微分與斜率之目的及觀念</a>
+        <a href="#sec1">一、 微分與偏微分之核心概念與幾何對比</a>
+        <a href="#sec2">二、 導數正負號與幾何曲線趨勢對照指南</a>
+        <a href="#sec3">三、 熱力學基本概念：焓與熵</a>
+        <a href="#sec4">四、 第一熱力學狀態方程式推導與解析</a>
+        <a href="#sec5">五、 關係式 (∂P/∂h)s = 1/v 之深入解析</a>
+        <a href="#sec6">六、 結論</a>
+      </nav>
+
+      <main class="content">
+        <p class="center-text"><strong>摘要：</strong>本報告系統整合微積分（單變數微分與多變數偏微分）之基礎概念、幾何直觀與熱力學狀態方程式推導，並詳細解析偏微分關係式 $\left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$ 與 $dh = T ds + v dP$ 之微積分推導過程與工程實務意義，作為高等微積分與工程熱力學交叉學習之教學教材。</p>
+
+        <!-- 新增整合：15 將函數進行微分的目的.md 內容 -->
+        <h2 id="sec0">○、 計算函數微分與斜率之目的及觀念</h2>
+        
+        <h3>0.1 計算函數微分或斜率的目的</h3>
+        <ul>
+          <li><strong>微分（求瞬間值）：</strong>透過微小的變化量比值（$\Delta y / \Delta x$ 當 $\Delta x \to 0$），計算出特定點的「瞬時變化率」。</li>
+          <li><strong>斜率（曲線切線）：</strong>微分導出的數值，在幾何上正是該點切線的斜率 $m = \tan(\theta)$。</li>
+          <li><strong>斜率代表變化方向與趨勢：</strong>斜率的正負號與大小決定了函數曲線的走向。</li>
+        </ul>
+
+        <h3>0.2 函數曲線「變化方向」的觀念與幾何歸納</h3>
+        <p>在平面 2D 笛卡兒座標系中，<strong>函數定義規定「自變數 $x$ 預設統一朝右方（正方向）增加」</strong>[cite: 5]。因此，函數曲線其縱軸 $y$（受變數）的變化方向係由「隨橫軸 $x$（自變數）向右移動時，$y$ 值是上升還是下降（一階導數）」以及「曲線是向上彎曲(凹)還是向下彎曲(凹)（二階導數）」來界定。</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>一階斜率 $y'(x)$<br>（極限方向）</th>
+              <th>二階導數 $y''(x)$<br>（彎曲方向）</th>
+              <th>幾何變化方向與形狀</th>
+              <th class="center-text">朝向示意</th>
+              <th>說明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>向右上升 + 凹向上</strong></td>
+              <td class="center-text">📈</td>
+              <td>越往右邊走，上升得<strong>越來越快</strong>。</td>
+            </tr>
+            <tr>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>向右上升 + 凹向下</strong></td>
+              <td class="center-text">↗️</td>
+              <td>越往右邊走，上升得<strong>越來越慢</strong>。</td>
+            </tr>
+            <tr>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>向右下降 + 凹向上</strong></td>
+              <td class="center-text">📉</td>
+              <td>越往右邊走，下降得<strong>越來越慢</strong>（如 $P-v$ 熱力圖線）。</td>
+            </tr>
+            <tr>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>向右下降 + 凹向下</strong></td>
+              <td class="center-text">↘️</td>
+              <td>越往右邊走，下降得<strong>越來越快</strong>。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note-box">
+          <p style="margin-bottom:8px;"><strong>觀念總結：</strong></p>
+          <ul>
+            <li>在微積分裡閱讀曲線時，自變量時間或輸入量（$x$）一定是「向右」推移的，我們觀察的是「往右看時，$y$ 是往上走還是往下走」。</li>
+            <li><strong>正確的幾何記憶口訣：</strong>
+              <ol>
+                <li><strong>一階導數（斜率 $y'$）：</strong>決定<strong>朝右上</strong>（$y'>0$）還是<strong>朝右下</strong>（$y'<0$）走。</li>
+                <li><strong>二階導數（彎曲 $y''$）：</strong>決定圖形是像<strong>凹向上(碗口朝上)</strong>（$y''>0$）還是<strong>凹向下(碗口朝下)</strong>（$y''<0$）彎曲。</li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+
+        <h3>0.3 為什麼函數曲線的方向是「朝右上/朝右下」</h3>
+        <p>在微積分的規定裡，時間與自變數（$X$ 軸）預設是「從左向右推移」的（就像我們讀書寫字看時間一樣，必定是「從過去走向未來」）。因此，無論曲線位在 $X$ 軸的上方（第一象限）還是下方（第四象限）：</p>
+        <ol>
+          <li><strong>當斜率（一階導數 $Y'$）為正數（$Y' > 0$）時：</strong>隨 $X$ 向右走，$Y$ 值增加 $\rightarrow$ 曲線呈現「朝右上發展」（上升曲線）。</li>
+          <li><strong>當斜率（一階導數 $Y'$）為負數（$Y' < 0$）時：</strong>隨 $X$ 向右走，$Y$ 值減少 $\rightarrow$ 曲線呈現「朝右下發展」（下降曲線）。</li>
+        </ol>
+
+        <h3>0.4 用「第一與第四象限」對照曲線發展方向</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>曲線所在位置</th>
+              <th>斜率正負（一階導數 $Y'$）</th>
+              <th>正確的發展方向描述</th>
+              <th>幾何圖形視覺與實例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>第一象限 ($X$ 軸上方，高數值)</strong></td>
+              <td><strong>正數 ($Y' > 0$)</strong></td>
+              <td>從 $X$ 軸上方，往<strong>右上</strong>攀升</td>
+              <td>↗️ 指數成長、加熱升溫曲線</td>
+            </tr>
+            <tr>
+              <td><strong>第一象限 ($X$ 軸上方，高數值)</strong></td>
+              <td><strong>負數 ($Y' < 0$)</strong></td>
+              <td>從左上方，往<strong>右下</strong>滑落至 $X$ 軸</td>
+              <td>↘️ <strong>$P-v$ 圖中的壓縮降壓線</strong></td>
+            </tr>
+            <tr>
+              <td><strong>第四象限 ($X$ 軸下方，負數值)</strong></td>
+              <td><strong>正數 ($Y' > 0$)</strong></td>
+              <td>從深處（低點），往<strong>右上</strong>朝 $X$ 軸上升</td>
+              <td>↗️ 虧損減少、負債回收曲線</td>
+            </tr>
+            <tr>
+              <td><strong>第四象限 ($X$ 軸下方，負數值)</strong></td>
+              <td><strong>負數 ($Y' < 0$)</strong></td>
+              <td>從 $X$ 軸下方，繼續往<strong>右下</strong>向下沉</td>
+              <td>↘️ 加速衰減、持續虧損曲線</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="sec1">一、 微分與偏微分之核心概念與幾何對比</h2>
+        <h3>1.1 單變數微分（Ordinary Derivative）</h3>
+        <p>單變數函數，如 $y = f(x)$[cite: 4]。</p>
+        <td>單變數函數微分，如 $\frac{dy}{dx}$ [唸dee y by dee x] 或 $f'(x)$</td>
+
+        <h3>1.2 多變數偏微分（Partial Derivative）</h3>
+        <p>偏微分用於處理多變數函數（如 $z = f(x, y)$）[cite: 4]。當系統結果同時受多個獨立變數影響時，偏微分的精神在於「一次只關注一個變數的變化，並將其餘所有獨立變數強制視為固定常數」。</p>
+        <p>幾何與物理意涵：假設地形高度 $z = f(x, y)$ 由東向距離 $x$ 與北向距離 $y$ 共同決定：</p>
+        <ul>
+          <li>$\frac{\partial f}{\partial x}$ [唸partial f by partial x] ：代表僅沿正東方向移動時，山坡之陡峭程度（切線斜率）。</li>
+          <li>$\frac{\partial f}{\partial y}$ [唸partial f by partial y] ：代表僅沿正北方向移動時，山坡之陡峭程度（切線斜率）。</li>
+        </ul>
+
+        <h3>1.3 微分與偏微分之關鍵差異對照</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>比較項目</th>
+              <th>普通微分</th>
+              <th>偏微分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>適用對象</strong></td>
+              <td>單變數函數，如 $y = f(x)$</td>
+              <td>多變數函數，如 $z = f(x, y, z)$</td>
+            </tr>
+            <tr>
+              <td><strong>數學符號</strong></td>
+              <td>$\frac{dy}{dx}$ 或 $f'(x)$</td>
+              <td>$\frac{\partial f}{\partial x}$、$\frac{\partial f}{\partial y}$ 或 $f_x$</td>
+            </tr>
+            <tr>
+              <td><strong>運算核心</strong></td>
+              <td>僅單一變數發生變化</td>
+              <td>一次僅允許一個變數改變，其餘變數視為常數</td>
+            </tr>
+            <tr>
+              <td><strong>幾何含義</strong></td>
+              <td>2D 平面曲線上某點之切線斜率</td>
+              <td>3D 多維曲面上，沿指定座標軸方向之切線斜率</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>1.4 偏微分計算範例解析</h3>
+        <p>含有多自變數(x,y)的函數$z = x^2 y + 3y = x^2 y + x^03y$ </p>
+        <ul>
+          <li>僅對 $x$ 做偏微分（將 $y$ 視為常數）：
+            <div class="math-block">$$\frac{\partial z}{\partial x} = 2\cdot x^{2-1}\cdot y + 0 \cdot x^{0-1} \cdot 3y = 2xy$$</div> 
+          </li>
+          <li>僅對 $y$ 做偏微分（將 $x$ 視為常數）：
+            <div class="math-block">$$\frac{\partial z}{\partial y} = x^2 \cdot 1 \cdot  y^{1-1} + x^{0} \cdot 3 \cdot  y^{1-1} = x^2 \cdot 1 \cdot  1 + 1 \cdot 3 \cdot  1 = x^2 + 3$$</div>
+          </li>
+        </ul>
+
+        <h2 id="sec2">二、 導數正負號與幾何曲線趨勢對照指南</h2>
+        <p>在一階與二階微分中，導數的正負號決定了函數曲線的傾斜方向與凹凸性，此數學規律普遍應用於物理與熱力圖表（如 $P-v$ 圖、$T-s$ 圖）：</p>
+        <table>
+          <thead>
+            <tr>
+              <th>一階導數 $y'(x)$</th>
+              <th>二階導數 $y''(x)$</th>
+              <th>幾何形狀特徵與趨勢描述</th>
+              <th>熱力學與物理實例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td>向上遞增 + 凹向上</td>
+              <td>過熱蒸氣之定壓熱容量曲線</td>
+            </tr>
+            <tr>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td>向上遞增 + 凹向下</td>
+              <td>邊際效益遞減[cite: 4]</td>
+            </tr>
+            <tr>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>正數 ($>0$)</strong></td>
+              <td>向下遞減 + 凹向上</td>
+              <td>$P-v$ 圖中之等溫線與等熵線</td>
+            </tr>
+            <tr>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td><strong>負數 ($<0$)</strong></td>
+              <td>向下遞減 + 凹向下</td>
+              <td>向下加速衰減曲線</td>
+            </tr>
+            <tr>
+              <td><strong>等於 0 ($=0$)</strong></td>
+              <td><strong>等於 0 ($=0$)</strong></td>
+              <td>水平直線</td>
+              <td>兩相共存區之等壓等溫線</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="sec3">三、 熱力學基本概念：焓（Enthalpy）與熵（Entropy）</h2>
+        <h3>3.1 焓（Enthalpy, $h$ 或 $H$）</h3>
+        <ul>
+          <li><strong>定義：</strong>代表系統內部的總熱含量與流動能量。比焓定義為 $h = u + Pv$，其中 $u$ 為比內能，$P$ 為壓力，$v$ 為比容。</li>
+          <li><strong>物理意義：</strong>在常壓過程下，系統吸收或釋放的熱量變化即為焓變 $\Delta h$。吸熱反應 $\Delta h > 0$，放熱反應 $\Delta h < 0$。</li>
+        </ul>
+
+        <h3>3.2 熵（Entropy, $s$ 或 $S$）</h3>
+        <ul>
+          <li><strong>定義：</strong>用以描述系統微觀粒子排列之混亂度或能量分散狀態。對可逆過程，瞬間溫度(T)定義為 $T = \frac{dq_{\text{rev}}}{ds}$。微小熵變定義為 $ds = \frac{dq_{\text{rev}}}{T}$。</li>
+          <li><strong>物理意義：</strong>孤立系統之自發過程必然朝向熵增（$\Delta s > 0$）方向進行。等熵過程（$\Delta s = 0$）代表理想之無摩擦損失的絕熱（可逆絕熱）過程。</li>
+        </ul>
+
+        <h2 id="sec4">四、 第一熱力學狀態方程式 $dh = T ds + v dP$ 完整推導與物理解析</h2>
+        <h3>4.1 公式之微積分推導步驟</h3>
+        <p>1. 根據比焓定義：</p>
+        <div class="math-block">$$h = u + P⋅v$$</div>
+        <p>2. 對全式進行全微分，套用乘積微分法則 $d(x⋅y) = x dy + y dx$：</p>
+        <div class="math-block">$$dh = du + d(P⋅v) = du + P dv + v dP \quad \text{--- (式 1)}$$</div>
+        <p>3. 根據熱力學第一定律（能量守恆，可逆過程）：$dq = du + dw$ → $du = dq - dw$</p>
+        <p>代入可逆微小熱傳量 $dq = T ds$ 與 隨 v容積自變數改變的膨脹功 $dw = P dv$：</p>
+        <div class="math-block">$$du = dq - dw = T ds - P dv \quad \text{--- (式 2)}$$</div>
+        <p>4. 將（式 2）代入（式 1）中：</p>
+        <div class="math-block">$$dh = (T ds - P dv) + P dv + v dP$$</div>
+        <p>消去 $-P dv$ 與 $+P dv$，導出最終基本狀態方程式：</p>
+        <div class="math-block">$$dh = T ds + v dP$$</div>
+
+        <h3>4.2 核心問題一：為何是 $T ds$ 而非 $s dT$？</h3>
+        <ul>
+          <li><strong>熱量傳遞之定義源頭：</strong>微小熱量傳遞定義為 $dq = T ds$。溫度 $T$ 為受變數，熵損失就是磨擦熱。熵變 $ds$ 為自變數，熵就是能量轉換過程中的損失。$T ds$ 具備明確之熱能量轉移物理單位。</li>
+          <li><strong>$s dT$ 之數學本質：</strong>$s dT$ 並不代表熱量傳遞，僅在 Legendre 變換時出現，缺乏直觀之熱傳物理意義。</li>
+        </ul>
+
+        <h3>4.3 核心問題二：為何是 $v dP$ 而非 $P dv$？</h3>
+        <ul>
+          <li><strong>$P dv$：</strong>適用於封閉系統，代表體積膨脹時所作之功。</li>
+          <li><strong>$v dP$：</strong>適用於開放系統，代表流體流動時的動壓力提升所對應之軸功。</li>
+        </ul>
+
+        <h2 id="sec5">五、 關係式 $\left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$ 之深入解析</h2>
+        <h3>5.1 微分推導與條件化簡</h3>
+        <p>由狀態方程式 $dh = T ds + v dP$，當過程為等熵過程時，熵不變（$ds = 0$）：</p>
+        <div class="math-block">$$dh = T(0) + v dP \implies dh = v dP \quad (\text{在 } s \text{ 不變時})$$</div>
+        <p>兩邊同除以 $dh$，並進行偏微分符號轉換，即導出：</p>
+        <p>$$\frac{dh}{dh} = v \cdot \frac{dP}{dh} \implies 1 = v \cdot \frac{dP}{dh}$$移項求解 $\frac{dP}{dh}$：將 $v$ 移至等號另一邊（兩邊同除以 $v$）：$$\frac{dP}{dh} = \frac{1}{v}$$轉為「偏微分」標準符號：因為 $P$ 和 $h$ 的關係是在「熵 $s$ 被固定為常數」的前提下求得的。  在多變數微積分與熱力學中，為了明確標示這個前提，我們會將普通微分符號 $d$ 改寫為偏微分符號 $\partial$，並在括弧右下角加上標籤 $s$。
+  $$\frac{dP}{dh} \xrightarrow{\text{等熵約束 } s} \left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$$  物理意義簡述：
+這個式子告訴我們，在理想等熵（無摩擦絕熱）壓縮或膨脹過程中，「壓力隨焓變化的斜率 $\left(\frac{\partial P}{\partial h}\right)_s$」剛好等於「比容的倒數 $\frac{1}{v}$」（也就是流體密度 $\rho$）。這在冷凍空調與熱力學的 $P-h$ 圖中，是計算壓縮機等熵線斜率的重要幾何特性。</P>
+        <div class="math-block">$$\left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$$</div>
+
+        <h3>5.2 括弧外右下角標籤 $s$ 的數學與物理含義</h3>
+        <p>在熱力學偏微分表示法中，標準格式為：$\left( \frac{\partial \text{被微分量}}{\partial \text{自變數量}} \right)_{\text{保持不變之約束條件}}$。</p>
+        <p>右下角的標籤 $s$ 為條件約束標籤，明確界定此偏微分僅在「比熵 $s$ 保持固定不變（等熵）」的物理條件下成立。
+
+        <h3>5.3 右下角標籤不同之物理情境對照</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>熱力學偏微分算式</th>
+              <th>右下角標籤意義</th>
+              <th>對應物理情境</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>$\left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$</strong></td>
+              <td>等熵（$s = \text{常數}$）</td>
+              <td>理想壓縮機內冷媒之可逆絕熱壓縮過程</td>
+            </tr>
+            <tr>
+              <td><strong>$\left(\frac{\partial P}{\partial h}\right)_T$</strong></td>
+              <td>等溫（$T = \text{常數}$）</td>
+              <td>恆溫狀態下調節壓力與焓值之過程</td>
+            </tr>
+            <tr>
+              <td><strong>$\left(\frac{\partial P}{\partial h}\right)_v$</strong></td>
+              <td>等容（$v = \text{常數}$）</td>
+              <td>定容封閉容器內加熱或冷卻之過程</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>5.4 冷凍空調工程應用（$P-h$ 圖）</h3>
+        <p>在冷凍空調與 HVAC 領域之 $P-h$ 圖中，等熵線之切線斜率為 $\frac{\partial P}{\partial h}$。根據此算式，切線斜率之倒數即代表該點流體之比容 $v$（亦即密度的倒數 $\rho = \frac{1}{v}$）。此幾何特性可用於精確計算理想壓縮過程中壓縮機之耗功與排氣體積率。</p>
+
+        <h2 id="sec6">六、 結論</h2>
+        <p>微積分中的偏微分概念提供了分析多變數複雜系統的強大工具。透過嚴謹的微分推導，熱力學將抽象的物理量（如焓與熵）轉換為工程實務中可量測的參數（如壓力與比容）。理解 $\left(\frac{\partial P}{\partial h}\right)_s = \frac{1}{v}$ 與 $dh = T ds + v dP$，不僅能掌握微積分在物理學的幾何與數學應用，更能建構完整的工程熱力學分析能力。</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
