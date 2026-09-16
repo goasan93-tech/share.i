@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蒸汽壓縮制冷系統在 P-v 壓容圖上的理想熱力循環圖解說與壓縮曲線數學解析</title>
+<style>
+  :root {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-red: #ff4d4d;
+    --accent-blue: #38bdf8;
+    --accent-cyan: #22d3ee;
+    --table-header-bg: #0f172a;
+    --table-alt-row: #243347;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* 封面區塊 */
+  .cover-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+  }
+
+  .cover-title {
+    color: var(--accent-cyan);
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .cover-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+
+  /* 卡片容器 */
+  .section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  h1, h2, h3 {
+    color: var(--accent-blue);
+    margin-top: 0;
+  }
+
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--card-border); padding-bottom: 8px; }
+  h2 { font-size: 1.3rem; margin-top: 20px; }
+  h3 { font-size: 1.1rem; color: var(--accent-cyan); }
+
+  /* 粗體紅字與重點 */
+  .highlight-red {
+    color: var(--accent-red);
+    font-weight: bold;
+  }
+
+  /* 表格樣式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: var(--card-bg);
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid var(--card-border);
+  }
+
+  th {
+    background-color: var(--table-header-bg);
+    color: var(--accent-cyan);
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--table-alt-row);
+  }
+
+  /* SOP 步驟與清單 */
+  ol, ul {
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  /* 數學公式區塊 */
+  .math-block {
+    background: #0f172a;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-cyan);
+    margin: 15px 0;
+    overflow-x: auto;
+  }
+
+  .badge {
+    background: #0284c7;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    vertical-align: middle;
+  }
+
+  /* 圖片容器 */
+  .fig-box {
+    background-color: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .fig-box img { max-width: 100%; height: auto; border-radius: 4px; }
+  .fig-caption { color: #334155; font-size: 0.85rem; margin-top: 0.6rem; text-align: center; font-weight: bold; }
+</style>
+
+<!-- MathJax 配置機制 -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$']],
+      displayMath: [['$$', '$$']],
+      processEscapes: true
+    },
+    options: {
+      ignoreHtmlClass: 'tex2jax_ignore',
+      processHtmlClass: 'tex2jax_process'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="container tex2jax_process">
+
+  <!-- 封面 -->
+  <div class="cover-card">
+    <div class="cover-title">蒸汽壓縮制冷系統在「P-v壓容圖」上的理想熱力循環圖解說</div>
+    <div class="cover-subtitle">包含多變壓縮反比例雙曲線幾何證明與往復式壓縮機指示圖對比分析</div>
+    <p>研究組員：李世權 Gemini</p>
+    <div><span class="badge">查證等級：(3) 既有知識工程參考值</span></div>
+  </div>
+
+  <!-- 1. 導論與基本架構 -->
+  <div class="section-card">
+    <h1>1. 導論與基本架構</h1>
+    <p>蒸汽壓縮制冷系統 (Vapor Compression Refrigeration System, VCRS) 為 HVAC (Heating, Ventilation, and Air Conditioning 通風空調系統) 與冷凍工程領域中最核心的逆向熱力循環。本報告解析理想 VCRS 在 <span class="highlight-red">$P-v$ 圖 (壓容圖)</span> 上的狀態軌跡變化，並深入探討壓縮與膨脹曲線的由來。</p>
+    <p>在 $P-v$ 圖中，縱軸代表<span class="highlight-red">絕對壓力 $P \text{ (kPa)}$</span>，橫軸代表<span class="highlight-red">比容 $v \text{ (m}^3\text{/kg)}$</span>。其封閉曲線所包圍之面積反映了系統在循環過程中的 做功(W) 與 容積(V) 變化特性。</p>
+
+    <h2>1.1 理想 $P-v$ 熱力循環示意圖</h2>
+    <p>下圖1 示範冷媒在理想 $P-v$ 壓容圖上之四大過程軌跡。圖中等熵壓縮曲線 $1 \rightarrow 2$  精確呈現出由左往右<span class="highlight-red">凹向上</span>的曲線弧形特徵：</p>
+
+  
+
+    <div class="fig-box" style="max-width:620px; margin-left:auto; margin-right:auto;">
+      <img src="P-V圖1.png" alt="蒸汽壓縮制冷系統 P-v 壓容圖">
+      <div class="fig-caption">圖 1：理想蒸汽壓縮制冷循環在 P-v 壓容圖上之狀態軌跡圖</div>
+    </div>
+
+  </div>
+
+  <!-- 2. P-v 壓縮曲線幾何凹凸性與公式關聯推導 -->
+  <div class="section-card">
+    <h1>2. P-v 壓縮曲線幾何凹凸性與公式關聯推導</h1>
+    <p>為說明 $P-v$ 圖上壓縮曲線由左往右呈<span class="highlight-red">數學上稱為「凹向上 Convexcity towards origin）」</span>的幾何特徵，需從多變熱力過程的狀態方程式進行一階與二階微分推導。</p>
+
+    <h2>2.1 狀態方程式與反比例關係</h2>
+    <p>在絕熱可逆（等熵;無損失）或多變壓縮過程中，氣體壓力 $P$ 與比容 $v$ 遵循「理想氣體多變方程式（Polytropic Process Equation）」：</p>
+
+    <div class="math-block">
+      $$ P v^n = C \quad \Rightarrow \quad  Ｐ= \frac{Ｃ}{v^n}\quad \Rightarrow \quad P(v) = C \cdot v^{-n} \tag{2.1} $$
+    </div>
+    <p>$n$：多變指數（Polytropic Index）。當過程為可逆絕熱（等熵）時， $n = C_p/C_v > 1$ （絕熱指數 n = 等壓比熱與等容比熱之比 $C_p / C_v$ ）。由此可知壓力 $P$ 與比容 $v$ 成反比例關係。</p>
+    <P>$C$：常數</P>
+
+    <h2>2.2 幾何凹凸性之二階微分證明</h2>
+    <ol>
+      <li><span class="highlight-red">斜率（一階導函數）：</span>將式2.1對比容 $v$ 進行一階微分，計算曲線在任意點之切線斜率，即曲線的變化朝向趨勢：
+        <div class="math-block">
+          $$ \frac{dP}{dv} = C \cdot -n \cdot v^{-n-1} = (C \cdot -n \cdot v^{-n}) \cdot v^{-1} = -\frac{n P}{v} < 0 \tag{2.2} $$
+        </div>
+        因為 $P > 0，v > 0，n > 0$，故一階導數恆為負值，代表曲線朝向：由左向右「持續下降」。
+      </li>
+      <li><span class="highlight-red">曲率與凹凸性（二階導函數）：</span>對比容 $v$ 再進行一次微分：
+        <div class="math-block">
+          $$ \frac{d^2P}{dv^2} = C \cdot -n \cdot (-n-1) \cdot v^{-n-1-1} = C \cdot n \cdot (n+1) \cdot  v^{-n-2} = C \cdot n \cdot (n+1) \cdot  v^{-n} \cdot  v^{-2} = \frac{n(n+1)P}{v^2} > 0 \tag{2.3} $$
+        </div>
+        二階導數恆為正數（$\frac{d^2P}{dv^2} > 0$），在微積分幾何學中，二階導數大於零即證明曲線由左向右呈「凹向上」。
+      </li>
+    </ol>
+
+    <h2>2.3 壓縮與膨脹過程曲線的物理意義解說</h2>
+    <p>當氣體處於大容積狀態時（曲線右側），進一步壓縮單位容積所引起的壓力上升幅度較小（斜率較平緩）；然而當容積已被大幅壓縮至微小狀態時（曲線左側），極小的容積縮減都會導致氣體分子碰撞頻率劇烈激增，造成壓力<span class="highlight-red"> 暴漲上升</span>（斜率變得極度陡峭）。這種物理現象在幾何上即表現為左陡峭右平緩的「凹向上」雙曲弧線。</p>
+    <p>要區別「壓縮過程」與「膨脹過程」在 $P-V$ 圖上函數相同，但形狀表現不同的核心原因，可以這樣來理解：</p>
+    <P>壓縮過程看氣體（走氣體雙曲線 $P \propto v^{-n}$，呈凹向上弧線）；膨脹過程看相變（走液體閃蒸等焓線 $h = \text{Const}$，近乎斜直線）。</P>
+    <P>✦壓縮過程（氣體多變過程）: 冷媒在壓縮機內全程皆為純氣體狀態（氣體好壓縮），完全遵循多變氣體v是Ｐ的函數 $P(v) = C \cdot v^{-n}$，因此在 $P-V$ 圖上呈現標準的凹向上弧線（杯狀雙曲線）。 </P>
+    <P>✦膨脹過程（節流液體閃蒸）: 冷媒進入膨脹閥時是高壓液體（液體極難膨脹），通過閥口「P瞬間降壓」，同時「V瞬間脹大」而閃蒸成氣液混合物，膨脹過程中Ｐ與Ｖ之間的變化關係屬於「極瞬間」，在P-V圖上由點3瞬間變成點4，所以近乎直線。所以將這段膨脹過程歸為「不做功」的等焓過程（$h=\text{Const}$），受限於冷媒兩相區的液變汽物性變化，使其在 $P-V$ 圖上的以「等焓」軌跡呈現「斜降的近乎直線」。</P>
+
+
+    <h2>2.4 溫度 (T) 曲線的物理物理意義解說</h2>
+    <p>在高溫過熱區（蒸體區）與低溫過冷區（液體區）中，等溫線（$T$ 曲線）呈現向下傾斜且彎曲的弧形，主要是由以下兩個熱力學與物質狀態特性決定的：</p>
+    <p>1. 過熱蒸汽區（右側）：氣體壓縮性與雙曲線關係在飽和包絡線右側的過熱蒸汽區，冷媒處於單相氣體狀態。理想氣體狀態方程式：當氣體遠離液化點時，其行為接近理想氣體 $P \cdot v = R \cdot T$。在等溫（$T = \text{常數}$）條件下，壓力 $P$ 與比容 $v$ 成反比：$$P = \frac{R \cdot T}{v}$$微積分證明：對 $v$ 微分可得一階與二階導數：$$\frac{dP}{dv} = -\frac{RT}{v^2} < 0 \quad (\text{一階導數負數：曲線向下傾斜})$$$$\frac{d^2P}{dv^2} = \frac{2RT}{v^3} > 0 \quad (\text{二階導數正數：幾何上凹向上})$$物理意義：這是一條標準的反比例雙曲線。當壓縮氣體使比容 $v$ 變小時，分子碰撞壁面的頻率大幅增加，導致壓力 $P$ 以加速度方式劇烈上升，因此呈現由右下向左上彎曲的弧形。</p>
+    <p>2. 過冷液體區（左側）：液體不可壓縮性導致極陡彎曲在飽和包絡線左側的過冷液體區，冷媒已完全凝結為單相液體。不可壓縮性（Incompressibility）：液體分子之間的距離極小，分子間斥力強大，因此極難被壓縮。</p>
+    <p>物理意義：要讓液體的比容 $v$ 產生微小的縮減，必須施加極其巨大的壓力 $P$。因此在 $P-v$ 圖中，等溫線一進入過冷液體區就會瞬間向上陡升。這種從水平/平緩狀態急劇轉折為近乎垂直線的轉折點，在圖上就表現為極為顯著的彎曲曲線。</p>
+    <p>3.兩區與中間兩相區的對比過熱區 & 過冷區（單相區）：因為沒有發生相變，壓力與容積必須同時改變才能維持溫度不變，故 $P$ 與 $v$ 呈現反比彎曲關係。兩相共存區（蒸發器與冷凝器內部）：因為潛熱作用，狀態改變時同時進行相變（蒸發或冷凝），對於純物質而言，定壓即定溫（$P_{\text{sat}} \leftrightarrow T_{\text{sat}}$），因此在包絡線內部等溫線會由彎曲轉為水平直線。</p>
+
+  </div>
+
+  <!-- 3. 全系統循環圖 vs 壓縮機汽缸指示圖比較 -->
+  <div class="section-card">
+    <h1>3. 全系統循環圖 vs 壓縮機汽缸指示圖對比</h1>
+    <p>使用者常問及「往復式壓縮機 P-V 指示圖（如圖 3.3）」與「全系統 VCRS 循環圖」之差異，以下進行詳細分析：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>比較項目</th>
+          <th>全系統 VCRS 理想循環圖（圖 1.1）</th>
+          <th>往復式壓縮機 P-V 指示圖（圖 3.3）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="highlight-red">分析區域範疇</span></td>
+          <td>跨越四大元件（壓縮機、冷凝器、膨脹閥、蒸發器）。</td>
+          <td><span class="highlight-red">僅限於壓縮機汽缸內部空間</span>。</td>
+        </tr>
+        <tr>
+          <td><span class="highlight-red">橫軸座標物理量</span></td>
+          <td>單位質量比容 $v \text{ (m}^3\text{/kg)}$。</td>
+          <td>汽缸總容積 $V \text{ (m}^3\text{)}$ 或行程比例。</td>
+        </tr>
+        <tr>
+          <td><span class="highlight-red">曲線 1-2 過程</span></td>
+          <td>冷媒在壓縮機內的等熵壓縮過程。</td>
+          <td>汽缸內氣體被活塞壓縮過程（壓縮）。</td>
+        </tr>
+        <tr>
+          <td><span class="highlight-red">曲線 3-4 過程</span></td>
+          <td>膨脹閥內的<span class="highlight-red"> 等焓節流降壓</span>（氣液混合）。</td>
+          <td>汽缸餘隙容積內高壓殘餘氣體的<span class="highlight-red">多變膨脹</span>。</td>
+        </tr>
+        <tr>
+          <td><span class="highlight-red">包圍面積意義</span></td>
+          <td>單位質量冷媒之淨做功量與能量轉換。</td>
+          <td>壓縮機單次往復行程之指示功 $W_{\text{ind}} = \int P \, dV$。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>兩張圖中的壓縮曲線（1-2）與膨脹曲線（3-4）在數學實質上均遵循 $P V^n = C$ 關係，因此由左往右看均為下凹曲線。圖 3.3 為極佳之壓縮機內部微觀分析替代圖，可與全系統宏觀循環圖形成互補。</p>
+  </div>
+
+  <!-- 4. 四大熱力過程解析 -->
+  <div class="section-card">
+    <h1>4. 四大熱力過程解析</h1>
+    <p>理想蒸汽壓縮制冷循環由以下四個熱力過程組成：</p>
+
+    <h2>4.1 過程 1 $\rightarrow$ 2：等熵壓縮過程 (Isentropic Compression)</h2>
+    <ul>
+      <li><span class="highlight-red">熱力狀態：</span>低壓飽和蒸汽 ($P_{\text{evap}}, v_1$) 進入壓縮機，絕熱可逆壓縮為高壓過熱蒸汽 ($P_{\text{cond}}, v_2$)。</li>
+      <li><span class="highlight-red">能量方程式：</span>壓縮機單位質量做功量 $w_{\text{in}}$ 為：
+        <div class="math-block">
+          $$ w_{\text{in}} = h_2 - h_1 \tag{4.1} $$
+        </div>
+      </li>
+    </ul>
+
+    <h2>4.2 過程 2 $\rightarrow$ 3：定壓放熱冷凝過程 (Constant Pressure Heat Rejection)</h2>
+    <ul>
+      <li><span class="highlight-red">熱力狀態：</span>高壓過熱蒸汽在冷凝器中定壓放熱，相變冷凝為高壓飽和液體 ($P_{\text{cond}}, v_3$)。</li>
+      <li><span class="highlight-red">能量方程式：</span>冷凝器單位質量放熱量 $q_{\text{out}}$ 為：
+        <div class="math-block">
+          $$ q_{\text{out}} = h_2 - h_3 \tag{4.2} $$
+        </div>
+      </li>
+    </ul>
+
+    <h2>4.3 過程 3 $\rightarrow$ 4：等焓節流膨脹過程 (Isenthalpic Expansion)</h2>
+    <ul>
+      <li><span class="highlight-red">熱力狀態：</span>高壓飽和液體通過節流閥，壓力降低至蒸發壓力 $P_{\text{evap}}$，閃蒸為低溫低壓濕蒸汽 ($P_{\text{evap}}, v_4$)。</li>
+      <li><span class="highlight-red">能量方程式：</span>節流前後焓值相等：
+        <div class="math-block">
+          $$ h_3 = h_4 \tag{4.3} $$
+        </div>
+      </li>
+    </ul>
+
+    <h2>4.4 過程 4 $\rightarrow$ 1：定壓吸熱蒸發過程 (Constant Pressure Heat Addition)</h2>
+    <ul>
+      <li><span class="highlight-red">熱力狀態：</span>低溫濕蒸汽在蒸發器內吸收熱量，定壓沸騰蒸發為低壓飽和蒸汽 ($P_{\text{evap}}, v_1$)。</li>
+      <li><span class="highlight-red">能量方程式：</span>蒸發器單位質量冷凍能力 $q_{\text{in}}$ 為：
+        <div class="math-block">
+          $$ q_{\text{in}} = h_1 - h_4 \tag{4.4} $$
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 5. 效能係數 (COP) 與熱力計算實例 -->
+  <div class="section-card">
+    <h1>5. 效能係數 (COP) 與熱力計算實例</h1>
+
+    <h2>5.1 制冷效能係數公式定義</h2>
+    <div class="math-block">
+      $$ \text{COP}_{\text{R}} = \frac{q_{\text{in}}}{w_{\text{in}}} = \frac{h_1 - h_4}{h_2 - h_1} \tag{5.1} $$
+    </div>
+
+    <h2>5.2 情境應用實例計算</h2>
+    <p>以小型 R-134a 冰水機組理想循環為例，關鍵狀態點數據如下：</p>
+    <ul>
+      <li>算式來源：ASHRAE Fundamentals Handbook 冷媒性質表。</li>
+      <li>狀態 1：$P_1 = 200 \text{ kPa}$, $h_1 = 244.5 \text{ kJ/kg}$, $v_1 = 0.0993 \text{ m}^3\text{/kg}$</li>
+      <li>狀態 2：$P_2 = 800 \text{ kPa}$, $h_2 = 276.4 \text{ kJ/kg}$, $v_2 = 0.0285 \text{ m}^3\text{/kg}$</li>
+      <li>狀態 3：$P_3 = 800 \text{ kPa}$, $h_3 = 95.5 \text{ kJ/kg}$, $v_3 = 0.00084 \text{ m}^3\text{/kg}$</li>
+      <li>狀態 4：$P_4 = 200 \text{ kPa}$, $h_4 = h_3 = 95.5 \text{ kJ/kg}$</li>
+    </ul>
+
+    <h3>計算過程：</h3>
+    <ol>
+      <li>單位質量冷凍能力算式：
+        <div class="math-block">
+          $$ q_{\text{in}} = h_1 - h_4 = 244.5 \text{ kJ/kg} - 95.5 \text{ kJ/kg} = 149.0 \text{ kJ/kg} $$
+        </div>
+      </li>
+      <li>壓縮機單位質量做功算式：
+        <div class="math-block">
+          $$ w_{\text{in}} = h_2 - h_1 = 276.4 \text{ kJ/kg} - 244.5 \text{ kJ/kg} = 31.9 \text{ kJ/kg} $$
+        </div>
+      </li>
+      <li>計算性能係數 $\text{COP}_{\text{R}}$：
+        <div class="math-block">
+          $$ \text{COP}_{\text{R}} = \frac{q_{\text{in}}}{w_{\text{in}}} = \frac{149.0 \text{ kJ/kg}}{31.9 \text{ kJ/kg}} \approx 4.67 $$
+        </div>
+      </li>
+    </ol>
+    <p>計算結果：該系統之理想冷凍 COP 為 <span class="highlight-red">4.67</span>。</p>
+  </div>
+
+  <!-- 6. P-v 圖熱力學分析 SOP 步驟 -->
+  <div class="section-card">
+    <h1>6. P-v 圖熱力學分析 SOP 步驟</h1>
+    <p>工程技師照著以下步驟做，即可順利完成在 $P-v$ 圖上的系統分析與邊界核算：</p>
+
+    <ol>
+      <li><span class="highlight-red">步驟一（確定高低壓力）：</span>根據冷凝與蒸發溫度，查出對應之高壓 $P_{\text{cond}}$ 與低壓 $P_{\text{evap}}$，繪出水平定壓線。</li>
+      <li><span class="highlight-red">步驟二（標定飽和點）：</span>尋找 $P_{\text{evap}}$ 與飽和蒸汽線交點（點 1）；尋找 $P_{\text{cond}}$ 與飽和液體線交點（點 3）。</li>
+      <li><span class="highlight-red">步驟三（繪製下凹壓縮線）：</span>自點 1 沿多變/等熵雙曲線（向下凹弧線）向右上延伸至高壓線 $P_{\text{cond}}$，標示為點 2。</li>
+      <li><span class="highlight-red">步驟四（繪製節流與蒸發線）：</span>自點 3 沿等焓線向右下繪製虛線至低壓線 $P_{\text{evap}}$，標示為點 4，封閉循環。</li>
+      <li><span class="highlight-red">步驟五（容積流量計算）：</span>利用 $v_1$ 與質量流量 $\dot{m}$ 計算壓縮機吸氣容積流量 $\dot{V}_1 = \dot{m} \times v_1$。</li>
+    </ol>
+  </div>
+
+  <!-- 7. 查證等級標註與透明參考文獻 -->
+  <div class="section-card">
+    <h1>7. 查證等級標註與透明參考文獻</h1>
+    <p>本報告全文採用查證等級標示制度：<br>
+    <span class="badge">查證等級：(3) 既有知識工程參考值</span>（本報告屬理論推導與通用工程熱力學知識，實務設計時仍須與技師及適用標準逐項確認）。</p>
+
+    <h2>7.1 參考文獻與網站連結</h2>
+    <ul>
+      <li>Yunus A. Çengel, Michael A. Boles, <i>Thermodynamics: An Engineering Approach</i>, 9th Edition, McGraw-Hill.</li>
+      <li>ASHRAE Handbook - Fundamentals (SI Edition), American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc. <a href="https://www.ashrae.org" target="_blank" style="color: var(--accent-cyan);">https://www.ashrae.org</a></li>
+      <li>NIST Chemistry WebBook, SRD 69 (Refrigerant Thermophysical Properties). <a href="https://webbook.nist.gov" target="_blank" style="color: var(--accent-cyan);">https://webbook.nist.gov</a></li>
+    </ul>
+
+    <h2>7.2 幻覺防範提醒</h2>
+    <p>讀者提醒：本文件係依據理想蒸汽壓縮制冷循環（忽略壓縮機等熵效率損失、管路壓力降及過冷/過熱度）進行理論編寫。實際工程操作時，必須考慮真實冷媒之偏離特性與過熱過冷狀態，請讀者務必親自持官方正版冷媒物性表與技師簽章規範核對驗證。</p>
+  </div>
+
+</div>
+
+</body>
+</html>
