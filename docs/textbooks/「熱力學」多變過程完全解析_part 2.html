@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熱力學多變過程完全解析：從第一定律到冷凍循環</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">熱力學多變過程完全解析：從第一定律到冷凍循環</h1>
+  <p class="report-sub">從熱力學第一定律出發，推導多變過程方程式 $Pv^n=C$，並延伸至冷凍循環 P-h 莫利爾圖分析</p>
+  <P>研究組員：李世權 Claude Gemini</P>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+
+<strong>查證等級說明</strong>：本文採用查證等級標示制度——(1) 已查證原文標準、(2) 已查證但條文可能修訂、(3) 既有知識工程參考值、(4) 查無具體依據。本文絕大部分內容屬於<strong>古典熱力學公開理論框架</strong>（第一定律、理想氣體方程式、Mayer 關係式），為公開教科書等級知識，查證等級為 <strong>(3)</strong>，非任何組織之受版權保護內容。</p>
+<p><strong>免責聲明</strong>：本文為個人研究範圍內之整理，僅供學習參考，並非取代專業技師之逐條法規查證與簽證責任。實務設計時仍須與相關技師、原廠技術資料及適用法規標準逐項確認。</p>
+<hr />
+<h1>1. 前言與符號總表</h1>
+<h2>1.1 前言</h2>
+<p>這份文件的目標，是把熱力學最容易卡住的地方講清楚：</p>
+<ol>
+<li><strong>多變指數 $n$（Polytropic Index）到底是什麼</strong>——不只是背公式，而是理解它在物理上「代表什麼」。</li>
+<li><strong>每個公式裡的符號在講什麼</strong>——先建立符號的「字典」，之後看到任何公式，都能直接回頭查對照，不會有「看得懂數學、但不知道它想表達什麼」的狀況。</li>
+<li><strong>每個符號背後的推導細節</strong>——包含微積分工具的使用方式，讓您不只會用公式，還懂公式是怎麼一步步推出來的。</li>
+</ol>
+<h2>1.2 符號與希臘字母總表</h2>
+<p><strong>這是全文最重要的一張表，建議先花時間看懂這張表，再往下讀任何公式。</strong> 之後每當您看到公式裡的某個符號，都可以回來這裡查。</p>
+<p><strong>（1）基本「狀態量」符號</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">名稱（中英對照）</th>
+<th style="text-align: left;">白話意義</th>
+<th style="text-align: center;">單位（SI）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$P$</td>
+<td style="text-align: left;">壓力（Pressure）</td>
+<td style="text-align: left;">流體（氣體或液體）在單位面積上所施加的垂直作用力，即 $1N/m^2$。 它是熱力學中用來描述系統狀態的四大巨觀性質之一（其餘為溫度、體積與物質量）。徹底理解熱力學中的壓力：1. 微觀視角：分子碰撞的結果從分子運動論（Microscopic view）來看，氣體分子並非靜止，而是在空間中進行永無止境的隨機運動。當這些無數的分子撞擊容器壁面時，會對壁面產生衝量。這種大量分子在單位時間內、單位面積上產生的連續撞擊力之總和，在巨觀上就表現為「壓力」。影響因素：當溫度升高（分子動能變大、撞得更猛）或體積縮小（分子碰撞頻率變高）時，壓力就會上升。2. 巨觀視角：能量與體積的變化率在古典熱力學（Macroscopic view）中，壓力與系統的能量變化密切相關。根據熱力學第一與第二定律所推導出的熱力學基本關係式：$(P=-\left(\frac{\partial U}{\partial V}\right)_{S,N}$)這個公式的意思是：在熵($S$）和粒子數($N$)保持不變的條件下，系統內能($U$)相對於體積($V$)的負變化率。物理意義：當系統膨脹體積($V$)增加並對外做功時，其內能($U$)會減少，而這個能量減少的速率正是由壓力決定的。</td>
+<td style="text-align: center;">$\text{kPa}$ 或 $\text{Pa}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$v$</td>
+<td style="text-align: left;">比容（Specific Volume）</td>
+<td style="text-align: left;">「每 1 公斤氣體所佔的體積」，是密度 $\rho$ 的倒數（$v=1/\rho$）</td>
+<td style="text-align: center;">$\text{m}^3/\text{kg}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$T$</td>
+<td style="text-align: left;">絕對溫度（Absolute Temperature）</td>
+<td style="text-align: left;">它是衡量物質內部原子與分子平均動能的物理量，溫度本質上是物質微觀粒子運動激烈程度的量度，注意<strong>一定要用絕對溫標</strong>（K），因為如果使用攝氏溫度，當溫度為 0°C 時，公式中的乘除法會失去物理意義（例如體積不可能變成 0）；若溫度為負數（如 -10°C），更會計算出「負體積」或「負壓力」等不符合現實物理規律的錯誤結果。</td>
+<td style="text-align: center;">$\text{K}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$u$</td>
+<td style="text-align: left;">比內能（Specific Internal Energy）</td>
+<td style="text-align: left;">每公斤氣體分子本身儲存的[總能量]（Total Energy Content）＝微觀動能＋微觀位能。微觀上，內能是系統內部所有微觀粒子（原子、分子）所擁有的微觀能量總和，主要包含兩大類：微觀動能（顯熱, Sensible energy）：分子進行平移、旋轉、振動的運動能量。這部分能量直接由溫度決定，溫度(自變數)越高，分子動能越大，比內能(應變數)就越高。 微觀位能（潛熱, Latent energy）：分子與分子之間化學鍵結或吸引力（凡得瓦力）所蘊含的能量。這部分能量在相變化（如水結冰、水蒸發）時會發生劇烈改變。 因此，「比內能u衡量的是一公斤的特定物質在特定狀態下，其內部微觀粒子所儲存的總能量。它不包含系統宏觀移動的動能（如一整桶水在飛行），也不包含系統所處位置的重力位能。</td>
+</tr>
+<tr>
+<td style="text-align: center;">$h$</td>
+<td style="text-align: left;">比焓（Specific Enthalpy）</td>
+<td style="text-align: left;">單位質量物質所具有的[總熱量]（Total Heat Content）」=「內能 $u$」+「流動功 $P\cdot v$」（$h=u+P\cdot v$），是分析冷媒進出設備時最常用的能量指標</td>
+<td style="text-align: center;">$\text{kJ/kg}$</td>
+</tr>
+
+<tr>
+<td style="text-align: center;">$s$</td>
+<td style="text-align: left;">比熵（Specific Entropy）</td>
+<td style="text-align: left;">熵（Entropy），代表微觀粒子排布「混亂程度」或「微觀狀態數」的量度。比熵（$s$） 衡量的就是恰好一公斤的特定物質，內部粒子有多麼無序。狀態對比：一公斤的「冰（固態）」分子排列整齊，其比熵最低；一公斤的「水（液態）」分子開始流動，比熵中等；而當它變成一公斤的「水蒸汽（氣態）」時，分子到處亂飛，其比熵會劇烈飆升。</td>
+<td style="text-align: center;">$\text{kJ/kg·K}$</td>
+</tr>
+
+<tr>
+<td style="text-align: center;">$R$</td>
+<td style="text-align: left;">氣體常數（Specific Gas Constant）</td>
+<td style="text-align: left;">特定氣體的物理常數，把 $P$、$v$、$T$ 三者串起來（$P\cdot v=R\cdot T$）</td>
+<td style="text-align: center;">$\text{kJ/(kg·K)}$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>（2）「過程量」符號（重點：這些符號沒有「狀態值」，只有「過程中發生了多少」）</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">名稱</th>
+<th style="text-align: left;">白話意義</th>
+<th style="text-align: center;">單位（SI）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$q$</td>
+<td style="text-align: left;">比熱量（Specific Heat Transfer）</td>
+<td style="text-align: left;">每公斤氣體與外界做熱交換過程中吸收或排放的[熱量]</td>
+<td style="text-align: center;">$\text{kJ/kg}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$w$</td>
+<td style="text-align: left;">比功（Specific Work）</td>
+<td style="text-align: left;">每公斤氣體對外界做的功（或外界對氣體做的功），屬於做功過程的量</td>
+<td style="text-align: center;">$\text{kJ/kg}$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>（3）比熱與多變指數符號</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">名稱</th>
+<th style="text-align: left;">白話意義</th>
+<th style="text-align: center;">單位（SI）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$C_v$</td>
+<td style="text-align: left;">定容比熱</td>
+<td style="text-align: left;">體積不變時，每公斤氣體升高 1K 所需吸收的熱量</td>
+<td style="text-align: center;">$\text{kJ/(kg·K)}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$C_p$</td>
+<td style="text-align: left;">定壓比熱</td>
+<td style="text-align: left;">壓力不變時，每公斤氣體升高 1K 所需吸收的熱量</td>
+<td style="text-align: center;">$\text{kJ/(kg·K)}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$\gamma$</td>
+<td style="text-align: left;">絕熱指數（比熱比）</td>
+<td style="text-align: left;">$\gamma=C_p/C_v$，由氣體分子結構決定的固定值（空氣約 1.4）</td>
+<td style="text-align: center;">無因次</td>
+</tr>
+<tr>
+<td style="text-align: center;">$n$</td>
+<td style="text-align: left;">多變指數</td>
+<td style="text-align: left;">真實過程中實測出來的經驗指數，介於 0 到 $\infty$ 之間</td>
+<td style="text-align: center;">無因次</td>
+</tr>
+<tr>
+<td style="text-align: center;">$C_n$</td>
+<td style="text-align: left;">多變比熱</td>
+<td style="text-align: left;">多變過程中，每公斤氣體升高 1K 所需吸收（或釋放）的熱量</td>
+<td style="text-align: center;">$\text{kJ/(kg·K)}$</td>
+</tr>
+</tbody>
+</table>
+<h2>1.3 三個微分符號的差異（$d$、$\delta$、$\Delta$）</h2>
+<p>在往下看任何公式之前，<strong>這三個符號的差異一定要先弄懂</strong>，因為它們代表完全不同的物理意義：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">名稱</th>
+<th style="text-align: left;">代表意義</th>
+<th style="text-align: left;">舉例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$d$（正體）</td>
+<td style="text-align: left;">恰當微分（Exact Differential）</td>
+<td style="text-align: left;">用在<strong>狀態函數</strong>上（$P$、$v$、$T$、$u$、$h$）。這些量只由系統「目前的狀態」決定，跟怎麼走到這個狀態無關，所以可以直接積分</td>
+<td style="text-align: left;">$du$、$dv$、$dP$、$dT$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$\delta$（小寫希臘字母，唸 delta）</td>
+<td style="text-align: left;">不恰當微分（Inexact Differential）</td>
+<td style="text-align: left;">用在<strong>過程量</strong>上（$q$、$w$）。熱量與功不是系統「儲存」的東西，它們的大小完全取決於「走了什麼路徑」，所以不能直接積分成「狀態2 減 狀態1」</td>
+<td style="text-align: left;">$\delta q$、$\delta w$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$\Delta$（大寫希臘字母，唸 Delta）</td>
+<td style="text-align: left;">有限變化量</td>
+<td style="text-align: left;">只用在<strong>狀態函數</strong>的「巨觀差值」上，初始值與終止值之間的差值，例如 $\Delta u = u_2 - u_1$</td>
+<td style="text-align: left;">$\Delta u$、$\Delta v$</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+
+<h2>1.4 在熱力學中，單位符號大寫小寫有一套非常嚴格且全球通用的符號命名慣例（Notation Convention）。</h2>
+<p><strong>1. 大寫符號</strong>：代表「總量」（外延性質, Extensive Properties），大寫符號用來表示與系統內物質總量（質量或莫耳數）成正比的物理量。如果系統的規模擴大一倍，這些數值也會跟著翻倍。</p>
+<p>∙ $V$：代表系統的總體積（Total Volume），單位是 $\text{m}^3$。</p>
+<p>∙ 其他常見大寫：$U$（總內能）、$H$（總焓）、$S$（總熵）。</p>
+
+<p><strong>2. 小寫符號</strong>：代表「單位質量的量」（強度性質, Intensive Properties）</p>
+<p>當我們把大寫的「總量」除以「總質量（$m$）」之後，就會得到一個與系統大小無關的物理量。熱力學慣例規定，這種「每公斤」的物理量，一律要改用對應的小寫字母來表示：</p>
+<p>∙$v = \frac{V}{m}$：代表比容（Specific Volume），單位是 $\text{m}^3\text{/kg}$。</p>
+<p>∙其他對應小寫：$u = \frac{U}{m}$（比內能）、$h = \frac{H}{m}$（比焓）、$s = \frac{S}{m}$（比熵）。</p>
+
+<h1>2. 熱力學第一定律：一切的起點</h1>
+<h2>2.1 定律本身</h2>
+<div class="math-block">$$
+\delta q = du + \delta w \tag{2.1}
+$$</div>
+<p><strong>用您已經看過的符號來解讀這個式子</strong>：氣體從外界吸收的微小熱量（$\delta q$），一部分變成氣體自己內部儲存的能量增加（$du$），另一部分變成氣體對外做的功（$\delta w$）。這就是能量守恆——能量不會憑空消失，只會轉換形式。</p>
+<p>這條式子的核心精神是：<strong>「吸熱、做功是過程量，內能是狀態量」</strong>。</p>
+<p><strong>（1）$du$ 不完全等於「熱能」</strong></p>
+<p>「內能轉成熱能」這個講法容易讓人誤會內能只是「熱」。精確一點的說法是：內能 $u$ 是氣體分子<strong>微觀動能與位能的總和</strong>——對理想氣體而言，主要就是分子的平動、轉動、振動動能。巨觀上，這股能量的表現形式就是「溫度上升」。所以更精確的講法是：</p>
+<blockquote>
+<p>氣體吸收的熱量，一部分<strong>留在氣體分子內部</strong>，轉化為分子微觀動能的增加，巨觀上表現為溫度上升（即 $du$）。</p>
+</blockquote>
+<p><strong>（2）$\delta w$ 不一定等於「動能」</strong></p>
+<p>氣體對外做功（$\delta w$），<strong>離開系統之後會變成什麼形式的能量，要看「外界接收的東西是什麼」</strong>，不一定是動能：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">外界承接方式</th>
+<th style="text-align: left;">$\delta w$ 離開後轉換成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">推動活塞加速</td>
+<td style="text-align: left;">動能</td>
+</tr>
+<tr>
+<td style="text-align: left;">推動活塞舉起重物</td>
+<td style="text-align: left;">位能</td>
+</tr>
+<tr>
+<td style="text-align: left;">帶動渦輪發電機</td>
+<td style="text-align: left;">電能</td>
+</tr>
+<tr>
+<td style="text-align: left;">對抗彈簧壓縮</td>
+<td style="text-align: left;">彈性位能</td>
+</tr>
+</tbody>
+</table>
+<p><strong>（3）完整理解</strong></p>
+<blockquote>
+<p>氣體吸收外界熱量後（$\delta q$，過程量），一部分<strong>留在氣體分子內部</strong>，轉化為內能的增加（$du$，狀態量，巨觀表現為溫度上升）；另一部分以<strong>機械功的形式</strong>離開系統對外輸出（$\delta w$，過程量），至於這股功最終在外部變成動能、位能還是其他能量形式，取決於外部裝置本身，不是熱力學第一定律本身規定的。</p>
+</blockquote>
+<h2>2.2 絕熱可逆過程的簡化</h2>
+<p>當氣體處於<strong>絕熱（Adiabatic）</strong>過程時，代表系統與外界<strong>完全沒有熱量交換</strong>，也就是 $\delta q = 0$。同時，如果過程是<strong>可逆（Reversible）</strong>的，氣體對外做的功可以用狀態量表示為：</p>
+<div class="math-block">$$
+\delta w = P\cdot dv \tag{2.2}
+$$</div>
+<p><strong>什麼是「做功」？</strong> 想像氣體推動一個活塞：壓力 $P$ 作用在活塞面積 $A$ 上，產生推力 $F = P\cdot A$；活塞每移動一小段距離 $dx$（自變量），體積就改變 $dv = A\cdot dx$。功的基本定義是「力 $\times$ 位移」，代入後：</p>
+<div class="math-block">$$
+\delta w = F\cdot dx = (P\cdot A)\cdot dx = P\cdot (A\cdot dx) = P\cdot dv
+$$</div>
+<p>把 (2.2) 代入 (2.1)，且 $\delta q=0$（無吸收外界熱量，靠消耗內能來做功，所以 $du$ 為負值）：</p>
+<div class="math-block">$$
+du = -P\cdot dv \tag{2.3}
+$$</div>
+<h2>2.3 理想氣體的內能只跟溫度有關</h2>
+<p><strong>什麼是「內能」？</strong> 內能 $u$ 是氣體分子<strong>微觀</strong>動能與<strong>位能</strong>的總和——對理想氣體而言，主要就是分子的平動、轉動、振動動能。巨觀上，這股內能量的表現形式就是「溫度上升」。</p>
+<p>對理想氣體而言，有一條重要的物理定律稱為<strong>焦耳定律（Joule's Law）</strong>：理想氣體的內能 $u$ 只是溫度 $T$ 的函數，跟壓力、體積無關。所以：</p>
+<div class="math-block">$$
+du = C_{v}\cdot dT \tag{2.4}
+$$</div>
+<p><strong>什麼是「比熱」？</strong> 代表「體積不變的情況下，每公斤氣體升高 1K 需要吸收多少熱量」，單位是 $\text{kJ/(kg·K)}$。比熱有兩種：$C_v$ <strong>定容比熱</strong>及 $C_p$ <strong>定壓比熱</strong>。這兩個比熱<strong>原本</strong>都是從「特定過程」定義出來的：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">定義的原始情境</th>
+<th style="text-align: center;">數學定義</th>
+<th style="text-align: left;">重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$C_v$</td>
+<td style="text-align: left;"><strong>定容</strong>過程（體積不變）</td>
+<td style="text-align: center;">$C_v = \left(\dfrac{\partial u}{\partial T}\right)_v$</td>
+<td style="text-align: left;">定義的對象只有<strong>內能 $u$</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">$C_p$</td>
+<td style="text-align: left;"><strong>定壓</strong>過程（壓力不變）</td>
+<td style="text-align: center;">$C_p = \left(\dfrac{\partial h}{\partial T}\right)_p$</td>
+<td style="text-align: left;">定義的對象是<strong>焓 $h$</strong>，包含內能 $u$ 以及做功 $Pv$ 兩部分。所以 $C_p=C_v+R$，多出來的 $R$ 就是流動功那部分</td>
+</tr>
+</tbody>
+</table>
+<p><strong>這裡的重點是</strong>：$C_v$ 從一開始，物理上定義的對象就是<strong>內能 $u$</strong>；$C_p$ 從一開始定義的對象就是<strong>焓 $h$</strong>，不是內能 $u$。這不是巧合，而是刻意這樣設計的——原因在第 2.4、2.5 節。</p>
+<h2>2.4 為什麼定容比熱 $C_v$ 天生跟內能 $u$ 綁在一起？</h2>
+<p><strong>定容時</strong>：活塞不動，容積不變，所以沒做功。對外吸收的熱量全部轉成內能。</p>
+<p>想像一個<strong>定容</strong>（剛性容器，體積固定不能變）的系統吸熱：</p>
+<div class="math-block">$$
+\delta w = P\cdot dv = 0 \quad (\because \text{活塞沒移動 } dx=0\text{，體積固定 } dv=A\cdot dx=A\times0=0)
+$$</div>
+<p>代入第一定律 $\delta q = du + \delta w$：</p>
+<div class="math-block">$$
+\delta q = du
+$$</div>
+<p><strong>因為體積不變，氣體沒有辦法對外做膨脹功，所以吸收的每一分熱量，100% 都用來提高內能（溫度）。</strong> 這就是為什麼 $C_v$（單位溫升所需熱量）在數學上直接等於 $du/dT$。</p>
+<h2>2.5 為什麼 $C_p$ 天生跟 $h$（不是 $u$）綁在一起？</h2>
+<p>換成<strong>定壓</strong>過程，氣體吸收熱量後會膨脹（$dv\ne0$）做功，此時吸收的熱量要分成兩份：</p>
+<div class="math-block">$$
+\delta q = du + \delta w = du + P\cdot dv
+$$</div>
+<p>這裡有個關鍵技巧：焓的定義是 $h=u+P\cdot v$，對其全微分（定壓下 $dP=0$）：</p>
+<div class="math-block">$$
+dh = du + d(P\cdot v) = du + P\cdot dv + v\cdot dP = du + P\cdot dv \quad (\because \text{壓力固定不變}, dP=0)
+$$</div>
+<p><strong>咦，$du+P\,dv$ 剛好等於氣體從外界吸收的熱量 $\delta q$！</strong> 所以：</p>
+<div class="math-block">$$
+\delta q = dh \implies C_{p} = \frac{dh}{dT}
+$$</div>
+<p><strong>物理意義</strong>：定壓下吸收的熱量，不是全部留在氣體內部，而是<strong>一部分變成內能（$du$），一部分拿去做膨脹功推開外界大氣（$P\cdot dv$）</strong>。焓 $h=u+Pv$ 這個組合，恰好把「內能」跟「推開外界所需的流動功」打包在一起，所以 $C_p$ 才會跟 $h$ 綁定，而不是跟 $u$ 綁定。</p>
+<h2>2.6 焓（$h$）與熱量（$q$）的本質差異</h2>
+<p><strong>焓 $h$ 跟熱量 $q$ 雖然單位都是 $\text{kJ/kg}$、都跟「熱」這個字有關，但本質上是完全不同類型的物理量</strong>，這也是工程師常常搞混的地方：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">比焓 $h$</th>
+<th style="text-align: center;">比熱量 $q$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>本質</strong></td>
+<td style="text-align: center;"><strong>狀態量</strong>（State Function）</td>
+<td style="text-align: center;"><strong>過程量</strong>（Path Function）</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>微分符號</strong></td>
+<td style="text-align: center;">$dh$（正體 $d$）</td>
+<td style="text-align: center;">$\delta q$（希臘字母 $\delta$）</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>白話定義</strong></td>
+<td style="text-align: center;">系統「當下」儲存的能量（內能＋流動功）</td>
+<td style="text-align: center;">系統「經歷一段過程」與外界交換了多少熱</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>能不能只看頭尾</strong></td>
+<td style="text-align: center;">能，$\Delta h=h_2-h_1$ 只跟起點終點有關</td>
+<td style="text-align: center;">不行，$q$ 的大小取決於「走了什麼路徑」</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>系統本身「有」這個量嗎</strong></td>
+<td style="text-align: center;">有，氣體本身就「帶著」焓值</td>
+<td style="text-align: center;">沒有，系統不會「儲存」熱量，只有交換的當下才存在</td>
+</tr>
+</tbody>
+</table>
+<p><strong>用生活化比喻理解</strong>：焓 $h$ 就像「帳戶餘額」——是一個確定的<strong>存量（Stock）</strong>，此刻帳戶裡就是這個數字，是能量沒錯。熱量 $q$ 就像「這筆匯款」——是能量正在<strong>流動中的流量（Flow）</strong>，匯款的金額本身也是「錢」，只是它是「正在移動」的那種型態，不是「靜止存放」的那種型態。<strong>氣體「擁有」焓，但氣體不「擁有」熱量</strong>——熱量只在能量正在跨越系統邊界的那個瞬間才有意義，一旦進了系統，它就不再是「熱」了，而是變成了內能（$du$）或做了功（$\delta w$）。</p>
+<p><strong>用第一定律把兩者串起來</strong>：回顧 2.5 節推導的<strong>定壓過程</strong>關係式 $\delta q=dh$（僅限定壓過程，$dP=0$）。請注意這個等式的前提條件是「定壓」，這條式子看起來 $\delta q$ 跟 $dh$ 好像可以畫等號，容易讓人誤以為兩者是同一個東西，但其實：</p>
+<ul>
+<li>左邊 $\delta q$ 永遠是<strong>過程量</strong>（不管在不在定壓條件下）</li>
+<li>右邊 $dh$ 永遠是<strong>狀態量</strong>（不管在不在定壓條件下）</li>
+</ul>
+<p><strong>只是「在定壓這個特定條件下，這兩個不同類型的量，數值恰好相等」</strong>——這是巧合造成的數值相等，不代表兩者本質相同。這就像「今天的氣溫」跟「今天冰淇淋銷售額」可能剛好都是 28，數值相等不代表兩者是同一種東西。</p>
+<p><strong>常見誤用範例（提醒自己避免）</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">❌ 錯誤講法</th>
+<th style="text-align: left;">為什麼錯</th>
+<th style="text-align: left;">✅ 正確講法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">「這包冷媒現在含有 300 kJ/kg 的熱量」</td>
+<td style="text-align: left;">熱量不是系統「擁有」的東西</td>
+<td style="text-align: left;">「這包冷媒現在的<strong>焓值</strong>（能量）是 300 kJ/kg」</td>
+</tr>
+<tr>
+<td style="text-align: left;">「凝結器把冷媒的熱量從 h₂ 降到 h₃」</td>
+<td style="text-align: left;">混用了兩種量</td>
+<td style="text-align: left;">「凝結器讓冷媒<strong>焓值</strong>從 $h_2$ 降到 $h_3$，這段過程中冷媒<strong>釋放的熱量</strong> $q=h_2-h_3$（定壓成立）」</td>
+</tr>
+</tbody>
+</table>
+<p><strong>別跟比熱容 $C_p$ 搞混了（三者關係）</strong>：$\delta q = C_p\,dT$（定壓過程）——$q$（過程量）是「發生了多少」熱量交換；$h$（狀態量）是氣體「現在帶著多少」能量；$C_p$（物性係數）是氣體「每升溫 1K 需要多少」熱量的比例常數，是連接 $q$ 跟溫度變化 $dT$ 的橋樑。$C_p$ 是「單位換算比例尺」，乘上「溫度變化 $dT$」換算成「熱量 $\delta q$」，而焓 $h$ 則是這整個換算過程背後、氣體真正儲存能量的「本體」。</p>
+<h2>2.7 熱量與功：都是能量傳遞的「型態」，「能量」是統稱</h2>
+<p><strong>焓好比是「體質」</strong>：氣體焓值（體質）代表每公斤帶有的「能量」，是狀態量，用「能量」這個字來形容完全正確，用「熱量」來形容就不對了。</p>
+<p>但反過來問：<strong>氣體與外界熱交換時，吸收或釋放的「熱量」，可以說是「能量」嗎？</strong> 答案是可以，但少了一個重要資訊。</p>
+<p><strong>熱量本身也是能量的一種</strong>，能量的形式很多種：動能、位能、電能、熱量……差別只在於「型態」不同：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">焓 $h$</th>
+<th style="text-align: center;">熱量 $q$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">是不是能量？</td>
+<td style="text-align: center;">✅ 是能量</td>
+<td style="text-align: center;">✅ 也是能量</td>
+</tr>
+<tr>
+<td style="text-align: center;">能量的型態</td>
+<td style="text-align: center;"><strong>靜態能量</strong>——氣體身上「帶著」的能量存量</td>
+<td style="text-align: center;"><strong>動態能量</strong>——能量正在跨越邊界「移動中」的流量</td>
+</tr>
+</tbody>
+</table>
+<p>物理學上，能量離開一個系統，只有<strong>兩種管道</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">管道</th>
+<th style="text-align: center;">符號</th>
+<th style="text-align: left;">白話意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>熱（Heat）</strong></td>
+<td style="text-align: center;">$q$</td>
+<td style="text-align: left;">因為<strong>溫度差</strong>而自然傳遞的能量（不需要機械裝置）</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>功（Work）</strong></td>
+<td style="text-align: center;">$w$</td>
+<td style="text-align: left;">透過<strong>機械方式</strong>（活塞、轉軸等）傳遞的能量</td>
+</tr>
+</tbody>
+</table>
+<p>如果只籠統地說「凝結器讓冷媒釋放了能量」，這句話沒有回答一個重要問題：<strong>這股能量到底是「以熱的形式」離開，還是「以做功的形式」離開？</strong> 這兩者對系統設計的意義完全不同（例如凝結器要算「散熱片面積」，靠的正是熱傳這個管道，不是做功）。回到凝結器這個情境：管路內沒有活塞、沒有轉軸，冷媒沒有任何機械做功的管道（$w=0$），所以能量只能透過<strong>溫度差、靠管壁散熱</strong>這唯一的管道離開系統——這就是為什麼可以肯定地說這是「熱量」，而不是籠統地說「能量」。</p>
+<p><strong>精確總結</strong>：「能量」是總稱（像「交通工具」），「熱量」跟「功」是能量傳遞的兩種具體方式（像「汽車」跟「腳踏車」）。凝結器這個案例裡，因為確定沒有機械功的管道，所以精確地說「釋放熱量」比籠統地說「釋放能量」更有工程上的資訊價值——這也是為什麼熱力學公式裡要把 $q$ 跟 $w$ 分開寫，而不是合併成一個籠統的能量項。</p>
+<h2>2.8 為什麼「即使不是定容過程」，$du$ 也還是用 $C_v$？</h2>
+<p>2.4 節的 $C_v$ 明明是從「定容過程」定義出來的，為什麼在第 3 章推導<strong>絕熱壓縮</strong>（體積一直在變）時，也是寫 $du=C_v\,dT$，而不是 $C_p\,dT$？</p>
+<p><strong>答案是焦耳定律（Joule's Law）</strong>：對<strong>理想氣體</strong>而言，內能 $u$ 只是溫度 $T$ 的函數，跟體積、壓力完全無關，寫成數學式 $u=u(T)$。</p>
+<blockquote>
+<p><strong>補充：什麼是「$u$ 是 $T$ 的函數」？</strong> 數學符號寫成 $u=f(T)$，$T$ 是自變數（輸入值），$u$ 是應變數（輸出值），$f$ 代表函數的對應關係。中文「函數」一詞由清末數學家李善蘭翻譯西方著作時所定：「函」有「包含」之意（古時裝信的袋子叫「函」），「數」指數值，合起來就是「包含著另一個數量變化規律的量」——也就是說，$u$ 這個量的數值，完全被 $T$ 的數值「包含、決定」著。</p>
+</blockquote>
+<div class="math-block">$$
+u = u(T) \quad \text{（內能只是溫度的函數，理想氣體，與 } v, P \text{ 無關）}
+$$</div>
+<p>這代表 $\left(\dfrac{\partial u}{\partial T}\right)_v$ 這個「原本定義在定容條件下」的偏微分，因為 $u$ 根本不受 $v$ 影響，<strong>它其實就等於一般的微分</strong> $\dfrac{du}{dT}$——不管過程中體積怎麼變，這個關係式永遠成立：</p>
+<div class="math-block">$$
+du = C_{v}\,dT \quad \text{（對理想氣體，任何過程皆成立，不限定容）}
+$$</div>
+<p>同理，$h=u+Pv=u+RT$ 對理想氣體來說也只是 $T$ 的函數 $h(T)$，這個關係式也永遠成立：</p>
+<div class="math-block">$$
+dh = C_{p}\,dT \quad \text{（對理想氣體，任何過程皆成立，不限定壓）}
+$$</div>
+<h2>2.9 如果誤用 $C_p$ 會發生什麼錯誤？</h2>
+<p>如果把 $du$ 誤寫成 $C_p\,dT$，代入的物理意義會變成：「這個過程中，吸熱不只提高了內能，還額外多算了一份膨脹功（因為 $C_p=C_v+R$，多出來的 $R$ 就是流動功那部分）」。但 $du$ 定義上就是<strong>內能本身的變化</strong>，不應該包含做功那部分，所以會<strong>重複計算能量</strong>，導致整個推導錯誤。</p>
+<h2>2.10 本章總結</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">能量形式</th>
+<th style="text-align: center;">對應比熱</th>
+<th style="text-align: left;">為什麼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$u$（內能，不含流動功）</td>
+<td style="text-align: center;">$C_v$</td>
+<td style="text-align: left;">$u$ 是 $T$ 的函數 $u(T)$（焦耳定律），與過程無關</td>
+</tr>
+<tr>
+<td style="text-align: center;">$h$（焓＝內能＋流動功）</td>
+<td style="text-align: center;">$C_p$</td>
+<td style="text-align: left;">$h$ 也是 $T$ 的函數 $h(T)$，但多包含了 $Pv=RT$ 這部分</td>
+</tr>
+</tbody>
+</table>
+<p><strong>所以第 3 章推導中寫 $du=C_v\,dT$，不是因為那個過程剛好是定容的，而是因為對理想氣體而言，這條式子本來就對任何過程都成立。</strong></p>
+<hr />
+
+<h1>3. 多變過程方程式 $Pv^n=C$ 完整推導</h1>
+<p>這一節的目標，是從第 2 章的基礎，一步一步推導出 $Pv^\gamma=C$，再進一步理解為什麼工程上要把它改寫成 $Pv^n=C$。</p>
+<h2>3.1 導入理想氣體狀態方程式</h2>
+<div class="math-block">$$
+Pv = RT \tag{3.1}
+$$</div>
+<p>對 (3.1) 式全微分（把等號兩邊同時微分）：</p>
+<div class="math-block">$$
+d(P\cdot v) = d(R\cdot T) \implies P\,dv + v\,dP = R\,dT \implies dT = \frac{P\,dv + v\,dP}{R} \tag{3.2}
+$$</div>
+<h2>3.2 代入合併，消去溫度項</h2>
+<p>將 (2.4) 式與 (3.2) 式代入 (2.3) 式（$du=C_v\,dT=-P\,dv \implies dT=\dfrac{-P\,dv}{C_v}$）：</p>
+<div class="math-block">$$
+\frac{P\,dv + v\,dP}{R} = \frac {-P\,dv}{C_{v}}
+$$</div>
+<p>$C_v$ 乘到左邊，再兩邊同乘以 $R$：</p>
+<div class="math-block">$$
+C_{v}\cdot P\,dv + C_{v}\cdot v\,dP = -R\cdot P\,dv
+$$</div>
+<p>移項整理：</p>
+<div class="math-block">$$
+(C_{v} + R)P\,dv + C_{v}\, v\,dP = 0 \tag{3.3}
+$$</div>
+<p><strong>關鍵一步</strong>：引入<strong>Mayer 關係式（Mayer's Relation）</strong> $C_p = C_v + R$（這條公式說明「定壓比熱」與「定容比熱」之間恰好差一個氣體常數 $R$，是理想氣體的基本物性），代入 (3.3) 式：</p>
+<div class="math-block">$$
+C_{p}\, P\,dv + C_{v}\, v\,dP = 0
+$$</div>
+<h2>3.3 分離變數並積分，得到 $Pv^{\gamma}=C$</h2>
+<p>兩邊同除以 $C_v \cdot P \cdot v$：</p>
+<div class="math-block">$$
+\frac{C_{p}}{C_{v}}\cdot\frac{dv}{v} + \frac{dP}{P} = 0
+$$</div>
+<p><strong>定義絕熱指數（比熱比 $\gamma$，Specific Heat Ratio）</strong>：</p>
+<div class="math-block">$$
+\gamma = \frac{C_{p}}{C_{v}} \tag{3.4}
+$$</div>
+<p>$\gamma$ 是一個<strong>由氣體分子結構決定的固定值</strong>（例如空氣 $\gamma\approx1.4$），代入後：</p>
+<div class="math-block">$$
+\gamma\frac{dv}{v} + \frac{dP}{P} = 0 \tag{3.5}
+$$</div>
+<p>對 (3.5) 式兩邊積分（$\int\frac{1}{x}dx=\ln x+C$）：</p>
+<div class="math-block">$$
+\gamma\int\frac{dv}{v} + \int\frac{dP}{P} = \int0 \implies \gamma\ln v + \ln P = \text{常數}
+$$</div>
+<p>（等號右邊多個積分常數相加減，結果仍是一個常數，因此合併寫成單一「常數」項。）</p>
+<p>利用對數性質化簡：先用 $n\ln x=\ln(x^n)$ 把 $\gamma\ln v$ 寫成 $\ln(v^\gamma)$，再用 $\ln A+\ln B=\ln(A\cdot B)$ 合併兩項對數：</p>
+<div class="math-block">$$
+\ln(v^{\gamma})+\ln P=\text{常數} \implies \ln(Pv^{\gamma}) = \text{常數}
+$$</div>
+<p>兩邊取指數（利用 $e^{\ln x}=x$ 的互逆性質），即得到<strong>絕熱可逆（等熵）過程關係式</strong>：</p>
+<div class="math-block">$$
+\boxed{Pv^{\gamma} = C} \tag{3.6}
+$$</div>
+<h2>3.4 延伸形式：$T$-$v$ 與 $T$-$P$ 關係式</h2>
+<p>結合理想氣體狀態方程式 $Pv=RT$，(3.6) 式還可以轉換成另外兩種等價形式，方便依題目已知條件靈活選用。</p>
+<p><strong>（1）$T$-$v$ 形式</strong>：將 $P=\dfrac{RT}{v}$ 代入 (3.6) 式：</p>
+<div class="math-block">$$
+\left(\frac{RT}{v}\right)\cdot v^{\gamma}=C \implies RT\cdot v^{\gamma-1}=C \implies \boxed{Tv^{\gamma-1}=\text{常數}}
+$$</div>
+<p><strong>（2）$T$-$P$ 形式</strong>：將 $v=\dfrac{RT}{P}$ 代入 (3.6) 式：</p>
+<div class="math-block">$$
+P\cdot\left(\frac{RT}{P}\right)^{\gamma}=C \implies P^{1-\gamma}\cdot T^{\gamma}\cdot R^{\gamma}=C \implies \boxed{P^{1-\gamma}T^{\gamma}=\text{常數}}
+$$</div>
+<p>兩邊同取 $\dfrac{1}{\gamma}$ 次方，也可以寫成：</p>
+<div class="math-block">$$
+TP^{\frac{1-\gamma}{\gamma}}=\text{常數}
+$$</div>
+<p><strong>三種齊名公式對照</strong>（依已知條件靈活選用）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">已知條件</th>
+<th style="text-align: center;">適用關係式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">壓力與體積</td>
+<td style="text-align: center;">$Pv^{\gamma}=\text{常數}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">溫度與體積</td>
+<td style="text-align: center;">$Tv^{\gamma-1}=\text{常數}$</td>
+</tr>
+<tr>
+<td style="text-align: center;">溫度與壓力</td>
+<td style="text-align: center;">$TP^{\frac{1-\gamma}{\gamma}}=\text{常數}$</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1>4. 多變指數 $n$ 深度解析（重點強化）</h1>
+<p>這一章是核心重點，分成「數學上怎麼定義」「物理上代表什麼」「跟 $\gamma$ 差在哪」等層次，一步步拆解。</p>
+<h2>4.1 第一層：為什麼要有 $n$？$\gamma$ 不夠用嗎？</h2>
+<p>第 3 章推導出的 $Pv^\gamma=C$，前提是「<strong>完全絕熱</strong>」（$\delta q=0$）而且「<strong>完全可逆</strong>」（沒有摩擦、渦流損耗）。</p>
+<p>但<strong>真實的壓縮機運轉過程，兩個前提都不成立</strong>：</p>
+<ul>
+<li>缸壁不是完美隔熱的，氣體會跟缸壁有熱交換</li>
+<li>氣體流動時一定有摩擦、渦流等能量損耗</li>
+</ul>
+<p>所以工程上不能直接套用理論值 $\gamma$，而是改用一個<strong>「實測出來」的經驗參數</strong> $n$（多變指數，Polytropic Index），把方程式寫成：</p>
+<div class="math-block">$$
+Pv^n = C \tag{4.1}
+$$</div>
+<p><strong>用一句話理解 $n$ 跟 $\gamma$ 的關係</strong>：$\gamma$ 是「理想世界裡，完全不散熱時」的固定答案；$n$ 是「現實世界裡，實際測出來的答案」，$n$ 的數值會隨著壓縮機散熱好壞而改變，<strong>$n$ 只有在完全不散熱的極端情況下才會等於 $\gamma$</strong>。</p>
+<p><strong>🔴 重要提醒</strong>：$\gamma=C_p/C_v$ 是 <strong>$\gamma$ 的定義</strong>，而不是 $n$ 的定義。$n$ 是一個會隨實際散熱狀況變動的經驗值（可以是 0 到 $\infty$ 之間任何數字），只有在 $n=\gamma$ 這個特殊情況下兩者才相等。請務必區分清楚這兩個符號。</p>
+<h2>4.2 第二層：$n$ 的嚴格數學定義</h2>
+<p>$n$ 的精確定義，是「壓力變化率」與「比容變化率」的<strong>對數比值</strong>：</p>
+<div class="math-block">$$
+n = -\frac{d(\ln P)}{d(\ln v)} = -\frac{v}{P}\frac{dP}{dv} \tag{4.2}
+$$</div>
+<p>這條式子看起來抽象，但意義很直接：<strong>它在量測「壓力對比容變化的敏感程度」</strong>。$n$ 越大，代表比容稍微縮小一點點，壓力就會飆升很多（曲線很陡）；$n$ 越小，壓力上升得比較溫和（曲線比較平緩）。</p>
+<h2>4.3 第三層：$n$ 為什麼能代表「熱量散失程度」？</h2>
+<p>這是整個 $n$ 概念中最關鍵、也最容易被忽略的一塊。我們從第一定律出發，可以推導出多變過程中的微小傳熱量：</p>
+<div class="math-block">$$
+\delta q = C_{n} \, dT \tag{4.3}
+$$</div>
+<p>其中 $C_n$ 稱為<strong>多變比熱（Polytropic Specific Heat）</strong>，其數學表示式為（完整推導過程見 4.7 節附錄）：</p>
+<div class="math-block">$$
+C_{n} = C_{v} \cdot \frac{n - \gamma}{n - 1} \tag{4.4}
+$$</div>
+<p><strong>這條公式揭示了 $n$ 與散熱程度的直接關係，我們用三種極端情況來理解它</strong>：</p>
+<p><strong>情況一：完全絕熱（$\delta q=0$）</strong></p>
+<p>代入 (4.4)，若 $C_n=0$，解方程式得 $n=\gamma$。<strong>物理意義</strong>：系統與外界完全沒有熱交換，這就是絕熱過程，$n$ 就等於理論值 $\gamma$。</p>
+<p><strong>情況二：充分散熱、等溫（$dT=0$）</strong></p>
+<p>當壓縮時散熱速度極快，氣體溫度幾乎不變，這代表「單位溫升所需的熱量」趨近無窮大，也就是 $C_n\to\infty$，代入 (4.4) 解出 $n=1$。<strong>物理意義</strong>：$n=1$ 就是等溫過程——散熱好到溫度都不會上升。</p>
+<p><strong>情況三：真實壓縮機（$1&lt;n&lt;\gamma$）</strong></p>
+<p>實際壓縮機介於上述兩個極端之間：氣體一邊被壓縮升溫，一邊透過缸壁散失部分熱量。</p>
+<ul>
+<li><strong>$n$ 越接近 1</strong>：代表散熱效果越好，壓縮越省功（因為溫度沒有大幅上升，壓力就不會額外飆高）</li>
+<li><strong>$n$ 越接近 $\gamma$</strong>：代表散熱越差，越接近完全絕熱</li>
+<li><strong>若存在機械摩擦或渦流損耗</strong>：摩擦產生的熱量會留在氣體內部，效果等同於「額外加熱氣體」，這會讓 $n$ 值往上升，甚至可能超過 $\gamma$。因此 $n$ 其實是綜合反映了「熱交換」與「內部能量損耗」兩種效應的指標。</li>
+</ul>
+<h2>4.4 第四層：$n$ 值全覽對照表</h2>
+<p>透過改變 $n$ 的數值，同一條方程式 $Pv^n=C$ 可以涵蓋古典熱力學中<strong>所有</strong>常見的特殊過程：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">$n$ 的數值</th>
+<th style="text-align: left;">熱力過程名稱</th>
+<th style="text-align: left;">物理意義</th>
+<th style="text-align: center;">$P$-$v$ 關係式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$n=0$</td>
+<td style="text-align: left;">等壓過程（Isobaric）</td>
+<td style="text-align: left;">壓力完全不變</td>
+<td style="text-align: center;">$P=C$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$n=1$</td>
+<td style="text-align: left;">等溫過程（Isothermal）</td>
+<td style="text-align: left;">與外界熱交換極充分，溫度維持常數</td>
+<td style="text-align: center;">$Pv=C$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$1&lt;n&lt;\gamma$</td>
+<td style="text-align: left;">實際多變過程</td>
+<td style="text-align: left;"><strong>工程上最常見</strong>：氣體部分散熱、部分留存，介於等溫與絕熱之間</td>
+<td style="text-align: center;">$Pv^n=C$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$n=\gamma$</td>
+<td style="text-align: left;">等熵/絕熱過程（Isentropic）</td>
+<td style="text-align: left;">完全無熱交換且可逆的理想狀況</td>
+<td style="text-align: center;">$Pv^\gamma=C$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$n\to\infty$</td>
+<td style="text-align: left;">等容過程（Isochoric）</td>
+<td style="text-align: left;">比容完全不變</td>
+<td style="text-align: center;">$v=\text{常數}$</td>
+</tr>
+</tbody>
+</table>
+<h2>4.5 第五層：為什麼 $n$ 是掛在 $v$ 上面，不是掛在 $P$ 上面？</h2>
+<p>從純代數角度，$Pv^n=C$ 其實也可以等價改寫成 $P^{1/n}v=C'$（這時候 $n$ 的位置換成掛在 $P$ 上），數學上兩者是可以互相轉換的。但工程上習慣把 $n$ 放在 $v$ 上，主要有三個原因：</p>
+<p><strong>（1）物理推導的源頭</strong>：第 3 章的推導過程中，$dv$（體積變化）是驅動整個微分方程的自變數，$\gamma$（或 $n$）自然就出現在 $v$ 的指數位置上，這是推導的自然結果，不是人為選擇。</p>
+<p><strong>（2）工程慣例：$v$ 是自變數，$P$ 是因變數</strong>：在 $P$-$v$ 圖上，我們習慣把體積 $v$ 當作「我們去控制的變數」，把壓力 $P$ 當作「隨體積變化而產生的反應」。寫成 $P(v)=C\cdot v^{-n}$ 這種函數形式，可以直接拿來做定積分計算壓縮功 $W=\int P(v)\,dv$。</p>
+<p><strong>（3）物理因果關係</strong>：在壓縮機或活塞中，是「活塞推擠使體積縮小（原因）」導致「氣體壓力升高（結果）」，把指數掛在「原因」變數 $v$ 上，更符合物理直覺。</p>
+<h2>4.6 工程實務：如何主動降低 $n$ 值來省電？</h2>
+<p>由第 4.3 節可知，<strong>$n$ 越接近 1 越省壓縮功</strong>。因此往復式或螺桿式壓縮機的工程師，會在壓縮機外加裝<strong>冷卻水套（Water Jacket）或散熱風扇</strong>，目的就是主動幫氣體散熱，讓有效的 $n$ 值從接近絕熱值 $\gamma$（空氣約 1.4）往 1 的方向靠近，藉此達到省電效果。</p>
+<h2>4.7 附錄：(4.4) 式完整推導（八步）</h2>
+<p>這一節把 (4.4) 式 $C_n=C_v\cdot\dfrac{n-\gamma}{n-1}$ 的完整推導過程攤開，一步都不跳過，方便日後複習。</p>
+<p><strong>推導會用到的兩個微積分工具</strong></p>
+<p><strong>工具1：乘積法則（Product Rule）</strong>。如果一個量是兩個「都會變動」的變數相乘（例如 $P\times v$），微分時兩個都要考慮到：</p>
+<div class="math-block">$$
+d(P\cdot v) = (dP)\cdot v + P\cdot(dv) = v\,dP + P\,dv
+$$</div>
+<p><strong>工具2：對數微分法（Logarithmic Differentiation）</strong>。當方程式是「好幾個變數相乘或相除」的形式（例如 $P\cdot v^n=C$），可以先對兩邊取自然對數 $\ln$，把「乘除」變成「加減」，微分會簡單很多。要用到兩條對數性質，以及鏈鎖律 $d(\ln A)=\dfrac{dA}{A}$：</p>
+<div class="math-block">$$
+\ln(A\cdot B)=\ln A+\ln B \qquad \ln(A^n)=n\ln A
+$$</div>
+<p><strong>推導起點：兩條式子</strong></p>
+<div class="math-block">$$
+\delta q = C_{n}\,dT \tag{a}
+$$</div>
+<div class="math-block">$$
+\delta q = du + \delta w = C_{v}\,dT + P\,dv \tag{b}
+$$</div>
+<p><strong>步驟一：合併 (a)(b)，求出 $(C_n-C_v)$ 與 $P\,dv$ 的關係</strong></p>
+<p>令 (a) 式等於 (b) 式，移項：</p>
+<div class="math-block">$$
+(C_{n} - C_{v})\,dT = P\,dv \tag{c}
+$$</div>
+<p><strong>步驟二：微分 $Pv=RT$（用乘積法則）</strong></p>
+<div class="math-block">$$
+Pv=RT \tag{d-1}
+$$</div>
+<p>兩邊同時微分，左邊套用乘積法則，右邊 $R$ 是常數：</p>
+<div class="math-block">$$
+P\,dv+v\,dP = R\,dT \tag{d-2}
+$$</div>
+<p>移項解出 $dT$：</p>
+<div class="math-block">$$
+dT = \frac{P\,dv+v\,dP}{R} \tag{d}
+$$</div>
+<p><strong>步驟三：微分 $Pv^n=C$（用對數微分法）</strong></p>
+<div class="math-block">$$
+Pv^n=C \tag{e-1}
+$$</div>
+<p>兩邊取自然對數，用對數性質拆開：</p>
+<div class="math-block">$$
+\ln P+n\ln v=\ln C \tag{e-2}
+$$</div>
+<p>兩邊同時微分（右邊 $\ln C$ 是常數，微分後為 0；左邊用鏈鎖律）：</p>
+<div class="math-block">$$
+\frac{dP}{P}+n\frac{dv}{v}=0 \tag{e-3}
+$$</div>
+<p>移項，把 $dP$ 單獨解出來：</p>
+<div class="math-block">$$
+dP=-\frac{nP}{v}\,dv \tag{e}
+$$</div>
+<p><strong>步驟四：把 (e) 代入 (d)，消去 $dP$</strong></p>
+<p>把 $dP=-\dfrac{nP}{v}\,dv$ 代進 (d) 式的 $v\,dP$ 這一項，$v$ 可以互相約分：</p>
+<div class="math-block">$$
+v\,dP = v\times\left(-\frac{nP}{v}\,dv\right) = -nP\,dv
+$$</div>
+<p>代回 (d) 式：</p>
+<div class="math-block">$$
+dT=\frac{P\,dv-nP\,dv}{R}
+$$</div>
+<p>提出公因式 $P\,dv$：</p>
+<div class="math-block">$$
+dT=\frac{P\,dv\,(1-n)}{R} \tag{f-1}
+$$</div>
+<p><strong>步驟五：反解出 $P\,dv$</strong></p>
+<p>兩邊同乘 $R$，再同除以 $(1-n)$：</p>
+<div class="math-block">$$
+P\,dv=\frac{R}{1-n}\,dT \tag{f}
+$$</div>
+<p><strong>步驟六：代入 (c)，求出 $C_n$</strong></p>
+<p>把 (f) 代入 (c) 式：</p>
+<div class="math-block">$$
+(C_{n}-C_{v})\,dT=\frac{R}{1-n}\,dT
+$$</div>
+<p>兩邊同除以 $dT$，再移項：</p>
+<div class="math-block">$$
+C_{n}=C_{v}+\frac{R}{1-n} \tag{g}
+$$</div>
+<p><strong>步驟七：把 $R$ 換成 $C_v$ 與 $\gamma$（代數代換）</strong></p>
+<p>由 Mayer 關係式 $C_p=C_v+R$ 與 $\gamma=C_p/C_v$，先解出 $C_p=\gamma C_v$，代入 Mayer 關係式：</p>
+<div class="math-block">$$
+\gamma C_{v}=C_{v}+R \implies R=C_{v}(\gamma-1) \tag{h}
+$$</div>
+<p>把 (h) 代入 (g)，提出公因式 $C_v$ 並通分：</p>
+<div class="math-block">$$
+C_{n}=C_{v}\left[1+\frac{\gamma-1}{1-n}\right]=C_{v}\cdot\frac{(1-n)+(\gamma-1)}{1-n}=C_{v}\cdot\frac{\gamma-n}{1-n} \tag{g'}
+$$</div>
+<p><strong>步驟八：分子分母同乘 $-1$，化成標準形式</strong></p>
+<div class="math-block">$$
+\frac{\gamma-n}{1-n}=\frac{(-1)(\gamma-n)}{(-1)(1-n)}=\frac{n-\gamma}{n-1}
+$$</div>
+<p><strong>最終結果</strong>：</p>
+<div class="math-block">$$
+\boxed{C_{n}=C_{v}\cdot\frac{n-\gamma}{n-1}} \tag{4.4}
+$$</div>
+<p><strong>推導技巧總表</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">步驟</th>
+<th style="text-align: left;">用到的技巧</th>
+<th style="text-align: left;">目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">一</td>
+<td style="text-align: left;">合併 $\delta q$ 兩種表達式</td>
+<td style="text-align: left;">建立 $(C_n-C_v)dT=Pdv$ 的關係</td>
+</tr>
+<tr>
+<td style="text-align: center;">二</td>
+<td style="text-align: left;">乘積法則</td>
+<td style="text-align: left;">微分 $Pv=RT$</td>
+</tr>
+<tr>
+<td style="text-align: center;">三</td>
+<td style="text-align: left;">對數微分法、鏈鎖律</td>
+<td style="text-align: left;">微分 $Pv^n=C$</td>
+</tr>
+<tr>
+<td style="text-align: center;">四</td>
+<td style="text-align: left;">代入消去、約分、因式分解</td>
+<td style="text-align: left;">消掉 $dP$，只留 $dv$ 與 $dT$ 的關係</td>
+</tr>
+<tr>
+<td style="text-align: center;">五</td>
+<td style="text-align: left;">移項解未知數</td>
+<td style="text-align: left;">把 $P\,dv$ 單獨解出</td>
+</tr>
+<tr>
+<td style="text-align: center;">六</td>
+<td style="text-align: left;">兩邊同除以 $dT$</td>
+<td style="text-align: left;">消掉共同的微分項，求出 $C_n$ 初步形式</td>
+</tr>
+<tr>
+<td style="text-align: center;">七</td>
+<td style="text-align: left;">聯立方程式代換、提公因式、通分</td>
+<td style="text-align: left;">把 $R$ 用 $C_v,\gamma$ 表示並合併分數</td>
+</tr>
+<tr>
+<td style="text-align: center;">八</td>
+<td style="text-align: left;">分子分母同乘 $-1$</td>
+<td style="text-align: left;">化成標準形式</td>
+</tr>
+</tbody>
+</table>
+<p><strong>含義複習</strong>：(4.4) 式的結構本身就在告訴您「$C_n$ 是誰跟誰角力的結果」——分子 $(n-\gamma)$ 代表「這個過程的多變指數，跟理論絕熱值差多少」；分母 $(n-1)$ 代表「跟等溫值差多少」。當 $n\to\gamma$（分子趨近0）→ $C_n\to0$，正是絕熱的定義；當 $n\to1$（分母趨近0）→ $C_n\to\infty$，正是等溫的定義。</p>
+<hr />
+<h1>5. 模組一：$P$-$v$ 圖上的壓縮與膨脹曲線幾何</h1>
+<p><strong>本章座標系統說明</strong>：橫軸為比容 $v$，縱軸為壓力 $P$。這是專門用來分析「氣體在活塞、氣缸內被壓縮或膨脹」的座標系統。</p>
+<h2>5.1 曲線函數與一階、二階導數</h2>
+<p>把 (4.1) 式改寫為以 $v$ 為自變數的函數：</p>
+<div class="math-block">$$
+P(v) = C \cdot v^{-n} \tag{5.1}
+$$</div>
+<p><strong>一階導數（斜率）</strong>：</p>
+<div class="math-block">$$
+\frac{dP}{dv} = -n \cdot C \cdot v^{-n-1} < 0 \tag{5.2}
+$$</div>
+<p>一階導數恆小於 0，代表當比容 $v$ 增加時，壓力 $P$ 必定持續下降；且 $n$ 值越大，下降得越劇烈。</p>
+<p><strong>二階導數（曲率）</strong>：</p>
+<div class="math-block">$$
+\frac{d^2P}{dv^2} = n(n+1) \cdot C \cdot v^{-(n+2)} > 0 \tag{5.3}
+$$</div>
+<p>二階導數恆大於 0，代表曲線形狀是「凹向上」（開口朝上的弧形）。</p>
+<h2>5.2 漸近線特徵</h2>
+<ul>
+<li><strong>垂直漸近線（$v\to0^+$）</strong>：當比容趨近於 0，壓力 $P(v)\to+\infty$，曲線無限貼近縱軸但不會碰到。</li>
+<li><strong>水平漸近線（$v\to+\infty$）</strong>：當比容趨近無窮大，壓力 $P(v)\to0^+$，曲線無限貼近橫軸但不會低於 0。</li>
+</ul>
+<h2>5.3 壓縮過程 vs 膨脹過程：同一條曲線，方向相反</h2>
+<p>壓縮與膨脹遵循<strong>完全相同的數學函數</strong> $P(v)=C\cdot v^{-n}$，在圖上是<strong>同一條曲線</strong>，唯一差別是移動方向：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">過程</th>
+<th style="text-align: left;">移動方向</th>
+<th style="text-align: left;">能量方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>壓縮過程</strong></td>
+<td style="text-align: left;">由右下（低壓、大體積）走向左上（高壓、小體積）</td>
+<td style="text-align: left;">外界對氣體做功（消耗能量）</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>膨脹過程</strong>（氣體推動活塞對外做功，例如渦輪膨脹機）</td>
+<td style="text-align: left;">由左上走向右下</td>
+<td style="text-align: left;">氣體對外做功（輸出能量）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>⚠️ 特別提醒</strong>：這裡講的「膨脹過程」，指的是<strong>氣體在氣缸內推動活塞、對外輸出機械功</strong>的情況（例如渦輪膨脹機）。這跟第 6 章要講的「冷媒通過膨脹閥」是<strong>完全不同的物理機制</strong>——膨脹閥不會對外輸出機械功，請不要混淆。</p>
+<hr />
+<h1>6. 模組二：冷凍循環在 $P$-$h$ 莫利爾圖上的四大過程</h1>
+<p><strong>本章座標系統說明</strong>：橫軸為比焓 $h$，縱軸為壓力 $P$，這就是<strong>莫利爾線圖（Mollier Diagram / P-h Diagram）</strong>，是分析冷凍空調循環最常用的圖。<strong>這一章的座標系統跟第 5 章完全不同，請不要把第 5 章的曲線形狀套用到這裡。</strong></p>
+<h2>6.1 四大過程對照表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">過程</th>
+<th style="text-align: center;">元件</th>
+<th style="text-align: left;">物理機制</th>
+<th style="text-align: left;">在 $P$-$h$ 圖上的精確形狀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$1\to2$</td>
+<td style="text-align: center;">壓縮機</td>
+<td style="text-align: left;">多變/等熵壓縮</td>
+<td style="text-align: left;">向右上方彎曲的曲線</td>
+</tr>
+<tr>
+<td style="text-align: center;">$2\to3$</td>
+<td style="text-align: center;">凝結器</td>
+<td style="text-align: left;">等壓放熱</td>
+<td style="text-align: left;"><strong>水平直線</strong>（$P=\text{常數}$）</td>
+</tr>
+<tr>
+<td style="text-align: center;">$3\to4$</td>
+<td style="text-align: center;">膨脹閥/毛細管</td>
+<td style="text-align: left;">等焓節流（$h_3=h_4$）</td>
+<td style="text-align: left;"><strong>精確垂直直線</strong>（因為 $h$ 是橫軸，$h$ 不變＝垂直線，這是幾何上必然成立的事實，不是「近似」）</td>
+</tr>
+<tr>
+<td style="text-align: center;">$4\to1$</td>
+<td style="text-align: center;">蒸發器</td>
+<td style="text-align: left;">等壓吸熱</td>
+<td style="text-align: left;"><strong>水平直線</strong>（$P=\text{常數}$）</td>
+</tr>
+</tbody>
+</table>
+<h2>6.2 為什麼節流過程不做功、且是等焓過程</h2>
+<p><strong>（1）沒有可動邊界，也沒有機械軸</strong></p>
+<ul>
+<li>邊界功 $\delta w=P\,dv$ 需要活塞這類「可動邊界」才能產生；膨脹閥是固定不動的狹窄通道，$dv=0$。</li>
+<li>開放系統若要對外做功（如渦輪機發電），需要旋轉葉片或機械軸；膨脹閥沒有連接任何機械軸，$W_{\text{shaft}}=0$。</li>
+</ul>
+<p><strong>（2）劇烈摩擦，能量內耗</strong></p>
+<p>高壓流體擠過極小閥口時，部分壓力能會先轉化為局部高速動能，但由於狹窄通道內強烈的漩渦與黏性摩擦，這些動能隨即在流體內部消散、轉回熱能——整個過程都發生在流體內部，沒有任何能量傳到外界設備。</p>
+<p><strong>（3）套用穩定流動能量方程式（SFEE）</strong></p>
+<div class="math-block">$$
+q - w = \Delta h + \Delta ke + \Delta pe \tag{6.1}
+$$</div>
+<p>節流過程發生在極小空間、速度極快，來不及與外界進行顯著熱交換，所以 $q\approx0$；進出口的宏觀動能與位能變化也可忽略（$\Delta ke\approx0$、$\Delta pe\approx0$）。又因為沒有機械功輸出（$w=0$），(6.1) 式簡化為：</p>
+<div class="math-block">$$
+\Delta h = 0 \implies h_3 = h_4 \tag{6.2}
+$$</div>
+<p>這代表節流過程中，流體進口的「內能＋流動功」總能量，剛好等於出口的總能量——壓力下降所釋放的能量，完全轉化為冷媒汽化閃蒸所需的能量，沒有任何能量以「功」的形式輸出到外界。</p>
+<h2>6.3 閃蒸與乾度計算</h2>
+<p>高壓冷媒液體（狀態3）通過膨脹閥降壓後，會瞬間「閃蒸（Flash）」成氣液混合物（狀態4）。原因是：壓力驟降會使飽和溫度（沸點）大幅下降，原本的高壓液體相對於新的低壓沸點而言處於「過熱」狀態，多餘的顯熱會強迫部分液體瞬間汽化。</p>
+<p><strong>乾度（Quality）$x$</strong> 代表蒸氣質量佔總冷媒質量的比例：</p>
+<div class="math-block">$$
+x = \frac{m_{\text{蒸氣}}}{m_{\text{總質量}}} \quad (0\le x\le1) \tag{6.3}
+$$</div>
+<p>根據等焓條件（狀態3的總焓＝狀態4的總焓）：</p>
+<div class="math-block">$$
+h_3 = h_4 = h_{f4} + x\cdot h_{fg4} \tag{6.4}
+$$</div>
+<p>其中 $h_{f4}$ 是低壓下飽和液體的焓值，$h_{fg4}$ 是低壓下的汽化潛熱（$h_{g4}-h_{f4}$）。解出乾度：</p>
+<div class="math-block">$$
+x = \frac{h_3 - h_{f4}}{h_{fg4}} \tag{6.5}
+$$</div>
+<p>一般冷凍系統中，節流後的乾度大約落在 <strong>0.15～0.25</strong> 之間，代表有 15%～25% 的冷媒在通過膨脹閥的瞬間就閃蒸成了蒸氣。這部分閃蒸氣體已經完成相變，無法在蒸發器中繼續吸熱，會降低蒸發器的單位冷房能力——這也是為什麼工程上要在凝結器出口做「過冷（Subcooling）」，降低進膨脹閥前的焓值 $h_3$，減少閃蒸量、提升系統效能。</p>
+<p><em>查證等級 (3)：此段為冷凍空調工程通用知識，屬教科書等級內容。</em></p>
+<hr />
+<h1>7. 現場診斷應用：過熱度與過冷度</h1>
+<h2>7.1 定義</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">名詞</th>
+<th style="text-align: center;">適用對象</th>
+<th style="text-align: left;">定義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>過冷度（Subcooling, SC）</strong></td>
+<td style="text-align: center;">液態冷媒</td>
+<td style="text-align: left;">實際溫度 <strong>低於</strong> 當前壓力對應之飽和溫度</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>過熱度（Superheat, SH）</strong></td>
+<td style="text-align: center;">氣態冷媒</td>
+<td style="text-align: left;">實際溫度 <strong>高於</strong> 當前壓力對應之飽和溫度</td>
+</tr>
+</tbody>
+</table>
+<h2>7.2 系統類型與觀察重點</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">系統類型</th>
+<th style="text-align: left;">機制</th>
+<th style="text-align: left;">觀察重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>TXV / EEV 系統</strong>（熱力/電子膨脹閥）</td>
+<td style="text-align: left;">閥門自動調節冷媒流量，維持固定的吸氣過熱度</td>
+<td style="text-align: left;">主要看<strong>過冷度</strong>判斷冷媒量</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>毛細管 / 固定孔口系統</strong></td>
+<td style="text-align: left;">節流孔徑固定，無法自動調整</td>
+<td style="text-align: left;">主要看<strong>過熱度</strong>判斷冷媒量</td>
+</tr>
+</tbody>
+</table>
+<h2>7.3 冷媒充填量診斷對照表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">冷媒狀態</th>
+<th style="text-align: center;">過熱度（SH）</th>
+<th style="text-align: center;">過冷度（SC）</th>
+<th style="text-align: center;">高壓壓力</th>
+<th style="text-align: center;">低壓壓力</th>
+<th style="text-align: left;">主要風險</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">冷媒不足</td>
+<td style="text-align: center;"><strong>過高</strong></td>
+<td style="text-align: center;"><strong>過低</strong></td>
+<td style="text-align: center;">偏低</td>
+<td style="text-align: center;">偏低</td>
+<td style="text-align: left;">冷房能力下降、壓縮機散熱不良過熱</td>
+</tr>
+<tr>
+<td style="text-align: center;">冷媒過量</td>
+<td style="text-align: center;"><strong>過低</strong></td>
+<td style="text-align: center;"><strong>過高</strong></td>
+<td style="text-align: center;">偏高</td>
+<td style="text-align: center;">偏高</td>
+<td style="text-align: left;">高壓跳機、過載耗電、防液撞失效</td>
+</tr>
+<tr>
+<td style="text-align: center;">充填適量</td>
+<td style="text-align: center;">正常（5~8 K）</td>
+<td style="text-align: center;">正常（5~8 K）</td>
+<td style="text-align: center;">正常</td>
+<td style="text-align: center;">正常</td>
+<td style="text-align: left;">系統效率最高（COP最佳）</td>
+</tr>
+</tbody>
+</table>
+<p><em>查證等級 (3)：SH/SC 5~8K 為業界常見經驗法則，實際數值仍應以原廠技術資料為準，不同冷媒與系統設計可能有差異。</em></p>
+<p><strong>現場操作 SOP</strong>：</p>
+<ol>
+<li><strong>先確認風量</strong>：風速不足（濾網髒、風扇壞）會假性拉低過熱度，須先排除風量問題再判讀。</li>
+<li><strong>量測位置</strong>：</li>
+<li>過熱度 = 低壓側管路實測溫度 − 低壓表壓對應之飽和溫度</li>
+<li>過冷度 = 高壓側管路實測溫度（凝結器出口）− 高壓表壓對應飽和溫度</li>
+<li><strong>調校目標</strong>：將 SH 與 SC 都控制在 5～8 K 範圍內（確保不液撞、確保純液體節流）。</li>
+</ol>
+<hr />
+<h1>8. 情境應用實例</h1>
+<p><strong>已知條件</strong>：空氣（$\gamma=1.4$）進行絕熱可逆壓縮，初始狀態 $P_1=100\text{ kPa}$、$v_1=0.85\text{ m}^3\text{/kg}$，壓縮至 $P_2=500\text{ kPa}$。</p>
+<p><strong>求</strong>：壓縮後之比容 $v_2$。</p>
+<p><strong>算式來源</strong>：由 (3.6) 式 $P_1v_1^{\gamma}=P_2v_2^{\gamma}=C$</p>
+<p><strong>計算過程</strong>：</p>
+<div class="math-block">$$
+v_2 = v_1\left(\frac{P_1}{P_2}\right)^{1/\gamma} = 0.85\ \text{m}^3\text{/kg} \times \left(\frac{100\ \text{kPa}}{500\ \text{kPa}}\right)^{1/1.4}
+$$</div>
+<div class="math-block">$$
+v_2 = 0.85\ \text{m}^3\text{/kg} \times (0.2)^{0.7143} = 0.85\ \text{m}^3\text{/kg} \times 0.3167
+$$</div>
+<p><strong>計算結果</strong>：</p>
+<div class="math-block">$$
+v_2 = \mathbf{0.2692\ \text{m}^3\text{/kg}}
+$$</div>
+<p><strong>驗證</strong>：代回檢查兩邊是否相等</p>
+<div class="math-block">$$
+P_1v_1^{1.4} = 100\ \text{kPa}\times(0.85\ \text{m}^3\text{/kg})^{1.4} = 100\times0.7965 = 79.65\ \text{kPa·(m}^3\text{/kg)}^{1.4}
+$$</div>
+<div class="math-block">$$
+P_2v_2^{1.4} = 500\ \text{kPa}\times(0.2692\ \text{m}^3\text{/kg})^{1.4} = 500\times0.1593 = 79.65\ \text{kPa·(m}^3\text{/kg)}^{1.4}\ \checkmark
+$$</div>
+<p>兩邊相等，推導公式驗證成立。</p>
+<hr />
+<h1>9. 參考文獻與查證等級聲明</h1>
+<p>本文核心推導（第一定律、理想氣體方程式、Mayer 關係式、多變過程方程式）屬於古典熱力學公開教育內容，常見於以下教科書等級參考資料：</p>
+<ul>
+<li>Cengel, Y. A., &amp; Boles, M. A., <em>Thermodynamics: An Engineering Approach</em></li>
+<li>Moran, M. J., &amp; Shapiro, H. N., <em>Fundamentals of Engineering Thermodynamics</em></li>
+</ul>
+<p><strong>查證等級標示</strong>：本文全文標示為 <strong>(3) 既有知識工程參考值</strong>，屬於公開教科書之基礎理論框架，非受任何組織著作權或使用政策保護之具體數據內容，可安心引用其推導邏輯。第 7 章之 SH/SC 經驗數值（5~8K）為業界field practice常見參考值，實務應用時仍建議以原廠技術資料為準。</p>
+<p><strong>幻覺提醒</strong>：本文所有數學推導步驟均經過逐式驗算，情境算例之數值已重新計算訂正。若您在後續研究中需要引用特定冷媒（如 R134a、R410A）之具體物性數據，仍建議查閱原廠技術手冊或 ASHRAE 等標準機構之正式出版品，本文不含此類受版權保護之具體數據表格。</p>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本文為個人研究範圍內之整理，僅供學習參考，並非取代專業技師之逐條法規查證與簽證責任。實務設計時仍須與相關技師、原廠技術資料及適用法規標準逐項確認。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
