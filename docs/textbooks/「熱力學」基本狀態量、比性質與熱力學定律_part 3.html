@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熱力學 Part 3：基本狀態量、比性質與熱力學定律</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #53636a;
+  --paper: #fbfaf6;
+  --panel: #fff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --formula: #f6f5f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.page { max-width: 1600px; margin: 0; }
+.report-header { padding: 58px 32px 38px; border-bottom: 1px solid var(--rule); }
+.eyebrow { margin: 0 0 12px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .14em; }
+.report-title { margin: 0; color: var(--ink); font-family: "Noto Serif TC", "Songti TC", serif; font-size: clamp(27px, 4vw, 44px); line-height: 1.3; }
+.report-sub { margin: 14px 0 0; color: var(--ink-soft); }
+.layout { display: grid; grid-template-columns: 240px minmax(0, 1040px); gap: 32px; align-items: start; padding: 40px 32px 80px; }
+.toc { position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; padding: 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; }
+.toc-title { margin-bottom: 12px; color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .08em; }
+.toc-link { display: block; padding: 6px 0; color: var(--ink-soft); border-bottom: 1px dashed var(--rule); font-size: 14px; text-decoration: none; }
+.toc-link:hover { color: var(--accent); }
+.content { min-width: 0; padding: 48px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; }
+.content h1 { margin: 48px 0 20px; padding-bottom: 10px; color: var(--accent); border-bottom: 2px solid var(--accent); font-family: "Noto Serif TC", serif; font-size: 26px; line-height: 1.45; }
+.content h1:first-child { margin-top: 0; }
+.content h2 { margin: 34px 0 14px; padding-left: 12px; color: var(--ink); border-left: 4px solid var(--accent); font-size: 20px; line-height: 1.5; }
+.content h3 { margin: 26px 0 10px; color: var(--ink); font-size: 17px; }
+.content p { margin: 0 0 16px; }
+.content strong { color: var(--ink); }
+.content em { color: var(--ink-soft); }
+.content ul, .content ol { margin: 0 0 18px; padding-left: 1.7em; }
+.content li { margin: 5px 0; }
+.math-block { overflow-x: auto; margin: 14px 0 22px; padding: 15px 18px; background: var(--formula); border: 1px solid var(--rule); border-radius: 6px; text-align: center; }
+table { width: 100%; margin: 14px 0 26px; border-collapse: collapse; font-size: 14.5px; }
+thead { background: var(--accent-soft); }
+th, td { padding: 10px 12px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.table-wrap { overflow-x: auto; }
+.note { margin: 20px 0; padding: 14px 18px; background: #f2f4f2; border-left: 4px solid #7a8a86; border-radius: 6px; }
+.note-title { margin-bottom: 5px; color: #586a65; font-weight: 700; }
+.report-footer { padding: 32px; color: var(--ink-soft); border-top: 1px solid var(--rule); font-size: 13px; text-align: center; }
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding: 24px 16px 56px; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 25px 20px; }
+  .report-header { padding: 40px 20px 30px; }
+  table { min-width: 620px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  <p class="eyebrow">熱力學基礎整理｜Part 3</p>
+  <h1 class="report-title">熱力學的基本狀態量、比性質與四大定律</h1>
+  <p class="report-sub">壓力、絕對溫度、比容、比內能、比焓、比熵、熱力學定律與常用符號慣例。</p>
+  <P>研究組員：李世權 Gemini，排版美工：Copilot</P>
+</header>
+
+<div class="layout">
+<nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+<main class="content">
+
+<h1>1. 熱力學的基本狀態量</h1>
+<h2>1.1 何謂熱力學的「壓力」</h2>
+<p>在熱力學中，壓力（Pressure）指的是流體（氣體或液體）在單位面積上所施加的垂直作用力。它是熱力學中用來描述系統狀態的四大巨觀性質之一（其餘為溫度、體積與物質量），通常以符號 $P$ 表示，國際標準單位為帕斯卡（Pascal, Pa），即 $1\ \text{N/m}^2$。</p>
+<p>我們可以從微觀與巨觀兩個維度來徹底理解熱力學中的壓力：</p>
+<h3>1.1.1 微觀視角：分子碰撞的結果</h3>
+<p>從分子運動論（Microscopic view）來看，氣體分子並非靜止，而是在空間中進行永無止境的隨機運動。</p>
+<ul>
+<li>當這些無數的分子撞擊容器壁面時，會對壁面產生衝量。</li>
+<li>這種大量分子在單位時間內、單位面積上產生的連續撞擊力之總和，在巨觀上就表現為「壓力」。</li>
+<li>影響因素：當溫度升高（分子動能變大、撞得更猛）或體積縮小（分子碰撞頻率變高）時，壓力就會上升。</li>
+</ul>
+<h3>1.1.2 巨觀視角：能量與體積的變化率</h3>
+<p>在古典熱力學（Macroscopic view）中，壓力與系統的能量變化密切相關。根據熱力學第一與第二定律所推導出的熱力學基本關係式：</p>
+<div class="math-block">$$P = -\left( \frac{\partial U}{\partial V} \right)_{S,N}$$</div>
+<p>這個公式的意思是：在熵（$S$）和粒子數（$N$）保持不變的條件下，系統內能（$U$）相對於體積（$V$）的負變化率。</p>
+<ul><li><strong>物理意義：</strong>當系統膨脹（體積 $V$ 增加）並對外做功時，其內能 $U$ 會減少，而這個能量減少的速率正是由壓力決定的。</li></ul>
+<h2>1.2 熱力學壓力的核心特徵</h2>
+<ul>
+<li><strong>強度性質（Intensive Property）：</strong>壓力與系統內物質的總量無關。如果將一個平衡系統切成兩半，兩半的壓力依然與原本相同。</li>
+<li><strong>驅動變化的本源：</strong>正如「溫度差」驅動熱量流動，「壓力差」則驅動體積的變化或流體的流動。當兩個系統接觸時，若壓力不同，系統會透過改變體積或流動來達到力學平衡（Mechanical Equilibrium），直到雙方壓力相等。</li>
+</ul>
+
+<h1>2. 絕對溫度</h1>
+<h2>2.1 何謂熱力學的「絕對溫度」</h2>
+<p>在熱力學中，絕對溫度（Absolute Temperature）是指以「絕對零度」為起點所計量的溫度。它是衡量物質內部原子與分子平均動能的物理量，通常以符號 $T$ 表示，國際標準單位為克耳文（Kelvin, K）。</p>
+<h3>2.1.1 微觀視角：分子平均動能的量度</h3>
+<p>根據統計力學與分子運動論，溫度本質上是物質微觀粒子運動激烈程度的表現。</p>
+<ul>
+<li><strong>動能指標：</strong>理想氣體分子的平均平移動能（$\bar{E}_k$）與絕對溫度（$T$）成正比，公式為 $\bar{E}_k = \frac{3}{2}k_B T$，其中 $k_B$ 為波茲曼常數。</li>
+<li><strong>絕對零度（0 K）：</strong>當絕對溫度降到 0 K（約等於攝氏 -273.15 °C）時，古典物理學認為分子的熱運動會完全停止，動能降為零。根據量子力學，此時仍保有無法消除的零點能。</li>
+</ul>
+<h3>2.1.2 巨觀視角：卡諾循環與熱力學第二定律</h3>
+<p>在古典熱力學中，絕對溫度的定義不依賴任何特定物質，而是透過卡諾熱機（Carnot Engine）的效率來嚴格定義：</p>
+<div class="math-block">$$\frac{Q_H}{Q_C} = \frac{T_H}{T_C}$$</div>
+<p>這個公式指出：一個可逆熱機在高溫熱源吸收的熱量（$Q_H$）與向低溫熱源放出的熱量（$Q_C$）之比，恰好等於高溫熱源與低溫熱源的絕對溫度（$T_H,T_C$）之比。</p>
+<h2>2.2 絕對溫度與常見溫標的關係</h2>
+<p>絕對溫標（克耳文溫標）與攝氏溫標的刻度大小完全相同，但起點不同。換算公式為：</p>
+<div class="math-block">$$T\ (\text{K}) = t\ (°\text{C}) + 273.15$$</div>
+<div class="table-wrap"><table>
+<thead><tr><th>物理狀態</th><th>絕對溫度 (K)</th><th>攝氏溫度 (°C)</th></tr></thead>
+<tbody><tr><td>絕對零度</td><td>0 K</td><td>-273.15 °C</td></tr><tr><td>水的冰點</td><td>273.15 K</td><td>0 °C</td></tr><tr><td>室溫（常見假設）</td><td>298.15 K</td><td>25 °C</td></tr><tr><td>水的沸點</td><td>373.15 K</td><td>100 °C</td></tr></tbody>
+</table></div>
+<h2>2.3 為什麼熱力學公式必須使用「絕對溫度」？</h2>
+<p>在計算熱力學公式（如理想氣體狀態方程式 $PV=nRT$、熵變化量 $\Delta S=\int \frac{dQ}{T}$）時，必須使用絕對溫度 $T$。</p>
+<p>因為如果使用攝氏溫度，當溫度為 0 °C 時，公式中的乘除法會失去物理意義；若溫度為負數（如 -10 °C），更會計算出「負體積」或「負壓力」等不符合現實物理規律的結果。</p>
+
+<h1>3. 熱力學的比性質</h1>
+<h2>3.1 何謂熱力學的「比容」</h2>
+<p><strong>在熱力學中，比容（Specific Volume）是指「單位質量物質所佔有的體積」。</strong>它是體積（Volume）的倒數，通常以小寫符號 $v$ 表示，國際標準單位為立方公尺每公斤（$\text{m}^3/\text{kg}$）。</p>
+<p>換句話說，比容用來描述「一公斤的物質會膨脹到多大的空間」，其數學定義為：</p>
+<div class="math-block">$$v = \frac{V}{m} = \frac{1}{\rho}$$</div>
+<ul><li>$V$：系統的總體積（$\text{m}^3$）</li><li>$m$：系統的總質量（$\text{kg}$）</li><li>$\rho$：物質的密度（$\text{kg/m}^3$）</li></ul>
+<h2>3.2 比容與密度的直接對比</h2>
+<p>熱力學中之所以更常使用「比容」而非「密度」，是因為在分析流體，尤其是蒸汽與氣體的動力與能量轉換時，以每單位質量為基準來觀察其體積變化，在公式推導與查表上更為直觀方便。</p>
+<div class="table-wrap"><table><thead><tr><th>特性</th><th>比容 ($v$)</th><th>密度 ($\rho$)</th></tr></thead><tbody>
+<tr><td>定義</td><td>單位質量所佔的體積</td><td>單位體積內含有的質量</td></tr><tr><td>數學關係</td><td>$v=1/\rho$</td><td>$\rho=1/v$</td></tr><tr><td>物理直覺</td><td>一公斤的物體有多大</td><td>一立方公尺的物體有多重</td></tr><tr><td>主要應用</td><td>氣體、蒸汽、熱力學圖表查表</td><td>流體力學、固體結構分析</td></tr>
+</tbody></table></div>
+<h2>3.3 熱力學比容的核心特徵</h2>
+<ul><li><strong>強度性質：</strong>總體積 $V$ 和總質量 $m$ 都是外延性質，但兩者相除後得到的比容 $v$，就變成了與物質總量無關的強度性質。</li><li><strong>狀態的決定因子：</strong>在純物質的純相系統中，只要確定壓力 $P$ 與比容 $v$，整個系統的熱力學狀態就被唯一確定。這也是熱力學常使用 $P$-$v$ 圖描繪物質狀態變化的原因。</li></ul>
+<h2>3.4 實際生活中的「比容」概念</h2>
+<p>以水為例，在不同相態下，比容有巨大的差異：</p>
+<ol><li>飽和水（液態）：在 100 °C、1 大氣壓下，一公斤水的比容約為 $0.00104\ \text{m}^3/\text{kg}$，約 1 公升。</li><li>飽和蒸汽（氣態）：在同樣的溫度與壓力下，一公斤水完全蒸發成水蒸汽後，比容約為 $1.673\ \text{m}^3/\text{kg}$。</li></ol>
+<p>這意味著水在蒸發時，比容膨脹了約 1600 倍，這正是蒸汽火車與蒸汽渦輪發電機能夠對外做功、產生巨大推力的物理本源。</p>
+
+<h2>3.5 何謂熱力學的「比內能」</h2>
+<p><strong>在熱力學中，比內能（Specific Internal Energy）是指「單位質量物質所具有的內能」。</strong>它是總內能除以總質量的物理量，通常以小寫符號 $u$ 表示，單位為焦耳每公斤（$\text{J/kg}$）或千焦耳每公斤（$\text{kJ/kg}$）。</p>
+<p>大寫的 $U$ 代表整個系統的總內能，而小寫的 $u$ 是排除質量影響後的強度性質：</p>
+<div class="math-block">$$u = \frac{U}{m}$$</div>
+<ul><li>$U$：系統的總內能（J 或 kJ）</li><li>$m$：系統的總質量（kg）</li></ul>
+<h2>3.6 什麼是「內能」？比內能微觀上看什麼？</h2>
+<p>微觀上，內能是系統內部所有微觀粒子所擁有的微觀能量總和，主要包含兩大類：</p>
+<ol><li><strong>微觀動能（顯熱）：</strong>分子進行平移、旋轉、振動的運動能量。這部分能量直接由溫度決定。</li><li><strong>微觀位能（潛熱）：</strong>分子與分子之間的化學鍵結或吸引力所蘊含的能量，在相變化時會發生劇烈改變。</li></ol>
+<p>因此，比內能 $u$ 衡量的是一公斤特定物質在特定狀態下，其內部微觀粒子所儲存的總能量。它不包含系統宏觀移動的動能，也不包含系統所處位置的重力位能。</p>
+<h2>3.7 比內能在熱力學計算中的實際應用</h2>
+<h3>3.7.1 熱力學第一定律的單位質量形式</h3>
+<p>當我們分析一個封閉系統經歷一個過程時，能量守恆可以寫成：</p>
+<div class="math-block">$$\Delta u = q - w$$</div>
+<ul><li>$\Delta u$：每公斤物質的比內能變化量。</li><li>$q$：每公斤物質吸收的淨熱量（kJ/kg）。</li><li>$w$：每公斤物質對外做的淨功（kJ/kg）。</li></ul>
+<h3>3.7.2 理想氣體的比內能</h3>
+<p>對於理想氣體而言，分子間沒有交互作用力，因此比內能僅僅是溫度的函數，與壓力或體積無關。其變化量可以用定容比熱 $C_v$ 計算：</p>
+<div class="math-block">$$\Delta u = C_v\Delta T$$</div>
+<h3>3.7.3 真實物質的查表</h3>
+<p>對於水或冷媒等真實物質，比內能必須同時考慮溫度與相態，通常透過熱力學性質表，根據已知壓力和溫度查出 $u$ 的數值。例如，25 °C 的飽和液態水，其比內能 $u_f$ 約為 $104.83\ \text{kJ/kg}$。</p>
+
+<h2>3.8 何謂熱力學的「比焓」</h2>
+<p>在熱力學中，比焓（Specific Enthalpy）是指單位質量物質所具有的焓。它是總焓除以總質量的物理量，通常以小寫符號 $h$ 表示，單位為千焦耳每公斤（$\text{kJ/kg}$）。</p>
+<div class="math-block">$$h = \frac{H}{m} = u + Pv$$</div>
+<ul><li>$u$：比內能，代表物質微觀粒子的內部能量。</li><li>$P$：系統的壓力（kPa）。</li><li>$v$：比容（$\text{m}^3/\text{kg}$）。</li><li>$Pv$：流動功，代表流體為了維持流動並推開前方空間所需的能量。</li></ul>
+<h2>3.9 如何直觀理解比焓？</h2>
+<ul><li><strong>比內能 $u$：</strong>一公斤物質本身內部微觀粒子所擁有的能量。</li><li><strong>比焓 $h$：</strong>流體在開放系統中移動時，除了保有 $u$，還必須付出 $Pv$ 來開路；兩者加總就是 $h=u+Pv$。</li></ul>
+<h2>3.10 比焓的兩大核心應用場景</h2>
+<h3>3.10.1 開放系統的流動分析</h3>
+<p>分析冷氣壓縮機、蒸汽渦輪機、鍋爐、散熱器或噴嘴等流動設備時，在忽略動能與位能變化後，熱力學第一定律可簡化為：</p>
+<div class="math-block">$$q-w=\Delta h$$</div>
+<p>流體在這些設備中交換的熱量或產生的功，直接等於流體進出口的比焓差。</p>
+<h3>3.10.2 定壓過程</h3>
+<p>在開放燒杯或鍋子裡燒水等定壓過程中，系統與外界交換的淨熱量 $q_p$ 等於比焓的變化量：</p>
+<div class="math-block">$$q_p=\Delta h$$</div>
+<p>對於理想氣體，定壓下的比焓變化量可以用定壓比熱 $C_p$ 與溫度變化計算：$\Delta h=C_p\Delta T$。</p>
+<h2>3.11 比焓、比內能、比容的關係對比</h2>
+<div class="table-wrap"><table><thead><tr><th>物理量</th><th>符號</th><th>核心物理意義</th><th>最佳應用場景</th></tr></thead><tbody>
+<tr><td>比容</td><td>$v$</td><td>一公斤物質所佔有的空間大小</td><td>氣缸膨脹做功、密度換算</td></tr><tr><td>比內能</td><td>$u$</td><td>一公斤物質內微觀粒子的純能量總和</td><td>封閉、定容系統</td></tr><tr><td>比焓</td><td>$h$</td><td>一公斤流體的內能與流動功總和</td><td>渦輪、壓縮機等流動系統</td></tr>
+</tbody></table></div>
+
+<h2>3.12 何謂熱力學的「比熵」</h2>
+<p><strong>在熱力學中，比熵（Specific Entropy）是指單位質量物質所具有的熵。</strong>它是總熵除以總質量的物理量，通常以小寫符號 $s$ 表示，單位為千焦耳每公斤克耳文（$\text{kJ/(kg}\cdot\text{K)}$）。</p>
+<div class="math-block">$$s=\frac{S}{m}$$</div>
+<ul><li>$S$：系統的總熵（kJ/K）</li><li>$m$：系統的總質量（kg）</li></ul>
+<h2>3.13 如何直觀理解比熵？</h2>
+<p>根據統計熱力學，熵是系統微觀粒子排布混亂程度或微觀狀態數的量度。比熵衡量的是一公斤特定物質內部粒子的無序程度。冰的分子排列整齊，比熵最低；水的分子開始流動，比熵中等；水蒸汽的分子到處亂飛，比熵會大幅增加。</p>
+<p>對於可逆過程，比熵變化量定義為：</p>
+<div class="math-block">$$ds=\left(\frac{dq}{T}\right)_{\mathrm{rev}}$$</div>
+<ul><li>$dq$：單位質量物質吸收的微細可逆熱量（kJ/kg）。</li><li>$T$：熱量傳輸時的絕對溫度（K）。</li></ul>
+<p>當熱量 $dq$ 除以絕對溫度 $T$，就是把熱量中無法再拿來做功的退化程度量化出來。</p>
+<h2>3.14 比熵在工程與計算中的核心應用</h2>
+<h3>3.14.1 定義理想機器的極限：等熵過程</h3>
+<p>設計蒸汽渦輪機、冷氣壓縮機或飛機噴嘴時，常以內部可逆且絕熱的過程作為理想基準。此時比熵不變：</p>
+<div class="math-block">$$s_1=s_2$$</div>
+<p>工程師會設定進口比熵等於出口比熵，算出機器理論上能產生的最大電力或消耗的最小功，再乘以效率修正。</p>
+<h3>3.14.2 計算真實世界的不可逆損耗</h3>
+<p>現實中的機器具有摩擦與不可逆性，流體出口的比熵通常大於進口比熵（$s_2&gt;s_1$）。透過進出口比熵差，可以估算可用能損失（Exergy Destruction），進而改良機器結構。</p>
+<h2>3.15 熱力學五大比性質總整理</h2>
+<div class="table-wrap"><table><thead><tr><th>比性質</th><th>符號</th><th>單位</th><th>核心物理意義</th><th>最佳應用直覺</th></tr></thead><tbody>
+<tr><td>比容</td><td>$v$</td><td>$\text{m}^3/\text{kg}$</td><td>一公斤物質所佔有的空間體積</td><td>氣缸活塞推力、空間大小</td></tr><tr><td>比內能</td><td>$u$</td><td>kJ/kg</td><td>一公斤物質內部粒子的純運動與位能</td><td>密閉容器的能量守恆</td></tr><tr><td>比焓</td><td>$h$</td><td>kJ/kg</td><td>一公斤流體的內能加上流動功</td><td>管路、渦輪、壓縮機</td></tr><tr><td>比熵</td><td>$s$</td><td>$\text{kJ/(kg}\cdot\text{K)}$</td><td>一公斤物質的微觀混亂度與能量退化指標</td><td>判斷理想效率</td></tr>
+</tbody></table></div>
+
+<h1>4. 熱力學四大定律</h1>
+<h2>4.1 何謂熱力學定律</h2>
+<p><strong>熱力學定律（Laws of Thermodynamics）是物理學中最基礎、最核心的四條基本法則。</strong>它們描述宇宙中能量如何轉換、熱量如何流動，以及物質在宏觀世界下的平衡狀態。四條定律依序為第零、第一、第二、第三定律。</p>
+<h2>4.2 第零定律：溫度的定義與熱平衡</h2>
+<ul><li><strong>核心概念：</strong>如果系統 A 與系統 B 達到熱平衡，系統 B 又與系統 C 達到熱平衡，那麼系統 A 與系統 C 也必定處於熱平衡。</li><li><strong>白話解釋：</strong>這條定律確立了溫度是一個客觀存在的物理量。</li><li><strong>生活應用：</strong>體溫計與人體達到熱平衡後，體溫計的讀值可以代表人體溫度。</li><li><strong>註：</strong>這條定律是在第一、第二定律提出後，科學家才意識到溫度必須先被定義，因此才命名為第零定律。</li></ul>
+<h2>4.3 第一定律：能量守恆定律</h2>
+<ul><li><strong>核心概念：</strong>能量既不能被創造，也不能被消滅，只能轉換形式或在系統間轉移。</li><li><strong>封閉系統公式：</strong>$\Delta U=Q-W$，即內能改變量等於系統吸收的熱量減去系統對外做的功。</li><li><strong>白話解釋：</strong>宇宙中的總能量恆定，不可能存在不需任何能量就能運作的第一類永動機。</li><li><strong>生活應用：</strong>汽車引擎把汽油化學能轉化為推動活塞的機械功與散失的熱能。</li></ul>
+<h2>4.4 第二定律：熱量流動的方向性</h2>
+<ul><li><strong>核心概念：</strong>在孤立系統中，一切自發過程都朝熵增加的方向進行；熱量會自發地從高溫物體傳向低溫物體。</li><li><strong>白話解釋：</strong>第一定律說明能量總量不變，第二定律則指出能量有品質高低，高溫熱能轉為低溫熱能後會退化，無法 100% 回復成原本的高品質能量。</li><li><strong>生活應用：</strong>熱水會自然冷卻，房間不整理會越來越亂，這些都可視為熵增加的直觀例子。</li></ul>
+<h2>4.5 第三定律：絕對零度的不可達到性</h2>
+<ul><li><strong>核心概念：</strong>當完美晶體系統的絕對溫度趨近於 0 K 時，系統的熵趨近於恆定常數，通常定義為零。</li><li><strong>白話解釋：</strong>人類可以無限接近絕對零度，但不可能透過有限個步驟真正達到 0 K。</li><li><strong>生活應用：</strong>低溫物理學與超導體研究已能將物質冷卻到極低溫，但仍受絕對零度不可達原則限制。</li></ul>
+<h2>4.6 四大定律的經典直觀總結</h2>
+<ul><li><strong>第零定律：</strong>定義遊戲規則，先建立溫度與熱平衡。</li><li><strong>第一定律：</strong>能量守恆，無法憑空增加籌碼。</li><li><strong>第二定律：</strong>熵增造成能量退化，無法完全保有能量品質。</li><li><strong>第三定律：</strong>絕對零度不可達，無法讓所有微觀運動真正停止。</li></ul>
+
+<h1>5. 後續學習的四大核心支柱</h1>
+<p>在古典熱力學的完整基礎理論中，還有以下四大範疇，能將已學理論轉化為工程計算與物理預測：</p>
+<h2>5.1 物質的分類與行為模型</h2>
+<ul><li><strong>理想氣體狀態方程式：</strong>$PV=nRT$，是進入熱力學的重要基礎。</li><li><strong>真實氣體與相圖：</strong>真實物質會結冰、沸騰，還涉及臨界點、三相點，以及描述氣液共存的乾度（Quality, $x$）。</li></ul>
+<h2>5.2 熱力學四大自由能</h2>
+<p>在化學熱力學與材料科學中，除了內能 $U$ 和焓 $H$，還必須引入描述系統在不同條件下可做多少有用功的函數：</p>
+<ul><li><strong>吉布斯自由能：</strong>$G=H-TS$。定溫定壓下，若 $\Delta G&lt;0$，反應或相變化可自發進行。</li><li><strong>赫姆霍茲自由能：</strong>$A=U-TS$。適合作為定溫定容系統的自發性指標。</li></ul>
+<h2>5.3 物質的熱特性：比熱</h2>
+<p>比熱是連接溫度變化與能量變化的橋梁：</p>
+<ul><li><strong>定容比熱：</strong>$C_v=\left(\frac{\partial u}{\partial T}\right)_v$。</li><li><strong>定壓比熱：</strong>$C_p=\left(\frac{\partial h}{\partial T}\right)_p$。</li><li>氣體的 $C_p$ 通常大於 $C_v$，因為定壓受熱膨脹時還需要對外做功。</li></ul>
+<h2>5.4 經典熱力學循環</h2>
+<ul><li><strong>卡諾循環：</strong>熱力學第二定律的具體化，是理論上效率最高的熱機循環。</li><li><strong>四大工程循環：</strong>奧圖循環（汽油車）、迪塞爾循環（柴油車）、朗肯循環（火力或核能發電廠）、蒸汽壓縮制冷循環（冷氣與冰箱）。</li></ul>
+
+<h1>6. 為何通常以小寫符號 $v$ 而不用大寫 $V$</h1>
+<h2>6.1 大寫符號：代表總量</h2>
+<p>大寫符號用來表示與系統內物質總量成正比的外延性質。如果系統規模擴大一倍，這些數值也會跟著翻倍。</p>
+<ul><li>$V$：系統的總體積，單位為 $\text{m}^3$。</li><li>$U$：總內能；$H$：總焓；$S$：總熵。</li></ul>
+<h2>6.2 小寫符號：代表單位質量的量</h2>
+<p>把大寫的總量除以總質量 $m$ 後，會得到與系統大小無關的強度性質。熱力學慣例規定，這種每公斤的物理量使用對應的小寫字母：</p>
+<ul><li>$v=V/m$：比容，單位為 $\text{m}^3/\text{kg}$。</li><li>$u=U/m$：比內能；$h=H/m$：比焓；$s=S/m$：比熵。</li></ul>
+<h2>6.3 這樣區分的實務優勢</h2>
+<ul><li><strong>一看符號就知道能否直接查表：</strong>小寫 $v$ 代表狀態性質，可直接從水蒸汽表等物性表查出；大寫 $V$ 則還必須配合總質量 $m$。</li><li><strong>簡化數學公式與計算：</strong>總能量版本為 $\Delta U=Q-W\rightarrow m\Delta u=Q-\int P\,dV$；單位質量版本則可寫成 $\Delta u=q-w=q-\int P\,dv$。</li></ul>
+<div class="note"><div class="note-title">符號例外與延伸</div><p>壓力 $P$ 與溫度 $T$ 本身天生就是強度性質，不需要除以質量，因此維持大寫。帶有橫槓的符號如 $\bar{v}$ 可代表莫耳比容；帶有圓點的符號如 $\dot{V}$ 可代表體積流率。</p></div>
+
+</main>
+</div>
+<footer class="report-footer"><p>本文件依原始 Markdown 內容整理為 HTML；公式由 MathJax 渲染，正式工程計算請依適用物性表與設計規範覆核。</p></footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function (header, index) {
+    var id = 'sec-' + index;
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
