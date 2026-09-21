@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnot、Rankine、Otto、Diesel 與 VCR 五大循環比較與解析</title>
+<script>
+  MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1600px; margin: 0; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1040px);
+  gap: 32px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+.content img { display: block; max-width: min(100%, 760px); height: auto; margin: 18px auto; border: 1px solid var(--rule); }
+.content mark { background: #fff0a8; color: inherit; padding: 0 0.15em; }
+.content ul, .content ol { margin: 0 0 16px; padding-left: 2em; }
+.content li { margin: 4px 0; }
+.figure-caption { text-align: center; color: var(--ink-soft); font-size: 13px; margin-top: -8px; }
+@media (max-width: 600px) { .report-header { padding: 40px 20px 28px; } .layout { padding: 24px 16px 56px; } .content { padding: 22px 18px; } }
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">Carnot、Rankine、Otto、Diesel 與 VCR 五大循環比較與解析</h1>
+  <p class="report-sub">涵蓋 Carnot、Rankine、Otto、Diesel 與蒸氣壓縮冷凍循環（VCR）的原理、公式與應用比較</p>
+<p>研究組員：李世權 Gemini | 排版美工：Copilot</p>
+</header>
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+<h1>1. 導論與循環分類</h1>
+<p>熱力學循環可依據其運轉目標與能量轉換方向分為兩大類：</p>
+<h2>1.1 正向熱機循環 (Power Cycles)</h2>
+<ul>
+<li><strong>運作目標</strong>：消耗熱能以輸出機械功（如 Carnot、Rankine、Otto、Diesel 循環）。</li>
+<li><strong>熱力學特徵</strong>：在 $P$-$v$ 或 $T$-$s$ 圖上記錄為<strong>順時針方向</strong>。<mark>系統吸收高溫熱源熱量 $Q_H$，對外輸出淨功 $W_{\text{net}} > 0$，並排放廢熱 $Q_L$ 至低溫熱源。</mark></li>
+</ul>
+<h2>1.2 逆向熱機循環 (Refrigeration / Heat Pump Cycles)</h2>
+<ul>
+<li><strong>運作目標</strong>：輸入機械功，將熱量由低溫處搬運至高溫處（如蒸氣壓縮冷凍循環 VCR）。</li>
+<li><strong>熱力學特徵</strong>：在 $P$-$v$ 或 $T$-$s$ 圖上記錄為<strong>逆時針方向</strong>。<mark>系統由外部輸入淨功 $W_{\text{in}} > 0$（由壓縮機提供），從低溫熱源吸收熱量 $Q_L$（蒸發器吸熱），並向高溫熱源釋放熱量 $Q_H$（冷凝器放熱）。</mark></li>
+</ul>
+<h1>2. 五大熱力學循環詳細剖析</h1>
+<h2>2.1 Carnot Cycle (卡諾循環 / 完美理想)</h2>
+<p>卡諾循環是由法國工程師尼古拉·萊昂納爾·薩迪·卡諾 (Sadi Carnot) 於 1824 年提出的<strong>理想理論熱力學循環</strong>。它由兩個等溫過程與兩個等熵（可逆絕熱）過程組成，代表運作於高溫熱源 $T_H$ 與低溫熱源 $T_L$ 之間熱機的<strong>理論最高熱效率極限</strong>。</p>
+<h3>(1) 核心目的與理論價值</h3>
+<ul>
+<li><strong>確立熱機熱效率的理論極限（天花板）</strong>：證明任何工作於「吸收」高溫熱源 $T_H$ 與 「排放」低溫熱源 $T_L$ 之間的熱機，其熱效率絕不可能超越卡諾熱效率 $\eta_{\text{Carnot}}$。當系統吸收的熱量$T_H$「完全」轉換爲做功，<mark>「無」廢熱 $T_L$＝0 排放</mark>，意謂著：</li>
+</ul>
+<div class="math-block">$$ \eta_{\text{Carnot}} = 1 - \frac{T_L}{T_H} = 1 - \frac{0}{T_H}=1 \ (代表效率100\% )\tag{2.1} $$</div>
+<p>這給予工程師終極的評估標準：「不論技術再怎麼進步，該溫差下的熱效率天花板就在這裡。」</p>
+<ul>
+<li><strong>奠定熱力學第二定律與「熵 (Entropy)」的概念</strong>：說明熱量無法 $100\%$ 轉化為功，必然有部分熱量必須排放至低溫熱源（廢熱）。這直接促成了熱力學第二定律（Kelvin-Planck 與 Clausius 敘述）的建立，並導出了「熵」這個狀態函數。所以<mark>「廢熱$T_L$」就是「熵s」</mark>。</li>
+</ul>
+<h3>(2) 應用與工程價值</h3>
+<p>由於卡諾循環由兩個<strong>完全無摩擦的等溫過程</strong>與兩個<strong>等熵過程</strong>組成，實際工程中因存在摩擦與有限溫差傳熱，<strong>無法被完全製造出來</strong>。然而它具備以下價值：</p>
+<ul>
+<li><strong>工程設計的性能基準 (Benchmark)</strong>：計算<strong>熱力學第二定律效率 (Second-Law Efficiency, $\eta_{\text{II}}$)</strong>：</li>
+</ul>
+<div class="math-block">$$ \eta_{\text{II}} = \frac{\eta_{\text{actual}}}{\eta_{\text{Carnot}}} \tag{2.2} $$</div>
+<ul>
+<li><strong>熱泵與冷凍機的 $\text{COP}$ 物理極限估算</strong>：</li>
+<li>冷凍極限：$\text{COP}_{R, \text{max}} = \frac{T_L}{T_H - T_L}$</li>
+<li>熱泵極限：$\text{COP}_{HP, \text{max}} = \frac{T_H}{T_H - T_L}$</li>
+<li><strong>溫差發電與新興能源評估</strong>：在評估海洋溫差發電 (OTEC)、地熱發電或工業廢熱回收時，先用卡諾效率算出理論上限（例如海洋表層 $25^\circ\text{C}$ 與深層 $5^\circ\text{C}$ 之理論極限約僅 $6.7\%$），快速評估開發可行性。</li>
+</ul>
+<h3>(3) 程序公式與熱效率推導(順時針)</h3>
+<img src="Pasted image 20260920184128.png" alt="Pasted image 20260920184128" loading="lazy">
+<ul>
+<li><strong>$1 \rightarrow 2$（等溫加熱）</strong>：在高溫 $T_H$ 下吸收熱量 $Q_{in} = T_H (s_2 - s_1)$</li>
+<li><strong>$2 \rightarrow 3$（等熵膨脹）</strong>：絕熱膨脹作功，溫度由 $T_H$ 降至 $T_L$ ($s_2 = s_3$)</li>
+<li><strong>$3 \rightarrow 4$（等溫放熱）</strong>：在低溫 $T_L$ 下排放廢熱 $Q_{out} = T_L (s_3 - s_4)$</li>
+<li><strong>$4 \rightarrow 1$（等熵壓縮）</strong>：絕熱壓縮消耗功，溫度由 $T_L$ 升至 $T_H$ ($s_4 = s_1$)</li>
+
+<strong>熱效率公式</strong>：當無廢熱$T_L$＝0時，效率最高！
+</ul>
+<div class="math-block">$$ \eta_{\text{Carnot}} = \frac{W_{\text{net}}}{Q_{in}} = \frac{Q_{in} - Q_{out}}{Q_{in}} = 1 - \frac{T_L(s_3 - s_4)}{T_H(s_2 - s_1)} = 1 - \frac{T_L}{T_H} \tag{2.3} $$</div>
+<h2>2.2 Rankine Cycle (朗肯循環 / 高效能蒸汽動力廠)</h2>
+<p>朗肯循環是「為了工程實用化而生」的實務熱力學循環。利用液體（通常是水）在相變過程中的巨大熱焓變化，<mark>將燃料的熱能高效且穩定地轉換為連續輸出的機械功或電能</mark>。</p>
+<h3>(1) 解決卡諾循環的工程痛點</h3>
+<p>若直接將卡諾循環應用於蒸汽動力，會遇到兩大工程障礙：</p>
+<ul>
+<li><strong>無法製造「兩相壓縮機」</strong>：卡諾循環需要在氣液共存（濕蒸氣）狀態下進行絕熱壓縮，液態水滴會侵蝕高速旋轉的葉片且壓縮效率極低。</li>
+<li><strong>傳熱速率過慢</strong>：單相氣體中難以實現高速的等溫加熱與放熱。</li>
+</ul>
+<p><strong>朗肯循環的突破</strong>：將冷凝過程進行到底，使蒸氣完全凝結為<strong>純液態水</strong>，再利用給水泵 (Pump) 將液體加壓送入鍋爐。由於液體幾乎不可壓縮，泵浦消耗的功極小（通常小於渦輪輸出功的 1%~2%），大幅提高了工程可行性。</p>
+<h3>(2) 主要應用領域</h3>
+<p>全球超過 $70\% \sim 80\%$ 的電力生產皆基於朗坑循環或其衍生型：</p>
+<ul>
+<li><strong>火力發電廠 (Thermal Power Plants)</strong>：燃燒煤炭、天然氣或重油產生蒸汽，推動蒸汽渦輪機 (Steam Turbine) 發電。</li>
+<li><strong>核能發電廠 (Nuclear Power Plants)</strong>：利用反應爐 (PWR/BWR) 核分裂熱能產生蒸汽，其二次迴路 (Secondary Loop) 即為朗肯循環。</li>
+<li><strong>有機朗肯循環 (ORC, Organic Rankine Cycle)</strong>：面對中低溫熱源（$80^\circ\text{C} \sim 300^\circ\text{C}$，如地熱、太陽熱能、工業廢熱），改用低沸點有機介質（如 R134a、異戊烷）替代水進行發電。</li>
+<li><strong>汽電共生系統 (CHP, Combined Heat and Power)</strong>：發電同時將中低壓抽汽用於廠區加熱或供暖，能源利用率可達 $70\% \sim 80\%$ 以上。</li>
+</ul>
+<h3>(3) 常見工程優化技術</h3>
+<ul>
+<li><strong>再熱循環 (Reheat Rankine Cycle)</strong>：蒸氣在高壓渦輪作功（推動發電機）後送回鍋爐重新加熱，再進入低壓渦輪，提高效率並降低出口濕度。</li>
+<li><strong>再生循環 (Regenerative Rankine Cycle)</strong>：抽出部分蒸氣預熱給水（給水加熱器 FWH），減少鍋爐不可逆傳熱損失。</li>
+<li><strong>超臨界與超超臨界發電 (Supercritical / Ultra-Supercritical)</strong>：壓力提升至臨界壓力（$22.1 \text{ MPa}$）以上，水直接轉為蒸氣而不發生沸騰相變，熱效率可突破 $45\%$。</li>
+</ul>
+<h3>(4) 程序公式與熱效率推導(順時針)</h3>
+<img src="Pasted image 20260920182758.png" alt="Pasted image 20260920182758" loading="lazy">
+<ul>
+<li><strong>$4 \rightarrow 5 \rightarrow 6\rightarrow 1$（等壓加熱 / 鍋爐吸熱）</strong>：高壓水在燃煤/天然氣/柴油鍋爐內吸熱、汽化成過熱蒸氣。</li>
+單位吸熱量：$q_{\text{in}} = h_1 - h_4$
+<li><strong>$1 \rightarrow 2$（等熵膨脹 / 渦輪作功）</strong>：過熱蒸氣進入渦輪機膨脹作功推動發電機 ($s_3 = s_4$)。</li>
+渦輪輸出功：$w_{\text{turbine, out}} = h_2 - h_1$
+<li><strong>$2 \rightarrow 3$（等壓放熱 / 冷凝器凝結）</strong>：將做完功的蒸汽在冷凝器中凝結為飽和液體回收再循環。</li>
+單位放熱量：$q_{\text{out}} = h_2 - h_3$
+<li><strong>$3 \rightarrow 4$（等熵壓縮 / 泵浦加壓）</strong>：凝結水（飽和液體）加壓至鍋爐壓力。</li>
+泵浦輸入功：$w_{\text{pump, in}} = h_4 - h_3 \approx v_3 (P_4 - P_3)$
+<strong>熱效率公式</strong>：</li>
+</ul>
+<div class="math-block">$$ \eta_{\text{Rankine}} = \frac{w_{\text{net}}}{q_{\text{in}}} = \frac{w_{\text{turbine, out}} - w_{\text{pump, in}}}{q_{\text{in}}} = \frac{(h_2 - h_3) - (h_1 - h_4)}{h_1 - h_4} \tag{2.4} $$</div>
+<h2>2.3 Otto Cycle (奧圖循環 / 汽油引擎)</h2>
+<p>由尼古拉·奧圖 (Nikolaus Otto) 於 1876 年設計，為<strong>火花點火式內燃機 (Spark-Ignition Internal Combustion Engines, SI)</strong> 的理想熱力學模型。</p>
+<h3>(1) 核心目的與定容加熱機制</h3>
+<p>核心目的：<strong>透過「<mark>定容（等容）</mark>燃燒」機制，將燃料化學能轉化為高溫高壓氣體，推動活塞輸出連續機械功。</strong></p>
+<ul>
+<li><strong>定容加熱優勢</strong>：火花塞點燃混合氣瞬間爆燃速度極快，活塞位置幾乎未移動（體積 $V = \text{const}$），能在極短時間內累積極高壓力與溫度，實現高功率輸出。</li>
+</ul>
+<h3>(2) 主要應用領域</h3>
+<ul>
+<li><strong>乘用車與摩托車</strong>：傳統汽油車、跑車、二/四衝程摩托車（高轉速、高馬力重量比、加速迅速）。</li>
+<li><strong>小型航空器</strong>：輕型螺旋槳飛機、私人飛機活塞引擎（如 Lycoming、Continental）。</li>
+<li><strong>小型可攜式動力設備</strong>：發電機組、割草機、鏈鋸、抽水機。</li>
+<li><strong>替代燃料引擎</strong>：壓縮天然氣 (CNG)、液化石油氣 (LPG) 或乙醇引擎。</li>
+</ul>
+<h3>(3) 物理限制與工程挑戰</h3>
+<ul>
+<li><strong>爆震限制 (Knocking Limit)</strong>：熱效率取決於壓縮比 $r$。若壓縮比過高，混合氣會在高溫下自燃引發爆震，故汽油引擎壓縮比通常限制在 $8 \sim 12$（高性能自然進氣約 $13 \sim 14$）。</li>
+<li><strong>節流損失 (Throttling Losses)</strong>：依靠節氣門控制進氣量，低負載時會產生顯著的抽氣損失 (Pumping Losses)。</li>
+</ul>
+<h3>(4) 汽油引擎：為何是「定容加熱」（Otto 循環）？</h3>
+
+A. 物理機制：預混氣體 + 電火花瞬間爆燃
+
+<ul>
+<li><strong>混合方式</strong>：汽油在進入汽缸前（或噴油嘴噴入後）就已經與空氣<strong>充分混合</strong>成均勻的預混氣體。</li>
+</ul>
+<ul>
+<li><strong>點火方式</strong>：當活塞壓縮到頂點（上死點, TDC）附近時，火星塞發出電火花瞬間點燃預混氣體。</li>
+</ul>
+<ul>
+<li><strong>燃燒速度</strong>：因為汽油揮發性高且已預先混合，火焰傳播速度極快，<strong>整個燃燒過程在幾微秒（$\mu s$）內就幾乎全部完成</strong>。</li>
+</ul>
+
+B. 熱力學解釋：活塞「來不及動」
+
+<p>因為燃燒反應太快，當燃料化學能大量釋放、壓力與溫度暴漲時，<strong>活塞幾乎還停留在上死點，體積根本還來不及發生明顯變化</strong>（$\Delta V \approx 0$）。</p>
+<ul>
+<li><strong>在 $P-V$ 圖上的表現</strong>：加熱過程呈現一條<strong>垂直向上的直線</strong>（體積 $V$ 固定，壓力 $P$ 急遽暴漲）。</li>
+</ul>
+<h3>(5) 程序公式與熱效率推導(順時針)</h3>
+<img src="Pasted image 20260920173639.png" alt="Pasted image 20260920173639" loading="lazy">
+<p>定義壓縮比 $r = \frac{V_1}{V_2}$，絕熱指數 $k = \frac{C_p}{C_v}$：</p>
+<ul>
+<li><strong>$1 \rightarrow 2$（等熵壓縮）</strong>：活塞向上壓縮混合氣 ($Q = 0$, $s_1 = s_2$)。</li>
+<P>溫壓關係：$T_2 = T_1 \cdot \left(\frac{V_1}{V_2}\right)^{k-1} = T_1 \cdot r^{k-1}$</P>
+<P>輸入功：$W_{\text{in}, 1-2} = m C_v (T_2 - T_1)$</P>
+<li><strong>$2 \rightarrow 3$（等容加熱 / 吸熱 $Q_{\text{in}}$）</strong>：<mark>火花點火瞬間爆燃 ($V_2 = V_3$, $W = 0$)</mark>。</li>
+<P>吸收熱量：$Q_{\text{in}} = m C_v (T_3 - T_2)$</P>
+<P>壓力變化：$\frac{P_3}{P_2} = \frac{T_3}{T_2}$</P>
+<li><strong>$3 \rightarrow 4$（等熵膨脹 / 輸出功 $W_{\text{out}}$）</strong>：高壓氣體推動活塞對外作功 ($Q = 0$, $s_3 = s_4$)。</li>
+<P>輸出功：$W_{\text{out}, 3-4} = m C_v (T_3 - T_4)$</P>
+<li><strong>$4 \rightarrow 1$（等容放熱 / 廢熱 $Q_{\text{out}}$）</strong>：排氣門開啟降壓 ($V_4 = V_1$, $W = 0$)。</li>
+<P>排出熱量：$Q_{\text{out}} = m C_v (T_4 - T_1)$</P>
+<P>熱效率公式推導：</P>
+</ul>
+<div class="math-block">$$ \eta_{\text{Otto}} = \frac{W_{\text{net}}}{Q_{\text{in}}} = 1 - \frac{Q_{\text{out}}}{Q_{\text{in}}} = 1 - \frac{m C_v (T_4 - T_1)}{m C_v (T_3 - T_2)} = 1 - \frac{1}{r^{k-1}} \tag{2.5} $$</div>
+<h2>2.4 Diesel Cycle (狄塞爾循環 / 柴油引擎)</h2>
+<p>由魯道夫·狄塞爾 (Rudolf Diesel) 於 1890 年代研發，為<strong>壓縮點火式內燃機 (Compression-Ignition Engines, CI)</strong> 的理想熱力學模型。</p>
+<h3>(1) 核心目的與等壓加熱機制</h3>
+<p>核心目的：<strong>透過「高壓縮比」與「壓縮點火」機制，擺脫汽油引擎爆震限制，實現極高熱效率與大扭力輸出。</strong></p>
+<ul>
+<li><strong>只壓縮純空氣</strong>：進氣階段僅吸入空氣，壓縮比可提升至 <strong>$14 \sim 22$</strong>。</li>
+<li><strong>壓燃 (Self-Ignition)</strong>：空氣壓縮至高溫高壓後噴入柴油，遇到高溫空氣即自動著火。</li>
+<li><strong>等壓加熱</strong>：柴油噴射燃燒需時，此時活塞已開始向下移動，體積擴大使燃燒過程保持壓力恆定（$P = \text{const}$）。</li>
+</ul>
+<h3>(2) 主要應用領域</h3>
+<ul>
+<li><strong>大型商用車與重型運輸</strong>：大貨車、半聯結車、長途客運巴士、拖拉機（低轉速大扭力）。</li>
+<li><strong>鐵路與海運動力</strong>：柴電機車頭、貨輪、軍艦、郵輪（大型低速二衝程柴油引擎實際熱效率可突破 $50\%$）。</li>
+<li><strong>重型工程機械與農機</strong>：挖掘機、推土機、裝載機、聯合收割機。</li>
+<li><strong>工業與緊急備用發電機組</strong>：醫院、資料中心、半導體廠緊急備用電源。</li>
+</ul>
+<h3>(3) 柴油引擎：為何是「定壓加熱」（Diesel 循環）？</h3>
+
+A. 物理機制：高壓噴射 + 壓燃（邊噴邊燒）
+
+<ul>
+<li><strong>點火方式</strong>：柴油引擎沒有火星塞。它先將純空氣壓縮到極高溫與高壓，然後將柴油高壓噴入汽缸，利用高溫空氣讓柴油<strong>壓燃（自燃）</strong>。</li>
+</ul>
+<ul>
+<li><strong>燃燒速度</strong>：柴油揮發性差，無法提前預混。柴油是「邊噴射、邊蒸發混合、邊燃燒」。</li>
+</ul>
+<ul>
+<li><strong>燃燒過程持續的時間較長</strong>，由噴油嘴持續噴油的時間來控制。</li>
+</ul>
+
+B. 熱力學解釋：邊燃燒、邊膨脹推動活塞
+
+<p>在柴油噴入開始燃燒釋放熱量的同時，<strong>活塞已經開始被推動向往下移動（體積 $V$ 增大）</strong>。</p>
+<ul>
+<li><strong>壓力動態平衡</strong>：燃燒產生的高熱傾向於使壓力升高，但活塞向下移動（體積膨脹）傾向於使壓力降低。這兩者相互抵消，使得在整個噴油燃燒段內，<strong>汽缸內部的壓力幾乎維持在最高許可壓力不變</strong>（$\Delta P \approx 0$）。</li>
+</ul>
+<ul>
+<li><strong>在 $P-v$ 圖上的表現</strong>：加熱過程呈現一條<strong>水平向右的直線</strong>（壓力 $P$ 固定，體積 $v$ 隨活塞移動而增大）。</li>
+</ul>
+<p>(4) 柴油引擎之所以給人「特別有力、拉力強、扭力大」<strong>的印象，關鍵並非馬力（Power）的大小，而是它能在</strong>低轉速時爆發出極大的「扭力」（Torque）。</p>
+<p>這主要源於以下四大核心原因：</p>
+A. 燃料本身：柴油的能量密度（熱值）更高
+<ul>
+<li><strong>體積熱值高</strong>：柴油的密度比汽油高，若以「公升（L）」為單位，<strong>每公升柴油釋放的熱量比汽油多出約 10% ~ 15%</strong>。</li>
+</ul>
+<ul>
+<li><strong>物理意義</strong>：引擎汽缸每次吸入或噴入相同體積的燃料時，柴油能提供比汽油更充沛的總熱能。</li>
+</ul>
+B, 燃燒特性與壓縮比：超高的「壓縮比」帶來強勁爆發力
+<ul>
+<li><strong>汽油引擎</strong>：因預混氣體容易引發爆震（Knocking），壓縮比受限（約 $9:1 \sim 12:1$）。</li>
+</ul>
+<ul>
+<li><strong>柴油引擎</strong>：先壓縮純空氣再高壓噴油壓燃，完全沒有預混爆震問題，因此壓縮比極高（通常高達 $15:1 \sim 22:1$）。</li>
+</ul>
+<ul>
+<li><strong>扭力來源</strong>：壓縮比越高，燃燒時汽缸內的<strong>頂級爆發壓力（Pmax）就越龐大</strong>。這股高壓猛烈向下推動活塞，直接轉化為連桿與曲軸上的巨大旋轉力矩（扭力）。</li>
+</ul>
+C. 機械結構：長衝程（Stroke）設計放大了槓桿力矩
+<p>扭力的物理定義是：</p>
+<div class="math-block">$$\text{扭力 } (\tau) = \text{力 } (F) \times \text{力臂 } (r)$$</div>
+<ul>
+<li><strong>活塞運動</strong>：柴油引擎為了配合高壓縮比，普遍採用「小缸徑、長衝程」的汽缸設計。</li>
+</ul>
+<ul>
+<li><strong>槓桿原理</strong>：活塞向下推動曲軸時，長衝程意味著<strong>曲軸的旋轉半徑（力臂 $r$）更長</strong>。高氣缸壓力（大 $F$）乘以長力臂（大 $r$），自然爆發出極為驚人的低轉速扭力。</li>
+</ul>
+D. 渦輪增壓的完美搭檔（Turbocharger）
+<ul>
+<li><strong>排氣能量大</strong>：柴油引擎的熱效率高且高壓排氣能量足，非常適合搭配渦輪增壓器。</li>
+</ul>
+<ul>
+<li><strong>低轉速高進氣量</strong>：現代柴油車幾乎全數標配渦輪增壓，能在引擎僅有 $1,500 \sim 2,000 \text{ RPM}$ 的低轉速下，就將大量的空氣壓入汽缸，實現「低轉速、大扭力」的輸出特性。</li>
+</ul>
+<p>💡 總結：汽油 vs. 柴油 的「有力」差異</p>
+<table><thead><tr><th><strong>比較項目</strong></th><th><strong>汽油引擎</strong></th><th><strong>柴油引擎</strong></th></tr></thead><tbody>
+<tr><td><strong>運轉特性</strong></td><td>轉速高、馬力大、延伸性好</td><td>轉速低、扭力極大、起步拉力強</td></tr>
+<tr><td><strong>力量展現</strong></td><td>適合<strong>高速飆速與加速感</strong></td><td>適合<strong>重載、爬坡、拖曳與起步</strong></td></tr>
+<tr><td><strong>白話比喻</strong></td><td>像<strong>短跑選手</strong>（腳步極快、爆發速度）</td><td>像<strong>舉重選手</strong>（力量驚人、力拔山河）</td></tr>
+</tbody></table>
+<h3>(5) 雖然柴油引擎在扭力與燃料效率（省油度）上有極大優勢，但乘用車市場至今依然以汽油引擎（及基於汽油引擎的油電系統）為主的關鍵原因，主要有以下五個維度：</h3>
+<h3>A. 運轉品質：振動與噪音（NVH 表現）</h3>
+<ul>
+<li><strong>汽油引擎</strong>：利用火星塞點火，燃燒過程相對平順，運轉時的震動與引擎運轉聲（NVH, Noise/Vibration/Harshness）極小，能提供極佳的寧靜度與舒適感。</li>
+</ul>
+<ul>
+<li><strong>柴油引擎</strong>：採用超高壓壓燃（自燃）方式，汽缸內部瞬間爆發壓力極高，會產生顯著的「噠噠噠」金屬運轉聲與強烈震動。對於一般的家用小型車而言，這樣的舒適度較難被大眾接受。</li>
+</ul>
+<h3>B. 廢氣排放與後處理成本（污染問題）</h3>
+<ul>
+<li><strong>高污染物質</strong>：柴油燃燒會產生大量的 氮氧化物（$\text{NO}_x$）與 懸浮微粒（碳粒/PM），這是造成酸雨與PM2.5霾害的主因之一。</li>
+</ul>
+<ul>
+<li><strong>後處理系統昂貴</strong>：為了通過越來越嚴格的環保法規（如 Euro 6），柴油車必須裝載極為複雜的廢氣處理設備，包括：</li>
+</ul>
+<ol>
+<li><strong>DPF（柴油碳微粒過濾器）</strong>：需定期高溫再生清理，否則容易堵塞。</li>
+</ol>
+<ol>
+<li><strong>SCR（選擇性催化還原系統）</strong>：必須定期添加<strong>尿素（AdBlue）</strong>。</li>
+</ol>
+<p>這大幅增加了車輛的<strong>製造成本與後續維修保養負擔</strong>。</p>
+<h3>C. 車輛售價與車重（製造成本）</h3>
+<ul>
+<li><strong>車體結構昂貴</strong>：柴油引擎需要承受高達 $15:1 \sim 22:1$ 的高壓縮比與巨大的氣缸壓力，因此引擎本體（缸體、連桿、曲軸）必須做得非常厚重且堅固。</li>
+</ul>
+<ul>
+<li><strong>技術成本高</strong>：昂貴的超高壓共軌噴射系統加上上述的廢氣後處理系統，使得同級別的柴油車<strong>新車售價普遍比汽油車貴上不少</strong>。</li>
+</ul>
+<h3>D. 輸出特性與駕駛習慣（極速與馬力）</h3>
+<p><mark>扭力雖然代表「拉力」，但<strong>馬力（Power）才決定車輛的極速與高轉速延展性</strong></mark>：</p>
+<p><mark>$$\text{馬力 (Power)} \propto \text{扭力 (Torque)} \times \text{轉速 (RPM)}$$</mark></p>
+<ul>
+<li><strong>汽油引擎</strong>：轉速範圍廣（最高可達 $6,000 \sim 7,000 \text{ RPM}$ 以上），高轉速下的馬力表現出色，加速與極速延展性極佳，適合日常開快車或高速巡航。</li>
+</ul>
+<ul>
+<li><strong>柴油引擎</strong>：因為柴油燃燒較慢且活塞衝程長，轉速受限（通常最高僅約 $4,000 \sim 4,500 \text{ RPM}$）。雖然低轉速非常有勁，但在高速運轉時的「後勁」明顯不足。</li>
+</ul>
+<h3>E. 用車情境：短程走走停停容易故障</h3>
+<ul>
+<li><strong>DPF 堵塞問題</strong>：柴油車的廢氣過濾器（DPF）需要車輛持續行駛在高速公路或中高速路段，讓排氣管達到高溫來「燃燒自潔」。</li>
+</ul>
+<ul>
+<li><strong>都市開車噩夢</strong>：若買柴油車只用於市區短程代步、走走停停，DPF 永遠無法達到自潔溫度，極易積碳堵塞，導致引擎動力下降甚至損壞，維修費用動輒數萬元。</li>
+</ul>
+<h3>💡 總結：市場定位的區隔</h3>
+<table><thead><tr><th><strong>應用領域</strong></th><th><strong>首選引擎</strong></th><th><strong>原因</strong></th></tr></thead><tbody>
+<tr><td><strong>一般家用轎車 / 休旅車</strong></td><td><strong>汽油引擎 / 油電</strong></td><td>運轉安靜、車價便宜、保養簡單、適合短程走走停停</td></tr>
+<tr><td><strong>大卡車 / 公車 / 重型機械</strong></td><td><strong>柴油引擎</strong></td><td>載重大、需要超高低轉速扭力、長時間行駛能發揮省油優勢</td></tr>
+</tbody></table>
+<h3>(6) 針對「<strong>馬力由轉速決定（$\text{Horsepower} \propto \text{Torque} \times \text{RPM}$），為何柴油引擎不直接設計成跟汽油引擎一樣的高轉速來提高馬力？</strong>」這個疑問，答案並非工程師「不想設計」，而是受到<strong>物理、化學與機械力學的三重極限限制</strong>，導致柴油引擎無法也不適合運作在高轉速。</h3>
+<p>以下為您解析四大關鍵限制：</p>
+<h3>A. 化學限制：柴油燃燒速度太慢（最致命的瓶頸）</h3>
+<p>這是無法做高轉速的最根本原因。</p>
+<ul>
+<li><strong>汽油引擎（預混爆燃）</strong>：汽油揮發性高，在進汽缸前就已經與空氣充分混合。火星塞一點火，火焰迅速傳播，<strong>燃燒瞬間完成</strong>。因此，即使引擎轉速拉高到 $6,000 \sim 7,000 \text{ RPM}$，汽油依然來得及燒完。</li>
+</ul>
+<ul>
+<li><strong>柴油引擎（邊噴邊燒）</strong>：柴油揮發性差，必須在活塞壓到頂點時才由噴油嘴高壓噴入。柴油液滴需要經過「霧化 $\to$ 蒸發 $\to$ 與空氣混合 $\to$ 達到自燃點 $\to$ 着火燃燒」的過程。</li>
+</ul>
+<ul>
+<li><strong>物理結果</strong>：這個物理/化學過程需要固定的時間（稱為<strong>燃燒延遲</strong>）。如果將柴油引擎轉速拉高（例如 $6,000 \text{ RPM}$），活塞往下移動的速度會遠快於柴油燃燒的速度，導致<strong>活塞已經走到最下面了，柴油都還沒燒完</strong>，廢氣管會噴出大量黑煙且動力嚴重衰退。</li>
+</ul>
+<h3>B. 機械限制：活塞與連桿「太重」，往複慣性力過大</h3>
+<p>馬力除了與轉速有關，更受限於材料的物理極限。</p>
+<ul>
+<li><strong>結構強度要求</strong>：柴油引擎的壓縮比極高（$15:1 \sim 22:1$），爆發壓力高達 $150 \sim 200 \text{ bar}$ 以上（汽油機僅約 $60 \sim 100 \text{ bar}$）。</li>
+</ul>
+<ul>
+<li><strong>零部件極為厚重</strong>：為了耐受巨大的汽缸壓力，柴油機的活塞、連桿、曲軸都必須做得比汽油機<strong>厚重許多</strong>。</li>
+</ul>
+<ul>
+<li><strong>往複慣性力限制</strong>：活塞在汽缸內是高速「上下往復運動」的。根據力學公式 $F_{\text{慣性}} = m \cdot a$，活塞質量 $m$ 越重、轉速越快（加速度 $a$ 越大），產生的<strong>往復慣性打擊力會成平方級暴增</strong>。如果柴油機強制運轉在高轉速，連桿或曲軸會直接承受不住而斷裂金屬疲勞。</li>
+</ul>
+<h3>C. 幾何限制：長衝程（Stroke）導致活塞線速度過高</h3>
+<ul>
+<li><strong>柴油機設計</strong>：為了達到高壓縮比與大扭力，柴油引擎多採用「小缸徑、長衝程」設計（活塞上下滑動的距離非常長）。</li>
+</ul>
+<ul>
+<li><strong>活塞平均速度極限</strong>：轉速（RPM）代表曲軸每分鐘轉幾圈，但材料耐磨極限看的是「活塞每秒移動的實體距離（$\text{m/s}$）」。</li>
+</ul>
+<ul>
+<li>假設衝程長度為 $L$，轉速為 $N$，活塞平均速度 $V_{\text{piston}} = 2 \cdot L \cdot N$。</li>
+</ul>
+<ul>
+<li>因為柴油機衝程 $L$ 極長，即使在較低的轉速下（如 $3,500 \text{ RPM}$），它的活塞實體滑動速度就已經達到了汽油機在 $6,000 \text{ RPM}$ 時的材料耐磨物理極限。再提高轉速，汽缸壁與活塞環會因為劇烈摩擦而瞬間拉缸毀損。</li>
+</ul>
+<h3>D. 熱力學與進氣限制：高轉速下「進氣充填效率」急劇惡化</h3>
+<ul>
+<li>柴油引擎運作時<strong>完全仰賴過量空氣</strong>（稀薄燃燒）來保證柴油能充分接觸氧氣自燃。</li>
+</ul>
+<ul>
+<li>當轉速過高時，汽門開啟的時間縮短至幾毫秒內，高密度的空氣根本來不及大量充填進入汽缸，導致進氣效率（容積效率）大幅下降，燃燒品質嚴重惡化。</li>
+</ul>
+<h3>💡 總結：兩種引擎的設計哲學差異</h3>
+<p>工程師早已放棄將柴油機做成高轉速，而是選擇「揚長避短」：</p>
+<ol>
+<li><strong>汽油引擎</strong>：拿掉過大的扭力負擔，把零件做輕、衝程做短 $\to$ <strong>依靠「超高轉速」來換取大馬力</strong>（適合飆速、馬力大）。</li>
+</ol>
+<ol>
+<li><strong>柴油引擎</strong>：接受轉速拉不高的物理事實，把衝程做長、壓縮比做大 $\to$ <strong>依靠「極大單次爆發扭力」來換取總功率</strong>（低轉速即爆發大扭力，適合拖曳、重載）。</li>
+</ol>
+<h3>(7) 程序公式與熱效率推導(順時針)</h3>
+<img src="Pasted image 20260920173730.png" alt="Pasted image 20260920173730" loading="lazy">
+<p>定義壓縮比 $r = \frac{V_1}{V_2}$，截斷比（Cut-off ratio）$r_c = \frac{V_3}{V_2}$：</p>
+<ul>
+<li><strong>$1 \rightarrow 2$（等熵壓縮）</strong>：高壓縮比壓縮純空氣 ($s_1 = s_2$)。</li>
+<P>溫度變化：$T_2 = T_1 \cdot r^{k-1}$</P>
+<li><strong>$2 \rightarrow 3$（等壓加熱 / 吸熱 $Q_{\text{in}}$）</strong>：<mark>柴油邊噴射邊燃燒 ($P_2 = P_3$)</mark>。</li>
+<P>吸收熱量：$Q_{\text{in}} = m C_p (T_3 - T_2)$</P>
+<P>邊界功：$W_{\text{boundary}} = P_2 (V_3 - V_2)$</P>
+<li><strong>$3 \rightarrow 4$（等熵膨脹 / 輸出功 $W_{\text{out}}$）</strong>：燃氣繼續膨脹推動活塞 ($s_3 = s_4$)。</li>
+<P>溫度關係：$T_4 = T_3 \cdot \left(\frac{V_3}{V_4}\right)^{k-1} = T_3 \cdot \left(\frac{r_c}{r}\right)^{k-1}$</P>
+<li><strong>$4 \rightarrow 1$（等容放熱 / 廢熱 $Q_{\text{out}}$）</strong>：排氣門開啟放熱 ($V_4 = V_1$)。</li>
+<P>排出熱量：$Q_{\text{out}} = m C_v (T_4 - T_1)$</P>
+<P>熱效率公式推導</strong>：</P>
+</ul>
+<div class="math-block">$$ \eta_{\text{Diesel}} = 1 - \frac{Q_{\text{out}}}{Q_{\text{in}}} = 1 - \frac{m C_v (T_4 - T_1)}{m C_p (T_3 - T_2)} = 1 - \frac{1}{r^{k-1}} \left[ \frac{r_c^k - 1}{k(r_c - 1)} \right] \tag{2.6} $$</div>
+<h2>2.5 蒸氣壓縮冷凍循環 (VCR Cycle)</h2>
+<p>VCR Cycle 是現代冷凍與空調工程中最核心的<strong>逆向熱機循環</strong>。消耗外部機械功，利用冷媒在高低壓環境下的相變特性，將熱量由低溫環境搬運至高溫環境。</p>
+<h3>(1) 相變 (Phase Change) 的成功關鍵</h3>
+<ul>
+<li><strong>汽化潛熱極大</strong>：冷媒在低壓蒸發器中沸騰汽化，高效吸收環境熱量。</li>
+<li><strong>凝結釋熱極大</strong>：高溫高壓蒸氣在冷凝器中液化，釋放潛熱給外部環境。</li>
+<li><strong>等焓節流簡易控制</strong>：透過膨脹閥或毛細管進行<strong>等焓節流降壓</strong>，無需複雜的膨脹作功設備。</li>
+</ul>
+<h3>(2) 主要應用領域</h3>
+<ul>
+<li><strong>冷凍與冷藏 (Cold Chain)</strong>：家用冰箱、超市冷櫃、冷藏貨櫃、生鮮加工廠、生物製藥低溫保存。</li>
+<li><strong>暖通空調 (HVAC)</strong>：家用分離式冷氣、商用冰水機組 (Chiller)、VRV/VRF 多聯式空調、資料中心與潔淨室恆溫恆濕空調。</li>
+<li><strong>熱幫浦系統 (Heat Pump)</strong>：熱泵熱水器（$\text{COP}$ 可達 3~4）、熱泵烘乾機、寒帶地區地暖系統。</li>
+</ul>
+<h3>(3) 程序公式與性能係數 ($\text{COP}$) 推導</h3>
+<img src="Pasted image 20260920155711.png" alt="Pasted image 20260920155711" loading="lazy">
+<p>由於涉及雙相相變，計算採用比焓（Specific Enthalpy, $h$ [kJ/kg]）：</p>
+<ul>
+<li><strong>$1 \rightarrow 2$（等熵壓縮）</strong>：壓縮機將低溫低壓過熱蒸氣壓縮為高溫高壓蒸氣 ($s_1 = s_2$)。</li>
+<P>單位輸入功：$w_{\text{in}} = h_2 - h_1$</P>
+<P>總消耗功率：$\dot{W}_{\text{in}} = \dot{m} (h_2 - h_1)$</P>
+<li><strong>$2 \rightarrow 3$（等壓冷凝）</strong>：冷媒在冷凝器中向高溫環境放熱凝結為液態 ($P_2 = P_3$)。</li>
+<P>單位放熱量：$q_H = q_{\text{out}} = h_2 - h_3$</P>
+<li><strong>$3 \rightarrow 4$（等焓節流）</strong>：通過膨脹閥絕熱降壓，部分閃蒸為低溫低壓濕蒸氣 ($h_3 = h_4$)。</li>
+<P>濕蒸氣乾度：$x_4 = \frac{h_4 - h_{f,4}}{h_{fg,4}}$</P>
+<li><strong>$4 \rightarrow 1$（等壓蒸發）</strong>：冷媒在蒸發器中從低溫空間吸熱沸騰蒸發 ($P_4 = P_1$)。</li>
+<P>單位吸熱量（冷凍能力）：$q_L = q_{\text{in}} = h_1 - h_4$</P>
+<P>總冷凍能力：$\dot{Q}_L = \dot{m} (h_1 - h_4)$</P>
+</ul>
+<h3>(4) 性能係數 ($\text{COP}$) 推導：</h3>
+<ul>
+<li>冷凍性能係數：</li>
+</ul>
+<div class="math-block">$$ \text{COP}_R = \frac{\text{效益（低溫吸熱量）}}{\text{代價（輸入功）}} = \frac{q_L}{w_{\text{in}}} = \frac{h_1 - h_4}{h_2 - h_1} \tag{2.7} $$</div>
+<ul>
+<li>熱泵性能係數：</li>
+</ul>
+<div class="math-block">$$ \text{COP}_{HP} = \frac{\text{效益（高溫放熱量）}}{\text{代價（輸入功）}} = \frac{q_H}{w_{\text{in}}} = \frac{h_2 - h_3}{h_2 - h_1} = \text{COP}_R + 1 \tag{2.8} $$</div>
+<h1>3. 跨循環對比分析與工程觀點</h1>
+<h2>3.1 計算狀態量的選擇（焓值 $h$ vs. 理想氣體狀態方程式）</h2>
+<ul>
+<li><strong>Rankine 與 VCR 循環</strong>：工作介質經歷<strong>液/氣兩相相變</strong>。在兩相區中壓力與溫度相互綁定（如飽和壓力對應飽和溫度），無法使用 $P \cdot v = R \cdot T$，因此能量平衡必須使用<strong>比焓 ($h$)</strong> 計算。</li>
+<li><strong>Otto 與 Diesel 循環</strong>：工作介質全程保持為<strong>單相理想氣體</strong>，可直接使用比熱 ($C_p, C_v$)、壓縮比 $r$ 與絕熱指數 $k$ 計算。</li>
+</ul>
+<h2>3.2 降壓與膨脹過程（等熵膨脹 vs. 等焓節流）</h2>
+<ul>
+<li><strong>正向熱機 (Otto, Diesel, Rankine)</strong>：$3 \rightarrow 4$ 階段皆採用<strong>等熵膨脹對外作功</strong>（推動活塞或渦輪葉片），極力回收機械能。</li>
+<li><strong>逆向冷凍 (VCR)</strong>：$3 \rightarrow 4$ 階段採用膨脹閥進行<strong>等焓節流 (Isenthalpic Expansion, $h_3 = h_4$)</strong>。因為高壓冷媒液體可回收的膨脹功極小，使用膨脹閥結構簡單且成本低廉。</li>
+</ul>
+<h2>3.3 性能衡量指標（熱效率 $\eta$ vs. 性能係數 $\text{COP}$）</h2>
+<ul>
+<li><strong>熱效率 ($\eta$)</strong>：受到熱力學第二定律限制，正向熱機之 $\eta = \frac{W_{\text{net}}}{Q_{\text{in}}}$ 必定小於 $100\%$（$\eta < 1$）。</li>
+<li><strong>性能係數 ($\text{COP}$)</strong>：逆向熱機評估「搬運的熱量」與「輸入功」之比值，其數值通常<strong>大於 1</strong>（家用冷氣 $\text{COP}_R$ 約在 3~5 之間）。</li>
+</ul>
+<h1>4. 綜合比較與總結</h1>
+<h3>Table 4.1 五大循環熱力學程序對照表</h3><p><strong>表4.1　五大循環熱力學程序對照表</strong></p>
+<table><thead><tr><th>循環名稱</th><th>循環方向</th><th>工作介質</th><th>1→2 (膨脹/作功)</th><th>2→3 (放熱/凝結)</th><th>3→4 (壓縮/加壓)</th><th>4→1 (吸熱/加熱)</th></tr></thead><tbody>
+<tr><td><strong>Carnot</strong></td><td>順時針</td><td>任意理想流體</td><td>等熵膨脹</td><td>等溫放熱 (TL​)</td><td>等熵壓縮</td><td>等溫加熱 (TH​)</td></tr>
+<tr><td><strong>Rankine</strong></td><td>順時針</td><td>水 / 水蒸氣 (兩相)</td><td><strong>等熵膨脹</strong> (渦輪發電)</td><td><strong>等壓放熱</strong> (冷凝器凝結)</td><td><strong>等熵壓縮</strong> (泵浦加壓)</td><td><strong>等壓加熱</strong> (4→5→6→1)</td></tr>
+<tr><td><strong>Otto</strong></td><td>順時針</td><td>氣體混合氣 (單相)</td><td>等熵壓縮 (1→2)</td><td>等容加熱 (2→3)</td><td>等熵膨脹 (3→4)</td><td>等容放熱 (4→1)</td></tr>
+<tr><td><strong>Diesel</strong></td><td>順時針</td><td>空氣 / 柴油 (單相)</td><td>等熵壓縮 (1→2)</td><td>等壓加熱 (2→3)</td><td>等熵膨脹 (3→4)</td><td>等容放熱 (4→1)</td></tr>
+<tr><td><strong>VCR</strong></td><td><strong>逆時針</strong></td><td>冷媒 (兩相相變)</td><td>等熵壓縮 (1→2)</td><td>等壓冷凝 (2→3)</td><td>等焓節流 (3→4)</td><td>等壓蒸發 (4→1)</td></tr>
+</tbody></table>
+<h3>Table 4.2 五大循環工程特性與指標對照表（依圖片數據校核）</h3><p><strong>表4.2　五大循環工程特性與指標對照表</strong></p>
+<table><thead><tr><th><strong>循環名稱</strong></th><th><strong>吸熱量 (qin​)</strong></th><th><strong>放熱量 (qout​)</strong></th><th><strong>淨功 (wnet​) / 輸入功 (win​)</strong></th><th><strong>性能指標公式</strong></th><th><strong>主要應用與工程定位</strong></th></tr></thead><tbody>
+<tr><td><strong>Carnot</strong></td><td>$T_H (s_2 - s_1)$</td><td>$T_L (s_3 - s_4)$</td><td>$w_{\text{net}} = q_{\text{in}} - q_{\text{out}}$</td><td>$\eta = 1 - \frac{T_L}{T_H}$</td><td>理論熱效率最高極限基準</td></tr>
+<tr><td><strong>Rankine</strong></td><td>$\mathbf{h_1 - h_4}$</td><td>$\mathbf{h_2 - h_3}$</td><td>$w_{\text{net}} = \mathbf{(h_2 - h_1) - (h_4 - h_3)}$</td><td>$\eta = \mathbf{\frac{(h_2 - h_1) - (h_4 - h_3)}{h_1 - h_4}}$</td><td>火力/核能發電廠蒸汽動力</td></tr>
+<tr><td><strong>Otto</strong></td><td>$C_v (T_3 - T_2)$</td><td>$C_v (T_4 - T_1)$</td><td>$w_{\text{net}} = q_{\text{in}} - q_{\text{out}}$</td><td>$\eta = 1 - \frac{1}{r^{k-1}}$</td><td>汽油引擎 (SI)，高轉速輕量化</td></tr>
+<tr><td><strong>Diesel</strong></td><td>$C_p (T_3 - T_2)$</td><td>$C_v (T_4 - T_1)$</td><td>$w_{\text{net}} = q_{\text{in}} - q_{\text{out}}$</td><td>$\eta = 1 - \frac{1}{r^{k-1}} \left[ \frac{r_c^k - 1}{k(r_c - 1)} \right]$</td><td>柴油引擎 (CI)，高扭力載重</td></tr>
+<tr><td><strong>VCR</strong></td><td>$h_1 - h_4$ ($q_L$)</td><td>$h_2 - h_3$ ($q_H$)</td><td>$w_{\text{in}} = h_2 - h_1$</td><td>$\text{COP}_R = \frac{h_1 - h_4}{h_2 - h_1}$</td><td>冷氣、冷凍機、熱泵系統</td></tr>
+</tbody></table>
+  </main>
+</div>
+<footer class="report-footer"><p>本報告僅做為熱力學與冷凍空調工程技術自研參考，實際設計與數據應依適用規範及設備資料另行覆核。</p></footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
