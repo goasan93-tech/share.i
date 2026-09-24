@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>廠房免動力屋脊通風器選型計算、認證機制與全流程工程驗收技術研究報告</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #1c2b33;
+      --ink-soft: #4a5b63;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --accent: #0f5c66;
+      --accent-soft: #e4f0f1;
+      --rule: #d8dcd6;
+      --warn-bg: #fdf1ec;
+      --warn-border: #c0522f;
+      --note-bg: #f2f4f2;
+      --note-border: #7a8a86;
+      --success-bg: #eaf5ee;
+      --success-border: #2f7a4f;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+    .page { max-width: 1600px; margin: 0; }
+    .report-header {
+      padding: 64px 32px 40px;
+      border-bottom: 1px solid var(--rule);
+      text-align: left;
+      background: rgba(255,255,255,0.35);
+    }
+    .eyebrow {
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .report-title {
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 700;
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+    .report-sub {
+      color: var(--ink-soft);
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+    .report-meta {
+      color: var(--ink-soft);
+      font-size: 14px;
+      margin: 0;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1040px);
+      gap: 32px;
+      padding: 40px 32px 80px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: 24px;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 20px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .toc-link {
+      display: block;
+      font-size: 14px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .toc-link:hover { color: var(--accent); }
+    .content {
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 48px;
+      min-width: 0;
+    }
+    .content h1 {
+      font-family: "Noto Serif TC", serif;
+      font-size: 26px;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+      margin: 48px 0 20px;
+    }
+    .content h1:first-child { margin-top: 0; }
+    .content h2 {
+      font-size: 20px;
+      color: var(--ink);
+      margin: 34px 0 14px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+    }
+    .content h3 {
+      font-size: 17px;
+      color: var(--ink);
+      margin: 26px 0 10px;
+    }
+    .content h4 {
+      font-size: 15px;
+      margin: 20px 0 8px;
+      color: var(--ink-soft);
+    }
+    .content p { margin: 0 0 16px; color: var(--ink); }
+    .content strong { color: var(--ink); }
+    .content ul, .content ol {
+      padding-left: 24px;
+      margin: 0 0 18px;
+    }
+    .content li { margin: 5px 0; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0 24px;
+      font-size: 14.5px;
+      display: block;
+      overflow-x: auto;
+    }
+    thead { background: var(--accent-soft); }
+    th, td {
+      border: 1px solid var(--rule);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    .math-block {
+      background: #f6f5f0;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      overflow-x: auto;
+    }
+    .callout {
+      border-left: 4px solid var(--note-border);
+      background: var(--note-bg);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+    .callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+    .callout-success { border-color: var(--success-border); background: var(--success-bg); }
+    .callout-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .callout-warning .callout-title { color: var(--warn-border); }
+    .callout-success .callout-title { color: var(--success-border); }
+    .callout-note .callout-title { color: var(--note-border); }
+    .callout-body { color: var(--ink-soft); font-size: 14.5px; }
+    pre.flow {
+      background: #f7f8f8;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+    .report-footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      border-top: 1px solid var(--rule);
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: static; max-height: none; }
+      .content { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      <div class="eyebrow">Research Report</div>
+      <h1 class="report-title">廠房免動力屋脊通風器選型計算、認證機制與全流程工程驗收技術研究報告</h1>
+      <p class="report-sub">Monovent／Ridge Ventilator風量計算、Cd物理意義與Vendor Data至驗收全流程品管</p>
+      <p class="report-meta">研究組員：李世權 Gemini | 編審排版：Claude Copilot</p>
+    </header>
+
+    <div class="layout">
+      <nav id="toc" class="toc">
+        <div class="toc-title">目錄</div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <main class="content">
+        <h1>摘要</h1>
+        <p>本報告針對工業廠房免動力屋脊型通風器（Monovent／Ridge Ventilator）之工程應用，系統性梳理風量計算與選型原則、流量係數（$C_d$）之流體力學物理意義、國內外認證與費用競爭力剖析，以及從 Vendor Data 送審、現場施工至竣工驗收與權責鑑定的全流程品管規範。研究內容由AI生成僅供自研參考，內容相關法規、技術、標準需自行核實。</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">警告</div>
+          <div class="callout-body">本報告全文採用查證等級標示制度：①已查證原文標準、②已查證但條文可能修訂、③既有知識工程參考值、④查無具體依據（本次作業未逐條查核原文，僅供邏輯示範）。報告中所有金額、費用區間、廠牌報價均為情境示範用假設數值，非實際市場報價，設計採購前務必由使用者本人另行詢價與查核。</div>
+        </div>
+
+        <h1>1. 風量計算與設備選型理論</h1>
+
+        <h2>1.1 風量計算三大方式與「取大值」原則</h2>
+        <p>廠房通風設計中，計算所需排風量 $Q_{req}$ 主要採行下列三種方法：</p>
+        <div class="math-block">
+          $$
+          Q_{ACH} = V_{plant} \times ACH \tag{1.1}
+          $$
+        </div>
+        <p><strong>換氣次數法（ACH Method）</strong>：依廠房總體積乘以規範建議之每小時換氣次數 ACH (Air Changes per Hour 每小時換氣次數)。</p>
+        <div class="math-block">
+          $$
+          Q_{heat} = \frac{H_s}{\rho \cdot C_p \cdot (T_{in}-T_{out})} \tag{1.2}
+          $$
+        </div>
+        <p><strong>室內發熱量（熱消除）法</strong>：根據廠房顯熱負載 $H_s$（$kW$）與允許溫差計算。</p>
+        <div class="math-block">
+          $$
+          Q_{people} = 人數 \times 外風量標準 \tag{1.3}
+          $$
+        </div>
+        <p><strong>人員衛生風量法</strong>：確保基本 IAQ (Indoor Air Quality 室內空氣品質) 品質。</p>
+        <p>工程選型時，必須同時評估「換氣次數法」與「熱消除法」，嚴格執行<mark style="color:red;font-weight:bold">取大值原則</mark>：</p>
+        <div class="math-block">
+          $$
+          Q_{design} = \max(Q_{ACH},\ Q_{heat}) \tag{1.4}
+          $$
+        </div>
+        <p>以確保高溫與一般季節均能滿足通風效益。</p>
+
+        <h2>1.2 熱浮力驅動公式與選型計算實例</h2>
+        <p>無動力通風器主要依據熱浮力（Stack Effect）驅動，引用自 <em>ASHRAE Handbook—Fundamentals</em> 之算式：</p>
+        <div class="math-block">
+          $$
+          Q_{stack} = C_d \cdot A \cdot \sqrt{\frac{2 \cdot g \cdot H \cdot (T_{in}-T_{out})}{T_{in}}} \tag{1.5}
+          $$
+        </div>
+
+        <h3>1.2.1 情境應用實例一：金屬加工廠房選型</h3>
+        <ul>
+          <li><strong>基本參數</strong>〔④，情境示範用假設值〕：長 $60\ m$、寬 $30\ m$、平均高 $10\ m$（體積 $V=18{,}000\ m^3$），進排風高程差 $H=10\ m$。顯熱負載 $H_s=250\ kW$，戶外 $T_{out}=33^\circ C$，設計溫差 $\Delta T=5^\circ C$。</li>
+        </ul>
+
+        <p><strong>設計風量決定：</strong></p>
+        <div class="math-block">
+          $$
+          Q_{ACH}(15\ ACH) = 18{,}000\times15 = 270{,}000\ m^3/h \approx \mathbf{75.0\ m^3/s}
+          $$
+        </div>
+        <div class="math-block">
+          $$
+          Q_{heat} = \frac{250}{1.16\times1.005\times5} \approx 42.89\ m^3/s \approx \mathbf{154{,}400\ m^3/h}
+          $$
+        </div>
+        <p>採取大值：<mark style="color:red;font-weight:bold">$Q_{design}=75.0\ m^3/s$</mark>。</p>
+        <p><strong>開口面積與配置</strong>：代入公式1.5（設 $C_d=0.60$）解得有效開口面積 $A\approx\mathbf{70.38\ m^2}$。選用喉寬 $W_{throat}=1.2\ m$ 之設備，總安裝長度：</p>
+        <div class="math-block">
+          $$
+          L_{vent} = \frac{70.38}{1.2} \approx \mathbf{58.65\ m}
+          $$
+        </div>
+        <p>工程決定沿屋脊連續鋪設 <mark style="color:red;font-weight:bold">59 m</mark>，並於側牆配置 $\ge70.4\ m^2$ 之進氣百葉。</p>
+
+        <h1>2. 開口流量係數（Cd）之物理意義與兩端溝通策略</h1>
+
+        <h2>2.1 Cd=0.60的流體力學物理意義</h2>
+        <p>$C_d=0.60$ 代表進風口與排風口串聯組成之「整體系統綜合經驗流體阻力係數」。系統當量有效面積（$A_e$）可透過下式合成：</p>
+        <div class="math-block">
+          $$
+          \frac{1}{A_e^2} = \frac{1}{(C_{d,in}\cdot A_{in})^2} + \frac{1}{(C_{d,out}\cdot A_{out})^2} \tag{2.1}
+          $$
+        </div>
+        <p>若要使系統綜合 $C_d$ 達到 $0.60$ 以上，側牆低位進風百葉的有效面積建議設計為屋頂排氣通風器面積的 <mark style="color:red;font-weight:bold">1.2~1.5倍</mark>，以有效拉低進氣阻力。〔③〕</p>
+
+        <h2>2.2 審查與造價溝通策略</h2>
+        <p><strong>表2.1　審查與造價溝通對象策略對照表</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>溝通對象</th>
+              <th>核心關切點</th>
+              <th>技師說服論點與實體佐證</th>
+              <th>達成效果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>廠房業主</td>
+              <td>設備造價、屋頂載重與防水風險</td>
+              <td>採「大進風口（低成本）＋流線型通風器」拉高系統 $C_d$ 至 $0.58\sim0.60$，縮減昂貴的屋頂通風器尺寸</td>
+              <td>降低 $20\%\sim30\%$ 設備與鋼構造價，減輕屋頂結構負擔</td>
+            </tr>
+            <tr>
+              <td>審核單位／委員</td>
+              <td>通風計算合規性、最不利情境安全裕度</td>
+              <td>(1)出示 AMCA (Air Movement and Control Association International 空氣調節與控制國際協會) 500-L／TAF (Taiwan Accreditation Foundation 財團法人全國認證基金會) 風洞實驗室報告 (2)提供進排風當量阻力合成計算書 (3)附上夏季極限無風條件下之CFD與換氣率驗證</td>
+              <td>展現專業嚴謹度，化解「過度樂觀」的質疑，順利通過審查</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>2.2.1 情境應用實例二：廠房通風器造價優化</h3>
+        <p>若採保守之 $C_d=0.42$，計算出通風器喉寬需 $1.5\ m\times53.3\ m$，造價達<mark style="color:red;font-weight:bold">280萬元</mark>〔④，情境示範用假設金額，非實際報價〕。經優化設計，將進風百葉開口調整為排風口的 $1.5$ 倍，並選用 $C_{d,out}=0.62$ 之優質設備，使系統綜合 $C_d$ 提升至 $0.58$。通風器尺寸縮減至喉寬 $1.2\ m\times48.3\ m$，總造價降至<mark style="color:red;font-weight:bold">195萬元</mark>，為業主節省85萬元（約30%），並提出檢測報告與CFD驗證。</p>
+
+        <h1>3. 國內廠牌認證模式與市場價格競爭力分析</h1>
+
+        <h2>3.1 形式認證與獨立驗證之比較</h2>
+        <ol>
+          <li><strong>形式認證（Type Certification）</strong>：國內一線大廠將標準化產品抽樣送至TAF認可風洞（如建研所、逢甲／淡江風洞）執行AMCA 500-L測試。同系列同流線結構產品皆可引用，費用已攤提於研發成本，隨貨附贈不需外加。</li>
+          <li><strong>單品驗證（Project-Specific Validation）</strong>：針對科技廠或特殊非標規專案，進行1:1獨立實體風洞壓降測試。檢測費用由專案實報實銷（國內風洞占艙與測試費約新台幣5萬～15萬元，含樣品總外加費用約20萬元）〔④，情境示範用假設區間，實際費用請逕洽風洞實驗室詢價〕。</li>
+        </ol>
+
+        <h2>3.2 認證加價後之競爭力評估</h2>
+        <p>競爭力依然極為強大。進口品牌（如美系、歐系）昂貴主因在於高昂的海外人工、海運運費、關稅與高額品牌利潤。國產品憑藉在地製造與物流優勢，即使外加獨立驗證費，總價仍遠低於進口品牌。</p>
+
+        <h3>3.2.1 情境應用實例三：廠房招標比價</h3>
+        <p>工廠房需喉寬 $1.2\ m\times60\ m$ 通風器，要求出具 $C_d\ge0.60$ 證明（以下金額為情境示範用假設報價，非實際報價）〔④〕：</p>
+        <p><strong>表3.1　招標方案比較表</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>方案</th>
+              <th>內容</th>
+              <th>報價</th>
+              <th>交期</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>方案A</td>
+              <td>美國AMCA認證進口大廠，設備及海運進口</td>
+              <td>320萬元</td>
+              <td>16週</td>
+            </tr>
+            <tr>
+              <td>方案B</td>
+              <td>國內大廠形式認證標準品，建研所TAF風洞 $C_d=0.62$ 報告免費隨貨附贈</td>
+              <td>110萬元</td>
+              <td>3週</td>
+            </tr>
+            <tr>
+              <td>方案C</td>
+              <td>國內廠商專案外加獨立驗證，設備100萬＋送交建研所實測外加18萬元</td>
+              <td>118萬元</td>
+              <td>6週</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>結論</strong>：即使在最嚴苛的方案C狀況下，總價 <mark style="color:red;font-weight:bold">118萬元</mark> 對比進口品 <mark style="color:red;font-weight:bold">320萬元</mark>，依然直接為業主節省高達202萬元（節約約63%預算）。</p>
+
+        <h1>4. 設備全生命週期工程管理：從Vendor Data送審至竣工驗收</h1>
+
+        <h2>4.1 五大標準品管階段</h2>
+        <p><strong>圖4.1　設備全生命週期五大標準品管階段流程圖</strong></p>
+        <pre class="flow">[第一階段: Vendor Data 送審] ──> [第二階段: 進場抽驗與查驗] ──> [第三階段: 施工安裝與品管]
+                                                                     │
+[第五階段: 竣工驗收與效能測試] &lt;── [第四階段: 竣工自主檢查試驗] &lt;────┘</pre>
+        <ol>
+          <li><strong>Vendor Data 送審階段</strong>：審查設備規格書、AMCA 500-L或TAF風洞測試報告（$C_d\ge0.60$）、熱浮力選型計算書及施工大樣圖（Shop Drawings）。</li>
+          <li><strong>進場查驗階段</strong>：核對喉寬、鋼板厚度（如要求 $1.2\ mm$）、鍍層及出廠證明（Mill Test Report）。</li>
+          <li><strong>施工安裝階段</strong>：管制底座螺栓鎖固強度（抗風壓）、泛水板防水收邊，並確保進風百葉開口無遮蔽。</li>
+          <li><strong>竣工自主檢查階段</strong>：核對幾何尺寸，確認內部流道無施工殘渣堵塞。</li>
+          <li><strong>正式竣工驗收階段</strong>：進行量化數據實測與質化路徑追蹤。</li>
+        </ol>
+
+        <h2>4.2 驗收測試四合一程序</h2>
+        <ol>
+          <li><strong>尺寸開口核對</strong>：比對現場通風器喉寬、長度與進風百葉淨面積。</li>
+          <li><strong>風速計現場實測</strong>：於夏季典型日高溫時段，利用熱線式風速計量測多點斷面風速，計算平均流速與排風量。</li>
+          <li><strong>發煙測試（Smoke Test）</strong>：於發熱設備周邊施放煙霧，觀察氣流升騰路徑，確認無死角積熱或逆吹。</li>
+          <li><strong>溫差與換氣次數驗證</strong>：量測工作區與戶外溫差 $\Delta T$，推算實際換氣次數（ACH）是否達標。</li>
+        </ol>
+
+        <h1>5. 工程驗收瑕疵與通風量不足之權責鑑定</h1>
+
+        <h2>5.1 三方權責劃分歸因表</h2>
+        <p>當驗收發現通風量未達標或室內超溫時，應依據「瑕疵歸因分析」劃分權責：</p>
+        <p><strong>表5.1　三方權責劃分歸因表</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>責任主體</th>
+              <th>觸發瑕疵情境</th>
+              <th>應承擔之工程與法律責任</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>設備製造廠商</td>
+              <td>報告偽造、產品偷工減料（如實際喉寬縮水、導流板阻力過大導致 $C_d$ 遠低於報告值）</td>
+              <td>負產品瑕疵擔保責任，無償更換合格設備或退貨，並賠償延誤損失</td>
+            </tr>
+            <tr>
+              <td>營造廠／包商</td>
+              <td>未按圖施工（如擅自加裝過密防蟲網、縮減進風百葉面積、喉部被結構樑柱遮蔽）</td>
+              <td>負施工瑕疵改善責任，無償拆除重做、補足開口面積直至通過驗收</td>
+            </tr>
+            <tr>
+              <td>簽證技師／設計單位</td>
+              <td>設計計算過失（如漏計內部設備熱負載、高估 $C_d$ 值或採用的廠房高度 $H$ 錯誤）</td>
+              <td>負專業設計責任，送交懲戒委員會，並依技師責任險賠償及提出免費補救設計（如增設輔助排風）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>5.2 情境應用實例四：廠房驗收爭議鑑定</h2>
+        <p>廠房竣工驗收時，工作區高達 $41^\circ C$（目標 $\le37^\circ C$），實測僅 $8\ ACH$（設計為 $16\ ACH$）。經第三方技師公會鑑定〔④，情境示範用假設案例〕：</p>
+        <ol>
+          <li><strong>抽驗設備</strong>：拆卸通風器送風洞實測 $C_d=0.61$，符合報告，排除廠商責任。</li>
+          <li><strong>查驗施工</strong>：包商擅自於進風百葉加裝過密防蟲網，且進風面積僅安裝了60%（主因60%）。</li>
+          <li><strong>查驗設計</strong>：簽證技師計算熱負載時漏計高壓蒸氣管道散熱量約 $80\ kW$（次因40%）。</li>
+        </ol>
+        <p><strong>處理結果</strong>：包商無償拆除過密網目並補足百葉面積至100%；技師免費修正設計並於通風器內部補設4台誘導輔助風機。改善後重新進行煙霧與溫差測試，溫度順利降至 <mark style="color:red;font-weight:bold">36.5°C</mark>，通過驗收。</p>
+
+        <h1>6. 結論與建議</h1>
+        <ol>
+          <li><strong>選型計算</strong>：應同時計算換氣次數法與熱消除法，採嚴格取大值原則，並確保側牆進風面積為排風開口之1.2~1.5倍，以維持 $C_d\ge0.60$ 之優良流場條件。</li>
+          <li><strong>認證採購策略</strong>：國內一線大廠之形式認證已涵蓋於標準品成本中，即使專案指定獨立驗證，國產品總造價仍較進口品牌節省60%以上，極具市場競爭力。</li>
+          <li><strong>驗收品管</strong>：工程驗收應結合「尺寸清點、風速實測、發煙追蹤、溫差ACH驗證」四合一程序，兼具數據量化與流場質化審查，明確劃分設計、施工與設備端之權責。</li>
+        </ol>
+
+        <h1>7. 參考來源與查證等級總表</h1>
+        <p><strong>表7.1　參考來源與查證等級對照</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>編號</th>
+              <th>參考來源</th>
+              <th>於本報告對應之查證等級</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>ASHRAE Handbook—Fundamentals - Natural Ventilation, Flow Coefficients and System Commissioning</td><td>④，本次作業未逐條查核原文</td></tr>
+            <tr><td>2</td><td>AMCA International - ANSI/AMCA Standard 500-L: Laboratory Methods of Testing Louvers for Rating</td><td>④，本次作業未逐條查核原文</td></tr>
+            <tr><td>3</td><td>中華民國內政部建築研究所 - 廠房建築自然通風與風洞實驗測試規範</td><td>④，本次作業未逐條查核原文</td></tr>
+            <tr><td>4</td><td>內政部建築研究所實驗中心 - 風洞實驗設施技術服務與收費標準</td><td>④，本次作業未逐條查核最新公告費率</td></tr>
+            <tr><td>5</td><td>行政院公共工程委員會 - 建築與空調工程竣工驗收作業要點與品質管理規範</td><td>④，本次作業未逐條查核原文</td></tr>
+            <tr><td>6</td><td>財團法人全國認證基金會（TAF）- 測試實驗室認可名錄與認證標準查詢</td><td>④，本次作業未逐條查核原文</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">警告</div>
+          <div class="callout-body">本報告所有報價、費用區間、案例情節均為情境示範用假設數值，非實際市場報價或真實個案，設計採購與驗收鑑定前務必由使用者本人另行詢價、查核與委託專業技師簽證。</div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="report-footer">
+      本報告由AI輔助生成，僅供自研參考，內容相關法規、技術、標準需使用者自行核實；並非取代專業技師之逐條法規查證與簽證責任。
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const content = document.querySelector('.content');
+      const tocList = document.getElementById('toc-list');
+      const headings = Array.from(content.querySelectorAll('h1, h2'));
+      headings.forEach((heading, index) => {
+        const id = 'sec-' + (index + 1);
+        heading.id = id;
+        const link = document.createElement('a');
+        link.href = '#' + id;
+        link.className = 'toc-link';
+        link.textContent = heading.textContent;
+        tocList.appendChild(link);
+      });
+    })();
+  </script>
+</body>
+</html>
