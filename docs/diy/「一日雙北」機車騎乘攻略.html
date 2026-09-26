@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一日雙北機車騎乘攻略</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #fff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1600px; margin: 0; }
+.report-header { padding: 64px 32px 40px; border-bottom: 1px solid var(--rule); text-align: left; }
+.eyebrow { letter-spacing: .12em; font-size: 12px; color: var(--accent); font-weight: 700; margin: 0 0 14px; }
+.report-title { font-family: "Noto Serif TC", "Songti TC", serif; font-size: clamp(26px, 4vw, 42px); margin: 0 0 14px; }
+.report-sub { color: var(--ink-soft); font-size: 16px; margin: 0; }
+.layout { display: grid; grid-template-columns: 240px minmax(0, 1040px); gap: 32px; padding: 40px 32px 80px; align-items: start; }
+.toc { position: sticky; top: 24px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 20px; max-height: calc(100vh - 48px); overflow-y: auto; }
+.toc-title { font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--accent); margin-bottom: 12px; }
+.toc-link { display: block; font-size: 14px; color: var(--ink-soft); text-decoration: none; padding: 6px 0; border-bottom: 1px dashed var(--rule); }
+.toc-link:hover { color: var(--accent); }
+.content { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 48px; min-width: 0; }
+.content h1 { font-family: "Noto Serif TC", serif; font-size: 26px; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin: 48px 0 20px; }
+.content h1:first-child { margin-top: 0; }
+.content h2 { font-size: 20px; color: var(--ink); margin: 34px 0 14px; padding-left: 12px; border-left: 4px solid var(--accent); }
+.content h3 { font-size: 17px; margin: 26px 0 10px; }
+.content p { margin: 0 0 16px; }
+.content ul, .content ol { padding-left: 28px; margin-top: 8px; }
+.content li { margin: 6px 0; }
+.content a { color: var(--accent); }
+table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; font-size: 14.5px; display: block; overflow-x: auto; }
+thead { background: var(--accent-soft); }
+th, td { border: 1px solid var(--rule); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block { background: #f6f5f0; border: 1px solid var(--rule); border-radius: 6px; padding: 14px 18px; margin: 14px 0; overflow-x: auto; }
+.callout { border-left: 4px solid var(--note-border); background: var(--note-bg); border-radius: 6px; padding: 14px 18px; margin: 16px 0; }
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+pre { background: #202b2e; color: #f1f5f2; border-radius: 6px; padding: 18px; overflow-x: auto; line-height: 1.65; font-size: 13px; }
+code { font-family: "SFMono-Regular", Consolas, monospace; }
+.report-footer { text-align: center; padding: 32px; color: var(--ink-soft); font-size: 13px; border-top: 1px solid var(--rule); }
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+  .report-header { padding: 40px 24px 28px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title">一日雙北機車騎乘攻略</h1>
+  <p class="report-sub">龍潭 → 北橫台 7 線 → 宜蘭 → 北宜公路 → 新北／台北 → 台 3 線 → 龍潭</p>
+</header>
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+    <h1>1. 核心數據統計與預估花費明細</h1>
+    <ul>
+      <li><strong>路線方向：</strong>逆時針方向（龍潭 $\rightarrow$ 北橫台 7 線 $\rightarrow$ 宜蘭 $\rightarrow$ 台 2 庚線／台 9 線北宜公路 $\rightarrow$ 新北／台北 $\rightarrow$ 台 3 線 $\rightarrow$ 返抵龍潭）。</li>
+      <li><strong>總騎乘里程：</strong>約 $210\ \text{km}$</li>
+      <li><strong>獨立導航站點數：</strong><strong>7 個獨立圖釘</strong>（景點、美食、加油站完全獨立）</li>
+      <li><strong>總行車時間：</strong>約 $5.5\ \text{小時} \sim 6.5\ \text{小時}$（不含休息打卡與用餐）</li>
+      <li><strong>建議出發時間：</strong><strong>07:00</strong> 啟程，預計 <strong>15:00 前</strong> 完成雙北解鎖返抵龍潭。</li>
+      <li><strong>油箱預估基準：</strong>山區公路耗油以 $100\ \text{km/桶}$ 計算；平地縣道以 $130\ \text{km/桶}$ 計算。</li>
+    </ul>
+
+    <div class="callout callout-success">
+      <div class="callout-title">💰 一日雙北個人總預估花費：約 $800 元／人</div>
+      <div class="callout-body">費用包含油資、餐飲小吃，以及門票與緊急備用金。</div>
+    </div>
+
+    <h2>1. 費用估算</h2>
+    <ol>
+      <li><strong>95 無鉛汽油油資算式：</strong>
+        <ul>
+          <li><strong>算式來源：</strong>總里程預估 $210\ \text{km}$，125cc 速克達山路／平地綜合油耗約 $35\ \text{km/L}$，油價以中油 95 無鉛汽油參考零售價 <strong>$32.7 元/L$</strong> 計算。</li>
+          <li><strong>計算過程：</strong></li>
+        </ul>
+        <div class="math-block">$$\frac{210\ \text{km}}{35\ \text{km/L}} \times 32.7\ \text{元/L} = 6\ \text{L} \times 32.7\ \text{元/L} \approx 196\ \text{元}$$</div>
+        <ul><li><strong>計算結果：</strong>95 無鉛汽油油資約 <strong>$200 元</strong>。</li></ul>
+      </li>
+      <li><strong>餐飲與小吃費用：</strong>宜蘭蒜味肉羹、北宜跑馬古道／坪林茶香午餐與咖啡約 <strong>$400 元</strong>。</li>
+      <li><strong>門票與緊急備用金：</strong>備用小計 <strong>$200 元</strong>。</li>
+    </ol>
+
+    <h1>2. 詳細行程 SOP 與單一獨立導航站點規劃</h1>
+    <ol>
+      <li><strong>站點 1【龍潭 24H 加油站】（出發點）</strong>｜07:00 抵達｜<strong>剩餘油量：</strong>$100\%$（<strong>出發前強制加滿 95 無鉛</strong>）</li>
+      <li><strong>站點 2【中油復興站】⛽</strong>｜08:00 抵達｜站間 $32\ \text{km}$｜<strong>進北橫前強制加滿重置 $100\%$！</strong></li>
+      <li><strong>站點 3【明池國家森林遊樂區門口】📸</strong>｜09:30 抵達｜站間 $53\ \text{km}$｜<strong>剩餘油量：</strong>$47\%$（北橫路段打卡拍綠蔭）</li>
+      <li><strong>站點 4【宜蘭礁溪阿娘給的蒜味肉羹】🍜</strong>｜11:00 抵達｜站間 $38\ \text{km}$｜<strong>剩餘油量：</strong>$9\%$（<strong>中油礁溪站加滿重置 $100\%$</strong> 並吃蒜味肉羹）</li>
+      <li><strong>站點 5【北宜公路坪林石雕公園／坪林老街】🍜</strong>｜12:30 抵達｜站間 $35\ \text{km}$｜<strong>剩餘油量：</strong>$65\%$（品嚐包種茶香小吃與咖啡）</li>
+      <li><strong>站點 6【三峽老街／金牛角店】📸</strong>｜14:15 抵達｜站間 $38\ \text{km}$｜<strong>剩餘油量：</strong>$27\%$（買現烤金牛角）</li>
+      <li><strong>站點 7【龍潭大池】（終點）</strong>｜15:15 抵達｜站間 $22\ \text{km}$｜<strong>平安解鎖一日雙北！</strong></li>
+    </ol>
+
+    <h1>3. 雙北沿途推薦必買伴手禮清單</h1>
+    <p><strong>表 3.1　沿途伴手禮與採購建議</strong></p>
+    <table>
+      <thead><tr><th>區域／縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結</th><th>營業時間</th><th>備註／採購建議</th></tr></thead>
+      <tbody>
+        <tr><td><strong>宜蘭礁溪</strong></td><td>奕順軒（礁溪店）</td><td>奶凍捲／狀元餅</td><td><a href="https://maps.google.com/?q=24.8278,121.7725&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>10:00–22:00</td><td>奶凍捲需保冷，可備保冷袋</td></tr>
+        <tr><td><strong>新北坪林</strong></td><td>滴水明求／坪林茶鄉</td><td>包種茶包／茶包種蛋捲</td><td><a href="https://maps.google.com/?q=24.9372,121.7108&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>09:00–18:00</td><td>常溫茶香點心方便攜帶</td></tr>
+        <tr><td><strong>新北三峽</strong></td><td>三角湧金牛角</td><td>招牌現烤金牛角麵包</td><td><a href="https://maps.google.com/?q=24.9338,121.3692&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>08:00–18:00</td><td>剛出爐香氣濃郁，耐壓好放</td></tr>
+      </tbody>
+    </table>
+
+    <h2>4. 人身裝備、山區備援與救援資訊</h2>
+    <div class="callout callout-warning">
+      <div class="callout-title">⚠️ 北橫／北宜過彎安全提醒</div>
+      <div class="callout-body">北宜公路與北橫盲彎多，務必保持在自身車道內，<strong>嚴禁跨越雙黃線</strong>；遇後方快車請在安全寬闊路段打方向燈靠右讓行。</div>
+    </div>
+    <p><strong>緊急救援資訊：</strong></p>
+    <ul>
+      <li><strong>宜蘭縣礁溪分局：</strong><code>03-988-2044</code>（24h）</li>
+      <li><strong>新北市新店分局坪林分駐所：</strong><code>02-2665-6204</code>（24h）</li>
+    </ul>
+
+    <h1>5. Google 我的地圖（My Maps）匯入專用 CSV</h1>
+    <p>以下內容可複製後另存為 UTF-8 編碼的 CSV 檔，再匯入 Google 我的地圖。</p>
+    <pre><code>地點名稱,完整地址,詳細說明
+1. 龍潭 24H 加油站,桃園市龍潭區大昌路二段72號,預估抵達：07:00｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (出發前強制加滿 95無鉛)
+2. 中油復興站,桃園市復興區中正路135號,預估抵達：08:00｜站間里程：32 km｜自加滿已騎：32 km｜剩餘航程：68 km｜剩餘油量：68% (進北橫前強制加滿重置100%)
+3. 明池國家森林遊樂區門口,宜蘭縣大同鄉英士村明池1號,預估抵達：09:30｜站間里程：53 km｜自加滿已騎：53 km｜剩餘航程：47 km｜剩餘油量：47% (北橫景點打卡拍照)
+4. 宜蘭礁溪阿娘給的蒜味肉羹,宜蘭縣宜蘭市泰山路239-1號,預估抵達：11:00｜站間里程：38 km｜自加滿已騎：91 km｜剩餘航程：9 km｜剩餘油量：9% (礁溪站加滿重置100%/吃肉羹)
+5. 北宜公路坪林老街,新北市坪林區坪林街,預估抵達：12:30｜站間里程：35 km｜自加滿已騎：35 km｜剩餘航程：65 km｜剩餘油量：65% (享用包種茶小吃午餐)
+6. 新北三峽老街金牛角,新北市三峽區民權街84號,預估抵達：14:15｜站間里程：38 km｜自加滿已騎：73 km｜剩餘航程：27 km｜剩餘油量：27% (買現烤金牛角伴手禮)
+7. 龍潭大池 (終點),桃園市龍潭區中正路210號,預估抵達：15:15｜站間里程：22 km｜自加滿已騎：95 km｜剩餘航程：5 km｜剩餘油量：5% (平安解鎖一日雙北挑戰！)</code></pre>
+
+  </main>
+</div>
+<footer class="report-footer">行程規劃草案｜正式出發前請確認即時路況、天候、營業時間與車況。</footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function (header, index) {
+    var id = 'sec-' + index;
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
