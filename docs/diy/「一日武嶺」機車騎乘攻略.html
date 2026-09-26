@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一日武嶺機車騎乘攻略｜桃園龍潭出發・逆時針</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #1c2b33;
+      --ink-soft: #4a5b63;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --accent: #0f5c66;
+      --accent-soft: #e4f0f1;
+      --rule: #d8dcd6;
+      --warn-bg: #fdf1ec;
+      --warn-border: #c0522f;
+      --note-bg: #f2f4f2;
+      --note-border: #7a8a86;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+    a { color: var(--accent); }
+    .page { max-width: 1600px; margin: 0; }
+    .report-header {
+      padding: 56px 32px 36px;
+      border-bottom: 1px solid var(--rule);
+      text-align: left;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    .report-title {
+      margin: 0 0 12px;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 36px;
+      line-height: 1.35;
+    }
+    .report-sub { margin: 0; color: var(--ink-soft); }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1040px);
+      gap: 32px;
+      padding: 36px 32px 72px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: 20px;
+      padding: 18px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--panel);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .toc a {
+      display: block;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--rule);
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.5;
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--accent); }
+    .toc a.sub { padding-left: 12px; font-size: 12px; }
+    .content { min-width: 0; }
+    .content h2 {
+      margin: 42px 0 16px;
+      padding: 0 0 9px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 25px;
+      line-height: 1.4;
+    }
+    .content h2:first-child { margin-top: 0; }
+    .content h3 {
+      margin: 28px 0 12px;
+      padding-left: 11px;
+      border-left: 4px solid var(--accent);
+      font-size: 19px;
+      line-height: 1.5;
+    }
+    .content p, .content li { margin-top: 0; }
+    .content p { margin-bottom: 14px; }
+    .content ul, .content ol { padding-left: 1.6em; }
+    .content li { margin-bottom: 9px; }
+    .content strong { color: var(--ink); }
+    .content mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+    .intro, .callout {
+      margin: 18px 0 24px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--note-border);
+      border-radius: 4px;
+      background: var(--note-bg);
+    }
+    .callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+    .cost-total {
+      margin: 20px 0 12px;
+      padding: 14px 18px;
+      border-left: 4px solid #2f7a4f;
+      background: #eaf5ee;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      margin: 14px 0 26px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .table-wrap { overflow-x: auto; }
+    thead { background: var(--accent-soft); }
+    th, td {
+      min-width: 110px;
+      padding: 10px 12px;
+      border: 1px solid var(--rule);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    pre {
+      margin: 14px 0 24px;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      background: #f6f8fa;
+      color: #1f2937;
+      font-size: 13px;
+      line-height: 1.7;
+      tab-size: 4;
+    }
+    code { font-family: "SFMono-Regular", Consolas, monospace; }
+    .report-footer {
+      padding: 24px 32px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 20px 52px; }
+      .toc { position: static; max-height: none; }
+      .report-header { padding: 38px 20px 26px; }
+      .report-title { font-size: 29px; }
+      .content h2 { font-size: 22px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .page { max-width: none; }
+      .report-header { padding: 20px 0; }
+      .layout { display: block; padding: 20px 0; }
+      .toc { display: none; }
+      .content { max-width: none; }
+      .content h2, .content h3 { break-after: avoid; }
+      pre, table, .callout, .intro { break-inside: avoid; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      <p class="eyebrow">生活 DIY / 長途機車行程</p>
+      <h1 class="report-title">一日武嶺機車騎乘攻略</h1>
+      <p class="report-sub">桃園龍潭出發｜行程、油資、補給與 My Maps 匯入資料</p>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="頁面目錄">
+        <div class="toc-title">目錄</div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <main class="content">
+        <section class="intro">
+          本文整理一日武嶺的費用計算程式，並提供一日武嶺機車騎乘計畫、補給規劃與 Google 我的地圖 CSV 資料。
+        </section>
+
+        <h2 id="費用計算程式與輸出">費用計算程式與輸出</h2>
+        <p>以下為一日武嶺的油資、餐飲及雜項預算計算程式。</p>
+        <pre><code class="language-python"># 計算 一日武嶺（桃園龍潭出發 -&gt; 台7線/北橫 -&gt; 宜蘭 -&gt; 台7甲/中橫支線 -&gt; 武嶺 -&gt; 台14線/埔里 -&gt; 台3線 -&gt; 龍潭）
+# 1. 油資計算（95無鉛）：
+#    預估總里程：約 420 km
+#    125cc 速克達高山/爬坡平均油耗：約 32 km/L
+#    95無鉛汽油參考油價：32.7 元/L
+#    算式：(420 km / 32 km/L) * 32.7 元/L = 429.18 元 (取 430 元)
+
+fuel_wuling = round((420 / 32) * 32.7)
+food_wuling = 500  # 400~500 元（午餐/高山熱飲/補給）
+misc_wuling = 300  # 停車費20與緊急備用金280
+total_wuling = fuel_wuling + food_wuling + misc_wuling
+
+print(f"【一日武嶺】95無鉛油資: {fuel_wuling} 元, 餐飲: {food_wuling} 元, 雜項: {misc_wuling} 元, 總花費: {total_wuling} 元")</code></pre>
+        <h3>程式碼輸出內容</h3>
+        <pre><code>【一日武嶺】95無鉛油資: 429 元, 餐飲: 500 元, 雜項: 300 元, 總花費: 1229 元</code></pre>
+
+        <h2 id="一日武嶺機車騎乘計畫">一日武嶺機車騎乘計畫（桃園龍潭出發）</h2>
+        <h3 id="核心數據與預估花費">1 核心數據統計與預估花費明細</h3>
+        <ul>
+          <li><strong>路線方向：</strong>（龍潭 $\rightarrow$ 北橫台7線 $\rightarrow$ 宜蘭台7甲線/中橫宜蘭支線 $\rightarrow$ 武嶺台14甲線 $\rightarrow$ 埔里台14線 $\rightarrow$ 台3線 $\rightarrow$ 返抵龍潭）。</li>
+          <li><strong>總騎乘里程：</strong>約 $420 \text{ km}$。</li>
+          <li><strong>獨立導航站點數：</strong><strong>10 個獨立圖釘</strong>（景點、美食、加油站完全獨立）。</li>
+          <li><strong>總行車時間：</strong>約 $10.5 \text{ 小時} \sim 11.5 \text{ 小時}$（不含高山休息打卡與用餐）。</li>
+          <li><strong>建議出發時間：</strong><strong>04:30</strong> 啟程，預計 <strong>12:00 前</strong> 登頂武嶺（避免下午高山濃霧），傍晚 <strong>19:00 前</strong> 返抵龍潭。</li>
+          <li><strong>油箱預估基準：</strong>高山爬坡耗油以 <strong>$90 \text{ km / 桶}$</strong> 計算；平地/下坡縣道以 <strong>$130 \text{ km / 桶}$</strong> 計算。</li>
+        </ul>
+
+        <div class="cost-total">一日武嶺個人總預估花費：約 $1,230 \text{ 元 / 人}$</div>
+        <ol>
+          <li><strong>95 無鉛汽油油資算式</strong>
+            <ul>
+              <li><strong>算式來源：</strong>總里程預估 $420 \text{ km}$，125cc 速克達高山爬坡平均綜合油耗約 $32 \text{ km/L}$，油價以中油 95 無鉛汽油參考零售價 <strong>$32.7 \text{ 元/L}$</strong> 計算。</li>
+              <li><strong>計算過程：</strong>$$\frac{420 \text{ km}}{32 \text{ km/L}} \times 32.7 \text{ 元/L} = 13.125 \text{ L} \times 32.7 \text{ 元/L} \approx 429 \text{ 元}$$</li>
+              <li><strong>計算結果：</strong>95 無鉛汽油油資約 <strong>$430 \text{ 元}$</strong>。</li>
+            </ul>
+          </li>
+          <li><strong>餐飲與小吃費用：</strong>早餐、高山午餐與熱飲（關東煮/牛肉麵）、下山補給約 <strong>$500 \text{ 元}$</strong>。</li>
+          <li><strong>停車費與緊急備用金：</strong>武嶺周邊停機車20元與緊急備用金280元，小計 <strong>$300 \text{ 元}$</strong>。</li>
+        </ol>
+
+        <h3 id="行程與導航站點">2. 詳細行程 SOP 與單一獨立導航站點規劃</h3>
+        <ol>
+          <li><strong>站點 1【龍潭 24H 加油站】（出發點）</strong>｜04:30 抵達｜<strong>剩餘油量：</strong>$100\%$（<strong>出發前強制加滿 95 無鉛</strong>）</li>
+          <li><strong>站點 2【中油復興站】⛽</strong>｜05:30 抵達｜站間 $32 \text{ km}$｜<strong>進北橫前強制加滿重置 $100\%$！</strong></li>
+          <li><strong>站點 3【中油大同站】⛽</strong>｜07:45 抵達｜站間 $85 \text{ km}$｜<strong>進台7甲線高山前強制加滿重置 $100\%$！</strong></li>
+          <li><strong>站點 4【南山村高山熱食補給 (全家/萊爾富)】🍜</strong>｜08:30 抵達｜站間 $28 \text{ km}$｜<strong>剩餘油量：</strong>$69\%$（吃熱食補給禦寒）</li>
+          <li><strong>站點 5【中油梨山站】⛽</strong>｜10:30 抵達｜站間 $65 \text{ km}$｜<strong>登武嶺前關鍵加油站！強制加滿重置 $100\%$！</strong></li>
+          <li><strong>站點 6【合歡山武嶺標高 3275m】📸</strong>｜11:45 抵達｜站間 $30 \text{ km}$｜<strong>剩餘油量：</strong>$67\%$（公路最高點打卡）</li>
+          <li><strong>站點 7【清境農場/魯媽媽雲南擺夷料理】🍜</strong>｜13:00 抵達｜站間 $22 \text{ km}$｜<strong>剩餘油量：</strong>$76\%$（下山享用特色午餐）</li>
+          <li><strong>站點 8【中油埔里站】⛽</strong>｜14:30 抵達｜站間 $35 \text{ km}$｜<strong>接台3線北上前加滿重置 $100\%$！</strong></li>
+          <li><strong>站點 9【苗栗三義木雕街/金榜麵館】🍜</strong>｜16:45 抵達｜站間 $75 \text{ km}$｜<strong>剩餘油量：</strong>$42\%$（吃大份量客家粄條）</li>
+          <li><strong>站點 10【龍潭大池】（終點）</strong>｜18:30 抵達｜站間 $68 \text{ km}$｜<strong>平安完成一日武嶺挑戰！</strong></li>
+        </ol>
+
+        <h3 id="沿途伴手禮">3. 🎁 武嶺沿途推薦必買伴手禮清單表 (My Option)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>區域/縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結 (Google Maps)</th><th>營業時間</th><th>備註 / 採購建議</th></tr></thead>
+            <tbody>
+              <tr><td><strong>宜蘭大同</strong></td><td>蔥仔餅/高麗菜包</td><td>蔥肉餅 / 高山高麗菜</td><td><a href="https://maps.google.com/?q=24.6033,121.6102&utm_source=gemini">導航連結</a></td><td>08:00 – 17:00</td><td>台7線途經熱騰騰小吃</td></tr>
+              <tr><td><strong>南投清境</strong></td><td>清境農場售店</td><td>羊奶餅乾 / 羊奶片</td><td><a href="https://maps.google.com/?q=24.0558,121.1625&utm_source=gemini">導航連結</a></td><td>08:00 – 17:00</td><td>包裝輕巧方便放車廂</td></tr>
+              <tr><td><strong>南投埔里</strong></td><td>18度C巧克力工房</td><td>生巧克力 / 鹽可頌</td><td><a href="https://maps.google.com/?q=23.9531,120.9758&utm_source=gemini">導航連結</a></td><td>10:00 – 19:00</td><td>建議備保冷袋或現場宅配</td></tr>
+              <tr><td><strong>苗栗三義</strong></td><td>世奇精緻餅店</td><td>木頭餅 / 客家肉餅</td><td><a href="https://maps.google.com/?q=24.3892,120.7681&utm_source=gemini">導航連結</a></td><td>08:30 – 20:00</td><td>常溫耐壓古早味伴手禮</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="裝備備援與救援">4. 人身裝備、山區備援與救援資訊</h3>
+        <ul>
+          <li><strong>高山溫差禦寒 Check：</strong>武嶺氣溫比平地低約 $15^\circ\text{C} \sim 20^\circ\text{C}$！必須採洋蔥式穿法（長袖吸濕排汗內層 + 刷毛中層 + 防風防水外套）、防風厚手套、魔術頭巾與兩截式雨衣。</li>
+          <li><strong>高山高反與高壓應變：</strong>車輛在高海拔易產生高空高反失壓（馬力下降），請維持穩定轉速順騎；若人有頭痛頭暈等輕微高反，切勿強求立即下山。</li>
+          <li><strong>緊急救援資訊：</strong>
+            <ul>
+              <li><strong>仁愛分局翠峰派出所（最靠近武嶺）：</strong><code>049-280-2603</code> (24h)</li>
+              <li><strong>合歡山高山道路救援：</strong><code>0932-513-331</code> (24h)</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="mymaps-csv">5. 一日武嶺 Google 我的地圖（My Maps）匯入專用 CSV</h3>
+        <p>以下資料採三欄格式：地點名稱、完整地址、詳細說明。</p>
+        <pre><code>地點名稱,完整地址,詳細說明
+1. 龍潭 24H 加油站,桃園市龍潭區大昌路二段72號,預估抵達：04:30｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (出發前強制加滿 95無鉛)
+2. 中油復興站,桃園市復興區中正路135號,預估抵達：05:30｜站間里程：32 km｜自加滿已騎：32 km｜剩餘航程：68 km｜剩餘油量：68% (進北橫前強制加滿重置100%)
+3. 中油大同站,宜蘭縣大同鄉泰雅路一段88號,預估抵達：07:45｜站間里程：85 km｜自加滿已騎：85 km｜剩餘航程：15 km｜剩餘油量：15% (進台7甲線前強制加滿重置100%)
+4. 南山村高山熱食補給站,宜蘭縣大同鄉泰雅路七段256號,預估抵達：08:30｜站間里程：28 km｜自加滿已騎：28 km｜剩餘航程：62 km｜剩餘油量：69% (享用熱食補給禦寒)
+5. 中油梨山站,台中市和平區中正路88號,預估抵達：10:30｜站間里程：65 km｜自加滿已騎：93 km｜剩餘航程：0 km｜剩餘油量：0% (登武嶺前關鍵加油站！加滿重置100%)
+6. 合歡山武嶺標高 3275m,南投縣仁愛鄉仁和路170號,預估抵達：11:45｜站間里程：30 km｜自加滿已騎：30 km｜剩餘航程：60 km｜剩餘油量：67% (台灣公路最高點打卡)
+7. 清境農場魯媽媽雲南擺夷料理,南投縣仁愛鄉仁和路210-2-1號,預估抵達：13:00｜站間里程：22 km｜自加滿已騎：52 km｜剩餘航程：38 km｜剩餘油量：42% (享用特色午餐)
+8. 中油埔里站,南投縣埔里鎮中山路二段230號,預估抵達：14:30｜站間里程：35 km｜自加滿已騎：87 km｜剩餘航程：3 km｜剩餘油量：3% (接台3線北上前加滿重置100%)
+9. 苗栗三義金榜麵館,苗栗縣三義鄉中正路170-7號,預估抵達：16:45｜站間里程：75 km｜自加滿已騎：75 km｜剩餘航程：55 km｜剩餘油量：42% (吃客家粄條補給熱量)
+10. 龍潭大池 (終點),桃園市龍潭區中正路210號,預估抵達：18:30｜站間里程：68 km｜自加滿已騎：143 km｜剩餘航程：0 km｜剩餘油量：0% (平安完成一日武嶺挑戰！)</code></pre>
+      </main>
+    </div>
+
+    <footer class="report-footer">行程規劃草案｜正式出發前請確認即時路況、天候、營業時間與車況。</footer>
+  </div>
+  <script>
+    const toc = document.getElementById('toc-list');
+    document.querySelectorAll('.content h2[id], .content h3[id]').forEach((heading) => {
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent;
+      if (heading.tagName === 'H3') link.className = 'sub';
+      toc.appendChild(link);
+    });
+  </script>
+</body>
+</html>
