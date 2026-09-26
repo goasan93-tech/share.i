@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>環島四極點（4天3夜）機車騎乘攻略</title>
+<script>
+  MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root { --ink:#1c2b33; --ink-soft:#4a5b63; --paper:#fbfaf6; --panel:#fff; --accent:#0f5c66; --accent-soft:#e4f0f1; --rule:#d8dcd6; --warn-bg:#fdf1ec; --warn-border:#c0522f; --note-bg:#f2f4f2; --note-border:#7a8a86; --success-bg:#eaf5ee; --success-border:#2f7a4f; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif; font-size:16px; line-height:1.85; }
+a { color:var(--accent); }
+.page { max-width:1600px; margin:0; }
+.report-header { padding:56px 32px 36px; border-bottom:1px solid var(--rule); text-align:left; }
+.eyebrow { margin:0 0 12px; color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; }
+.report-title { margin:0 0 12px; color:var(--ink); font-family:"Noto Serif TC","Songti TC",serif; font-size:clamp(28px,4vw,42px); line-height:1.35; }
+.report-sub { margin:0; color:var(--ink-soft); }
+.layout { display:grid; grid-template-columns:240px minmax(0,1040px); gap:32px; padding:36px 32px 72px; align-items:start; }
+.toc { position:sticky; top:20px; padding:18px; border:1px solid var(--rule); border-radius:8px; background:var(--panel); max-height:calc(100vh - 40px); overflow-y:auto; }
+.toc-title { margin-bottom:10px; color:var(--accent); font-size:13px; font-weight:700; }
+.toc a { display:block; padding:6px 0; border-bottom:1px dashed var(--rule); color:var(--ink-soft); font-size:13px; line-height:1.5; text-decoration:none; }
+.toc a:hover { color:var(--accent); }
+.toc a.sub { padding-left:12px; font-size:12px; }
+.content { min-width:0; }
+.content h1 { margin:42px 0 16px; padding:0 0 9px; border-bottom:2px solid var(--accent); color:var(--accent); font-family:"Noto Serif TC","Songti TC",serif; font-size:25px; line-height:1.4; }
+.content h1:first-child { margin-top:0; }
+.content h2 { margin:28px 0 12px; padding-left:11px; border-left:4px solid var(--accent); font-size:19px; line-height:1.5; }
+.content h3 { margin:24px 0 10px; color:var(--ink-soft); font-size:17px; }
+.content p { margin:0 0 14px; }
+.content ul, .content ol { padding-left:1.6em; }
+.content li { margin-bottom:8px; }
+.content strong { color:var(--ink); }
+.content mjx-container { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+.callout { margin:18px 0 24px; padding:16px 18px; border-left:4px solid var(--note-border); border-radius:4px; background:var(--note-bg); }
+.callout-warning { border-color:var(--warn-border); background:var(--warn-bg); }
+.callout-success { border-color:var(--success-border); background:var(--success-bg); }
+.callout-title { margin-bottom:5px; font-weight:700; }
+.callout-body { color:var(--ink-soft); }
+.cost-total { margin:20px 0 18px; padding:14px 18px; border-left:4px solid var(--success-border); background:var(--success-bg); font-size:19px; font-weight:700; }
+.math-block { margin:14px 0 22px; padding:12px 16px; overflow-x:auto; border:1px solid var(--rule); border-radius:6px; background:#f6f5f0; }
+table { width:100%; margin:14px 0 26px; border-collapse:collapse; font-size:14px; }
+.table-wrap { overflow-x:auto; }
+thead { background:var(--accent-soft); }
+th, td { min-width:110px; padding:10px 12px; border:1px solid var(--rule); text-align:left; vertical-align:top; }
+th { color:var(--accent); font-weight:700; white-space:nowrap; }
+pre { margin:14px 0 24px; padding:18px; overflow-x:auto; border:1px solid var(--rule); border-radius:6px; background:#f6f8fa; color:#1f2937; font-size:13px; line-height:1.7; tab-size:4; }
+code { font-family:"SFMono-Regular",Consolas,monospace; }
+.checklist { list-style:none; padding-left:0 !important; }
+.checklist li { margin-bottom:7px; }
+.route { padding:12px 16px; border-left:3px solid var(--accent-soft); background:#fff; }
+.report-footer { padding:24px 32px; border-top:1px solid var(--rule); color:var(--ink-soft); font-size:13px; }
+@media (max-width:900px) { .layout { grid-template-columns:minmax(0,1fr); gap:22px; padding:24px 20px 52px; } .toc { position:static; max-height:none; } .report-header { padding:38px 20px 26px; } .content h1 { font-size:23px; } }
+@media print { body { background:#fff; } .report-header { padding:20px 0; } .layout { display:block; padding:20px 0; } .toc { display:none; } }
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+
+  <h1 class="report-title">環島四極點（4天3夜）機車騎乘攻略</h1>
+  <p class="report-sub">順時針四極點大滿貫環島｜龍潭出發｜路線、補給、裝備與離線備援 SOP</p>
+  <p class="report-sub">研究組員：李世權 Gemini | 排版美工：Copilot</p>
+</header>
+<div class="layout">
+<nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+<main class="content">
+<section>
+<h1>自自主檢查與驗證計算式</h1>
+<pre><code># 1. 95無鉛汽油油資：
+#    總里程: 1,200 km
+#    綜合油耗: 35 km/L
+#    95無鉛汽油參考油價: 32.7 元/L
+#    算式: 1200 / 35 * 32.7 = 1121.14 元 (取 1,120 元)
+
+fuel = round((1200 / 35) * 32.7)
+lodging = 600 + 550 + 600 # D1花蓮隊長600 + D2恆春KO 550 + D3台南福憩600
+food = 500 * 4 # 4天 * 500 = 2000
+misc = 800 # 門票200 + 備用金600
+
+total = fuel + lodging + food + misc
+
+print(f"95無鉛油資: {fuel} 元")
+print(f"住宿費用: {lodging} 元")
+print(f"餐飲費用: {food} 元")
+print(f"雜項備用金: {misc} 元")
+print(f"總預估花費: {total} 元")</code></pre>
+<p><strong>程式碼輸出內容</strong></p>
+<pre><code>95無鉛油資: 1121 元
+住宿費用: 1750 元
+餐飲費用: 2000 元
+雜項備用金: 800 元
+總預估花費: 5671 元</code></pre>
+</section>
+
+<section>
+<h1>1. 導言與路線總覽</h1>
+<p>本報告專為 125cc 機車騎士量身規劃「順時針四極點大滿貫環島（4天3夜）」，優先將最具挑戰、體力需求最高的蘇花與花東海岸線排在前半段，後半段走西部平原與快速道路旁縣道，兼具景觀美感、美味小吃、極致省錢住宿與騎乘安全。</p>
+<h2>1.1 核心數據統計與預估花費明細</h2>
+<ul>
+<li><strong>總騎乘里程：</strong>約 $1,150 \text{ km} \sim 1,200 \text{ km}$</li>
+<li><strong>獨立導航站點數：</strong><strong>33 個獨立圖釘</strong>（景點、美食、住宿、加油站完全獨立）</li>
+<li><strong>每日平均里程：</strong>約 $280 \text{ km} \sim 310 \text{ km}$</li>
+<li><strong>每日行車時間：</strong>約 $6.5 \text{ 小時} \sim 7.5 \text{ 小時}$（不含休息打卡與用餐）</li>
+<li><strong>建議出發時間：</strong>每日 <strong>06:30 – 07:00</strong> 啟程，傍晚 <strong>17:30 前</strong> 抵達住宿點。</li>
+<li><strong>油箱預估基準：</strong>山區/公路耗油以 <strong>$100 \text{ km / 桶}$</strong> 計算；平地縣道以 <strong>$130 \text{ km / 桶}$</strong> 計算。</li>
+</ul>
+<div class="cost-total">環島個人總預估花費：約 $5,670$ 元 / 人</div>
+<h2>1.2 預估花費明細與計算範例</h2>
+<ol>
+<li><strong>95 無鉛汽油油資算式：</strong>總里程預估 $1,200 \text{ km}$，125cc 速克達平均綜合油耗約 $35 \text{ km/L}$，油價以中油 95 無鉛汽油參考零售價 <strong>$32.7 \text{ 元/L}$</strong> 計算。<div class="math-block">$$ \frac{1,200\ \text{km}}{35\ \text{km/L}} \times 32.7\ \text{元/L} = 34.29\ \text{L} \times 32.7\ \text{元/L} \approx 1,121\ \text{元} $$</div>計算結果：95 無鉛汽油油資約 <strong>$1,120 元</strong>。</li>
+<li><strong>住宿費用（3晚平價青旅床位）：</strong>3 晚平價背包客棧/青年旅館平日床位價（含機車停車位）。<div class="math-block">$$ 600\ \text{元} + 550\ \text{元} + 600\ \text{元} = 1,750\ \text{元} $$</div></li>
+<li><strong>餐飲與小吃費用（4天全餐）：</strong>每日早餐、午餐美食、夜市/宵夜及補給飲料水，平均每日 $500 元$。<div class="math-block">$$ 500\ \text{元/天} \times 4\ \text{天} = 2,000\ \text{元} $$</div></li>
+<li><strong>門票、停車費與應變預備金：</strong>門票與停車費 $200 元$ + 雜項備用金 $600 元$ = <strong>$800 元</strong>。</li>
+</ol>
+</section>
+
+<section>
+<h1>2. 詳細行程 SOP 與單一獨立導航站點規劃</h1>
+<div class="callout"><strong>油量計概念說明：</strong>每次在加油站加滿油箱即代表儲能量充至 <strong>100%（100 km）</strong>。抵達各站點時顯示該次加滿後「已行駛公里數」、「剩餘可行駛公里數」與「剩餘油量百分比 [%]」。</div>
+<h2>2.1 Day 1：龍潭出發 → 宜蘭 → 極東點 → 蘇花改 → 花蓮市區</h2>
+<p><strong>今日里程：</strong>約 285 km ｜ <strong>獨立導航圖釘數：</strong>9 個</p>
+<div class="route"><ol>
+<li><strong>站點 1【龍潭 24H 加油站】（出發點）</strong>｜06:30 抵達｜剩餘油量：100%（出發前強制加滿 95 無鉛）</li>
+<li><strong>站點 2【三貂角燈塔】📸（極東點）</strong>｜08:30 抵達｜站間 95 km｜剩餘油量：27%</li>
+<li><strong>站點 3【中油頭城站】⛽</strong>｜09:30 抵達｜站間 25 km｜在此強制加滿重置 100%！</li>
+<li><strong>站點 4【南方澳觀景台】📸</strong>｜11:30 抵達｜站間 45 km｜剩餘油量：55%</li>
+<li><strong>站點 5【南方澳阿芬鮮魚湯】🍜</strong>｜12:15 抵達｜站間 3 km｜享用鮮魚湯午餐補給熱量</li>
+<li><strong>站點 6【清水斷崖 / 太魯閣牌樓】📸</strong>｜15:00 抵達｜站間 75 km｜剩餘油量：5%</li>
+<li><strong>站點 7【中油新城站】⛽</strong>｜15:30 抵達｜站間 8 km｜在此強制加滿重置 100%！</li>
+<li><strong>站點 8【花蓮隊長背包客棧】🏠（D1住宿）</strong>｜16:30 抵達｜站間 18 km｜入住平價青旅放行李</li>
+<li><strong>站點 9【花蓮東大門夜市】🍜</strong>｜18:00 抵達｜站間 2 km｜步行或騎車逛夜市享用晚餐</li>
+</ol></div>
+<h2>2.2 Day 2：花蓮 → 台11線海岸 → 極南點 → 墾丁/恆春</h2>
+<p><strong>今日里程：</strong>約 310 km ｜ <strong>獨立導航圖釘數：</strong>9 個</p>
+<div class="route"><ol start="10">
+<li><strong>石梯坪風景區</strong>｜08:30｜65 km｜剩餘油量：35%</li><li><strong>中油成功站</strong>｜10:00｜40 km｜強制加滿重置 100%</li><li><strong>台東成功豆花</strong>｜10:30｜1 km｜傳統花生豆花</li><li><strong>加路蘭海岸</strong>｜12:00｜48 km｜剩餘油量：52%</li><li><strong>多良車站 / 櫻木平交道</strong>｜14:00｜38 km｜剩餘油量：14%</li><li><strong>中油大武站</strong>｜14:30｜15 km｜過南迴公路前強制加滿</li><li><strong>台灣最南點意象（極南點）</strong>｜16:30｜78 km｜剩餘油量：22%</li><li><strong>KO Hostel 返璞歸真青旅（D2住宿）</strong>｜17:30｜15 km｜入住恆春鎮平價青旅</li><li><strong>恆春鄉村鴨肉蔡</strong>｜18:30｜1 km｜鴨肉冬粉與煙燻滷味</li>
+</ol></div>
+<h2>2.3 Day 3：恆春/墾丁 → 高雄/台南 → 極西點 → 台南市區</h2>
+<p><strong>今日里程：</strong>約 260 km ｜ <strong>獨立導航圖釘數：</strong>8 個</p>
+<div class="route"><ol start="19">
+<li><strong>大鵬灣跨海大橋</strong>｜09:30｜68 km｜剩餘油量：48%</li><li><strong>東港華僑市場旗魚黑輪</strong>｜10:15｜5 km</li><li><strong>高雄駁二藝術特區</strong>｜11:30｜38 km｜剩餘油量：18%</li><li><strong>高雄丹丹漢堡西子灣店</strong>｜12:00｜2 km</li><li><strong>中油左營站</strong>｜13:00｜10 km｜強制加滿重置 100%</li><li><strong>國聖港燈塔（極西點）</strong>｜15:00｜65 km｜剩餘油量：50%</li><li><strong>福憩背包客棧和平館（D3住宿）</strong>｜17:00｜22 km</li><li><strong>台南文章牛肉湯</strong>｜18:30｜2 km</li>
+</ol></div>
+<h2>2.4 Day 4：台南 → 西濱/台1線 → 極北點 → 返抵龍潭</h2>
+<p><strong>今日里程：</strong>約 320 km ｜ <strong>獨立導航圖釘數：</strong>7 個</p>
+<div class="route"><ol start="27">
+<li><strong>北門水晶教堂</strong>｜09:30｜45 km｜剩餘油量：65%</li><li><strong>彰化鹿港阿振肉包/麵線糊</strong>｜11:30｜80 km</li><li><strong>中油鹿港站</strong>｜12:30｜2 km｜強制加滿重置 100%</li><li><strong>苗栗後龍好望角</strong>｜14:30｜55 km｜剩餘油量：58%</li><li><strong>富貴角燈塔（極北點）</strong>｜16:30｜105 km｜四極點大滿貫達成！</li><li><strong>石門劉家肉粽</strong>｜17:15｜3 km</li><li><strong>龍潭大池（環島終點）</strong>｜19:30｜65 km｜平安完成 4天3夜 四極點環島！</li>
+</ol></div>
+</section>
+
+<section>
+<h1>3. 環島沿途推薦必買伴手禮清單（My Option）</h1>
+<div class="callout"><strong>採購建議：</strong>不納入正行程數字排序，屬彈性採購。建議選購常溫耐壓品項；若為冷藏品則利用店家現場宅配服務。</div>
+<div class="table-wrap"><table><thead><tr><th>區域/縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結</th><th>營業時間</th><th>備註 / 採購建議</th></tr></thead><tbody>
+<tr><td>花蓮</td><td>胖叔叔烘焙屋 / 潘師傅</td><td>檸檬吐司 / 沙其馬</td><td><a href="https://maps.google.com/?q=23.9782,121.6062">Google Maps</a></td><td>12:00–21:00（週二公休）</td><td>精緻常溫名產，方便放車廂</td></tr>
+<tr><td>花蓮</td><td>花蓮縣餅菩提餅舖</td><td>漂流木餅 / 奶油酥條</td><td><a href="https://maps.google.com/?q=23.9787,121.6045">Google Maps</a></td><td>08:30–21:30</td><td>奶油香濃，宜加固包裝避碎</td></tr>
+<tr><td>台東</td><td>青澤琪瑪酥（正氣店）</td><td>醬心蛋捲 / 琪瑪酥</td><td><a href="https://maps.google.com/?q=22.7547,121.1504">Google Maps</a></td><td>09:30–21:30</td><td>團購爆款，包裝耐壓易攜帶</td></tr>
+<tr><td>台東</td><td>楊記家傳地瓜酥老店</td><td>蜜地瓜 / 地瓜酥</td><td><a href="https://maps.google.com/?q=22.7533,121.1537">Google Maps</a></td><td>10:00–18:00</td><td>台東必買經典古早味</td></tr>
+<tr><td>屏東恆春</td><td>禾滿糧廚 / 恆春鎮農會</td><td>恆春洋蔥乖乖 / 洋蔥醬</td><td><a href="https://maps.google.com/?q=21.9961,120.7452">Google Maps</a></td><td>09:00–18:00</td><td>在地限定特殊風味乖乖</td></tr>
+<tr><td>屏東東港</td><td>金星雙糕潤</td><td>東港傳統雙糕潤</td><td><a href="https://maps.google.com/?q=22.4678,120.4491">Google Maps</a></td><td>08:00–19:00</td><td>軟Q口感，建議當天或隔天吃完</td></tr>
+<tr><td>高雄</td><td>旗錦餅店 / 瑪莉食品</td><td>愛河餅 / 旗津蝦餅</td><td><a href="https://maps.google.com/?q=22.6139,120.2692">Google Maps</a></td><td>10:00–20:00</td><td>高雄特色文創點心</td></tr>
+<tr><td>台南</td><td>煎餅名店（連得堂）</td><td>傳統手作味噌煎餅</td><td><a href="https://maps.google.com/?q=23.0016,120.2081">Google Maps</a></td><td>08:00–20:00</td><td>每人限購兩包，超人氣古早味</td></tr>
+<tr><td>台南</td><td>名坂奇洋菓子</td><td>夏威夷豆塔 / 蕾絲餅</td><td><a href="https://maps.google.com/?q=22.9818,120.2433">Google Maps</a></td><td>09:00–19:30</td><td>包裝精美，非常適合送禮</td></tr>
+<tr><td>彰化</td><td>阿振肉包 / 振味珍</td><td>招牌香菇肉包 / 饅頭</td><td><a href="https://maps.google.com/?q=24.0538,120.4357">Google Maps</a></td><td>09:00–18:30</td><td>騎車途中的熱騰騰熱量補給</td></tr>
+<tr><td>新北石門</td><td>石門劉家肉粽</td><td>招牌小肉粽 / 蛋黃粽</td><td><a href="https://maps.google.com/?q=25.2917,121.5645">Google Maps</a></td><td>09:00–19:00</td><td>北海岸極北點慶功點心</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h1>4. 人身穿著與隨身裝備 Check List</h1>
+<h2>4.1 穿著裝備（洋蔥式穿法）</h2>
+<ul class="checklist"><li>☐ <strong>內層：</strong>長袖吸濕排汗衫（<strong>嚴禁純棉</strong>，避免汗濕後騎車失溫）。</li><li>☐ <strong>中層：</strong>保暖/防風薄外套或刷毛衣。</li><li>☐ <strong>外層：</strong>防摔衣 / 騎士防風夾克（具備肩肘背防護軟墊）。</li><li>☐ <strong>手足防護：</strong>長途騎士防護手套、防曬涼感魔術頭巾、騎士長褲。</li><li>☐ <strong>雨具：</strong>兩截式騎士雨衣雨褲、防水鞋套。</li></ul>
+<h2>4.2 車況整備 Check List</h2>
+<ul class="checklist"><li>☐ <strong>胎壓與胎紋：</strong>胎壓調至原廠上限，胎紋深度檢測 &gt; 0.8 mm。</li><li>☐ <strong>傳動系統：</strong>傳動皮帶里程 &gt; 12,000 km 預防性更換。</li><li>☐ <strong>煞車系統：</strong>檢查前後煞車皮厚度，煞車油量正常。</li><li>☐ <strong>燈光與燈具：</strong>前大燈、煞車燈、前後方向燈運作正常。</li></ul>
+</section>
+
+<section>
+<h1>5. 無網路山區備援與 Google 我的地圖（My Maps）建置 SOP</h1>
+<h2>5.1 四重離線備援 SOP</h2>
+<ol><li><strong>Google 離線地圖：</strong>預先下載「北北基宜」、「花東」、「屏東高雄」、「中彰苗桃園」全區離線地圖。</li><li><strong>雲端離線存取：</strong>Google Drive 試算表設定「可離線存取」。</li><li><strong>手機相簿備份：</strong>每日行程表、油量儀表與救援通訊錄進行手機相簿截圖備份。</li><li><strong>實體紙本備援：</strong>將重點行程與緊急通訊列印 A4 紙張，裝入透明防水夾鏈袋隨身攜帶。</li><li><strong>備用鑰匙獨立管理：</strong>準備第 2 把車鑰匙，放在隨身外套口袋或交由同伴攜帶（<strong>嚴禁放車廂內</strong>）。</li></ol>
+<h2>5.2 Google 我的地圖（My Maps）建置 Standard</h2>
+<ul><li><strong>欄位結構規範：</strong>採用標準 3 欄格式 <code>地點名稱</code> | <code>完整地址</code> | <code>詳細說明</code>。</li><li><strong>避錯禁忌：</strong>內文<strong>嚴禁使用半形逗號 ,</strong>（改用全形頓號、全形括號或豎線），防止試算表分欄撕裂錯位。</li><li><strong>匯入對應：</strong>放置地標選「完整地址」，地標標題選「地點名稱」。</li></ul>
+</section>
+
+<section>
+<h1>6. 沿途救援、警察局與補給站點資訊表</h1>
+<div class="table-wrap"><table><thead><tr><th>分類</th><th>站點名稱</th><th>地址 / 位置</th><th>電話 / 營業時間</th><th>備註 / 功能</th></tr></thead><tbody>
+<tr><td>極東點</td><td>三貂角燈塔</td><td>新北市貢寮區馬崗街38號</td><td>09:00–17:00（週一公休）</td><td>台灣極東點打卡</td></tr><tr><td>極南點</td><td>台灣最南點意象</td><td>屏東縣恆春鎮鵝鑾里燈塔路51號</td><td>24 小時開放</td><td>台灣極南點打卡</td></tr><tr><td>極西點</td><td>國聖港燈塔</td><td>臺南市七股區網子寮沙洲</td><td>24 小時開放</td><td>台灣極西點打卡（台版撒哈拉）</td></tr><tr><td>極北點</td><td>富貴角燈塔</td><td>新北市石門區楓林路27號</td><td>09:00–17:00（週一公休）</td><td>台灣極北點打卡</td></tr><tr><td>加油站</td><td>中油頭城站</td><td>宜蘭縣頭城鎮青雲路二段221號</td><td>06:00–22:00</td><td>東海岸前補給（加滿重置100%）</td></tr><tr><td>加油站</td><td>中油成功站</td><td>臺東縣成功鎮中華路65號</td><td>06:00–21:00</td><td>花東海岸線關鍵加油站</td></tr><tr><td>加油站</td><td>中油大武站</td><td>臺東縣大武鄉大武路58號</td><td>06:00–21:00</td><td>過南迴公路前補給</td></tr><tr><td>加油站</td><td>中油鹿港站</td><td>彰化縣鹿港鎮中正路501號</td><td>06:00–22:00</td><td>西濱段關鍵加油站</td></tr><tr><td>警察局</td><td>宜蘭縣礁溪分局</td><td>宜蘭縣礁溪鄉礁溪路四段</td><td>03-988-2044（24h）</td><td>北宜/蘇花緊急求助</td></tr><tr><td>警察局</td><td>屏東縣恆春分局</td><td>屏東縣恆春鎮國華路</td><td>08-889-2042（24h）</td><td>墾丁段緊急求助</td></tr><tr><td>維修救援</td><td>東海岸道路救援</td><td>花蓮/台東台9/台11線全區</td><td>0932-660-845（24h）</td><td>花東長途機車救援專線</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h1>7. Google 我的地圖（My Maps）匯入專用 CSV 資料格式（33 個獨立站點）</h1>
+<p>請複製以下內容並貼上至 <strong>Google 試算表</strong>（確保貼上後分為 A 欄「地點名稱」、B 欄「完整地址」、C 欄「詳細說明」），匯入 Google 我的地圖時將「完整地址」設為定位欄位，「地點名稱」設為標題欄位：</p>
+<pre><code>地點名稱,完整地址,詳細說明
+1. 龍潭 24H 加油站,桃園市龍潭區大昌路二段72號,預估抵達：06:30｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100%
+2. 三貂角燈塔 (極東點),新北市貢寮區馬崗街38號,預估抵達：08:30｜站間里程：95 km｜自加滿已騎：95 km｜剩餘航程：35 km｜剩餘油量：27%
+3. 中油頭城站,宜蘭縣頭城鎮青雲路二段221號,預估抵達：09:30｜站間里程：25 km｜自加滿已騎：120 km｜剩餘航程：10 km｜剩餘油量：8%
+4. 南方澳觀景台,宜蘭縣蘇澳鎮蘇花公路56號,預估抵達：11:30｜站間里程：45 km｜自加滿已騎：45 km｜剩餘航程：55 km｜剩餘油量：55%
+5. 南方澳阿芬鮮魚湯,宜蘭縣蘇澳鎮江夏路47號,預估抵達：12:15｜站間里程：3 km｜自加滿已騎：48 km｜剩餘航程：52 km｜剩餘油量：52%
+6. 清水斷崖/太魯閣牌樓,花蓮縣秀林鄉舊蘇花公路,預估抵達：15:00｜站間里程：75 km｜自加滿已騎：123 km｜剩餘航程：7 km｜剩餘油量：5%
+7. 中油新城站,花蓮縣新城鄉新興路15號,預估抵達：15:30｜站間里程：8 km｜自加滿已騎：131 km｜剩餘航程：0 km｜剩餘油量：0%
+8. 花蓮隊長背包客棧 (D1住宿),花蓮縣花蓮市建國路71號,預估抵達：16:30｜站間里程：18 km｜自加滿已騎：18 km｜剩餘航程：82 km｜剩餘油量：82%
+9. 花蓮東大門夜市,花蓮縣花蓮市中山路50號,預估抵達：18:00｜站間里程：2 km｜自加滿已騎：20 km｜剩餘航程：80 km｜剩餘油量：80%
+10. 石梯坪風景區,花蓮縣豐濱鄉石梯坪52號,預估抵達：08:30｜站間里程：65 km｜自加滿已騎：65 km｜剩餘航程：35 km｜剩餘油量：35%
+11. 中油成功站,臺東縣成功鎮中華路65號,預估抵達：10:00｜站間里程：40 km｜自加滿已騎：105 km｜剩餘航程：25 km｜剩餘油量：25%
+12. 台東成功豆花,臺東縣成功鎮中山路63號,預估抵達：10:30｜站間里程：1 km｜自加滿已騎：1 km｜剩餘航程：99 km｜剩餘油量：99%
+13. 加路蘭海岸,臺東縣臺東市乙組200號,預估抵達：12:00｜站間里程：48 km｜自加滿已騎：49 km｜剩餘航程：51 km｜剩餘油量：51%
+14. 多良車站/櫻木平交道,臺東縣太麻里鄉瀧溪路8-1號,預估抵達：14:00｜站間里程：38 km｜自加滿已騎：87 km｜剩餘航程：13 km｜剩餘油量：13%
+15. 中油大武站,臺東縣大武鄉大武路58號,預估抵達：14:30｜站間里程：15 km｜自加滿已騎：102 km｜剩餘航程：0 km｜剩餘油量：0%
+16. 台灣最南點意象 (極南點),屏東縣恆春鎮鵝鑾里燈塔路51號,預估抵達：16:30｜站間里程：78 km｜自加滿已騎：78 km｜剩餘航程：22 km｜剩餘油量：22%
+17. KO Hostel 返璞歸真青旅 (D2住宿),屏東縣恆春鎮中山路45號,預估抵達：17:30｜站間里程：15 km｜自加滿已騎：93 km｜剩餘航程：7 km｜剩餘油量：7%
+18. 恆春鄉村鴨肉蔡,屏東縣恆春鎮福德路28號,預估抵達：18:30｜站間里程：1 km｜自加滿已騎：94 km｜剩餘航程：6 km｜剩餘油量：6%
+19. 大鵬灣跨海大橋,屏東縣東港鎮大鵬灣環灣道路2段,預估抵達：09:30｜站間里程：68 km｜自加滿已騎：68 km｜剩餘航程：62 km｜剩餘油量：48%
+20. 東港華僑市場旗魚黑輪,屏東縣東港鎮朝隆路39號,預估抵達：10:15｜站間里程：5 km｜自加滿已騎：73 km｜剩餘航程：57 km｜剩餘油量：44%
+21. 高雄駁二藝術特區,高雄市鹽埕區大勇路1號,預估抵達：11:30｜站間里程：38 km｜自加滿已騎：111 km｜剩餘航程：19 km｜剩餘油量：15%
+22. 高雄丹丹漢堡西子灣店,高雄市鼓山區臨海二路19號,預估抵達：12:00｜站間里程：2 km｜自加滿已騎：113 km｜剩餘航程：17 km｜剩餘油量：13%
+23. 中油左營站,高雄市左營區左營大路1號,預估抵達：13:00｜站間里程：10 km｜自加滿已騎：123 km｜剩餘航程：7 km｜剩餘油量：5%
+24. 國聖港燈塔 (極西點),臺南市七股區網子寮沙洲,預估抵達：15:00｜站間里程：65 km｜自加滿已騎：65 km｜剩餘航程：65 km｜剩餘油量：50%
+25. 福憩背包客棧和平館 (D3住宿),臺南市中西區和平街91號,預估抵達：17:00｜站間里程：22 km｜自加滿已騎：87 km｜剩餘航程：43 km｜剩餘油量：33%
+26. 台南文章牛肉湯,臺南市安平區安平路300號,預估抵達：18:30｜站間里程：2 km｜自加滿已騎：89 km｜剩餘航程：41 km｜剩餘油量：31%
+27. 北門水晶教堂,臺南市北門區200號,預估抵達：09:30｜站間里程：45 km｜自加滿已騎：45 km｜剩餘航程：85 km｜剩餘油量：65%
+28. 彰化鹿港阿振肉包,彰化縣鹿港鎮中山路71號,預估抵達：11:30｜站間里程：80 km｜自加滿已騎：125 km｜剩餘航程：5 km｜剩餘油量：5%
+29. 中油鹿港站,彰化縣鹿港鎮中正路501號,預估抵達：12:30｜站間里程：2 km｜自加滿已騎：127 km｜剩餘航程：3 km｜剩餘油量：2%
+30. 苗栗後龍好望角,苗栗縣後龍鎮苗33線半天寮,預估抵達：14:30｜站間里程：55 km｜自加滿已騎：55 km｜剩餘航程：75 km｜剩餘油量：58%
+31. 富貴角燈塔 (極北點),新北市石門區楓林路27號,預估抵達：16:30｜站間里程：105 km｜自加滿已騎：105 km｜剩餘航程：25 km｜剩餘油量：19%
+32. 石門劉家肉粽,新北市石門區中央路30號,預估抵達：17:15｜站間里程：3 km｜自加滿已騎：108 km｜剩餘航程：22 km｜剩餘油量：17%
+33. 龍潭大池 (環島終點),桃園市龍潭區中正路210號,預估抵達：19:30｜站間里程：65 km｜自加滿已騎：65 km｜剩餘航程：35 km｜剩餘油量：35%</code></pre>
+</section>
+
+<div class="callout callout-warning"><strong>定位與限制說明：</strong>本內容為自研參考，實務騎乘時仍須視當日實際天候、路況、車輛保養狀況與道路救援資訊進行即時調整。</div>
+</main>
+</div>
+<footer class="report-footer"><p>本報告為機車長途騎乘規劃參考文件，出發前請再次確認道路、營業時間、住宿與救援資訊。</p></footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(header, index) {
+    var id = 'sec-' + index;
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
