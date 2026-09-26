@@ -68,33 +68,7 @@ code { font-family:"SFMono-Regular",Consolas,monospace; }
 <div class="layout">
 <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
 <main class="content">
-<section>
-<h1>自自主檢查與驗證計算式</h1>
-<pre><code># 1. 95無鉛汽油油資：
-#    總里程: 1,200 km
-#    綜合油耗: 35 km/L
-#    95無鉛汽油參考油價: 32.7 元/L
-#    算式: 1200 / 35 * 32.7 = 1121.14 元 (取 1,120 元)
 
-fuel = round((1200 / 35) * 32.7)
-lodging = 600 + 550 + 600 # D1花蓮隊長600 + D2恆春KO 550 + D3台南福憩600
-food = 500 * 4 # 4天 * 500 = 2000
-misc = 800 # 門票200 + 備用金600
-
-total = fuel + lodging + food + misc
-
-print(f"95無鉛油資: {fuel} 元")
-print(f"住宿費用: {lodging} 元")
-print(f"餐飲費用: {food} 元")
-print(f"雜項備用金: {misc} 元")
-print(f"總預估花費: {total} 元")</code></pre>
-<p><strong>程式碼輸出內容</strong></p>
-<pre><code>95無鉛油資: 1121 元
-住宿費用: 1750 元
-餐飲費用: 2000 元
-雜項備用金: 800 元
-總預估花費: 5671 元</code></pre>
-</section>
 
 <section>
 <h1>1. 導言與路線總覽</h1>
@@ -155,17 +129,17 @@ print(f"總預估花費: {total} 元")</code></pre>
 <h1>3. 環島沿途推薦必買伴手禮清單（My Option）</h1>
 <div class="callout"><strong>採購建議：</strong>不納入正行程數字排序，屬彈性採購。建議選購常溫耐壓品項；若為冷藏品則利用店家現場宅配服務。</div>
 <div class="table-wrap"><table><thead><tr><th>區域/縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結</th><th>營業時間</th><th>備註 / 採購建議</th></tr></thead><tbody>
-<tr><td>花蓮</td><td>胖叔叔烘焙屋 / 潘師傅</td><td>檸檬吐司 / 沙其馬</td><td><a href="https://maps.google.com/?q=23.9782,121.6062">Google Maps</a></td><td>12:00–21:00（週二公休）</td><td>精緻常溫名產，方便放車廂</td></tr>
-<tr><td>花蓮</td><td>花蓮縣餅菩提餅舖</td><td>漂流木餅 / 奶油酥條</td><td><a href="https://maps.google.com/?q=23.9787,121.6045">Google Maps</a></td><td>08:30–21:30</td><td>奶油香濃，宜加固包裝避碎</td></tr>
-<tr><td>台東</td><td>青澤琪瑪酥（正氣店）</td><td>醬心蛋捲 / 琪瑪酥</td><td><a href="https://maps.google.com/?q=22.7547,121.1504">Google Maps</a></td><td>09:30–21:30</td><td>團購爆款，包裝耐壓易攜帶</td></tr>
-<tr><td>台東</td><td>楊記家傳地瓜酥老店</td><td>蜜地瓜 / 地瓜酥</td><td><a href="https://maps.google.com/?q=22.7533,121.1537">Google Maps</a></td><td>10:00–18:00</td><td>台東必買經典古早味</td></tr>
-<tr><td>屏東恆春</td><td>禾滿糧廚 / 恆春鎮農會</td><td>恆春洋蔥乖乖 / 洋蔥醬</td><td><a href="https://maps.google.com/?q=21.9961,120.7452">Google Maps</a></td><td>09:00–18:00</td><td>在地限定特殊風味乖乖</td></tr>
-<tr><td>屏東東港</td><td>金星雙糕潤</td><td>東港傳統雙糕潤</td><td><a href="https://maps.google.com/?q=22.4678,120.4491">Google Maps</a></td><td>08:00–19:00</td><td>軟Q口感，建議當天或隔天吃完</td></tr>
-<tr><td>高雄</td><td>旗錦餅店 / 瑪莉食品</td><td>愛河餅 / 旗津蝦餅</td><td><a href="https://maps.google.com/?q=22.6139,120.2692">Google Maps</a></td><td>10:00–20:00</td><td>高雄特色文創點心</td></tr>
-<tr><td>台南</td><td>煎餅名店（連得堂）</td><td>傳統手作味噌煎餅</td><td><a href="https://maps.google.com/?q=23.0016,120.2081">Google Maps</a></td><td>08:00–20:00</td><td>每人限購兩包，超人氣古早味</td></tr>
-<tr><td>台南</td><td>名坂奇洋菓子</td><td>夏威夷豆塔 / 蕾絲餅</td><td><a href="https://maps.google.com/?q=22.9818,120.2433">Google Maps</a></td><td>09:00–19:30</td><td>包裝精美，非常適合送禮</td></tr>
-<tr><td>彰化</td><td>阿振肉包 / 振味珍</td><td>招牌香菇肉包 / 饅頭</td><td><a href="https://maps.google.com/?q=24.0538,120.4357">Google Maps</a></td><td>09:00–18:30</td><td>騎車途中的熱騰騰熱量補給</td></tr>
-<tr><td>新北石門</td><td>石門劉家肉粽</td><td>招牌小肉粽 / 蛋黃粽</td><td><a href="https://maps.google.com/?q=25.2917,121.5645">Google Maps</a></td><td>09:00–19:00</td><td>北海岸極北點慶功點心</td></tr>
+
+<tr><td>花蓮</td><td>花蓮縣餅菩提餅舖</td><td>漂流木餅 / 奶油酥條</td><td><a href="https://www.google.com/maps/place/%E8%8A%B1%E8%93%AE%E7%B8%A3%E9%A4%85+%E4%B8%AD%E8%8F%AF%E9%96%80%E5%B8%82/@23.9761833,121.6097843,862m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34689fb44d9cc951:0xe3f9126a5f9599f1!8m2!3d23.9761833!4d121.6097843!16s%2Fg%2F1tc_b_1s?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>08:30–21:30</td><td>奶油香濃，宜加固包裝避碎</td></tr>
+<tr><td>台東</td><td>青澤琪瑪酥（正氣店）</td><td>醬心蛋捲 / 琪瑪酥</td><td><a href="https://www.google.com/maps/place/%E9%9D%92%E6%BE%A4%E4%BC%B4%E6%89%8B%E7%A6%AE%E7%90%AA%E7%91%AA%E9%85%A5/@22.7532512,121.1509109,870m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346fb93e6072e063:0x503577640bc21617!8m2!3d22.7532512!4d121.1509109!16s%2Fg%2F11g6mk2_2f?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>09:30–21:30</td><td>團購爆款，包裝耐壓易攜帶</td></tr>
+<tr><td>台東</td><td>楊記家傳地瓜酥老店</td><td>蜜地瓜 / 地瓜酥</td><td><a href="https://www.google.com/maps/place/%E6%A5%8A%E8%A8%98%E5%AE%B6%E5%82%B3%E5%9C%B0%E7%93%9C%E9%85%A5(%E6%8C%AF%E7%99%BC%E8%80%81%E5%BA%97+%E5%A4%A7%E5%90%8C%E5%BA%97%EF%BC%89/@22.7528907,121.1534879,870m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346fb93ecae699ab:0x9fdc65265999eb84!8m2!3d22.7528907!4d121.1534879!16s%2Fg%2F1tglwqks?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>10:00–18:00</td><td>台東必買經典古早味</td></tr>
+<tr><td>屏東恆春</td><td>禾滿糧廚 / 恆春鎮農會</td><td>恆春洋蔥乖乖 / 洋蔥醬</td><td><a href="https://www.google.com/maps/place/%E6%81%86%E6%98%A5%E9%8E%AE%E8%BE%B2%E6%9C%83%E5%81%9C%E8%BB%8A%E5%A0%B4/@22.0009321,120.7433875,875m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3471b0cf0bba6eab:0xa762f2ae93aa4b25!8m2!3d22.0009321!4d120.7433875!16s%2Fg%2F11f2gsvbtk?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>09:00–18:00</td><td>在地限定特殊風味乖乖</td></tr>
+<tr><td>屏東東港</td><td>金星雙糕潤</td><td>東港傳統雙糕潤</td><td><a href="https://www.google.com/maps/place/%E6%9D%B1%E6%B8%AF%E9%87%91%E6%98%9F%E9%9B%99%E7%B3%95%E6%BD%A4-%E5%B1%8F%E6%9D%B1%E4%BC%B4%E6%89%8B%E7%A6%AE+%E5%B1%8F%E6%9D%B1%E5%90%8D%E7%94%A2+%E5%B1%8F%E6%9D%B1%E9%9B%99%E7%B3%95%E6%BD%A4+%E6%9D%B1%E6%B8%AF%E4%BC%B4%E6%89%8B%E7%A6%AE+%E6%9D%B1%E6%B8%AF%E5%90%8D%E7%94%A2+%E6%9D%B1%E6%B8%AF%E5%BF%85%E5%90%83/@22.4680942,120.4446983,872m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3471e18f862b0583:0x664904f0f1d88f4b!8m2!3d22.4680942!4d120.4446983!16s%2Fg%2F1tf5hd1p?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>08:00–19:00</td><td>軟Q口感，建議當天或隔天吃完</td></tr>
+<tr><td>高雄</td><td>旗錦餅店 / 瑪莉食品</td><td>愛河餅 / 旗津蝦餅</td><td><a href="https://www.google.com/maps/place/%E7%91%AA%E8%8E%89%E9%A3%9F%E5%93%81%E8%A1%8C/@22.620997,120.288326,871m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346e0478515fab45:0xd8dc9594c389d89f!8m2!3d22.620997!4d120.288326!16s%2Fg%2F1wb8rfrl?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>10:00–20:00</td><td>高雄特色文創點心</td></tr>
+<tr><td>台南</td><td>煎餅名店（連得堂）</td><td>傳統手作味噌煎餅</td><td><a href="https://www.google.com/maps/place/%E9%80%A3%E5%BE%97%E5%A0%82%E9%A4%85%E5%AE%B6/@23.0004068,120.2066691,869m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346e768acb9aed1f:0x98bb4fb4948368ce!8m2!3d23.0004068!4d120.2066691!16s%2Fg%2F11bcdbc82y?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>08:00–20:00</td><td>每人限購兩包，超人氣古早味</td></tr>
+<tr><td>台南</td><td>名坂奇洋菓子</td><td>夏威夷豆塔 / 蕾絲餅</td><td><a href="https://www.google.com/maps/place/%E5%90%8D%E5%9D%82%E5%A5%87%E6%B4%8B%E8%8F%93%E5%AD%90/@22.9799743,120.2452684,869m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346e76b3d5f539fd:0xb703dde2cc800628!8m2!3d22.9799743!4d120.2452684!16s%2Fg%2F1tdjts2x?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>09:00–19:30</td><td>包裝精美，非常適合送禮</td></tr>
+<tr><td>彰化</td><td>阿振肉包 / 振味珍</td><td>招牌香菇肉包 / 饅頭</td><td><a href="https://www.google.com/maps/place/%E9%98%BF%E6%8C%AF%E8%82%89%E5%8C%85+%E6%8C%AF%E5%91%B3%E7%8F%8D/@24.0520697,120.4362256,862m/data=!3m2!1e3!4b1!4m6!3m5!1s0x346946075c024c1f:0xbb65fc7adaa7ba8b!8m2!3d24.0520697!4d120.4362256!16s%2Fg%2F1v8y1sq_?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>09:00–18:30</td><td>騎車途中的熱騰騰熱量補給</td></tr>
+<tr><td>新北石門</td><td>石門劉家肉粽</td><td>招牌小肉粽 / 蛋黃粽</td><td><a href="https://www.google.com/maps/place/%E5%8A%89%E5%AE%B6%E8%82%89%E7%B2%BD%E5%AF%8C%E5%9F%BA%E5%BA%97/@25.2873502,121.531404,853m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3442b680b5351e7f:0x5f04a9ab53ba7a5f!8m2!3d25.2873502!4d121.531404!16s%2Fg%2F1tcvlznd?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D">Google Maps</a></td><td>09:00–19:00</td><td>北海岸極北點慶功點心</td></tr>
 </tbody></table></div>
 </section>
 
