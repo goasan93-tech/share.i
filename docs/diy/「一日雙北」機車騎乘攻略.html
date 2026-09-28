@@ -83,9 +83,9 @@ code { font-family: "SFMono-Regular", Consolas, monospace; }
 <div class="page">
 <header class="report-header">
   
-  <h1 class="report-title">一日雙北機車騎乘攻略</h1>
-  <p class="report-sub">龍潭 → 北橫台 7 線 → 宜蘭 → 北宜公路 → 新北／台北 → 台 3 線 → 龍潭</p>
-  <p class="report-sub">研究組員：李世權 Gemini | 排版美工：Copilot</p>
+  <h1 class="report-title" style="text-align: center;">一日雙北機車騎乘攻略</h1>
+  <p class="report-sub" style="text-align: center;">龍潭 → 北橫台 7 線 → 宜蘭 → 北宜公路 → 新北／台北 → 台 3 線 → 龍潭</p>
+  <p class="report-sub" style="text-align: center;">研究組員：李世權 Gemini | 排版美工：Copilot</p>
 </header>
 <div class="layout">
   <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
@@ -135,8 +135,9 @@ code { font-family: "SFMono-Regular", Consolas, monospace; }
     <table>
       <thead><tr><th>區域／縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結</th><th>營業時間</th><th>備註／採購建議</th></tr></thead>
       <tbody>
-        <tr><td><strong>宜蘭礁溪</strong></td><td>奕順軒（礁溪店）</td><td>奶凍捲／狀元餅</td><td><a href="https://www.google.com/maps/place/%E5%A5%95%E9%A0%86%E8%BB%92+%E7%A4%81%E6%BA%AA%E5%BA%97/@24.8268738,121.771906,856m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3467fa4999bd054b:0xa0ff5d8566fb38b6!8m2!3d24.8268738!4d121.771906!16s%2Fg%2F1tdzcqp5?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">導航連結</a></td><td>10:00–22:00</td><td>奶凍捲需保冷，可備保冷袋</td></tr>
-        <tr><td><strong>新北三峽</strong></td><td>三角湧金牛角</td><td>招牌現烤金牛角麵包</td><td><a href="https://www.google.com/maps/place/%E4%B8%89%E8%A7%92%E6%B9%A7%E9%BB%83%E9%87%91%E7%89%9B%E8%A7%92/@24.9271899,121.3752151,856m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34681beb63d37aa3:0xa40d48df6ff83fce!8m2!3d24.9271899!4d121.3752151!16s%2Fg%2F1tf6jyt0?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">導航連結</a></td><td>08:00–18:00</td><td>剛出爐香氣濃郁，耐壓好放</td></tr>
+        <tr><td><strong>宜蘭礁溪</strong></td><td>奕順軒（礁溪店）</td><td>奶凍捲／狀元餅</td><td><a href="https://maps.google.com/?q=24.8278,121.7725&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>10:00–22:00</td><td>奶凍捲需保冷，可備保冷袋</td></tr>
+        <tr><td><strong>新北坪林</strong></td><td>滴水明求／坪林茶鄉</td><td>包種茶包／茶包種蛋捲</td><td><a href="https://maps.google.com/?q=24.9372,121.7108&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>09:00–18:00</td><td>常溫茶香點心方便攜帶</td></tr>
+        <tr><td><strong>新北三峽</strong></td><td>三角湧金牛角</td><td>招牌現烤金牛角麵包</td><td><a href="https://maps.google.com/?q=24.9338,121.3692&utm_source=gemini" target="_blank" rel="noopener">導航連結</a></td><td>08:00–18:00</td><td>剛出爐香氣濃郁，耐壓好放</td></tr>
       </tbody>
     </table>
 
@@ -152,7 +153,8 @@ code { font-family: "SFMono-Regular", Consolas, monospace; }
     </ul>
 
     <h1>5. Google 我的地圖（My Maps）匯入專用 CSV</h1>
-    <p>以下內容可複製後另存為 UTF-8 編碼的 CSV 檔，再匯入 Google 我的地圖。</p>
+    <p>請複製以下內容並貼上至 <strong>Google 試算表</strong>（確保貼上後分為 A 欄 <code>地點名稱</code>、B 欄 <code>完整地址</code>、C 欄 <code>詳細說明</code>），匯入 Google 我的地圖時將 <strong><code>完整地址</code></strong> 設為定位欄位，<strong><code>地點名稱</code></strong> 設為標題欄位：</p>
+    <p><a href="https://www.google.com/maps/d/edit?mid=1pJXlZq0wwKTktp6WTpDPVLTAJeo8_wQ&usp=sharing" target="_blank">Google 路線規劃圖</a></p>
     <pre><code>地點名稱,完整地址,詳細說明
 1. 龍潭 24H 加油站,桃園市龍潭區大昌路二段72號,預估抵達：07:00｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (出發前強制加滿 95無鉛)
 2. 中油復興站,桃園市復興區中正路135號,預估抵達：08:00｜站間里程：32 km｜自加滿已騎：32 km｜剩餘航程：68 km｜剩餘油量：68% (進北橫前強制加滿重置100%)
@@ -164,7 +166,7 @@ code { font-family: "SFMono-Regular", Consolas, monospace; }
 
   </main>
 </div>
-<footer class="report-footer">行程規劃草案｜正式出發前請確認即時路況、天候、營業時間與車況。</footer>
+<footer class="report-footer">正式出發前請確認即時路況、天候、營業時間與車況。</footer>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
