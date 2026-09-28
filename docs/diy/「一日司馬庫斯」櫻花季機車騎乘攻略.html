@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「一日司馬庫斯」櫻花季機車騎乘攻略</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #52646a;
+  --paper: #f7f8f5;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e3eff0;
+  --rule: #d5ddd9;
+  --warning-bg: #fff3e8;
+  --warning-border: #bd642f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1600px; margin: 0; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.report-title {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.35;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1040px);
+  gap: 32px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+.toc-title {
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.toc-link {
+  display: block;
+  padding: 6px 0;
+  color: var(--ink-soft);
+  border-bottom: 1px dashed var(--rule);
+  font-size: 14px;
+  text-decoration: none;
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  min-width: 0;
+  padding: 48px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+.content h1 {
+  margin: 48px 0 20px;
+  padding-bottom: 10px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  line-height: 1.45;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  color: var(--ink);
+  border-left: 4px solid var(--accent);
+  font-size: 20px;
+  line-height: 1.5;
+}
+.content h3 { margin: 26px 0 10px; font-size: 17px; }
+.content p { margin: 0 0 16px; }
+.content strong { color: var(--ink); }
+.content ul, .content ol { margin: 0 0 20px; padding-left: 28px; }
+.content li { margin: 5px 0; }
+table {
+  width: 100%;
+  margin: 12px 0 24px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.table-wrap { overflow-x: auto; margin-bottom: 24px; }
+th, td {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+thead { background: var(--accent-soft); }
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+a { color: var(--accent); }
+.math-block {
+  margin: 14px 0;
+  padding: 14px 18px;
+  overflow-x: auto;
+  background: #f5f5ef;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.callout {
+  margin: 18px 0;
+  padding: 14px 18px;
+  background: var(--warning-bg);
+  border-left: 4px solid var(--warning-border);
+  border-radius: 6px;
+}
+.callout-title { margin-bottom: 6px; color: var(--warning-border); font-weight: 700; }
+pre {
+  margin: 12px 0 24px;
+  padding: 18px;
+  overflow-x: auto;
+  background: #202b2d;
+  color: #e9f0ec;
+  border-radius: 6px;
+  font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+}
+.report-footer {
+  padding: 32px;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+  .report-header { padding: 42px 24px 30px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+  
+  <h1 class="report-title" style="text-align: center;">「一日司馬庫斯」櫻花季機車騎乘攻略</h1>
+  <p class="report-sub" style="text-align: center;">研究組員：李世權 Gemini | 排版美工：Copilot</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc" aria-label="文件目錄">
+    <div class="toc-title">目錄</div>
+    <div id="toc-list"></div>
+  </nav>
+
+  <main class="content">
+    <h1>1. 核心數據統計與預估花費明細</h1>
+    <ul>
+        <li><strong>路線方向：</strong>龍潭出發 $→$ 台3線 $→$ 內灣（竹120線） $→$ 尖石（竹60線） $→$ 宇老觀景台 $→$ 秀鑾檢查哨 $→$ 泰崗岔路 $→$ 司馬庫斯產業道路 $→$ 司馬庫斯巨木群部落（原路折返經內灣返回龍潭）。</li>
+      <li><strong>總騎乘里程：</strong>約 $210 \text{ km} \sim 230 \text{ km}$（往返總里程）。</li>
+      <li><strong>獨立導航站點數：</strong><strong>8 個獨立圖釘</strong>。</li>
+      <li><strong>總行車時間：</strong>約 $6.5 \text{ 小時} \sim 7.5 \text{ 小時}$（不含高山用餐、賞花與步道健行時間）。</li>
+      <li><strong>櫻花季通行證申請規範：</strong><strong>每日汽車限定 50 輛、機車 100 輛</strong>，往年一日遊來回通行證自 1 月 15 日 9 時起開放申請，部落官方申請網址：<a href="https://smangus.org/" target="_blank" rel="noopener">司馬庫斯官方網站</a>。</li>
+      <li><strong>建議出發時間：</strong><strong>05:00</strong> 啟程，預計 <strong>09:30</strong> 抵達部落（避開上山管制潮，精準停留 4.5 小時）。</li>
+      <li><strong>油箱預估基準：</strong>高山/陡坡段耗油以 <strong>$85 \text{ km / 桶}$</strong> 計算；一般縣道以 <strong>$130 \text{ km / 桶}$</strong> 計算。</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">一日司馬庫斯個人總預估花費：約 $900$ 元／人</div>
+      <ol>
+        <li><strong>95 無鉛汽油油資算式</strong>
+          <ul>
+            <li><strong>算式來源：</strong>總里程預估 $220 \text{ km}$，125cc 速克達高山陡坡爬升平均綜合油耗約 $30 \text{ km/L}$，油價以中油 95 無鉛汽油參考零售價 <strong>$32.7 \text{ 元/L}$</strong> 計算。</li>
+            <li><strong>計算過程：</strong><div class="math-block">$$\frac{220 \text{ km}}{30 \text{ km/L}} \times 32.7 \text{ 元/L} = 7.33 \text{ L} \times 32.7 \text{ 元/L} \approx 240 \text{ 元} \tag{1.1}$$</div></li>
+            <li><strong>計算結果：</strong>95 無鉛汽油油資約 <strong>$240$ 元</strong>。</li>
+          </ul>
+        </li>
+        <li><strong>餐飲與補給費用：</strong>內灣早餐、宇老熱湯/臭豆腐、部落原住民風味午餐與補給約 <strong>$510$ 元</strong>。</li>
+        <li><strong>機車停車費與緊急備用金：</strong>部落<strong>機車停車場清潔費 50 元</strong>與緊急備用金 100 元，小計 <strong>$150$ 元</strong>。</li>
+      </ol>
+    </div>
+
+    <h1>2. 詳細行程 SOP 與單一獨立導航站點規劃</h1>
+    <ol>
+      <li><strong>站點 1【龍潭 24H 加油站】（出發點）</strong>｜05:00 啟程｜<strong>剩餘油量：</strong>$100\%$（<strong>出發前強制加滿 95 無鉛</strong>）</li>
+      <li><strong>站點 2【中油橫山站】⛽</strong>｜05:45 抵達｜站間 $28 \text{ km}$｜<strong>進入山區前最後大型加油站！強制加滿重置 $100\%$！</strong></li>
+      <li><strong>站點 3【中油尖石站】⛽</strong>｜06:10 抵達｜站間 $12 \text{ km}$｜<strong>山區最後直營加油站！再次補滿至 $100\%$ 重置！</strong></li>
+      <li><strong>站點 4【宇老觀景台 / 宇老臭豆腐】🍜</strong>｜07:20 抵達｜站間 $22 \text{ km}$｜<strong>剩餘油量：</strong>$74\%$（海拔 1450m 享用熱湯與賞雲海）</li>
+      <li><strong>站點 5【秀鑾檢查哨 / 控溪吊橋】📸</strong>｜08:10 抵達｜站間 $15 \text{ km}$｜<strong>剩餘油量：</strong>$82\%$（檢查通行證，欣賞峽谷溪流）</li>
+      <li><strong>站點 6【司馬庫斯部落（上帝的部落）櫻花步道】🌸</strong>｜09:30 抵達｜站間 $16 \text{ km}$｜<strong>剩餘油量：</strong>$62\%$（停妥機車，開始 4.5 小時賞花健行行程）</li>
+      <li><strong>站點 7【內灣老街】🍡</strong>｜15:30 抵達｜站間 $65 \text{ km}$｜<strong>剩餘油量：</strong>$23\%$（返程吃客家野薑花粽與麻糬）</li>
+      <li><strong>站點 8【龍潭大池】（終點）</strong>｜17:00 抵達｜站間 $28 \text{ km}$（中途於橫山加滿）｜<strong>平安完成一日上帝的部落櫻花巡禮！</strong></li>
+    </ol>
+
+    <h1>3. 櫻花季賞花與步道漫步路線 SOP（停留剛好 4.5 小時，09:30 – 14:00）</h1>
+    <ol>
+      <li><strong>09:30 – 09:40（10 分鐘）：</strong>停妥機車於機車停車場，進行裝備整頓與隊伍集合。</li>
+      <li><strong>09:40 – 10:20（40 分鐘）：</strong><strong>牌樓櫻花大道打卡</strong>（穿越櫻花木棧道，拍攝粉紅櫻花隧道景致）。</li>
+      <li><strong>10:20 – 12:20（120 分鐘）：</strong><strong>巨木群步道健行</strong>（往返約 $10 \text{ km}$，欣賞老爺木與千年紅檜巨木群）。</li>
+      <li><strong>12:20 – 13:15（55 分鐘）：</strong><strong>部落美食享用與休息</strong>（享用馬告香腸、原住民風味餐或自備熱食）。</li>
+      <li><strong>13:15 – 13:45（30 分鐘）：</strong><strong>返程宇老觀景台店家買香菇（預留 15 分鐘）與部落合作社採買</strong>（於合作社及順路攤位選購高山段木香菇與馬告伴手禮）。</li>
+      <li><strong>13:45 – 14:00（15 分鐘）：</strong><strong>整裝與發車準備</strong>（回到機車停車場，檢查機車車況，準時於 14:00 開放下山單向管制時發車離開）。</li>
+    </ol>
+
+    <h1>4. 沿途推薦必買伴手禮清單表</h1>
+    <p><strong>表 4.1　沿途推薦必買伴手禮與站點資訊表</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>區域 / 縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結</th><th>營業時間</th><th>備註 / 採購建議</th></tr></thead>
+        <tbody>
+          <tr><td><strong>新竹尖石</strong></td><td>宇老觀景台店家 / 部落攤位</td><td>高山段木香菇 / 高麗菜</td><td><a href="https://maps.google.com/?q=24.6653,121.2858" target="_blank" rel="noopener">Google Maps 導航</a></td><td>08:00 – 17:00</td><td><strong>行程已預留 15 分鐘專屬採購時間</strong></td></tr>
+          <tr><td><strong>司馬庫斯</strong></td><td>部落合作社</td><td>馬告（Mountain Pepper 山胡椒）香料 / 小米酒 / 馬告餅乾</td><td><a href="https://maps.google.com/?q=24.5794,121.3323" target="_blank" rel="noopener">Google Maps 導航</a></td><td>08:00 – 18:00</td><td>支持原民部落在地特色手作</td></tr>
+          <tr><td><strong>新竹橫山</strong></td><td>內灣老街羅媽媽</td><td>野薑花粽 / 芋頭巧</td><td><a href="https://maps.google.com/?q=24.7042,121.1823" target="_blank" rel="noopener">Google Maps 導航</a></td><td>09:00 – 18:00</td><td>常溫方便機車車廂攜帶</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h1>5. 人身裝備、山區備援與救援資訊</h1>
+    <ul>
+      <li><strong>機車通行證：</strong>行前至官網下載並截圖以供檢查哨查核。</li>
+      <li><strong>櫻花季高山禦寒防風：</strong>司馬庫斯海拔約 $1,500 \text{ m}$，2~3 月櫻花季清晨與高山氣溫常介於 $5^\circ\text{C} \sim 12^\circ\text{C}$。建議採洋蔥式穿法（排汗內層 + 保暖中層 + 防風防雨外套），並準備防水厚手套與暖暖包。</li>
+      <li><strong>山區路況與騎乘應變：</strong>司馬庫斯產業道路（約 $16 \text{ km}$）部分路段為水泥路面，富含陡坡、急彎與坑洞，櫻花季期間車流量較大，<strong>請務必保持低速擋與安全車距，切勿煞車過猛</strong>。</li>
+    </ul>
+    <h2>5.1 緊急救援與警察局資訊</h2>
+    <ul>
+      <li><strong>鄰近山區機車道路救援：</strong>
+        <ul>
+          <li><strong>新竹皓達 24H 道路救援（尖石山區）：</strong><code>0955-883-671</code>（新竹縣尖石鄉秀鑾村田埔 85 號）</li>
+          <li><strong>穩順旺 24H 道路救援（內灣 / 尖石山區）：</strong><code>0913-177-311</code></li>
+        </ul>
+      </li>
+      <li><strong>警察局與部落求助點：</strong>
+        <ul>
+          <li><strong>橫山分局泰崗派出所：</strong><code>03-584-7504</code></li>
+          <li><strong>橫山分局秀鑾派出所：</strong><code>03-584-7503</code></li>
+          <li><strong>司馬庫斯旅客服務中心：</strong><code>03-584-7688</code> / <code>0928-804-983</code></li>
+        </ul>
+      </li>
+    </ul>
+    <h2>5.2 機車緊急故障排除 SOP</h2>
+    <ol>
+      <li><strong>突然熄火 / 發不起來：</strong>先檢查「側腳架」是否拉起、急停開關是否切換到 ON，並確認煞車有拉緊再按發動。</li>
+      <li><strong>傳動 / 皮帶斷裂：</strong>發動時引擎有聲音但車子無法前進，此狀況必須依賴道路救援拖吊，切勿強行發車。</li>
+      <li><strong>高山高海拔馬力不足（高山症）：</strong>若是在宇老以上陡坡感覺沒力，可嘗試鬆開一點油門再重新補油，減輕高海拔空氣稀薄造成的燃油混合比不良。</li>
+    </ol>
+
+    <h1>6. 一日司馬庫斯 Google 我的地圖（My Maps）匯入專用 CSV</h1>
+    <pre><code>地點名稱,完整地址,詳細說明
+1. 龍潭 24H 加油站,桃園市龍潭區大昌路二段72號,預估抵達：05:00｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (出發前強制加滿 95無鉛)
+2. 中油橫山站,新竹縣橫山鄉中豐路二段180號,預估抵達：05:45｜站間里程：28 km｜自加滿已騎：28 km｜剩餘航程：72 km｜剩餘油量：72% (山區前大型站！強制加滿重置100%)
+3. 中油尖石站,新竹縣尖石鄉嘉樂村3鄰14號,預估抵達：06:10｜站間里程：12 km｜自加滿已騎：12 km｜剩餘航程：88 km｜剩餘油量：88% (山區最後直營站！補滿重置100%)
+4. 宇老觀景台,新竹縣尖石鄉玉峰村宇老1鄰1號,預估抵達：07:20｜站間里程：22 km｜自加滿已騎：22 km｜剩餘航程：63 km｜剩餘油量：74% (海拔1450m熱食補給與賞景)
+5. 秀鑾檢查哨,新竹縣尖石鄉秀鑾村4鄰25號,預估抵達：08:10｜站間里程：15 km｜自加滿已騎：37 km｜剩餘航程：48 km｜剩餘油量：56% (核對通行證與欣賞峽谷)
+6. 司馬庫斯部落門口,新竹縣尖石鄉玉峰村14鄰司馬庫斯2號,預估抵達：09:30｜站間里程：16 km｜自加滿已騎：53 km｜剩餘航程：32 km｜剩餘油量：38% (停留4.5H賞櫻步道/買香菇/剛好14:00發車)
+7. 內灣老街,新竹縣橫山鄉中正路,預估抵達：15:30｜站間里程：65 km｜自加滿已騎：118 km｜剩餘航程：0 km｜剩餘油量：0% (返程吃客家美食與中途加油)
+8. 龍潭大池 (終點),桃園市龍潭區中正路210號,預估抵達：17:00｜站間里程：28 km｜自加滿已騎：28 km｜剩餘航程：72 km｜剩餘油量：72% (平安完成一日司馬庫斯櫻花之旅！)</code></pre>
+
+  
+   
+  </main>
+</div>
+
+<footer class="report-footer">出發前請再次確認官方公告、天候與道路狀況。</footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function (header, index) {
+    var id = 'sec-' + index;
+    header.id = id;
+    var link = document.createElement('a');
+    link.href = '#' + id;
+    link.textContent = header.textContent;
+    link.className = 'toc-link';
+    list.appendChild(link);
+  });
+});
+</script>
+</body>
+</html>
