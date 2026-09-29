@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>微積分與預備數學終極學霸教材（HVAC 應用版）</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+
+:root {
+  --ink: #1c2b33;
+  --ink-soft: #4a5b63;
+  --paper: #fbfaf6;
+  --panel: #ffffff;
+  --accent: #0f5c66;
+  --accent-soft: #e4f0f1;
+  --rule: #d8dcd6;
+  --warn-bg: #fdf1ec;
+  --warn-border: #c0522f;
+  --note-bg: #f2f4f2;
+  --note-border: #7a8a86;
+  --success-bg: #eaf5ee;
+  --success-border: #2f7a4f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.85;
+  font-size: 16px;
+}
+.page { max-width: 1400px; margin: 0 auto; }
+.report-header {
+  padding: 64px 32px 40px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.report-title {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.report-sub {
+  color: var(--ink-soft);
+  font-size: 16px;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 40px 32px 80px;
+  align-items: start;
+}
+.toc {
+  position: sticky;
+  top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.toc-link {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.toc-link:hover { color: var(--accent); }
+.content {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 48px;
+  min-width: 0;
+}
+.content h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 26px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+  margin: 48px 0 20px;
+}
+.content h1:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 20px;
+  color: var(--ink);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.content h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 26px 0 10px;
+}
+.content h4 { font-size: 15px; margin: 20px 0 8px; color: var(--ink-soft); }
+.content p { margin: 0 0 16px; color: var(--ink); }
+.content strong { color: var(--ink); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 24px;
+  font-size: 14.5px;
+  display: block;
+  overflow-x: auto;
+}
+thead { background: var(--accent-soft); }
+th, td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.math-block {
+  background: #f6f5f0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.content figure {
+  margin: 16px 0 24px;
+  text-align: center;
+}
+.content figure img {
+  display: block;
+  width: min(100%, 760px);
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.content figcaption {
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+.callout {
+  border-left: 4px solid var(--note-border);
+  background: var(--note-bg);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+.callout-success { border-color: var(--success-border); background: var(--success-bg); }
+.callout-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.callout-warning .callout-title { color: var(--warn-border); }
+.callout-success .callout-title { color: var(--success-border); }
+.callout-note .callout-title { color: var(--note-border); }
+.callout-body { color: var(--ink-soft); font-size: 14.5px; }
+.report-footer {
+  text-align: left;
+  padding: 32px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .content { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<header class="report-header">
+ 
+  <h1 class="report-title" style="text-align: center;">微積分與預備數學終極學霸教材（HVAC 應用版）</h1>
+  <p class="report-sub" style="text-align: center;">指數與對數、極限、微分、積分——含 HVAC 情境應用實例</p>
+  <p style="text-align: center;">研究組員：李世權 Claude Gemini</p>
+</header>
+
+<div class="layout">
+  <nav id="toc" class="toc"><div class="toc-title">目錄</div><div id="toc-list"></div></nav>
+  <main class="content">
+<h1>前言　學習導讀與本版修訂說明</h1>
+<h2>學習導讀</h2>
+<p>當我們建立了「微分是變化率／切線斜率」、「積分是累積量／面積」以及「極限是尋找臨界邊界」的直觀連結後，未來無論是在看工程圖表（如 $P\text{-}v$ 圖、溫熵圖）、推導熱力學公式，還是分析系統變速變化時，這些數學符號都不再只是冷冰冰的考試題目，而是能活靈活現幫助您解釋物理世界的強大工具。</p>
+<p>本教材的閱讀路線建議：先讀各章前半的「觀念與公式」，再做「經典計算範例」，最後用每章最後一節的 <mark style="color:red;font-weight:bold">🔧 HVAC 情境應用實例</mark> 檢驗自己是否能把數學工具搬到空調工程的真實問題上。</p>
+
+<h2>目錄</h2>
+<ol>
+<li>指數與對數（Exponential &amp; Logarithm）</li>
+<li>極限與連續（Limits &amp; Continuity）</li>
+<li>微分學（Differential Calculus）</li>
+<li>微分的極值應用：極值、凹凸性與反曲點</li>
+<li>積分學（Integral Calculus）</li>
+<li>定積分的幾何應用：平面面積計算</li>
+<li>全書總複習：綜合對照與速查全表</li>
+<li>附錄　參考文獻、查證等級與內容檢核</li>
+</ol>
+<hr />
+<h1>1. 指數與對數（Exponential &amp; Logarithm）</h1>
+<h2>1.1 核心觀念與直覺理解</h2>
+<ul>
+<li><strong>指數（$a^x$）</strong>：在右上角負責<strong>指示</strong>你自乘的次數，即「連續相乘」的次數。當指數推廣到分數（開根方）與負數（倒數）時，運算規則依然一致。指數函數增長速度極快，常用於描述：「細胞繁殖」、「複利增長」與「放射性衰變」。</li>
+</ul>
+<figure><img src="Pasted%20image%2020260915172245.png" alt="指數函數與對數函數互為反函數的圖形示意圖"><figcaption>圖1.1　指數概念示意圖</figcaption></figure>
+<ul>
+<li><strong>對數（$\log_a x$）</strong>：對應到指數是「自乘了幾次」，為指數的<strong>逆運算</strong>。對數回答的問題是：「底數 $a$ 要自乘多少次方，才會等於 $x$？」</li>
+</ul>
+<figure><img src="Pasted%20image%2020260915173041.png" alt="底數大於 1 與介於 0 和 1 之間的指數函數圖形"><figcaption>圖1.2　對數概念示意圖</figcaption></figure>
+<h3>1.1.1 對數的核心作用：把「極長串」的數字縮短</h3>
+<p>對數（Logarithm，簡稱 log）的核心作用，就是將「極長串」的數字「縮短」來表示。以下用兩個「極小數字（微觀世界）」的計算例子來說明。</p>
+<p>在科學界，處理「小數點後有很多個零」的微觀數字，比處理大數字更令人頭痛。對數在這裡的妙用，是把這些極小的數字變成人類好讀的<strong>正整數</strong>。</p>
+<p><strong>A. 例子一：酸鹼值（pH 值）</strong></p>
+<p>我們常喝的純水、可樂、檸檬汁，裡面的「氫離子濃度」都非常低。如果直接看原始濃度，數字會長這樣：</p>
+<ul>
+<li><strong>純水</strong>的氫離子濃度：$0.0000001\ \text{M}$（$10^{-7}$）</li>
+<li><strong>可樂</strong>的氫離子濃度：$0.001\ \text{M}$（$10^{-3}$）</li>
+<li><strong>檸檬汁</strong>的氫離子濃度：$0.01\ \text{M}$（$10^{-2}$）</li>
+</ul>
+<p>去超商買飲料時，如果包裝上寫「本飲料氫離子濃度為 $0.001\ \text{M}$」，一般人根本無法直觀感受它有多酸。化學家利用對數公式 $\text{pH} = -\log_{10}(\text{濃度})$，成功把小數點後的零消掉：</p>
+<ul>
+<li><strong>純水</strong>：$-\log_{10}(10^{-7}) = -(-7) = \mathbf{7}$</li>
+<li><strong>可樂</strong>：$-\log_{10}(10^{-3}) = -(-3) = \mathbf{3}$</li>
+<li><strong>檸檬汁</strong>：$-\log_{10}(10^{-2}) = -(-2) = \mathbf{2}$</li>
+</ul>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">💡 <b>縮小效果</b>：原本是充滿零的微小數值 $0.0000001$ 到 $0.01$，透過對數轉換後，變成了我們熟知的 <b>7、3、2</b>。我們一眼就能看出檸檬汁 pH 2 比可樂 pH 3 更酸。</div></div>
+
+<p><strong>B. 例子二：晶片製造的「奈米級」微縮（圖表拉直）</strong></p>
+<p>在半導體晶片（例如台積電製程）的世界裡，元件的尺寸隨著技術進步不斷縮小：</p>
+<ul>
+<li>2000 年：$180\ \text{nm}$</li>
+<li>2010 年：$32\ \text{nm}$</li>
+<li>2026 年：$1.4\ \text{nm}$（大約 $0.0000000014$ 公尺）</li>
+</ul>
+<p>如果我們把 30 年來的尺寸演進畫在普通圖表上，後期的奈米級數字會全部貼在最底部的 $x$ 軸上，變成一條看不出變化的死線。如果對這些微小尺寸取對數（以 $10$ 為底）：</p>
+<ul>
+<li>$\log_{10}(180) \approx 2.25$</li>
+<li>$\log_{10}(32) \approx 1.5$</li>
+<li>$\log_{10}(1.4) \approx 0.15$</li>
+</ul>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">待查證：本例為說明「對數縮放」的示意數據。製程節點名稱屬廠商行銷命名，並非電晶體的實際物理尺寸；且「2026 年 1.4 nm」的量產時程，依作者所知，1.4 nm 世代原規劃時程晚於 2026 年，建議引用前自行查證。不影響對數縮放的教學結論。</div></div>
+
+<p><strong>C. 總結：對數的「伸縮自如」</strong></p>
+<p>對數就像是一支<strong>數字望遠鏡</strong>：</p>
+<ul>
+<li>面對<strong>巨大數字</strong>時，它把 $10{,}000{,}000{,}000$（100 億）縮小看成 $\mathbf{10}$。</li>
+<li>面對<strong>極小數字</strong>時，它把 $0.0000000001$（100 億分之一）放大看成 $\mathbf{-10}$（或透過負號變成 $\mathbf{10}$）。</li>
+</ul>
+<p>不論數字再大或再小，在對數的世界裡，最後都會變成我們一隻手就能數得過來的舒適範圍。</p>
+<h3>1.1.2 日常最常見的兩種對數底數</h3>
+<p><strong>常用對數 $\log_{10} x$</strong>（Common Logarithm 常用對數）：底數為 $10$，工程上常簡寫為 $\log x$，多用於分貝、pH 值、地震規模等「數量級」量測。</p>
+<p><strong>自然對數 $\ln x = \log_e x$</strong>（Natural Logarithm 自然對數）：底數為 $e$，是唯一使指數函數 $b^x$ 微分後不出現額外係數的底數，因此成為<mark style="color:red;font-weight:bold">連續</mark>成長／衰減模型的標準工具。</p>
+<p>兩者可透過換底公式互相轉換：</p>
+<div class="math-block">$$
+\log_{10} x = \frac{\ln x}{\ln 10} \quad\Longrightarrow\quad \ln x = \log_{10} x \cdot \ln 10
+$$</div>
+<h3>1.1.3 自然對數在現實世界的兩個經典計算應用</h3>
+<p><strong>A. 例子一：考古學的時光機（碳-14 放射性定年法）</strong></p>
+<p>所有的生物體內都含有放射性元素「碳-14」。生物活著時，體內的碳-14 濃度是固定的；但生物死後，碳-14 就會開始<strong>連續不斷地衰變（變少）</strong>，每隔 $5730$ 年，濃度就會減少一半（半衰期）。</p>
+<p><strong>【場景】</strong> 考古學家挖出了一塊古老木炭，測量後發現它體內的碳-14 殘留量只有活體植物的 $30\%$（即 $0.3$）。這塊木炭是幾年前的？</p>
+<p>科學家使用放射性衰變公式，其中就會出現自然對數 $\ln$ 來解開時間 $t$：</p>
+<div class="math-block">$$
+t = \frac{\ln(\text{殘留比例})}{-\lambda}
+$$</div>
+<p>其中 $\lambda$ 是衰變常數，碳-14 的 $\lambda \approx 0.000121\ \text{年}^{-1}$。代入計算：</p>
+<ol>
+<li>轉換微小比例：對 $0.3$ 取自然對數，$\ln(0.3) \approx -1.204$。</li>
+<li>計算年份：$t = \dfrac{-1.204}{-0.000121\ \text{年}^{-1}} \approx 9950\ \text{年}$。</li>
+</ol>
+<ul>
+<li><strong>原始測量值</strong>：殘留率 $0.3$（連續衰變的複雜狀態）</li>
+<li><strong>計算結果</strong>：<mark style="color:red;font-weight:bold">約 9950 年</mark></li>
+</ul>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">💡 <b>意義</b>：自然界中的物質衰變是每分每秒都在「連續」發生的，自然對數 $\ln$ 是唯一能精準把這種「連續衰變比例」還原成「精確歷史時間」的數學工具。</div></div>
+
+<p><strong>B. 例子二：理財界的黃金法則（計算複利翻倍的時間）</strong></p>
+<p>當你在銀行存錢，或者投資股票、加密貨幣時，利息通常是「利滾利」的。如果利息是每分每秒都在滾動（稱為<b>連續複利</b>），你想知道資產翻倍需要多久，就必須用 $\ln$。</p>
+<p><strong>【場景】</strong> 你投資了一筆 $1{,}000{,}000$ 元（100 萬元）的資金，市場年化報酬率為 $10\%$（以連續複利計算）。你想知道這筆錢要放多久，才會翻倍變成 $2{,}000{,}000$ 元（200 萬元）？</p>
+<p>連續複利的公式為：</p>
+<div class="math-block">$$
+\text{變大後的錢} = \text{原始資金} \times e^{r \times t}
+$$</div>
+<p>要解出時間 $t$，兩邊取自然對數後，公式會變得超級簡單：</p>
+<div class="math-block">$$
+t = \frac{\ln(\text{翻倍倍數})}{\text{利率}} = \frac{\ln 2}{0.10}
+$$</div>
+<p>代入計算：</p>
+<ol>
+<li>投資界著名的常數：$\ln 2 \approx 0.693$（這就是理財界「72 法則」或「70 法則」的數學由來）。</li>
+<li>計算時間：$t = \dfrac{0.693}{0.10\ \text{年}^{-1}} = 6.93\ \text{年}$。</li>
+</ol>
+<ul>
+<li><strong>原始巨大金額</strong>：100 萬變 200 萬（隨著時間加速膨脹）</li>
+<li><strong>計算結果</strong>：約 <mark style="color:red;font-weight:bold">7 年</mark></li>
+</ul>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">💡 <b>意義</b>：不管你投資的本金是一萬、一百萬還是一百億，只要是「連續翻倍」，本金多大都不重要（在公式中直接被約掉了）。對數 $\ln 2$ 直接把複雜的金融指數成長，縮小簡化成一個簡單的常數 $0.693$，讓我們一秒就能算出財富自由需要的時間。</div></div>
+
+<h3>1.1.4 如何抉擇底數：常用對數 vs 自然對數</h3>
+<p><strong>總結</strong>：</p>
+<ul>
+<li><strong>$\log_{10}$（常用對數）</strong>：用來處理<mark style="color:red;font-weight:bold">空間、規模、級距</mark>。比如宇宙多大、聲音多響、溶液多酸。它是人類為了方便自己數數（十進位）而發明的尺。</li>
+<li><strong>$\ln$（自然對數）</strong>：用來處理<mark style="color:red;font-weight:bold">時間、速度、增長</mark>。比如細胞分裂、人口暴增、放射性衰變、利滾利。它是大自然本身在運行「生老病死、加速膨脹」時所使用的天然公式。</li>
+</ul>
+<p>接下來分兩部分說明：第一，如果把連續成長的例子硬換成 $\log_{10}$ 會發生什麼事；第二，大自然和人類在抉擇底數時，背後的根本緣由。</p>
+<p><strong>(1) 如果把計算例換成 $\log_{10}$ 會怎樣？</strong></p>
+<p>如果把前述「碳-14 衰變」或「連續複利翻倍」的例子換成 $\log_{10}$ 來計算，<strong>最終算出來的時間（答案）會完全一樣</strong>，但是<strong>計算過程會多出一個極其彆扭的「修正係數」</strong>。以<strong>投資理財本金翻 2 倍</strong>的時間為例：</p>
+<p>原本用自然對數 $\ln$（底數 $e$），公式非常乾淨漂亮：</p>
+<div class="math-block">$$
+t = \frac{\ln 2}{0.10} = \frac{0.693}{0.10} = 6.93\ \text{年}
+$$</div>
+<p>如果硬換成常用對數 $\log_{10}$（底數 $10$）：因為利滾利是<mark style="color:red;font-weight:bold">每分每秒連續發生</mark>的，它的本質就是以 $e$ 為基礎在擴張。如果你非要用底數 $10$ 去量它，就必須使用「換底公式」：</p>
+<div class="math-block">$$
+t = \frac{\log_{10} 2 \times \textcolor{#DB372D}{\ln 10}}{0.10} = \frac{0.30103 \times \textcolor{#DB372D}{2.30259}}{0.10} = \frac{0.693}{0.10} = 6.93\ \text{年}
+$$</div>
+<ul>
+<li><strong>發現了嗎？</strong> 當你用 $\log_{10}$ 時，公式被迫拖著一個尾巴 $\textcolor{#DB372D}{\ln 10 \approx 2.30259}$。</li>
+<li>這個數值純粹是因為「你用人類習慣的十進位，去硬套大自然的連續增長」而產生的<strong>匯率轉換費（修正常數）</strong>。</li>
+</ul>
+<p><strong>(2) 為何用底數 $e$？為何用底數 $10$？抉擇的緣由是什麼？</strong></p>
+<p>決定用哪一個底數，抉擇的唯一緣由就是：<strong>「怎麼做，公式最乾淨？哪一個才是系統的『本位幣』？」</strong> 三大對數底數的抉擇邏輯對比如下：</p>
+<p><strong>表1.1　三大對數底數的抉擇邏輯對比</strong></p>
+<table>
+<thead>
+<tr>
+<th>底數類型</th>
+<th>底數數值</th>
+<th>它是誰的「本位幣」？</th>
+<th>抉擇與應用的核心緣由</th>
+<th>典型應用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>常用對數</strong><br>$\log_{10}$</td>
+<td><strong>10</strong></td>
+<td><strong>人類社會</strong><br>（十進位與科學記號）</td>
+<td>人類因為有 10 根手指，所以習慣逢十進位。只要需要<strong>數格子、看位數、數零的個數</strong>，用 10 最符合直覺。</td>
+<td>∙地震芮氏規模<br>∙聲音分貝（dB）<br>∙酸鹼值（pH）</td>
+</tr>
+<tr>
+<td><strong>自然對數</strong><br>$\ln$</td>
+<td><strong>$e \approx 2.718$</strong></td>
+<td><strong>大自然</strong><br>（時間與連續變化）</td>
+<td>大自然不管人類有幾根手指。當萬物在<mark style="color:red;font-weight:bold">每分每秒連續不斷地膨脹或衰退</mark>時，$e$ 是唯一能讓微積分方程「不產生任何修正係數」的完美底數。</td>
+<td>∙考古放射性定年<br>∙人口與細菌增長<br>∙金融連續複利</td>
+</tr>
+<tr>
+<td><em>補充：二進位對數</em><br>$\log_{2}$</td>
+<td><strong>2</strong></td>
+<td><strong>電腦微處理器</strong><br>（開與關）</td>
+<td>電腦的世界只有 0 與 1。每次計算不是翻倍就是砍半，此時用底數 2 可以達到最完美的簡化效果。</td>
+<td>∙電腦演算法演進<br>∙資訊量計量（Bits）<br>∙密碼學長度</td>
+</tr>
+</tbody>
+</table>
+<p><strong>終極判斷法則：應用時如何區分？</strong> 遇到問題時，可以用以下兩個簡單的問題來抉擇：</p>
+<ol>
+<li><strong>我是在處理「靜態的級距」，還是「動態的變化過程」？</strong><ul>
+<li><strong>靜態級距選 $\log_{10}$</strong>：如果你只是想把一堆很大的數字（如 10 萬、10 億）壓扁畫在圖表上，或者比較兩個靜態東西的差距（如這陣風比那陣風強幾倍），選 10 最好懂。</li>
+<li><mark style="color:red;font-weight:bold">動態變化選 $\ln$</mark>：如果題目牽涉到<strong>時間 $t$</strong>、<strong>速率 $r$</strong>，且這個東西是「自己會生出新東西」或「像滑梯一樣連續衰退」，不用懷疑，大自然是用 $e$ 在運作的，選 $\ln$ 才能把公式縮到最簡單。</li>
+</ul>
+</li>
+<li><strong>公式裡有沒有微積分（變化率）？</strong><ul>
+<li>在高等科學和工程學中，只要遇到「微分（求變化率）」或「積分（求累積量）」，數學家一律只用 $\ln$。因為在微積分裡，$(e^x)' = e^x$，沒有任何人想在算式裡看到一堆微積分吐出來的 $\ln 10$ 碎屑。</li>
+</ul>
+</li>
+</ol>
+<p><strong>總結</strong>，對數的本質可歸納為三點：</p>
+<ol>
+<li><strong>對數的基本功</strong>：就是用來簡化、壓扁那些人類大腦數不過來的「長串數值」。</li>
+<li><strong>自然對數的特異功能</strong>：它是專門用來簡化「具有時間、速率與連續變化性質」的長串數值。</li>
+<li><strong>底數切換的代價</strong>：用常用對數（底數 $10$）去算大自然的連續變化當然算得出答案，但因為系統不相容，就必須強行支付一個叫 $\ln 10$ 的「數學匯率轉換費」。</li>
+</ol>
+<p>在數學上，如果要計算一條曲線的<b>瞬間</b>變化速度（斜率），我們會用<b>微分</b>。</p>
+<ul>
+<li>如果我們用大自然的底數 $e$，公式乾淨到不可思議：$(e^{x})' = e^{x}$（微分前後相等）。這代表：它在任何時間點的<strong>生長速度</strong>，就等於它<strong>當時的體型大小</strong>。這就是大自然完美的「利滾利」與「細胞分裂」狀態。</li>
+<li>如果我們硬要換成人類習慣的底數 $10$，公式就會噴出轉換費：$(10^{x})' = 10^{x} \times \textcolor{#DB372D}{\ln 10}$。</li>
+</ul>
+<p>正因為這個概念，在動態變化的微積分推導與連續模型中（高等科學、統計學、經濟學、工程學），科學家們後來<strong>幾乎不使用 $\log_{10}$</strong>，因為天天處理動態變化的世界，用 $\ln$ 才能讓所有公式保持最優美、最精簡的狀態。</p>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">🔧 <b>HVAC 對照</b>：風機噪音、聲壓級以 dB 表示，屬於「靜態級距」，用 $\log_{10}$（見範例 1.2）；室內 CO₂ 稀釋、換氣後濃度隨時間下降，屬於「動態連續變化」，用 $\ln$（見範例 1.3）。</div></div>
+
+<h3>1.1.5 名詞由來（人文與幾何意象）</h3>
+<p>用最直觀、最有人文溫度的方式，來看枯燥的數學名詞。將「乘方家族」的中文與幾何意象整理如下幫助理解：</p>
+<ol>
+<li><strong>「方」</strong>：代表古代「<mark style="color:red;font-weight:bold">自己相乘</mark>」的演算動作，即自己連續相乘的動作（源自正方形、立方體）。</li>
+<li><strong>「次方」</strong>：代表這個自己相乘的動作總共乘了<mark style="color:red;font-weight:bold">幾次</mark>。</li>
+<li><strong>「開方（根號）」</strong>：把這個乘好的方塊<b>拆</b><mark style="color:red;font-weight:bold">解開</mark><b>來</b>，去尋找它最原始的「根基（邊長）」。</li>
+<li><strong>「指數」</strong>：<strong>指示</strong>這個「自乘的方塊動作」要重複進行「幾<strong>次</strong>」，即在右上角負責<mark style="color:red;font-weight:bold">指示</mark>這個自乘動作的<mark style="color:red;font-weight:bold">次數</mark>。</li>
+<li><strong>「對數」</strong>：<mark style="color:red;font-weight:bold">對</mark>應到指<mark style="color:red;font-weight:bold">數</mark>究竟自乘了「幾次」。</li>
+</ol>
+<p>「平方」的由來：古人的思考方式是，由「邊長」<strong>建立</strong>出一個「平面的正方塊」（$3^2 \rightarrow 9$）。</p>
+<p>「開方」的由來：古人的思考方式是，比如 $9$ 是一個已經做完「平方」的「正方形」。如果想知道它的邊長，就必須把這個正方形「<mark style="color:red;font-weight:bold">拆開、解開</mark>」（也就是「開方」或「開根號」的意思），去還原出它的邊長是 $3$。</p>
+<ul>
+<li><strong>開平方</strong>（或開平方根）：把這個「平面的方塊」<strong>拆解</strong>開來，找回原本的邊長（$\sqrt{9} \rightarrow 3$）。</li>
+<li><strong>開立方</strong>（或開立方根）：把一個「立體的方塊」<strong>拆解</strong>開來，找回原本的邊長（$\sqrt[3]{27} \rightarrow 3$）。</li>
+</ul>
+<p>所以，中文的「開方」，就是「解開正方塊或立方塊、求出邊長」的演算動作。</p>
+<p>英文的根號叫做 <strong>Square Root</strong>：</p>
+<ul>
+<li><strong>Root</strong>：就是植物的「根」。</li>
+<li>在西方觀念裡，一個正方形的「面積」就像是露在地面上的枝葉與果實；而決定這個正方形大小的「邊長」，就像是埋在地下、最基礎的「根」。</li>
+</ul>
+<p>當我們寫下 $\sqrt{9} = 3$ 時，西方的意思就是：「$9$ 這個正方形，它的<strong>生長之根</strong>（邊長）是 $3$。」現代數學符號 $\sqrt{\phantom{x}}$，最早其實就是由拉丁文的 <strong>r</strong>（代表 radix，即英文的 root 根）這個字母慢慢草寫、演變而來的。</p>
+<h2>1.2 自然對數 $\ln(x)$ 與常數 $e$ 的起源</h2>
+<p>自然對數 $y = \ln(x)$ 及其底數 $e$ 的由來，是數學史上跨越「對數運算」、「幾何面積」與「複利極限」的發展過程。</p>
+<h3>1.2.1 雙曲線面積與指數概念的匯流</h3>
+<ul>
+<li><strong>對數本質</strong>：17 世紀初，納皮爾（John Napier）發明對數，具備「相乘變相加」的代數性質：</li>
+</ul>
+<div class="math-block">$$
+\ln(a \cdot b) = \ln(a) + \ln(b) \tag{1.1}
+$$</div>
+<ul>
+<li><strong>雙曲線面積</strong>：1647 年，葛雷果里（Grégoire de Saint-Vincent）發現直角雙曲線 $y = \dfrac{1}{x}$ 下方的面積，當底邊呈「等比例」擴展時，面積呈「等差」增加。</li>
+</ul>
+<h3>1.2.2 微積分視角下的自然對數定義</h3>
+<p>依據微積分教科書（如 <em>Thomas' Calculus</em>）之通行定義，$x = 1$ 到 $x = a$ 之間雙曲線 $y = \dfrac{1}{x}$ 下方的面積定義為自然對數，其曲線如下方圖示：</p>
+<figure><img src="Pasted%20image%2020260924135114.png" alt="雙曲線 y 等於 1 除以 x 與自然對數的面積定義示意圖"><figcaption>圖1.3　雙曲線 $y = 1/x$ 下方面積示意圖</figcaption></figure>
+<div class="math-block">$$
+\ln(a) = \int_{1}^{a} \frac{1}{x}\,dx \tag{1.2}
+$$</div>
+<ul>
+<li>當 $a = 1$ 時：$\ln(1) = \displaystyle\int_{1}^{1}\frac{1}{x}\,dx = 0$</li>
+<li>當 $a &gt; 1$ 時：面積為正值，$\ln(a) &gt; 0$</li>
+<li>當 $0 &lt; a &lt; 1$ 時：積分方向相反，面積為負值，$\ln(a) &lt; 0$</li>
+</ul>
+<h3>1.2.3 自然底數 $e$ 的發現</h3>
+<ul>
+<li>歐拉（Leonhard Euler）定義使該「面積等於 $1$」的底邊位置為「$e$」：</li>
+</ul>
+<div class="math-block">$$
+\int_{1}^{e} \frac{1}{x}\,dx = 1 \implies \log_{e} e = \ln(e) = 1 \tag{1.3}
+$$</div>
+<ul>
+<li>伯努利（Jacob Bernoulli）求得「連續複利極限」：</li>
+</ul>
+<div class="math-block">$$
+e = \lim_{n \to \infty}\left(1+\frac{1}{n}\right)^n \approx 2.718281828\ldots \tag{1.4}
+$$</div>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">📌 <b>補充（收斂速度直覺）</b>：$n$ 越大，$(1+1/n)^n$ 越逼近 $e$，可用下表感受收斂速度。這也是為何「複利計算次數越頻繁（月複利→日複利→連續複利），最終結果會逼近 $e$ 的倍率」的數學根源。</div></div>
+
+<p><strong>表1.2　$(1+1/n)^n$ 的收斂速度</strong></p>
+<table>
+<thead>
+<tr>
+<th>$n$</th>
+<th>$10$</th>
+<th>$100$</th>
+<th>$1{,}000$</th>
+<th>$10{,}000$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$(1+1/n)^n$</td>
+<td>$2.5937$</td>
+<td>$2.7048$</td>
+<td>$2.7169$</td>
+<td>$2.7181$</td>
+</tr>
+</tbody>
+</table>
+<h2>1.3 核心公式與性質</h2>
+<p><strong>指數律</strong>（條件：$a, b &gt; 0,\ a \neq 1$）：</p>
+<p><strong>表1.3　指數律</strong></p>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$a^m \cdot a^n = a^{m+n}$</td>
+<td>同底相乘，指數相加</td>
+</tr>
+<tr>
+<td>$\dfrac{a^m}{a^n} = a^{m-n}$</td>
+<td>同底相除，指數相減</td>
+</tr>
+<tr>
+<td>$(a^m)^n = a^{mn}$</td>
+<td>冪次的冪次，指數相乘</td>
+</tr>
+<tr>
+<td>$a^{-n} = \dfrac{1}{a^n}$</td>
+<td>負指數＝倒數</td>
+</tr>
+<tr>
+<td>$a^{\frac{m}{n}} = \sqrt[n]{a^m}$</td>
+<td>分數指數＝開根號</td>
+</tr>
+</tbody>
+</table>
+<p><strong>對數性質</strong>（條件：$a, b, c &gt; 0,\ a, c \neq 1$）：</p>
+<p><strong>表1.4　對數性質</strong></p>
+<table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定義</td>
+<td>$y = \log_a x \iff x = a^y$</td>
+</tr>
+<tr>
+<td>積律</td>
+<td>$\log_a (xy) = \log_a x + \log_a y$</td>
+</tr>
+<tr>
+<td>商律</td>
+<td>$\log_a \left(\dfrac{x}{y}\right) = \log_a x - \log_a y$</td>
+</tr>
+<tr>
+<td>次方提出</td>
+<td>$\log_a (x^k) = k \log_a x$</td>
+</tr>
+<tr>
+<td>換底公式</td>
+<td>$\log_a b = \dfrac{\log_c b}{\log_c a}$</td>
+</tr>
+<tr>
+<td>對數恆等式</td>
+<td>$a^{\log_a x} = x$</td>
+</tr>
+</tbody>
+</table>
+<h2>1.4 經典計算範例</h2>
+<p><strong>【範例 1.1】解對數方程式</strong></p>
+<p>求解方程：$\log_2(x) + \log_2(x - 2) = 3$</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li><strong>確定真數條件</strong>：<mark style="color:red;font-weight:bold">真數必須大於 $0$</mark>，故 $x &gt; 0$ 且 $x - 2 &gt; 0 \implies x &gt; 2$。</li>
+<li><strong>利用積律合併</strong>：</li>
+</ol>
+<div class="math-block">$$
+\log_2 [x(x - 2)] = 3
+$$</div>
+<ol start="3">
+<li><strong>轉換為指數型態</strong>：</li>
+</ol>
+<div class="math-block">$$
+x(x - 2) = 2^3 \implies x^2 - 2x = 8
+$$</div>
+<ol start="4">
+<li><strong>解二次方程式</strong>：</li>
+</ol>
+<div class="math-block">$$
+x^2 - 2x - 8 = 0 \implies (x - 4)(x + 2) = 0 \implies x = 4 \ \text{或} \ x = -2
+$$</div>
+<ol start="5">
+<li><strong>代回真數條件檢查</strong>：因 $x &gt; 2$，<mark style="color:red;font-weight:bold">排除 $x = -2$（此為對數計算中最常見的陷阱）</mark>。</li>
+</ol>
+<p><strong>結果</strong>：$x = 4$</p>
+<h2>1.5 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 1.2】🔧 多台風機的噪音疊加（常用對數 $\log_{10}$）</strong></p>
+<p><strong>情境</strong>：機房內兩台規格相同的送風機同時運轉，在同一量測點各自單獨運轉時的聲壓級都是 $60\ \text{dB}$。兩台同時運轉時，量測點的總聲壓級是多少？</p>
+<p><strong>算式來源</strong>：聲壓級的定義（聲學基本定義）與「能量相加、不是分貝相加」的疊加原理。</p>
+<div class="math-block">$$
+L_{p} = 20\log_{10}\left(\frac{p}{p_0}\right) \tag{1.5}
+$$</div>
+<div class="math-block">$$
+L_{total} = 10\log_{10}\left(\sum_{i=1}^{n} 10^{L_{i}/10}\right) \tag{1.6}$$</div>
+<p>其中 $L_p$ 為聲壓級（dB），$p$ 為聲壓（Pa），$p_0$ 為參考聲壓（空氣中通常取 $20\ \mu\text{Pa}$），$L_i$ 為第 $i$ 個聲源單獨存在時的聲壓級（dB）。</p>
+<p><strong>已知條件</strong>：$L_1 = L_2 = 60\ \text{dB}$，$n = 2$。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>把每個分貝值換回「能量比例」：$10^{L_1/10} = 10^{60/10} = 10^{6}$，第二台同理也是 $10^{6}$。</li>
+<li>能量相加：$10^{6} + 10^{6} = 2 \times 10^{6}$。</li>
+<li>再取對數換回分貝：$L_{total} = 10\log_{10}(2\times10^{6}) = 10\times(\log_{10}2 + 6) = 10\times(0.3010 + 6) = 63.01\ \text{dB}$。</li>
+</ol>
+<p><strong>計算結果</strong>：<mark style="color:red;font-weight:bold">兩台合計約 63 dB，不是 120 dB</mark>。</p>
+<p><strong>表1.5　$n$ 台相同噪音源疊加後的增量 $\Delta L = 10\log_{10}n$</strong></p>
+<table>
+<thead>
+<tr>
+<th>台數 $n$</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>8</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增量 $\Delta L$（dB）</td>
+<td>0</td>
+<td>3.01</td>
+<td>4.77</td>
+<td>6.02</td>
+<td>9.03</td>
+<td>10.00</td>
+</tr>
+</tbody>
+</table>
+<p>另一個實用直覺：$60\ \text{dB}$ 與 $50\ \text{dB}$ 兩個聲源疊加，$L = 10\log_{10}(10^{6}+10^{5}) = 10\log_{10}(1.1\times10^{6}) = 60.41\ \text{dB}$，即<mark style="color:red;font-weight:bold">比主要噪音小 10 dB 的聲源，幾乎不影響總噪音</mark>。</p>
+<p><strong>選用 $\log_{10}$ 的原因</strong>：聲壓可跨越好幾個數量級，屬「靜態級距」，用十進位對數把它壓縮成人好讀的範圍（見 1.1.4）。</p>
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值（聲學基本定義，未引用任何受版權保護之數據表）。參考：[R5]。</p>
+<p><strong>【範例 1.3】🔧 會議室 CO₂ 稀釋：換氣多久濃度降到 10%（自然對數 $\ln$）</strong></p>
+<p><strong>情境</strong>：會議室散會後人員離開，室內 CO₂（Carbon Dioxide 二氧化碳）濃度高於室外的「超額濃度」需要被外氣稀釋。已知換氣量，求超額濃度降到起始值的 $10\%$ 需要多久。</p>
+<p><strong>算式來源</strong>：完全混合（Well-Mixed）稀釋模型，由質量守恆 $V\dfrac{dC}{dt} = -Q\,(C - C_{o})$ 解得（分離變數積分的推導見範例 5.3 的同類型做法）。令超額濃度 $\Delta C = C - C_{o}$：</p>
+<div class="math-block">$$
+\Delta C(t) = \Delta C_0\, e^{-Nt},\qquad N = \frac{Q}{V} \tag{1.7}
+$$</div>
+<div class="math-block">$$
+t = \frac{1}{N}\ln\frac{\Delta C_0}{\Delta C(t)} \tag{1.8}
+$$</div>
+<p>其中 $V$ 為室內體積（$\text{m}^3$），$Q$ 為換氣風量（$\text{m}^3/\text{h}$），$N$ 為換氣率，即 ACH（Air Changes per Hour 每小時換氣次數，單位 $\text{h}^{-1}$），$C_{o}$ 為室外濃度。</p>
+<p><strong>已知條件</strong>：$V = 150\ \text{m}^3$，$Q = 900\ \text{m}^3/\text{h}$，目標 $\Delta C(t)/\Delta C_0 = 0.10$。</p>
+<p><strong>假設</strong>：室內空氣完全混合；散會後無新增 CO₂ 發生源；室外濃度視為固定。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>求換氣率：$N = \dfrac{900\ \text{m}^3/\text{h}}{150\ \text{m}^3} = 6\ \text{h}^{-1}$。</li>
+<li>代入式 (1.8)：$t = \dfrac{1}{6\ \text{h}^{-1}}\ln\dfrac{1}{0.10} = \dfrac{\ln 10}{6\ \text{h}^{-1}} = \dfrac{2.3026}{6}\ \text{h} = 0.3838\ \text{h}$。</li>
+<li>換算單位：$0.3838\ \text{h} \times 60\ \text{min/h} = 23.0\ \text{min}$。</li>
+</ol>
+<p><strong>計算結果</strong>：<mark style="color:red;font-weight:bold">約 23 分鐘</mark>可將超額濃度降到起始值的 10%；若目標為 5%，則 $t = \ln 20 / 6 = 0.499\ \text{h} \approx 30\ \text{min}$。</p>
+<p><strong>表1.6　不同換氣率下，超額濃度降到 10% 所需時間（$t = \ln 10 / N$）</strong></p>
+<table>
+<thead>
+<tr>
+<th>換氣率 $N$（$\text{h}^{-1}$）</th>
+<th>2</th>
+<th>4</th>
+<th>6</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>所需時間（h）</td>
+<td>1.151</td>
+<td>0.576</td>
+<td>0.384</td>
+<td>0.230</td>
+</tr>
+<tr>
+<td>所需時間（min）</td>
+<td>69.1</td>
+<td>34.5</td>
+<td>23.0</td>
+<td>13.8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>選用 $\ln$ 的原因</strong>：濃度下降速率與當下濃度成正比（連續變化），解為 $e$ 的指數函數，取自然對數即可直接還原出時間，不會多出換底常數（見 1.1.4）。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">本例為理想化模型：實際房間的混合並不均勻、CO₂ 來源與室外濃度會變動。此外，「濃度降到多少才算合格」須依適用法規或設計準則另行確認，本例不提供任何規範限值。</div></div>
+
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值（質量守恆稀釋模型）。參考：[R10]。</p>
+<hr />
+<h1>2. 極限與連續（Limits &amp; Continuity）</h1>
+<h2>2.1 核心觀念與直覺理解</h2>
+<ul>
+<li><strong>極限 $\lim_{x \to a} f(x) = L$</strong>：代表當 $x$ <strong>無限靠近</strong> $a$，但不必等於 $a$ 時，$f(x)$ 的目標趨近值。</li>
+<li><strong>單側極限</strong>：左極限 $\lim_{x \to a^-} f(x)$ 與右極限 $\lim_{x \to a^+} f(x)$。極限存在的充要條件為<strong>左右極限皆存在且相等</strong>。</li>
+<li><strong>連續性</strong>：函數在 $x = a$ 連續，需同時滿足三條件：<ol>
+<li>$f(a)$ 有定義。</li>
+<li>$\lim_{x \to a} f(x)$ 存在。</li>
+<li>$\lim_{x \to a} f(x) = f(a)$。</li>
+</ol>
+</li>
+</ul>
+<h2>2.2 核心公式與經典極限</h2>
+<h3>2.2.1 極限四則運算</h3>
+<p>設 $\lim f(x) = L,\ \lim g(x) = M$：</p>
+<p><strong>表2.1　極限四則運算</strong></p>
+<table>
+<thead>
+<tr>
+<th>運算</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\lim [f(x) \pm g(x)]$</td>
+<td>$L \pm M$</td>
+</tr>
+<tr>
+<td>$\lim [f(x) \cdot g(x)]$</td>
+<td>$L \cdot M$</td>
+</tr>
+<tr>
+<td>$\lim \dfrac{f(x)}{g(x)}$</td>
+<td>$\dfrac{L}{M}\quad(M \neq 0)$</td>
+</tr>
+</tbody>
+</table>
+<h3>2.2.2 必背重要極限（四大工具極限）</h3>
+<ul>
+<li>$\lim_{x \to 0} \dfrac{\sin x}{x} = 1$</li>
+<li>$\lim_{x \to 0} \dfrac{1 - \cos x}{x} = 0$</li>
+<li>$\lim_{x \to \infty} \left(1 + \dfrac{1}{x}\right)^x = e$</li>
+<li>$\lim_{x \to 0} \dfrac{e^x - 1}{x} = 1$</li>
+</ul>
+<p>這四個式子是微積分學中<strong>最核心、最基礎的「四大工具極限」</strong>（Essential Limits）。如果把微積分比喻為蓋大樓，這四個極限就是<strong>築起微積分大樓最關鍵的四塊基石</strong>。老師或教材要我們學這四個式子，並不是要我們無意義地去代數字，而是要我們拿它們來「推導微積分的核心公式」與「處理物理／工程中的極小變化」。</p>
+<p>它們有<strong>四大核心用途</strong>：</p>
+<p><strong>(1) 推導三角函數的微分（第一、二個式子）</strong></p>
+<div class="math-block">$$
+\lim_{x \to 0} \frac{\sin x}{x} = 1 \quad \text{與} \quad \lim_{x \to 0} \frac{1 - \cos x}{x} = 0
+$$</div>
+<ul>
+<li><strong>究竟要幹什麼</strong>：這兩個式子是<strong>推導三角函數微分（例如 $\dfrac{d}{dx}\sin x = \cos x$）的唯一基石</strong>。</li>
+<li><strong>為什麼需要它</strong>：當你用微分極限定義 $f'(x) = \lim_{h \to 0} \dfrac{\sin(x+h) - \sin x}{h}$ 去推導正弦函數的切線斜率時，利用和差化積展開後，中間一定會卡住這兩個極限式。</li>
+<li><strong>物理／工程實務（小角度近似）</strong>：當 $x \to 0$ 時，$\dfrac{\sin x}{x} = 1 \implies \mathbf{\sin x \approx x}$。這就是物理學中極度著名的「小角度近似」！例如：<ul>
+<li><strong>單擺運動</strong>：擺角很小時，把非線性的 $\sin\theta$ 近似成 $\theta$，才能把單擺解成簡單的簡諧運動（SHM，Simple Harmonic Motion）。</li>
+<li><strong>光學與波動</strong>：分析透鏡成像、光學干涉時，因為光線偏折角度極小，工程師都會直接把 $\sin\theta$ 與 $\tan\theta$ 當作 $\theta$ 來計算。</li>
+</ul>
+</li>
+</ul>
+<p><strong>(2) 定義「自然底數 $e$」與複利成長（第三個式子）</strong></p>
+<div class="math-block">$$
+\lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e
+$$</div>
+<ul>
+<li><strong>究竟要幹什麼</strong>：這個式子是<strong>數學家定義自然常數 $e \approx 2.71828$ 的官方定義式</strong>。</li>
+<li><strong>為什麼需要它</strong>：它代表的是「連續複利增長」的極限。</li>
+<li><strong>物理／工程實務</strong>：自然界中幾乎所有「成長率與當下總量成正比」的現象（如細胞繁殖、放射性元素衰變、熱傳導冷卻、電路中電容的充放電），其數學模型全都建立在底數 $e$ 之上。如果沒有這個極限，我們就無法建構連續動態系統的數學模型。</li>
+</ul>
+<p><strong>(3) 推導指數與對數函數的微分（第四個式子）</strong></p>
+<div class="math-block">$$
+\lim_{x \to 0} \frac{e^x - 1}{x} = 1
+$$</div>
+<ul>
+<li><strong>究竟要幹什麼</strong>：這個式子是<strong>推導指數函數微分（$\dfrac{d}{dx} e^x = e^x$）與對數微分（$\dfrac{d}{dx}\ln x = \dfrac{1}{x}$）的核心關鍵</strong>。</li>
+<li><strong>為什麼需要它</strong>：當你要計算 $f(x) = e^x$ 在 $x=0$ 處的切線斜率時，套用微分定義算出來的就是 $\lim_{x \to 0} \dfrac{e^x - 1}{x}$。因為這個極限值剛好等於 $1$，這也是為什麼歐拉當初要特別選用 $e$ 作為底數——因為 <strong>$e^x$ 是全數學中最完美的函數，它的微分（變化率）剛好等於它自己</strong>。</li>
+<li><strong>物理／工程實務</strong>：在 $x \to 0$ 時，該式意味著 $\mathbf{e^x \approx 1 + x}$（線性泰勒展開）。工程師在分析微小擾動系統（如控制系統、熱力學微小變化）時，經常拿它來把複雜的指數函數「線性化」，大幅簡化計算。</li>
+</ul>
+<p><strong>(4) 總結比較</strong></p>
+<p><strong>表2.2　四大工具極限的用途對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>極限式</th>
+<th>它的主要任務（用來幹什麼）</th>
+<th>在工程／物理上的直覺理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\lim_{x \to 0} \dfrac{\sin x}{x} = 1$</td>
+<td>推導 $\sin x$ 的微分；小角度近似</td>
+<td>角度極小時，弧長等於弦長（$\sin x \approx x$）</td>
+</tr>
+<tr>
+<td>$\lim_{x \to 0} \dfrac{1 - \cos x}{x} = 0$</td>
+<td>推導 $\cos x$ 的微分</td>
+<td>角度極小時，$\cos x$ 的變化量遠小於角度本身</td>
+</tr>
+<tr>
+<td>$\lim_{x \to \infty} \left(1 + \dfrac{1}{x}\right)^x = e$</td>
+<td><strong>定義自然底數 $e$</strong></td>
+<td>描述自然界「連續無限次增長」的極限</td>
+</tr>
+<tr>
+<td>$\lim_{x \to 0} \dfrac{e^x - 1}{x} = 1$</td>
+<td>推導 $e^x$ 與 $\ln x$ 的微分</td>
+<td>證明 $e^x$ 在 $x=0$ 處的切線斜率剛好為 $1$</td>
+</tr>
+</tbody>
+</table>
+<p>簡而言之，學習這四個式子，就像是學習寫程式時先寫好「基礎函式庫（Library）」。學會並背下這四個結果後，以後遇到三角函數與指數對數的微分、極限或近似計算時，就可以直接調用它們，不用每次都從頭用定義苦算。</p>
+<h3>2.2.3 羅必達法則與不定型</h3>
+<p><strong>羅必達法則（L'Hôpital's Rule 羅必達法則）</strong>：若極限呈現 $\dfrac{0}{0}$ 或 $\dfrac{\infty}{\infty}$ 不定型，則：</p>
+<div class="math-block">$$
+\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)} \tag{2.1}
+$$</div>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">每次套用羅必達法則之前，<b>必須先確認極限確實屬於 0/0 或 ∞/∞ 不定型</b>；若不是不定型（例如分母趨近非零常數）而硬套，會得到錯誤答案。</div></div>
+
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">📌 <b>補充（完整不定型清單）</b>：羅必達法則僅直接適用於 0/0 與 ∞/∞，但其餘不定型可透過代數變形轉換後再套用，常見不定型如下表。</div></div>
+
+<p><strong>表2.3　常見不定型與處理策略</strong></p>
+<table>
+<thead>
+<tr>
+<th>不定型</th>
+<th>處理策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\dfrac{0}{0}$</td>
+<td>直接套用羅必達法則</td>
+</tr>
+<tr>
+<td>$\dfrac{\infty}{\infty}$</td>
+<td>直接套用羅必達法則</td>
+</tr>
+<tr>
+<td>$0 \cdot \infty$</td>
+<td>改寫為 $\dfrac{0}{1/\infty}$ 或 $\dfrac{\infty}{1/0}$ 形式</td>
+</tr>
+<tr>
+<td>$\infty - \infty$</td>
+<td>通分或有理化後再處理</td>
+</tr>
+<tr>
+<td>$0^0,\ 1^\infty,\ \infty^0$</td>
+<td>取自然對數 $\ln$ 化為指數乘積型，再用羅必達</td>
+</tr>
+</tbody>
+</table>
+<h2>2.3 經典計算範例</h2>
+<p><strong>【範例 2.1】未定式極限化簡與羅必達法則</strong></p>
+<p>求極限：$\lim_{x \to 0} \dfrac{\sin(3x)}{x}$</p>
+<p><strong>解法一：利用重要極限</strong></p>
+<p>將分母湊出與分子相同的 $3x$：</p>
+<div class="math-block">$$
+\lim_{x \to 0} \frac{\sin(3x)}{x} = \lim_{x \to 0} 3 \cdot \frac{\sin(3x)}{3x}
+$$</div>
+<p>令 $u = 3x$，當 $x \to 0$ 時 $u \to 0$：</p>
+<div class="math-block">$$
+= 3 \cdot \lim_{u \to 0} \frac{\sin u}{u} = 3 \cdot 1 = 3
+$$</div>
+<p><strong>解法二：羅必達法則</strong></p>
+<p>當 $x = 0$ 時，分子 $\sin 0 = 0$，分母 $= 0$，屬於 $\dfrac{0}{0}$ 不定型。上下各自微分：</p>
+<div class="math-block">$$
+\lim_{x \to 0} \frac{\frac{d}{dx}\sin(3x)}{\frac{d}{dx}x} = \lim_{x \to 0} \frac{3\cos(3x)}{1} = 3\cos(0) = 3
+$$</div>
+<h2>2.4 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 2.2】🔧 LMTD 在兩端溫差相等時的極限（羅必達法則）</strong></p>
+<p><strong>情境</strong>：熱交換器（如冰水盤管、冷凝器）的對數平均溫差 LMTD（Log Mean Temperature Difference 對數平均溫差）公式中，分母有 $\ln(\Delta T_1/\Delta T_2)$。當兩端溫差 $\Delta T_1 = \Delta T_2$ 時，分子分母同時為 $0$，屬於 $\dfrac{0}{0}$ 不定型。試求此時的 LMTD，並說明試算表該如何處理。</p>
+<p><strong>算式來源</strong>：LMTD 的基本定義（熱交換器熱傳教科書通用式）。</p>
+<div class="math-block">$$
+\Delta T_{lm} = \frac{\Delta T_1 - \Delta T_2}{\ln\left(\Delta T_1/\Delta T_2\right)} \tag{2.2}
+$$</div>
+<p>其中 $\Delta T_1$、$\Delta T_2$ 為熱交換器兩端的溫差（K）。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>令 $\Delta T_2 = b$，$\Delta T_1 = b + h$，讓兩端溫差相等對應到 $h \to 0$。</li>
+<li>代入式 (2.2)：</li>
+</ol>
+<div class="math-block">$$
+\Delta T_{lm} = \frac{h}{\ln\left(1 + h/b\right)}
+$$</div>
+<ol start="3">
+<li>當 $h \to 0$ 時，分子 $\to 0$、分母 $\to 0$，屬於 $\dfrac{0}{0}$，可用羅必達法則（式 (2.1)）。分子微分為 $1$；分母微分為 $\dfrac{d}{dh}\ln(1+h/b) = \dfrac{1}{b+h}$。</li>
+<li>因此：</li>
+</ol>
+<div class="math-block">$$
+\lim_{h \to 0}\frac{1}{\dfrac{1}{b+h}} = \lim_{h \to 0}(b+h) = b \tag{2.3}
+$$</div>
+<p><strong>計算結果</strong>：<mark style="color:red;font-weight:bold">當兩端溫差相等時，LMTD 就等於該溫差本身（$\Delta T_{lm} = \Delta T_1 = \Delta T_2$）</mark>。</p>
+<p><strong>數值驗證</strong>：取 $\Delta T_1 = 8.1\ \text{K}$、$\Delta T_2 = 7.9\ \text{K}$（兩端溫差非常接近）：</p>
+<div class="math-block">$$
+\Delta T_{lm} = \frac{8.1 - 7.9}{\ln(8.1/7.9)}\ \text{K} = \frac{0.2}{0.025001}\ \text{K} = 7.9996\ \text{K} \approx 8.00\ \text{K}
+$$</div>
+<p>與極限值 $8\ \text{K}$（亦即算術平均 $8.0\ \text{K}$）吻合。</p>
+<p><strong>實務提醒（試算表／程式）</strong>：當 $\Delta T_1$ 與 $\Delta T_2$ 幾乎相等時，直接套用式 (2.2) 會出現「除以零」（如試算表的 <code>#DIV/0!</code>），可設一個很小的門檻，低於門檻時改用 $\Delta T_{lm} \approx \Delta T_1$（或算術平均值）。</p>
+<p><strong>選用羅必達法則的原因</strong>：此為標準 $\dfrac{0}{0}$ 型，上下各微分一次即可消去不定性，比用泰勒展開更直接。</p>
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值（LMTD 為熱傳學通用定義）。參考：[R6]。</p>
+<hr />
+<h1>3. 微分學（Differential Calculus）</h1>
+<h2>3.1 核心觀念與幾何意義</h2>
+<ul>
+<li><strong>導數（Derivative 導數）</strong>：代表函數在某一點的<strong>瞬間變化率</strong>，幾何意義即為該點<strong>切線的斜率</strong>。</li>
+<li><strong>極限定義</strong>：</li>
+</ul>
+<div class="math-block">$$
+f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \tag{3.1}
+$$</div>
+<p>在多變數微積分中，我們最常圍繞在偏微分、全微分，以及由單變數延伸過來的微分這三個核心概念上。這三者的關係與定位可以這樣理解：</p>
+<h3>3.1.1 微分（Differential / Derivative）</h3>
+<ul>
+<li><strong>定位</strong>：這是最基礎的母概念。</li>
+<li><strong>單變數時</strong>：函數只有一個自變數 $y = f(x)$，它的變化率叫導數（微商），微小變化量叫微分 $dy = f'(x)\,dx$。</li>
+<li><strong>多變數時</strong>：當我們進入多維空間，因為方向變多了，我們無法再用單一個數字代表完整的變化率，於是「微分」這個概念就延伸並拆解成了偏微分與全微分。</li>
+</ul>
+<h3>3.1.2 偏微分（Partial Derivative）</h3>
+<ul>
+<li><strong>定位</strong>：多變數函數中，「只看某一個方向」的變化率。</li>
+<li><strong>特色</strong>：當函數有許多變數（例如 $z = f(x, y)$），我們假設其他變數都是常數固定不動，只讓其中一個變數（例如 $x$）改變。</li>
+<li><strong>符號</strong>：使用 $\partial$（讀作 curly d 或 partial），例如 $\dfrac{\partial z}{\partial x}$，代表只對 $x$ 算變化率。</li>
+</ul>
+<h3>3.1.3 全微分（Total Differential）</h3>
+<ul>
+<li><strong>定位</strong>：多變數函數中，「所有方向同時改變」時的總線性變化量。</li>
+<li><strong>特色</strong>：它把所有方向的「偏微分」成果組合起來。當 $x$ 變動 $dx$ 且 $y$ 變動 $dy$ 時，函數 $z$ 的總變化量就是：</li>
+</ul>
+<div class="math-block">$$
+dz = \frac{\partial z}{\partial x}\,dx + \frac{\partial z}{\partial y}\,dy \tag{3.2}
+$$</div>
+<h3>3.1.4 額外補充：方向導數（第四種）</h3>
+<p>如果未來遇到更進階的題目，可能還會聽到「方向導數（Directional Derivative）」：</p>
+<ul>
+<li>偏微分只允許你沿著特定的坐標軸（$x$ 軸或 $y$ 軸）前進。</li>
+<li>方向導數則允許你朝任意 $360^\circ$ 的任何方向前進，去看函數在該特定方向的變化率。</li>
+</ul>
+<p>總結來說，可以把「微分」當成這個家族的總稱；而在多變數世界裡，運算時主要就是看「偏微分（局部、單一方向）」與「全微分（整體、所有方向累積）」這兩個核心。具體演算請見範例 3.2。</p>
+<h2>3.2 基本微分法則與常見函數微分表</h2>
+<p><strong>四大法則</strong>：</p>
+<ol>
+<li><strong>乘法法則（Product Rule 乘法法則）</strong>：$(f \cdot g)' = f'g + fg'$</li>
+<li><strong>除法法則（Quotient Rule 除法法則）</strong>：$\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}$</li>
+<li><strong>連鎖律（Chain Rule 連鎖律）</strong>：$\dfrac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$</li>
+<li><strong>高階微分</strong>：二階導數 $f''(x)$ 代表切線斜率的變化率（即凹凸性）。</li>
+</ol>
+<p><strong>表3.1　常見函數微分速查表</strong></p>
+<table>
+<thead>
+<tr>
+<th>函數 $f(x)$</th>
+<th>導數 $f'(x)$</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$c$（常數）</td>
+<td>$0$</td>
+<td>斜率為 $0$</td>
+</tr>
+<tr>
+<td>$x^n$</td>
+<td>$n x^{n-1}$</td>
+<td>次方拉前，次方減 $1$</td>
+</tr>
+<tr>
+<td>$e^x$</td>
+<td>$e^x$</td>
+<td>最完美的函數（導數為自身）</td>
+</tr>
+<tr>
+<td>$a^x$</td>
+<td>$a^x \ln a$</td>
+<td>需補上自然對數修正</td>
+</tr>
+<tr>
+<td>$\ln x$</td>
+<td>$\dfrac{1}{x}$</td>
+<td>對數微分</td>
+</tr>
+<tr>
+<td>$\sin x$</td>
+<td>$\cos x$</td>
+<td>三角函數</td>
+</tr>
+<tr>
+<td>$\cos x$</td>
+<td>$-\sin x$</td>
+<td><mark style="color:red;font-weight:bold">注意負號</mark></td>
+</tr>
+<tr>
+<td>$\tan x$</td>
+<td>$\sec^2 x$</td>
+<td>正切微分</td>
+</tr>
+<tr>
+<td>$\arcsin x$</td>
+<td>$\dfrac{1}{\sqrt{1 - x^2}}$</td>
+<td>反三角函數</td>
+</tr>
+<tr>
+<td>$\arctan x$</td>
+<td>$\dfrac{1}{1 + x^2}$</td>
+<td>反三角函數</td>
+</tr>
+</tbody>
+</table>
+<h2>3.3 經典計算範例</h2>
+<p><strong>【範例 3.1】連鎖律與乘法法則綜合運用</strong></p>
+<p>求 $f(x) = x^2 \ln(3x + 1)$ 的一階導數 $f'(x)$。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li>視為兩函數相乘：$u(x) = x^2$ 與 $v(x) = \ln(3x + 1)$。</li>
+<li>分別求微分：<ul>
+<li>$u'(x) = 2x$</li>
+<li>$v'(x)$ 使用連鎖律：$\dfrac{1}{3x + 1} \cdot \dfrac{d}{dx}(3x + 1) = \dfrac{3}{3x + 1}$</li>
+</ul>
+</li>
+<li>代入乘法法則 $(uv)' = u'v + uv'$：</li>
+</ol>
+<div class="math-block">$$
+f'(x) = (2x) \cdot \ln(3x + 1) + x^2 \cdot \left(\frac{3}{3x + 1}\right)
+$$</div>
+<div class="math-block">$$
+f'(x) = 2x \ln(3x + 1) + \frac{3x^2}{3x + 1}
+$$</div>
+<p><strong>【範例 3.2】偏微分與全微分實作</strong></p>
+<p>設 $z = x^2 y + y^3$，求偏微分、全微分，並在 $(x, y) = (1, 2)$ 附近估算 $x$ 增加 $0.1$、$y$ 減少 $0.05$ 時 $z$ 的變化量。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li>對 $x$ 偏微分（把 $y$ 當常數）：$\dfrac{\partial z}{\partial x} = 2xy$。</li>
+<li>對 $y$ 偏微分（把 $x$ 當常數）：$\dfrac{\partial z}{\partial y} = x^2 + 3y^2$。</li>
+<li>組合成全微分（式 (3.2)）：</li>
+</ol>
+<div class="math-block">$$
+dz = 2xy\,dx + (x^2 + 3y^2)\,dy
+$$</div>
+<ol start="4">
+<li>在 $(1, 2)$ 處：$\dfrac{\partial z}{\partial x} = 2(1)(2) = 4$，$\dfrac{\partial z}{\partial y} = 1^2 + 3(2)^2 = 13$。</li>
+<li>代入 $dx = 0.1$、$dy = -0.05$：$dz = 4(0.1) + 13(-0.05) = 0.4 - 0.65 = -0.25$。</li>
+</ol>
+<p><strong>驗算</strong>：精確值 $z(1.1,\ 1.95) = 1.1^2 \times 1.95 + 1.95^3 = 9.774375$，而 $z(1, 2) = 10$，故 $\Delta z = -0.2256$。全微分估計 $-0.25$ 與精確值接近，差異來自忽略的二階項。</p>
+<p><strong>結果</strong>：$dz \approx -0.25$。</p>
+<h2>3.4 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 3.3】🔧 管路壓降對流量的敏感度（導數與線性化）</strong></p>
+<p><strong>情境</strong>：風管系統在紊流下，壓降與風量大致呈平方關係。已知目前運轉點，想快速估算風量增加時壓降會增加多少。</p>
+<p><strong>算式來源</strong>：Darcy–Weisbach 公式在紊流、摩擦係數視為固定時，壓降正比於流速平方，故正比於風量平方（流體力學基本關係）。</p>
+<div class="math-block">$$
+\Delta P = k\,Q^{2} \tag{3.3}
+$$</div>
+<div class="math-block">$$
+\frac{d(\Delta P)}{dQ} = 2kQ \tag{3.4}
+$$</div>
+<p>其中 $\Delta P$ 為壓降（Pa），$Q$ 為風量（$\text{m}^3/\text{s}$），$k$ 為系統阻力係數（$\text{Pa}\cdot\text{s}^2/\text{m}^6$）。</p>
+<p><strong>已知條件</strong>：運轉點 $Q_0 = 2.0\ \text{m}^3/\text{s}$，$\Delta P_0 = 200\ \text{Pa}$。風量增加 $\Delta Q = 0.1\ \text{m}^3/\text{s}$（即 $+5\%$）。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>求 $k$：$k = \dfrac{\Delta P_0}{Q_0^{2}} = \dfrac{200\ \text{Pa}}{(2.0\ \text{m}^3/\text{s})^{2}} = 50\ \text{Pa}\cdot\text{s}^2/\text{m}^6$。</li>
+<li>求運轉點斜率：$\dfrac{d(\Delta P)}{dQ} = 2kQ_0 = 2 \times 50 \times 2.0 = 200\ \text{Pa}/(\text{m}^3/\text{s})$。</li>
+<li>線性估算：$\Delta P_{est} \approx 200 \times 0.1 = 20\ \text{Pa}$。</li>
+<li>精確驗算：$50 \times (2.1)^2 - 200 = 220.5 - 200 = 20.5\ \text{Pa}$。</li>
+</ol>
+<p><strong>計算結果</strong>：<mark style="color:red;font-weight:bold">風量增加 5%，壓降約增加 20 Pa（約 +10%）</mark>，線性估算與精確值僅差 0.5 Pa。</p>
+<p><strong>表3.2　風量變化對壓降與風機軸功率的影響（理想相似條件）</strong></p>
+<table>
+<thead>
+<tr>
+<th>風量變化</th>
+<th>壓降（$\propto Q^2$）精確</th>
+<th>壓降線性近似（$2\times$ 變化率）</th>
+<th>風機軸功率（$\propto Q^3$）精確</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$+5\%$</td>
+<td>$+10.25\%$</td>
+<td>$+10\%$</td>
+<td>$+15.76\%$</td>
+</tr>
+<tr>
+<td>$+10\%$</td>
+<td>$+21.00\%$</td>
+<td>$+20\%$</td>
+<td>$+33.10\%$</td>
+</tr>
+<tr>
+<td>$-10\%$</td>
+<td>$-19.00\%$</td>
+<td>$-20\%$</td>
+<td>$-27.10\%$</td>
+</tr>
+</tbody>
+</table>
+<p><mark style="color:red;font-weight:bold">風量降 10%，理想條件下風機軸功率可降約 27%</mark>，這就是變頻節能的數學根源；線性近似在變化量越大時誤差越大。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">假設條件：系統阻力曲線不變、摩擦係數固定、風機效率不變（風機相似定律的理想條件）。低雷諾數或風閥節流時，指數不會剛好是 2 與 3，實務請以現場量測與原廠資料為準。</div></div>
+
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值；數值為教學假設值。參考：[R7]、[R8]。</p>
+<p><strong>【範例 3.4】🔧 房間降溫速率與時間常數（微分與指數衰減）</strong></p>
+<p><strong>情境</strong>：空調啟動後，房間溫度朝送風的等效冷源溫度逼近。求起始降溫速率，以及降到設定溫度所需時間。</p>
+<p><strong>算式來源</strong>：集總熱容（Lumped Capacitance）簡化模型，即牛頓冷卻定律的形式（教學用簡化模型）。</p>
+<div class="math-block">$$
+C\frac{dT}{dt} = -UA\,(T - T_{\infty}) \tag{3.5}
+$$</div>
+<div class="math-block">$$
+T(t) = T_{\infty} + (T_0 - T_{\infty})\,e^{-t/\tau},\qquad \tau = \frac{C}{UA} \tag{3.6}
+$$</div>
+<p>其中 $C$ 為房間等效熱容（$\text{kJ/K}$），$UA$ 為等效冷卻能力係數（$\text{kW/K}$），$T_{\infty}$ 為等效冷源溫度（°C），$\tau$ 為時間常數。對式 (3.6) 微分可驗證 $\dfrac{dT}{dt} = -\dfrac{T - T_{\infty}}{\tau}$，與式 (3.5) 一致。</p>
+<p><strong>已知條件</strong>：$C = 3600\ \text{kJ/K}$，$UA = 3.0\ \text{kW/K}$，$T_0 = 30\ °\text{C}$，$T_{\infty} = 18\ °\text{C}$，設定溫度 $26\ °\text{C}$。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>求時間常數：$\tau = \dfrac{3600\ \text{kJ/K}}{3.0\ \text{kW/K}} = 1200\ \text{s} = 20\ \text{min}$（因 $1\ \text{kW} = 1\ \text{kJ/s}$）。</li>
+<li>起始降溫速率：$\left.\dfrac{dT}{dt}\right|_{t=0} = -\dfrac{30 - 18}{1200}\ \text{K/s} = -0.01\ \text{K/s} = -0.6\ \text{K/min}$。</li>
+<li>降到 $26\ °\text{C}$ 的時間：由 $26 - 18 = (30 - 18)\,e^{-t/\tau}$ 得 $e^{-t/\tau} = \dfrac{8}{12}$，故 $t = \tau\ln\dfrac{12}{8} = 20\ \text{min} \times 0.4055 = 8.11\ \text{min}$。</li>
+</ol>
+<p><strong>計算結果</strong>：起始降溫速率約 $0.6\ \text{K/min}$，約 <mark style="color:red;font-weight:bold">8.1 分鐘</mark>降到 $26\ °\text{C}$。</p>
+<p><strong>表3.3　時間常數 $\tau$ 的倍數與剩餘溫差（$T_0 - T_{\infty} = 12\ \text{K}$）</strong></p>
+<table>
+<thead>
+<tr>
+<th>經過時間</th>
+<th>剩餘溫差比例 $e^{-t/\tau}$</th>
+<th>房間溫度（°C）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$1\tau = 20\ \text{min}$</td>
+<td>$36.8\%$</td>
+<td>$22.4$</td>
+</tr>
+<tr>
+<td>$2\tau = 40\ \text{min}$</td>
+<td>$13.5\%$</td>
+<td>$19.6$</td>
+</tr>
+<tr>
+<td>$3\tau = 60\ \text{min}$</td>
+<td>$5.0\%$</td>
+<td>$18.6$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>選用此模型的原因</strong>：降溫速率正比於「目前與冷源的溫差」，用一階微分方程最簡單，且解為 $e$ 的指數，與 1.1.4 的「動態變化選 $\ln$」一致。此結果將在範例 5.3 以積分反向推導驗證。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">$C$、$UA$、$T_{\infty}$ 皆為教學假設值，並非任何實際房間或設備的數據；實際房間有多個熱容與負荷來源，需更完整的模型。</div></div>
+
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值；數值為教學假設值。參考：[R9]。</p>
+<p><strong>【範例 3.5】🔧 送風顯熱量的全微分：風量與溫差同時變動</strong></p>
+<p><strong>情境</strong>：送風的顯熱冷卻量同時受風量與送回風溫差影響。若風量增加、溫差略降，冷卻量變化多少？</p>
+<p><strong>算式來源</strong>：顯熱傳遞基本式（能量守恆），並套用全微分式 (3.2)。</p>
+<div class="math-block">$$
+Q = \rho\, c_{p}\, \dot{V}\,\Delta T \tag{3.7}
+$$</div>
+<p>其中 $Q$ 為顯熱量（kW），$\rho$ 為空氣密度，$c_p$ 為空氣定壓比熱，$\dot{V}$ 為風量（$\text{m}^3/\text{s}$），$\Delta T$ 為溫差（K）。</p>
+<p><strong>已知條件</strong>：取常見的近似值 $\rho = 1.2\ \text{kg/m}^3$、$c_p = 1.006\ \text{kJ/(kg·K)}$，故 $\rho c_p = 1.2072\ \text{kJ/(m}^3\text{·K)}$。基準點 $\dot{V} = 1.0\ \text{m}^3/\text{s}$、$\Delta T = 10\ \text{K}$；變動量 $d\dot{V} = +0.10\ \text{m}^3/\text{s}$、$d(\Delta T) = -0.5\ \text{K}$。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>基準值：$Q = 1.2072 \times 1.0 \times 10 = 12.072\ \text{kW}$。</li>
+<li>偏微分：$\dfrac{\partial Q}{\partial \dot{V}} = \rho c_p\,\Delta T = 12.072\ \text{kW/(m}^3/\text{s)}$；$\dfrac{\partial Q}{\partial (\Delta T)} = \rho c_p\,\dot{V} = 1.2072\ \text{kW/K}$。</li>
+<li>全微分：$dQ = 12.072 \times 0.10 + 1.2072 \times (-0.5) = 1.2072 - 0.6036 = +0.6036\ \text{kW}$。</li>
+<li>精確驗算：$Q_{new} = 1.2072 \times 1.1 \times 9.5 = 12.615\ \text{kW}$，$\Delta Q = +0.543\ \text{kW}$。</li>
+</ol>
+<p><strong>計算結果</strong>：全微分估計 <mark style="color:red;font-weight:bold">約 +0.60 kW</mark>，精確值 $+0.54\ \text{kW}$；差的 $0.06\ \text{kW}$ 正是被忽略的二階項 $\rho c_p\,d\dot{V}\,d(\Delta T) = 1.2072\times0.1\times(-0.5) = -0.0604\ \text{kW}$。</p>
+<p><strong>選用全微分的原因</strong>：$Q$ 同時是兩個變數的函數，偏微分可看出「風量每增加 $1\ \text{m}^3/\text{s}$」與「溫差每增加 $1\ \text{K}$」各貢獻多少，也可用來評估量測誤差如何傳遞到冷卻量。</p>
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值（$\rho$、$c_p$ 為一般空氣近似值，實務請依實際條件與合法持有之資料查核）。</p>
+<hr />
+<h1>4. 微分的極值應用：極值、凹凸性與反曲點</h1>
+<h2>4.1 導數與幾何圖形對照判定法則</h2>
+<p>微積分中，一階導數 $f'(x)$ 決定曲線的<strong>傾斜方向（遞增／遞減）</strong>，二階導數 $f''(x)$ 決定曲線的<strong>開口彎曲方向（凹凸性）</strong>。</p>
+<p><strong>表4.1　一階、二階導數與圖形走勢對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>一階導數 $f'(x)$</th>
+<th>二階導數 $f''(x)$</th>
+<th>幾何形狀與走勢描述</th>
+<th>視覺開口特徵</th>
+<th>物理／熱力學常見實例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$&gt; 0$</td>
+<td>$&gt; 0$</td>
+<td>向右上升 + 凹向上（越往右上升越快）</td>
+<td>📈 開口朝上</td>
+<td>加熱升溫、指數成長曲線</td>
+</tr>
+<tr>
+<td>$&gt; 0$</td>
+<td>$&lt; 0$</td>
+<td>向右上升 + 凹向下（越往右上升越慢）</td>
+<td>↗️ 開口朝下</td>
+<td>對數成長、邊際效益遞減曲線</td>
+</tr>
+<tr>
+<td>$&lt; 0$</td>
+<td>$&gt; 0$</td>
+<td>向右下降 + 凹向上（越往右下降越慢）</td>
+<td>📉 開口朝上</td>
+<td><strong>$P\text{-}v$ 圖中的多變壓縮線、等溫線</strong></td>
+</tr>
+<tr>
+<td>$&lt; 0$</td>
+<td>$&lt; 0$</td>
+<td>向右下降 + 凹向下（越往右下降越快）</td>
+<td>↘️ 開口朝下</td>
+<td>加速衰減曲線</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-note"><div class="callout-title">備註</div><div class="callout-body">📌 <b>補充（HVAC 領域延伸實例）</b>：同樣的凹凸性判讀邏輯，也可對應到冷凍空調常見的 T-s 圖（溫熵圖）中飽和曲線的彎曲方向，或是 COP（Coefficient of Performance 性能係數）隨負載率變化的曲線——COP 在最高效率點之前通常呈現「$f' &gt; 0,\ f'' &lt; 0$」型態（COP 隨負載提升但邊際效益遞減），可用同一套判讀口訣理解（見範例 4.4）。此為知識框架延伸說明，非引用特定廠牌或標準之具體數據，實務設計仍請以原廠性能曲線為準。</div></div>
+
+<p><strong>記憶口訣</strong>：</p>
+<ol>
+<li><strong>$f'(x)$ 決定走向</strong>：正值向右上（遞增），負值向右下（遞減）。</li>
+<li><strong>$f''(x)$ 決定碗口</strong>：正值凹向上（像正常的碗能裝水，開口朝上），負值凹向下（像倒扣的碗，開口朝下）。</li>
+</ol>
+<h2>4.2 臨界點與極值測試</h2>
+<ul>
+<li><strong>臨界點（Critical Point 臨界點）</strong>：使 $f'(x) = 0$ 或 $f'(x)$ 不存在的點 $x = c$。</li>
+</ul>
+<p><strong>一階導數極值測試法（First Derivative Test 一階導數檢定法）</strong>：</p>
+<ol>
+<li><strong>相對極大值</strong>：在 $x = c$ 左右兩側，$f'(x)$ 由<strong>正變負</strong>。</li>
+<li><strong>相對極小值</strong>：在 $x = c$ 左右兩側，$f'(x)$ 由<strong>負變正</strong>。</li>
+<li><strong>非極值</strong>：正負號未改變（例如 $f(x) = x^3$ 在 $x = 0$ 處，$f'(x) \geq 0$ 恆成立，屬於水平反曲點而非極值）。</li>
+</ol>
+<p><strong>二階導數極值測試法（Second Derivative Test 二階導數檢定法）</strong>（當 $f'(c) = 0$ 時）：</p>
+<ol>
+<li>若 $f''(c) &lt; 0$（開口朝下，像山頂）$\implies$ $x = c$ 為<strong>局部極大值</strong>。</li>
+<li>若 $f''(c) &gt; 0$（開口朝上，像谷底）$\implies$ $x = c$ 為<strong>局部極小值</strong>。</li>
+<li><mark style="color:red;font-weight:bold">若 $f''(c) = 0$，此檢定法失效，必須回頭改用一階導數檢定法判斷</mark>。</li>
+</ol>
+<p><strong>複習口訣（一階／二階檢定速記）</strong>：</p>
+<ul>
+<li>通過臨界點 $c$ 的左右兩側，觀察 $f'(x)$ 的正負號變化：<ul>
+<li>$f'(x)$ 由正變負 $\implies$ 相對極大值。</li>
+<li>$f'(x)$ 由負變正 $\implies$ 相對極小值。</li>
+<li>正負號未改變 $\implies$ 非極值。</li>
+</ul>
+</li>
+<li>若 $c$ 為臨界點且 $f'(c) = 0$：<ul>
+<li>$f''(c) &lt; 0 \implies$ 凹向下 $\implies$ 相對極大值。</li>
+<li>$f''(c) &gt; 0 \implies$ 凹向上 $\implies$ 相對極小值。</li>
+<li>$f''(c) = 0 \implies$ 二階檢定法失效，必須改用一階導數檢定法。</li>
+</ul>
+</li>
+</ul>
+<h2>4.3 凹凸性與反曲點（Inflection Point 反曲點）</h2>
+<ul>
+<li><strong>凹向上（Concave Up 凹向上）</strong>：$f''(x) &gt; 0$。</li>
+<li><strong>凹向下（Concave Down 凹向下）</strong>：$f''(x) &lt; 0$。</li>
+<li><strong>反曲點（Inflection Point 反曲點）</strong>：曲線凹凸性發生改變的點（即 $f''(x) = 0$ 或不存在，且左右兩側 $f''(x)$ 變號的點）。</li>
+</ul>
+<h2>4.4 經典計算範例</h2>
+<p><strong>【範例 4.1】函數繪圖與極值、反曲點求解</strong></p>
+<p>分析多項式函數 $f(x) = x^3 - 3x^2 + 2$ 的遞增／遞減區間、極值、凹凸性與反曲點。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li><strong>求一階與二階導數</strong>：</li>
+</ol>
+<div class="math-block">$$
+f'(x) = 3x^2 - 6x = 3x(x - 2)
+$$</div>
+<div class="math-block">$$
+f''(x) = 6x - 6 = 6(x - 1)
+$$</div>
+<ol start="2">
+<li><strong>找臨界點並討論極值</strong>：設 $f'(x) = 0 \implies 3x(x - 2) = 0 \implies x = 0$ 或 $x = 2$。<ul>
+<li><strong>代入二階導數測試</strong>：<ul>
+<li>$f''(0) = 6(0) - 6 = -6 &lt; 0 \implies x = 0$ 處有<strong>局部極大值</strong> $f(0) = 2$。</li>
+<li>$f''(2) = 6(2) - 6 = 6 &gt; 0 \implies x = 2$ 處有<strong>局部極小值</strong> $f(2) = 2^3 - 3(2)^2 + 2 = -2$。</li>
+</ul>
+</li>
+<li><strong>區間性質</strong>：<ul>
+<li>當 $x &lt; 0$ 或 $x &gt; 2$ 時，$f'(x) &gt; 0 \implies$ 函數單調遞增。</li>
+<li>當 $0 &lt; x &lt; 2$ 時，$f'(x) &lt; 0 \implies$ 函數單調遞減。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>討論凹凸性與反曲點</strong>：設 $f''(x) = 0 \implies 6(x - 1) = 0 \implies x = 1$。<ul>
+<li>當 $x &lt; 1$ 時，$f''(x) &lt; 0 \implies$ <strong>凹向下</strong>。</li>
+<li>當 $x &gt; 1$ 時，$f''(x) &gt; 0 \implies$ <strong>凹向上</strong>。</li>
+<li>因在 $x = 1$ 兩側凹凸性改變，代回原式求得 $f(1) = 1^3 - 3(1)^2 + 2 = 0$。</li>
+</ul>
+</li>
+</ol>
+<p><strong>結果</strong>：點 $(1, 0)$ 為<strong>反曲點</strong>。</p>
+<p><strong>【範例 4.2】函數圖形分析與相對極值</strong></p>
+<p>求函數 $f(x) = x^3 - 3x^2 - 9x + 5$ 的遞增／遞減區間、相對極值、凹凸性與反曲點。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<p><strong>1. 求一階與二階導數</strong>：</p>
+<ul>
+<li>$f'(x) = 3x^2 - 6x - 9 = 3(x^2 - 2x - 3) = 3(x - 3)(x + 1)$</li>
+<li>$f''(x) = 6x - 6 = 6(x - 1)$</li>
+</ul>
+<p><strong>2. 尋找臨界點與相對極值</strong>：令 $f'(x) = 0 \implies 3(x - 3)(x + 1) = 0$，得到臨界點為 $x = 3$ 與 $x = -1$。</p>
+<ul>
+<li>測試 $x = -1$：$f''(-1) = 6(-1 - 1) = -12 &lt; 0 \implies$ 凹向下，有<strong>相對極大值</strong>。</li>
+</ul>
+<div class="math-block">$$
+f(-1) = (-1)^3 - 3(-1)^2 - 9(-1) + 5 = -1 - 3 + 9 + 5 = 10
+$$</div>
+<ul>
+<li>測試 $x = 3$：$f''(3) = 6(3 - 1) = 12 &gt; 0 \implies$ 凹向上，有<strong>相對極小值</strong>。</li>
+</ul>
+<div class="math-block">$$
+f(3) = 3^3 - 3(3)^2 - 9(3) + 5 = 27 - 27 - 27 + 5 = -22
+$$</div>
+<p><strong>3. 分析凹凸性與反曲點</strong>：令 $f''(x) = 0 \implies 6(x - 1) = 0 \implies x = 1$。</p>
+<ul>
+<li>當 $x &lt; 1$ 時，$f''(x) &lt; 0 \implies$ 圖形凹向下。</li>
+<li>當 $x &gt; 1$ 時，$f''(x) &gt; 0 \implies$ 圖形凹向上。</li>
+<li>因為在 $x = 1$ 兩側凹凸性改變，故反曲點為 $(1, f(1)) = (1, -6)$。</li>
+</ul>
+<p><strong>4. 結論彙整</strong>：</p>
+<ul>
+<li><strong>遞增區間</strong>：$(-\infty, -1) \cup (3, \infty)$</li>
+<li><strong>遞減區間</strong>：$(-1, 3)$</li>
+<li><strong>相對極大值</strong>：$10$（發生於 $x = -1$）</li>
+<li><strong>相對極小值</strong>：$-22$（發生於 $x = 3$）</li>
+<li><strong>反曲點</strong>：$(1, -6)$</li>
+</ul>
+<h2>4.5 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 4.3】🔧 水管管徑經濟優化（求最小總成本）</strong></p>
+<p><strong>情境</strong>：同樣流量下，管徑越大，管材與施工的年化成本越高，但摩擦壓降與泵浦耗電越低；管徑越小則相反。求使「年化總成本」最低的管徑。</p>
+<p><strong>算式來源</strong>：Darcy–Weisbach 關係顯示固定流量下壓降隨管徑約以 $D^{-5}$ 變化；管材成本以線性近似（教學簡化模型）。</p>
+<div class="math-block">$$
+C(D) = aD + bD^{-5} \tag{4.1}
+$$</div>
+<div class="math-block">$$
+C'(D) = a - 5bD^{-6} = 0 \implies D^{*} = \left(\frac{5b}{a}\right)^{1/6} \tag{4.2}
+$$</div>
+<p>其中 $C$ 為年化總成本（元／年），$D$ 為管徑（m），$a$ 為管材成本係數（元／(年·m)），$b$ 為運轉耗電成本係數（元·$\text{m}^5$／年）。</p>
+<p><strong>已知條件（教學假設值）</strong>：$a = 8000\ \text{元/(年·m)}$，$b = 0.1\ \text{元·m}^5/\text{年}$。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>令一階導數為零求臨界點：$D^{*} = \left(\dfrac{5 \times 0.1}{8000}\right)^{1/6} = (6.25\times10^{-5})^{1/6}$。</li>
+<li>取自然對數計算：$\ln(6.25\times10^{-5}) = -9.680$，除以 $6$ 得 $-1.6134$，故 $D^{*} = e^{-1.6134} = 0.1992\ \text{m}$。</li>
+<li>二階導數檢定：$C''(D) = 30\,b\,D^{-7} = \dfrac{30 \times 0.1}{(0.1992)^7} \approx 2.4\times10^{5} &gt; 0$ $\implies$ 此為<mark style="color:red;font-weight:bold">局部極小值</mark>。</li>
+<li>代回求最小成本：$C(D^{*}) = 8000\times0.1992 + 0.1\times(0.1992)^{-5} = 1593.7 + 318.7 = 1912.4\ \text{元/年}$。</li>
+</ol>
+<p><strong>計算結果</strong>：最佳管徑約 <mark style="color:red;font-weight:bold">199 mm</mark>，年化總成本約 $1912\ \text{元/年}$。檢查：最佳點上兩項成本比為 $1593.7 : 318.7 = 5 : 1$，與 $aD^{*} = 5bD^{*-5}$ 吻合。</p>
+<p><strong>表4.2　不同管徑的年化總成本比較</strong></p>
+<table>
+<thead>
+<tr>
+<th>管徑 $D$（m）</th>
+<th>管材成本 $aD$（元/年）</th>
+<th>耗電成本 $bD^{-5}$（元/年）</th>
+<th>總成本（元/年）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0.15$</td>
+<td>$1200.0$</td>
+<td>$1316.9$</td>
+<td>$2516.9$</td>
+</tr>
+<tr>
+<td>$0.199$（最佳）</td>
+<td>$1593.7$</td>
+<td>$318.7$</td>
+<td>$1912.4$</td>
+</tr>
+<tr>
+<td>$0.25$</td>
+<td>$2000.0$</td>
+<td>$102.4$</td>
+<td>$2102.4$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>選用二階檢定的原因</strong>：$C''(D) &gt; 0$ 一步即可確認為極小值；若 $C''$ 為零才需退回一階檢定（見 4.2）。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">$a$、$b$ 為教學假設值，並非實際造價或電價；實務須取用市售標準管徑，並另行檢核流速、噪音與承壓，結果請與相關技師確認。</div></div>
+
+<p><strong>查證等級</strong>：管徑優化方法為 (3) 既有知識工程參考值；係數數值為 (4) 教學假設值，查無具體依據。參考：[R7]。</p>
+<p><strong>【範例 4.4】🔧 冰水主機 COP 隨部分負載率變化的最佳點</strong></p>
+<p><strong>情境</strong>：冰水主機的 COP 隨部分負載率 PLR（Part Load Ratio 部分負載率）變化，通常存在一個效率最高的負載點。用二次函數擬合，求最佳 PLR。</p>
+<p><strong>算式來源</strong>：以二次多項式擬合性能曲線的常見作法（教學簡化）；下式為假設曲線，非任何機型的實測資料。</p>
+<div class="math-block">$$
+\text{COP}(x) = 4 + 6x - 5x^{2},\qquad x = \text{PLR},\ 0.2 \le x \le 1.0 \tag{4.3}
+$$</div>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>一階導數：$\text{COP}'(x) = 6 - 10x$。</li>
+<li>令其為零：$6 - 10x = 0 \implies x^{*} = 0.6$。</li>
+<li>二階導數：$\text{COP}''(x) = -10 &lt; 0$（凹向下）$\implies$ 為<mark style="color:red;font-weight:bold">最大值</mark>。</li>
+<li>代回求最大 COP：$\text{COP}(0.6) = 4 + 3.6 - 1.8 = 5.8$。</li>
+<li>與端點比較：$\text{COP}(0.2) = 5.0$，$\text{COP}(1.0) = 5.0$。</li>
+</ol>
+<p><strong>表4.3　假設曲線下不同 PLR 的 COP</strong></p>
+<table>
+<thead>
+<tr>
+<th>PLR $x$</th>
+<th>0.2</th>
+<th>0.3</th>
+<th>0.6</th>
+<th>1.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COP</td>
+<td>$5.00$</td>
+<td>$5.35$</td>
+<td>$5.80$</td>
+<td>$5.00$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>計算結果</strong>：假設曲線的最高效率點在 <mark style="color:red;font-weight:bold">PLR = 60%，COP = 5.8</mark>。因 $\text{COP}'' = -10$ 恆為負，此曲線在定義域內無反曲點，且在 $x &lt; 0.6$ 時 $f' &gt; 0,\ f'' &lt; 0$，正好對應 4.1 表的「上升但越來越慢」型態。</p>
+<p><strong>工程直覺</strong>：台數控制的目標之一，就是讓運轉中的主機盡量落在高效率負載區間。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">本曲線為教學假設值，切勿當作任何實際機組的性能。實際性能曲線須以原廠提供且合法持有的技術資料為準，並與相關技師確認。</div></div>
+
+<p><strong>查證等級</strong>：方法為 (3) 既有知識工程參考值；曲線係數為 (4) 教學假設值，查無具體依據。</p>
+<hr />
+<h1>5. 積分學（Integral Calculus）</h1>
+<h2>5.1 核心觀念與微積分基本定理</h2>
+<ul>
+<li><strong>不定積分</strong>：微分的逆運算（還原過程），須加上常數 $+C$。</li>
+<li><strong>定積分</strong>：函數曲線在區間 $[a, b]$ 下與 $x$ 軸圍成的<strong>淨面積</strong>。</li>
+<li><strong>微積分基本定理（Fundamental Theorem of Calculus, FTC 微積分基本定理）</strong>：若 $F'(x) = f(x)$，則：</li>
+</ul>
+<div class="math-block">$$
+\int_{a}^{b} f(x) \, dx = F(b) - F(a) \tag{5.1}
+$$</div>
+<p>積分（Integral）與微分恰好相反，它是微分的逆運算。如果說微分是把一個整體「細分」來研究它的變化率，那麼積分就是把這些微小的變化量「累積」起來，還原成一個整體。在多變數微積分的世界中，對應前面的「偏微分」與「全微分」，積分也發展出了幾種不同的形式。</p>
+<h3>5.1.1 基礎的積分：單變數積分</h3>
+<p>在單變數函數 $y = f(x)$ 中，積分主要分為兩種：</p>
+<ul>
+<li><strong>不定積分（Indefinite Integral）</strong>：微分的逆運算（找原函數）。例如，誰微分後會變成 $f(x)$？</li>
+<li><strong>定積分（Definite Integral）</strong>：在幾何上代表函數曲線與 $x$ 軸之間所圍成的面積。它是把無數個極窄長方形的面積（$f(x) \cdot dx$）加總起來的結果：</li>
+</ul>
+<div class="math-block">$$
+\int_{a}^{b} f(x) \, dx
+$$</div>
+<h3>5.1.2 對應「偏微分」的積分：重積分（Multiple Integral）</h3>
+<p>當函數變成多變數（例如 $z = f(x, y)$）時，空間從「線」變成了「面」或「體積」。這時我們會使用重積分（雙重積分、三重積分等）：</p>
+<ul>
+<li><strong>幾何意義</strong>：雙重積分 $\iint_D f(x,y) \, dA$ 代表曲面下方的空間體積。</li>
+<li><strong>運算方式</strong>：就像偏微分一次只對一個變數微一樣，重積分也是「一次只對一個變數積」（先對 $x$ 積，把 $y$ 當常數；積完再對 $y$ 積）。</li>
+</ul>
+<h3>5.1.3 對應「全微分」的積分：線積分（Line Integral）</h3>
+<p>這通常是學生最容易搞混，但也是物理、工程上最漂亮的應用。前面提到，全微分 $dz = M(x,y)\,dx + N(x,y)\,dy$ 代表在所有方向同時變動時的微小總變化量。如果我們想把這些微小的總變化量，沿著二維平面上的一條特定曲線（軌跡）全部累加起來，這就叫做線積分（或曲線積分）：</p>
+<div class="math-block">$$
+\int_{C} M(x,y)\,dx + N(x,y)\,dy
+$$</div>
+<ul>
+<li><strong>物理直覺範例（作功）</strong>：想像你在風中推著推車前進。風在每個點的方向和大小都不同（這是一個向量場）。你沿著一條彎彎曲曲的路徑 $C$ 前進，全微分就像是你在某個極小步伐中，風對你所作的微小的功；而線積分就是把整條路上風對你作的功全部加總。</li>
+</ul>
+<h3>5.1.4 總結：微積分的家族對稱表</h3>
+<p>為了方便記憶，可以把微分和積分的對應關係列成下表：</p>
+<p><strong>表5.1　微積分的家族對稱表</strong></p>
+<table>
+<thead>
+<tr>
+<th>維度／概念</th>
+<th>微分方向（拆解、看變化）</th>
+<th>積分方向（累積、求總和）</th>
+<th>幾何／物理意義（積分）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>單變數</td>
+<td>微分 $dy = f'(x)\,dx$</td>
+<td>定積分 $\int f(x)\,dx$</td>
+<td>求曲線下的面積</td>
+</tr>
+<tr>
+<td>多變數（局部）</td>
+<td>偏微分 $\dfrac{\partial z}{\partial x}$</td>
+<td>重積分 $\iint f(x,y)\,dx\,dy$</td>
+<td>求曲面下的體積</td>
+</tr>
+<tr>
+<td>多變數（整體）</td>
+<td>全微分 $dz = \dfrac{\partial z}{\partial x}dx + \dfrac{\partial z}{\partial y}dy$</td>
+<td>線積分 $\int_C M\,dx + N\,dy$</td>
+<td>沿特定路徑累積的總量（如：作功）</td>
+</tr>
+</tbody>
+</table>
+<p>微積分的積分部分通常幾何圖形比較抽象，建議搭配 5.4 的工程累積量範例建立直覺。</p>
+<h2>5.2 基本積分速查表</h2>
+<p><strong>表5.2　基本積分速查表</strong></p>
+<table>
+<thead>
+<tr>
+<th>被積函數 $f(x)$</th>
+<th>不定積分 $\int f(x)\,dx$</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$x^n$</td>
+<td>$\dfrac{x^{n+1}}{n+1} + C$</td>
+<td>$n \neq -1$（次方加 $1$ 除以新次方）</td>
+</tr>
+<tr>
+<td>$\dfrac{1}{x}$</td>
+<td>$\ln \vert x \vert + C$</td>
+<td>$n = -1$ 的特殊情況</td>
+</tr>
+<tr>
+<td>$e^x$</td>
+<td>$e^x + C$</td>
+<td></td>
+</tr>
+<tr>
+<td>$a^x$</td>
+<td>$\dfrac{a^x}{\ln a} + C$</td>
+<td></td>
+</tr>
+<tr>
+<td>$\sin x$</td>
+<td>$-\cos x + C$</td>
+<td><mark style="color:red;font-weight:bold">注意負號</mark></td>
+</tr>
+<tr>
+<td>$\cos x$</td>
+<td>$\sin x + C$</td>
+<td></td>
+</tr>
+<tr>
+<td>$\sec^2 x$</td>
+<td>$\tan x + C$</td>
+<td></td>
+</tr>
+<tr>
+<td>$\dfrac{1}{1 + x^2}$</td>
+<td>$\arctan x + C$</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>5.3 核心積分兩大技巧與 DI 速算表</h2>
+<h3>5.3.1 代換積分法（u-Substitution 代換積分法）</h3>
+<p>適用於被積函數中同時包含「複合函數」及其「內部導數」的情況。</p>
+<p><strong>【範例 5.1】代換法計算</strong></p>
+<p>計算 $\int 2x\, e^{x^2} \, dx$</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li><strong>設變數</strong>：令 $u = x^2$。</li>
+<li><strong>微分尋找 $du$</strong>：$\dfrac{du}{dx} = 2x \implies du = 2x \, dx$。</li>
+<li><strong>變數變換</strong>：</li>
+</ol>
+<div class="math-block">$$
+\int 2x\, e^{x^2} \, dx = \int e^u \, du = e^u + C
+$$</div>
+<ol start="4">
+<li><strong>代回原變數</strong>：</li>
+</ol>
+<div class="math-block">$$
+= e^{x^2} + C
+$$</div>
+<h3>5.3.2 分部積分法（Integration by Parts 分部積分法）</h3>
+<p>適用於兩種不同類型函數相乘。</p>
+<ul>
+<li><strong>公式</strong>：$\int u \, dv = uv - \int v \, du$</li>
+<li><strong>LIATE 選取 $u$ 的優先順序</strong>（越靠前越優先設為 $u$）：<ol>
+<li><strong>L</strong>ogarithmic（對數，如 $\ln x$）</li>
+<li><strong>I</strong>nverse Trig（反三角，如 $\arctan x$）</li>
+<li><strong>A</strong>lgebraic（代數／多項式，如 $x^2$）</li>
+<li><strong>T</strong>rigonometric（三角，如 $\sin x$）</li>
+<li><strong>E</strong>xponential（指數，如 $e^x$）</li>
+</ol>
+</li>
+</ul>
+<h3>5.3.3 表格積分法（Tabular Integration / DI 法）專題</h3>
+<p>當需要連續多次分部積分時（例如多項式乘以三角或指數函數），表格法能避免繁瑣的符號與括號出錯。</p>
+<p><strong>解題 SOP 步驟</strong>：</p>
+<ol>
+<li>建立三欄：<strong>「正負號（Sign）」</strong>、<strong>「微分（D）」</strong>、<strong>「積分（I）」</strong>。</li>
+<li>$D$ 欄填寫多項式（持續微分至 $0$）；$I$ 欄填寫另一函數（持續積分）。</li>
+<li>斜向相乘連線，結合列首正負號相加即為答案。</li>
+</ol>
+<p><strong>類型 A：可微分至 $0$ 型</strong>（以 $\int x^2 \sin x \, dx$ 為例）</p>
+<p><strong>表5.3　DI 表格法：類型 A</strong></p>
+<table>
+<thead>
+<tr>
+<th>正負號（Sign）</th>
+<th>微分（D）</th>
+<th>積分（I）</th>
+<th>對應關係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$+$</td>
+<td>$x^2$</td>
+<td>$\sin x$</td>
+<td>初始行</td>
+</tr>
+<tr>
+<td>$-$</td>
+<td>$2x$</td>
+<td>$-\cos x$</td>
+<td>斜線 1：$(+) \cdot (x^2) \cdot (-\cos x) = -x^2 \cos x$</td>
+</tr>
+<tr>
+<td>$+$</td>
+<td>$2$</td>
+<td>$-\sin x$</td>
+<td>斜線 2：$(-) \cdot (2x) \cdot (-\sin x) = +2x \sin x$</td>
+</tr>
+<tr>
+<td>$-$</td>
+<td>$0$</td>
+<td>$\cos x$</td>
+<td>斜線 3：$(+) \cdot (2) \cdot (\cos x) = +2\cos x$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>組合最終答案</strong>：</p>
+<div class="math-block">$$
+\int x^2 \sin x \, dx = -x^2 \cos x + 2x \sin x + 2\cos x + C
+$$</div>
+<p><strong>類型 B：循環型</strong>（以 $\int e^x \sin x \, dx$ 為例）</p>
+<p>當兩函數均無法微分至 $0$ 時，表格會在出現「與原題目相同組合」時停止，最後一行採<strong>水平相乘並保留積分符號 $\int$</strong>。</p>
+<p><strong>表5.4　DI 表格法：類型 B（循環型）</strong></p>
+<table>
+<thead>
+<tr>
+<th>正負號（Sign）</th>
+<th>微分（D）</th>
+<th>積分（I）</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$+$</td>
+<td>$\sin x$</td>
+<td>$e^x$</td>
+<td>初始行</td>
+</tr>
+<tr>
+<td>$-$</td>
+<td>$\cos x$</td>
+<td>$e^x$</td>
+<td>斜線 1：$e^x \sin x$</td>
+</tr>
+<tr>
+<td>$+$</td>
+<td>$-\sin x$</td>
+<td>$e^x$</td>
+<td><mark style="color:red;font-weight:bold">重複出現！停止</mark>（斜線 2：$-e^x \cos x$；水平列：$\int -\sin x\, e^x \, dx$）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>列式與移項計算</strong>：</p>
+<ol>
+<li>斜線與水平列結合：</li>
+</ol>
+<div class="math-block">$$
+\int e^x \sin x \, dx = e^x \sin x - e^x \cos x - \int e^x \sin x \, dx
+$$</div>
+<ol start="2">
+<li>將右側積分項移至左側：</li>
+</ol>
+<div class="math-block">$$
+2 \int e^x \sin x \, dx = e^x (\sin x - \cos x)
+$$</div>
+<ol start="3">
+<li>同除以 $2$：</li>
+</ol>
+<div class="math-block">$$
+\int e^x \sin x \, dx = \frac{e^x (\sin x - \cos x)}{2} + C
+$$</div>
+<h2>5.4 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 5.2】🔧 日間累積冷能與耗電量（定積分＝累積量）</strong></p>
+<p><strong>情境</strong>：辦公室日間空調冷負荷從早上 6 時到晚上 18 時呈近似半個正弦波，中午最高。求整天累積的冷能、平均負荷，以及以固定 COP 估算的耗電量。</p>
+<p><strong>算式來源</strong>：能量等於功率對時間的積分（能量與功率的基本定義），再以微積分基本定理（式 (5.1)）求值。</p>
+<div class="math-block">$$
+E = \int_{t_1}^{t_2} Q(t)\,dt \tag{5.2}
+$$</div>
+<p><strong>已知條件（教學假設值）</strong>：$Q(t) = 100\sin\!\left(\dfrac{\pi(t-6)}{12}\right)\ \text{kW}$，$6 \le t \le 18\ \text{h}$（尖峰 $100\ \text{kW}$）；系統 COP 視為固定值 $5$。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>代換：令 $u = \dfrac{\pi(t-6)}{12}$，則 $dt = \dfrac{12}{\pi}\,du$，積分限由 $t=6 \to 18$ 變為 $u = 0 \to \pi$。</li>
+<li>積分：</li>
+</ol>
+<div class="math-block">$$
+E = 100\cdot\frac{12}{\pi}\int_{0}^{\pi}\sin u\,du = \frac{1200}{\pi}\big[-\cos u\big]_{0}^{\pi} = \frac{1200}{\pi}(1+1) = \frac{2400}{\pi}\ \text{kW·h}
+$$</div>
+<ol start="3">
+<li>數值：$E = 763.9\ \text{kW·h}$（冷能）。</li>
+<li>平均負荷：$\bar{Q} = \dfrac{E}{12\ \text{h}} = \dfrac{763.9}{12} = 63.7\ \text{kW}$（恰為尖峰的 $2/\pi \approx 63.7\%$）。</li>
+<li>耗電量：$\dfrac{763.9\ \text{kW·h}}{5} = 152.8\ \text{kW·h}$（電）。</li>
+</ol>
+<p><strong>計算結果</strong>：全日累積冷能 <mark style="color:red;font-weight:bold">約 764 kW·h</mark>，平均負荷約 $63.7\ \text{kW}$，以 COP = 5 估算耗電約 $153\ \text{kW·h}$。</p>
+<p><strong>選用定積分的原因</strong>：負荷隨時間連續變化，「累積量＝曲線下面積」，不能用尖峰值乘以時數（那樣會高估約 $57\%$，即 $100\times12 = 1200\ \text{kW·h}$）。</p>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">負荷曲線與固定 COP 皆為教學假設；實際 COP 會隨負載與室外條件變動（見範例 4.4）。</div></div>
+
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值；數值為教學假設值。參考：[R1]～[R4]。</p>
+<p><strong>【範例 5.3】🔧 由積分反向推導房間降溫公式（分離變數）</strong></p>
+<p><strong>情境</strong>：範例 3.4 直接給了 $T(t)$ 公式。這裡示範它從式 (3.5) 如何用積分推導出來，並驗證兩個範例結果一致。</p>
+<p><strong>算式來源</strong>：分離變數法（Separation of Variables）與 $\int \dfrac{1}{x}\,dx = \ln\vert x\vert + C$（表 5.2）。</p>
+<p><strong>計算過程（SOP）</strong>：</p>
+<ol>
+<li>由 $C\dfrac{dT}{dt} = -UA\,(T - T_{\infty})$ 分離變數：$\dfrac{dT}{T - T_{\infty}} = -\dfrac{dt}{\tau}$。</li>
+<li>兩邊積分（$T$ 由 $T_0$ 到 $T$，時間由 $0$ 到 $t$）：</li>
+</ol>
+<div class="math-block">$$
+\int_{T_0}^{T}\frac{dT}{T - T_{\infty}} = -\frac{1}{\tau}\int_{0}^{t}dt \implies \ln\frac{T - T_{\infty}}{T_0 - T_{\infty}} = -\frac{t}{\tau}
+$$</div>
+<ol start="3">
+<li>整理即得範例 3.4 的式 (3.6)：$T(t) = T_{\infty} + (T_0 - T_{\infty})e^{-t/\tau}$。</li>
+<li>用範例 3.4 的數字驗證：$\ln\dfrac{26-18}{30-18} = \ln\dfrac{8}{12} = -0.4055 = -\dfrac{t}{20\ \text{min}}$，得 $t = 8.11\ \text{min}$。</li>
+</ol>
+<p><strong>計算結果</strong>：與範例 3.4 的 <mark style="color:red;font-weight:bold">8.1 分鐘</mark>完全一致，可見<mark style="color:red;font-weight:bold">微分模型與積分解互為逆運算，可互相驗算</mark>。</p>
+<p><strong>選用分離變數的原因</strong>：方程式兩側可各自只含一個變數，逐邊積分最直接。</p>
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值；數值為教學假設值。參考：[R9]。</p>
+<hr />
+<h1>6. 定積分的幾何應用：平面面積計算</h1>
+<h2>6.1 核心觀念與計算公式</h2>
+<p>定積分的幾何意義是計算曲線下的面積。若要計算兩條曲線之間所圍成的真實<strong>平面面積</strong>，原則為：<strong>用上方函數減去下方函數（或右方函數減去左方函數）</strong>，以確保面積恆為正值。</p>
+<ol>
+<li><strong>對 $x$ 軸積分（上下函數）</strong>：若在區間 $[a, b]$ 上，$f(x) \ge g(x)$，則圍成的面積 $A$ 為：</li>
+</ol>
+<div class="math-block">$$
+A = \int_{a}^{b} [f(x) - g(x)] \, dx \tag{6.1}
+$$</div>
+<ol start="2">
+<li><strong>對 $y$ 軸積分（左右函數）</strong>：若在區間 $[c, d]$ 上，$x_{\text{right}}(y) \ge x_{\text{left}}(y)$，則圍成的面積 $A$ 為：</li>
+</ol>
+<div class="math-block">$$
+A = \int_{c}^{d} [x_{\text{right}}(y) - x_{\text{left}}(y)] \, dy \tag{6.2}
+$$</div>
+<h2>6.2 解題 SOP 步驟</h2>
+<ol>
+<li><strong>求交點</strong>：令上下（或左右）兩函數相等，解出交點座標，確定積分區間的上限與下限。</li>
+<li><strong>判斷高低／左右位置</strong>：在區間內代入一個測試值，確定哪一個函數在上（或在右）。</li>
+<li><strong>建立積分式</strong>：依式 (6.1) 寫出「上－下」或依式 (6.2) 寫出「右－左」。</li>
+<li><strong>計算定積分</strong>：使用微積分基本定理（式 (5.1)）求出最終面積數值（結果必定為正）。</li>
+</ol>
+<h2>6.3 經典計算範例</h2>
+<p><strong>【範例 6.1】兩曲線所圍成的封閉面積</strong></p>
+<p>求拋物線 $y = x^2$ 與直線 $y = x + 2$ 所圍成的封閉區域面積。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<ol>
+<li><strong>求兩曲線的交點（確定積分上下限）</strong>：聯立方程：</li>
+</ol>
+<div class="math-block">$$
+x^2 = x + 2 \implies x^2 - x - 2 = 0 \implies (x - 2)(x + 1) = 0
+$$</div>
+<p>解得交點的 $x$ 座標為 $x = -1$ 與 $x = 2$。</p>
+<ol start="2">
+<li><strong>判斷上下函數</strong>：在區間 $[-1, 2]$ 中選取測試點（如 $x = 0$）：<ul>
+<li>直線：$y = 0 + 2 = 2$（上方函數 $y_{\text{top}} = x + 2$）</li>
+<li>拋物線：$y = 0^2 = 0$（下方函數 $y_{\text{bottom}} = x^2$）</li>
+</ul>
+</li>
+<li><strong>列出定積分式並計算</strong>：</li>
+</ol>
+<div class="math-block">$$
+A = \int_{-1}^{2} \left[ (x + 2) - x^2 \right] \, dx = \left[ \frac{x^2}{2} + 2x - \frac{x^3}{3} \right]_{-1}^{2}
+$$</div>
+<ol start="4">
+<li><strong>代入上限減代入下限</strong>：</li>
+</ol>
+<p><strong>代入上限 $x = 2$</strong>：</p>
+<div class="math-block">$$
+\left( \frac{2^2}{2} + 2(2) - \frac{2^3}{3} \right) = \left( 2 + 4 - \frac{8}{3} \right) = 6 - \frac{8}{3} = \frac{10}{3}
+$$</div>
+<p><strong>代入下限 $x = -1$</strong>：</p>
+<div class="math-block">$$
+\left( \frac{(-1)^2}{2} + 2(-1) - \frac{(-1)^3}{3} \right) = \left( \frac{1}{2} - 2 + \frac{1}{3} \right) = -\frac{7}{6}
+$$</div>
+<p><strong>相減</strong>：</p>
+<div class="math-block">$$
+A = \frac{10}{3} - \left( -\frac{7}{6} \right) = \frac{20}{6} + \frac{7}{6} = \frac{27}{6} = \frac{9}{2}
+$$</div>
+<p><strong>結果</strong>：封閉面積為 $\dfrac{9}{2}$（即 $4.5$ 平方單位）。</p>
+<p><strong>【範例 6.2】兩曲線圍成的平面面積（拋物線與直線）</strong></p>
+<p>求由拋物線 $y = x^2$ 與直線 $y = 2x + 3$ 所圍成的平面區域面積。</p>
+<p><strong>詳細解題過程</strong>：</p>
+<p><strong>1. 求解兩曲線交點（確定積分邊界）</strong>：設 $x^2 = 2x + 3$：</p>
+<div class="math-block">$$
+x^2 - 2x - 3 = 0 \implies (x - 3)(x + 1) = 0
+$$</div>
+<p>解得 $x = -1$ 與 $x = 3$。因此積分邊界為 $a = -1,\ b = 3$。</p>
+<p><strong>2. 判斷上下位置</strong>：在區間 $(-1, 3)$ 中取測試點 $x = 0$：</p>
+<ul>
+<li>直線：$y = 2(0) + 3 = 3$</li>
+<li>拋物線：$y = 0^2 = 0$</li>
+</ul>
+<p>顯然直線 $y = 2x + 3$ 為<strong>上方函數</strong>，拋物線 $y = x^2$ 為<strong>下方函數</strong>。</p>
+<p><strong>3. 列出定積分式並計算</strong>：</p>
+<div class="math-block">$$
+A = \int_{-1}^{3} [(2x + 3) - x^2] \, dx = \int_{-1}^{3} (-x^2 + 2x + 3) \, dx
+$$</div>
+<p><strong>4. 找原函數並帶入上下限</strong>：</p>
+<div class="math-block">$$
+A = \left[ -\frac{x^3}{3} + x^2 + 3x \right]_{-1}^{3}
+$$</div>
+<p>代入上限 $x = 3$：</p>
+<div class="math-block">$$
+\left( -\frac{3^3}{3} + 3^2 + 3(3) \right) = (-9 + 9 + 9) = 9
+$$</div>
+<p>代入下限 $x = -1$：</p>
+<div class="math-block">$$
+\left( -\frac{(-1)^3}{3} + (-1)^2 + 3(-1) \right) = \left( \frac{1}{3} + 1 - 3 \right) = \frac{1}{3} - 2 = -\frac{5}{3}
+$$</div>
+<p>相減計算面積：</p>
+<div class="math-block">$$
+A = 9 - \left( -\frac{5}{3} \right) = 9 + \frac{5}{3} = \frac{32}{3}
+$$</div>
+<p><strong>結果</strong>：圍成的平面面積為 $\dfrac{32}{3}$ 平方單位。</p>
+<h2>6.4 🔧 HVAC 情境應用實例</h2>
+<p><strong>【範例 6.3】🔧 定頻供冷 vs. 時變負荷：供冷不足與過剩的累積量（曲線間面積與分段積分）</strong></p>
+<p><strong>情境</strong>：某區域定頻設備固定供冷 $S = 30\ \text{kW}$，而該區域的冷負荷隨時間變化。求哪些時段供冷不足、不足多少 kW·h，以及供冷過剩多少 kW·h。</p>
+<p><strong>算式來源</strong>：兩曲線間面積（式 (6.1)）；能量＝功率對時間的積分（式 (5.2)）。</p>
+<p><strong>已知條件（教學假設值）</strong>：$0 \le t \le 8\ \text{h}$，$L(t) = -2.5t^2 + 20t\ \text{kW}$（尖峰 $t = 4\ \text{h}$ 時 $40\ \text{kW}$），$S = 30\ \text{kW}$。</p>
+<p><strong>計算過程（SOP，對應 6.2）</strong>：</p>
+<ol>
+<li><strong>求交點</strong>：$L(t) = S \implies -2.5t^2 + 20t - 30 = 0 \implies t^2 - 8t + 12 = 0 \implies (t-2)(t-6) = 0$，得 $t = 2\ \text{h}$ 與 $t = 6\ \text{h}$。</li>
+<li><strong>判斷高低</strong>：取 $t = 4$：$L = 40 &gt; S = 30$，故 $2 \le t \le 6$ 時負荷在上；取 $t = 1$：$L = 17.5 &lt; 30$，故 $0 \le t \le 2$ 與 $6 \le t \le 8$ 時供冷在上。</li>
+<li><strong>建立積分式</strong>（原函數 $F(t)$ 為 $L - S$ 的積分）：</li>
+</ol>
+<div class="math-block">$$
+F(t) = \int (L - S)\,dt = -\frac{2.5}{3}t^{3} + 10t^{2} - 30t
+$$</div>
+<ol start="4">
+<li><strong>計算各時段面積</strong>：$F(0) = 0$，$F(2) = -26.67$，$F(6) = 0$，$F(8) = -26.67$。<ul>
+<li>供冷不足（$2 \sim 6\ \text{h}$）：$F(6) - F(2) = 0 - (-26.67) = 26.67\ \text{kW·h}$。</li>
+<li>供冷過剩（$0 \sim 2\ \text{h}$）：$-(F(2) - F(0)) = 26.67\ \text{kW·h}$。</li>
+<li>供冷過剩（$6 \sim 8\ \text{h}$）：$-(F(8) - F(6)) = 26.67\ \text{kW·h}$。</li>
+</ul>
+</li>
+</ol>
+<p><strong>表6.1　各時段面積彙整（每段皆為 $80/3 \approx 26.67\ \text{kW·h}$）</strong></p>
+<table>
+<thead>
+<tr>
+<th>時段（h）</th>
+<th>上方曲線</th>
+<th>面積（kW·h）</th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0 \sim 2$</td>
+<td>供冷 $S$</td>
+<td>$26.67$</td>
+<td>供冷過剩</td>
+</tr>
+<tr>
+<td>$2 \sim 6$</td>
+<td>負荷 $L(t)$</td>
+<td>$26.67$</td>
+<td><mark style="color:red;font-weight:bold">供冷不足</mark></td>
+</tr>
+<tr>
+<td>$6 \sim 8$</td>
+<td>供冷 $S$</td>
+<td>$26.67$</td>
+<td>供冷過剩</td>
+</tr>
+</tbody>
+</table>
+<p><strong>計算結果</strong>：$2 \sim 6\ \text{h}$ 供冷不足累積 <mark style="color:red;font-weight:bold">約 26.7 kW·h</mark>，需由其他設備或蓄冷補足；其餘時段共過剩約 $53.3\ \text{kW·h}$。</p>
+<p><strong>陷阱驗證</strong>：若不分段，直接計算 $\int_{0}^{8}(L - S)\,dt = F(8) - F(0) = -26.67\ \text{kW·h}$（淨值為負），<mark style="color:red;font-weight:bold">正負互相抵銷，會誤以為「整體供冷過剩」而看不到尖峰不足</mark>。這正是 7.2 表提醒的「曲線交叉必須分段積分」。</p>
+<p><strong>選用分段積分的原因</strong>：面積要的是每段「高度」皆為正的實際差距，交點就是上下函數對調的位置。</p>
+<p><strong>查證等級</strong>：(3) 既有知識工程參考值；負荷與供冷數值為教學假設值。參考：[R1]～[R4]。</p>
+<hr />
+<h1>7. 全書總複習：綜合對照與速查全表</h1>
+<h2>7.1 各單元核心精神對照表</h2>
+<p><strong>表7.1　各單元核心精神對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>單元</th>
+<th>核心精神</th>
+<th>關鍵工具／法則</th>
+<th>幾何／物理意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指對數</td>
+<td>尺度轉換與逆運算</td>
+<td>指數律、換底公式、自然底數 $e$</td>
+<td>描述指數級增長與衰變</td>
+</tr>
+<tr>
+<td>極限</td>
+<td>趨近而不等於的趨勢</td>
+<td>羅必達法則、$\dfrac{\sin x}{x} \to 1$</td>
+<td>處理 $\dfrac{0}{0}$ 或無限大未定式</td>
+</tr>
+<tr>
+<td>微分學</td>
+<td>局部線性化與瞬間變化率</td>
+<td>乘法／除法法則、連鎖律</td>
+<td>切線斜率、瞬時速度</td>
+</tr>
+<tr>
+<td>極值與凹凸</td>
+<td>函數圖形走勢分析</td>
+<td>一階／二階導數測試法</td>
+<td>極值點、開口方向與反曲點</td>
+</tr>
+<tr>
+<td>積分學</td>
+<td>累加還原與面積求解</td>
+<td>代換法、分部積分（DI 表格法）</td>
+<td>曲線下包圍之平面面積、物理做功</td>
+</tr>
+</tbody>
+</table>
+<h2>7.2 進階應用與常見陷阱提醒表</h2>
+<p><strong>表7.2　進階應用與常見陷阱</strong></p>
+<table>
+<thead>
+<tr>
+<th>單元</th>
+<th>關鍵公式與工具</th>
+<th>幾何／物理應用</th>
+<th>常見陷阱與注意事項</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>極值與凹凸分析</td>
+<td>$f'(x) = 0$（臨界點）；$f''(x) = 0$（反曲點候選）</td>
+<td>尋找最大利潤／最小成本、圖形描繪</td>
+<td><mark style="color:red;font-weight:bold">二階檢定法若 $f''(c)=0$ 會失效，需改用一階檢定法</mark></td>
+</tr>
+<tr>
+<td>平面面積</td>
+<td>$A = \int_a^b (\text{上} - \text{下}) \, dx$；$A = \int_c^d (\text{右} - \text{左}) \, dy$</td>
+<td>計算不規則圖形面積、收益盈餘</td>
+<td><mark style="color:red;font-weight:bold">曲線若有交叉，必須分段積分，確保每一段皆為正高度</mark></td>
+</tr>
+</tbody>
+</table>
+<h2>7.3 HVAC 數學工具對照表</h2>
+<p><strong>表7.3　數學工具與 HVAC 情境對照</strong></p>
+<table>
+<thead>
+<tr>
+<th>數學工具</th>
+<th>HVAC 情境</th>
+<th>對應範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>常用對數 $\log_{10}$</td>
+<td>噪音 dB 疊加</td>
+<td>範例 1.2</td>
+</tr>
+<tr>
+<td>自然對數 $\ln$、指數衰減</td>
+<td>CO₂ 稀釋、換氣所需時間</td>
+<td>範例 1.3</td>
+</tr>
+<tr>
+<td>極限、羅必達法則</td>
+<td>LMTD 在兩端溫差相等時的處理</td>
+<td>範例 2.2</td>
+</tr>
+<tr>
+<td>導數（敏感度、線性化）</td>
+<td>風量對壓降與風機功率的影響</td>
+<td>範例 3.3</td>
+</tr>
+<tr>
+<td>導數＋指數解</td>
+<td>房間降溫速率與時間常數</td>
+<td>範例 3.4</td>
+</tr>
+<tr>
+<td>偏微分、全微分</td>
+<td>風量與溫差同時變動對顯熱量的影響</td>
+<td>範例 3.5</td>
+</tr>
+<tr>
+<td>極值（一階、二階檢定）</td>
+<td>管徑經濟優化、COP 最佳負載率</td>
+<td>範例 4.3、4.4</td>
+</tr>
+<tr>
+<td>定積分</td>
+<td>日間累積冷能與耗電量</td>
+<td>範例 5.2</td>
+</tr>
+<tr>
+<td>分離變數積分</td>
+<td>一階系統（房間降溫）公式推導</td>
+<td>範例 5.3</td>
+</tr>
+<tr>
+<td>曲線間面積、分段積分</td>
+<td>供冷不足與過剩累積量</td>
+<td>範例 6.3</td>
+</tr>
+</tbody>
+</table>
+<h2>7.4 把工程問題轉成微積分問題的 SOP</h2>
+<ol>
+<li><strong>釐清問的是什麼</strong>：問「變化有多快」用微分（導數）；問「累積了多少」用積分；問「最大或最小」用導數等於零；問「趨近某狀態」用極限。</li>
+<li><strong>定義變數與單位</strong>：寫出每個變數的單位，先做單位檢查（例如 $\text{kJ/K} \div \text{kW/K} = \text{s}$）。</li>
+<li><strong>建立數學模型</strong>：找出守恆關係（質量、能量）或已知定律，寫成函數或微分方程。</li>
+<li><strong>選擇工具並計算</strong>：依 1 選工具；若出現 $\ln$ 或 $e^x$，回頭檢查是否屬「動態連續變化」。</li>
+<li><strong>驗算與邊界檢查</strong>：用另一種方法（微分↔積分、線性估算↔精確值）交叉驗證，並檢查極端條件（如 $h \to 0$、曲線交叉）。</li>
+<li><strong>標註假設與查證等級</strong>：模型假設、係數來源都要註明，避免把教學假設值當作規範值。</li>
+</ol>
+<hr />
+<h1>8. 附錄　參考文獻、查證等級與內容檢核</h1>
+<h2>8.1 參考文獻與網站連結</h2>
+<div class="callout callout-warning"><div class="callout-title">⚠️ 重要提醒</div><div class="callout-body">以下網站連結未於本次即時逐一開啟驗證，請自行點閱確認內容與最新狀態；書籍請以合法取得之正版為準。</div></div>
+
+<ul>
+<li>[R1] Thomas' Calculus（Pearson 出版之微積分教科書）。</li>
+<li>[R2] Stewart, Calculus（Cengage 出版之微積分教科書）。</li>
+<li>[R3] OpenStax, Calculus Volumes 1–3：https://openstax.org/details/books/calculus-volume-1</li>
+<li>[R4] MIT OpenCourseWare 18.01SC Single Variable Calculus：https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/</li>
+<li>[R5] Decibel（分貝定義與疊加）：https://en.wikipedia.org/wiki/Decibel</li>
+<li>[R6] Logarithmic mean temperature difference：https://en.wikipedia.org/wiki/Logarithmic_mean_temperature_difference；亦可參閱熱傳學教科書（如 Incropera 與 DeWitt 所著 <em>Fundamentals of Heat and Mass Transfer</em>）。</li>
+<li>[R7] Darcy–Weisbach equation：https://en.wikipedia.org/wiki/Darcy%E2%80%93Weisbach_equation</li>
+<li>[R8] Affinity laws（風機／泵浦相似定律）：https://en.wikipedia.org/wiki/Affinity_laws</li>
+<li>[R9] Newton's law of cooling：https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling</li>
+<li>[R10] Air changes per hour：https://en.wikipedia.org/wiki/Air_changes_per_hour</li>
+<li>其他：碳-14 定年 https://en.wikipedia.org/wiki/Radiocarbon_dating ；72 法則 https://en.wikipedia.org/wiki/Rule_of_72</li>
+</ul>
+<h2>8.2 查證等級說明</h2>
+<ul>
+<li>(1) 已查證原文標準；(2) 已查證但條文可能修訂；(3) 既有知識工程參考值；(4) 查無具體依據。</li>
+<li>本教材數學定義與公式屬 (3)，為大學微積分通用基礎知識，與 [R1]～[R4] 所載內容一致。</li>
+<li>各 HVAC 範例中的<strong>係數與負荷曲線（如 $k$、$C$、$UA$、$a$、$b$、COP 曲線、$L(t)$）皆為 (4) 教學假設值</strong>，僅用來示範計算方法，不可當作實際設備或法規數據。</li>
+</ul>
+<h2>8.3 智慧財產權與使用提醒</h2>
+<ul>
+<li>本教材 HVAC 範例僅使用物理定義、通用公式與自訂假設數值，<strong>未引用任何標準機構（如 ASHRAE、AHRI、ISO、IEEE、NFPA、CNS）之具體數據表格、圖表或條文原文</strong>。若您要將範例延伸為實務設計，請以合法持有之正版標準與原廠資料自行查閱、填入與簽核。</li>
+<li>本教材僅供個人研究與學習參考，並非取代專業技師之逐條法規查證與簽證責任；實務設計仍須與相關技師、原廠技術資料及適用法規標準逐項確認。</li>
+</ul>
+<h2>8.4 幻覺風險檢核</h2>
+<ul>
+<li><strong>已核對</strong>：所有計算範例的數值均已重新演算（含 $\ln 10 = 2.3026$、$e^{-1.6134} = 0.1992$、LMTD 數值驗證、全微分與精確值差異等）。</li>
+<li><strong>建議讀者自行留意</strong>：(1) 數學史敘述（納皮爾、葛雷果里、歐拉、伯努利之年代與貢獻）屬歷史考據，引用於正式文件前請以權威文獻覆核；(2) 1.1.1 晶片製程節點與年代為示意數據，見該處重要提醒；(3) 空氣 $\rho$、$c_p$ 為近似值，實務請依條件查核。</li>
+</ul>
+  </main>
+</div>
+
+<footer class="report-footer">
+  <p>本教材為個人研究與學習用途，圖示來自網路（版權屬原作者），內容僅供參考，並非取代專業技師之逐條法規查證與簽證責任；實務設計仍須與相關技師、原廠技術資料及適用法規標準逐項確認。</p>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.content h1');
+  var list = document.getElementById('toc-list');
+  headers.forEach(function(h, i) {
+    var id = 'sec-' + i;
+    h.id = id;
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link';
+    list.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>
