@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>南橫公路機車貫穿巡禮｜桃園龍潭出發・大滿貫</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #1c2b33;
+      --ink-soft: #4a5b63;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --accent: #0f5c66;
+      --accent-soft: #e4f0f1;
+      --rule: #d8dcd6;
+      --warn-bg: #fdf1ec;
+      --warn-border: #c0522f;
+      --note-bg: #f2f4f2;
+      --note-border: #7a8a86;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+    a { color: var(--accent); }
+    .page { max-width: 1600px; margin: 0 auto; }
+    .report-header {
+      padding: 56px 32px 36px;
+      border-bottom: 1px solid var(--rule);
+      text-align: center;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    .report-title {
+      margin: 0 0 12px;
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 36px;
+      line-height: 1.35;
+    }
+    .report-sub { margin: 0 0 6px; color: var(--ink-soft); }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1040px);
+      gap: 32px;
+      padding: 36px 32px 72px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: 20px;
+      padding: 18px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--panel);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .toc a {
+      display: block;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--rule);
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.5;
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--accent); }
+    .toc a.sub { padding-left: 12px; font-size: 12px; }
+    .content { min-width: 0; }
+    .content h2 {
+      margin: 42px 0 16px;
+      padding: 0 0 9px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+      font-family: "Noto Serif TC", "Songti TC", serif;
+      font-size: 25px;
+      line-height: 1.4;
+    }
+    .content h2:first-child { margin-top: 0; }
+    .content h3 {
+      margin: 28px 0 12px;
+      padding-left: 11px;
+      border-left: 4px solid var(--accent);
+      font-size: 19px;
+      line-height: 1.5;
+    }
+    .content p, .content li { margin-top: 0; }
+    .content p { margin-bottom: 14px; }
+    .content ul, .content ol { padding-left: 1.6em; }
+    .content li { margin-bottom: 9px; }
+    .content strong { color: var(--ink); }
+    .content mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+    .intro, .callout {
+      margin: 18px 0 24px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--note-border);
+      border-radius: 4px;
+      background: var(--note-bg);
+    }
+    .callout-warning { border-color: var(--warn-border); background: var(--warn-bg); }
+    .cost-total {
+      margin: 20px 0 12px;
+      padding: 14px 18px;
+      border-left: 4px solid #2f7a4f;
+      background: #eaf5ee;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      margin: 14px 0 26px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .table-wrap { overflow-x: auto; }
+    thead { background: var(--accent-soft); }
+    th, td {
+      min-width: 110px;
+      padding: 10px 12px;
+      border: 1px solid var(--rule);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    pre {
+      margin: 14px 0 24px;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      background: #f6f8fa;
+      color: #1f2937;
+      font-size: 13px;
+      line-height: 1.7;
+      tab-size: 4;
+    }
+    code { font-family: "SFMono-Regular", Consolas, monospace; }
+    .report-footer {
+      padding: 24px 32px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-soft);
+      font-size: 13px;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 20px 52px; }
+      .toc { position: static; max-height: none; }
+      .report-header { padding: 38px 20px 26px; }
+      .report-title { font-size: 29px; }
+      .content h2 { font-size: 22px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .page { max-width: none; }
+      .report-header { padding: 20px 0; }
+      .layout { display: block; padding: 20px 0; }
+      .toc { display: none; }
+      .content { max-width: none; }
+      .content h2, .content h3 { break-after: avoid; }
+      pre, table, .callout, .intro { break-inside: avoid; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="report-header">
+      
+      <h1 class="report-title">「一日南橫公路（台20線）」機車騎乘攻略</h1>
+      <p class="report-sub">桃園龍潭出發｜行程、油資、補給與 My Maps 匯入資料</p>
+      <p class="report-sub">研究組員：李世權 Gemini</p>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="頁面目錄">
+        <div class="toc-title">目錄</div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <main class="content">
+        
+        <h2 id="南橫公路機車貫穿計畫">南橫公路機車貫穿計畫（桃園龍潭出發）</h2>
+        
+        <div class="callout callout-warning">
+          <strong>⚠️ 南橫公路（台20線）臨105線核心管制規則：</strong><br>
+          • <strong>管制路段：</strong>梅山管制站（105K）至 向陽管制站（149K）。<br>
+          • <strong>每週休園日：每週二、每週四全天開放管制，禁止通行。</strong><br>
+          • <strong>開放通行時間：</strong>07:00 – 14:00（14:00 後禁止進入管制路段；17:00 前必須離開管制區）。
+        </div>
+
+        <h3 id="核心數據與預估花費">1 核心數據統計與預估花費明細</h3>
+        <ul>
+          <li><strong>路線架構：</strong>桃園龍潭 $\rightarrow$ 台3線/西海岸南下 $\rightarrow$ 高雄甲仙 $\rightarrow$ 台20線南橫公路 $\rightarrow$ 台東池上 $\rightarrow$ 台9線/蘇花改/北宜或台61線返抵龍潭。</li>
+          <li><strong>總騎乘里程：</strong>約 $740 \text{ km}$。</li>
+          <li><strong>獨立導航站點數：</strong><strong>9 個獨立圖釘</strong>（補給站、加油站、景點完全獨立）。</li>
+          <li><strong>建議出發時間：</strong><strong>02:30</strong> 啟程，預計 <strong>07:00 抵達甲仙</strong>、<strong>08:15 進入梅山管制站</strong>，傍晚完成貫穿並於 <strong>21:30 前</strong> 返抵龍潭。</li>
+          <li><strong>油箱預估基準：</strong>高山爬坡/陡坡段耗油以 <strong>$80 \text{ km / 桶}$</strong> 計算；平地省道以 <strong>$130 \text{ km / 桶}$</strong> 計算。</li>
+        </ul>
+
+        <div class="cost-total">桃園龍潭出發南橫巡禮個人總預估花費：約 $1,650 \text{ 元 / 人}$</div>
+        <ol>
+          <li><strong>95 無鉛汽油油資算式</strong>
+            <ul>
+              <li><strong>算式來源：</strong>總里程預估 $740 \text{ km}$，125cc 速克達長途平均綜合油耗約 $35 \text{ km/L}$，油價以中油 95 無鉛汽油參考零售價 <strong>$32.7 \text{ 元/L}$</strong> 計算。</li>
+              <li><strong>計算過程：</strong>$$\frac{740 \text{ km}}{35 \text{ km/L}} \times 32.7 \text{ 元/L} = 21.14 \text{ L} \times 32.7 \text{ 元/L} \approx 691 \text{ 元}$$</li>
+              <li><strong>計算結果：</strong>95 無鉛汽油油資約 <strong>$690 \text{ 元}$</strong>。</li>
+            </ul>
+          </li>
+          <li><strong>餐飲與補給費用：</strong>早餐、甲仙芋餅、高山熱食、池上便當與沿途飲品補給約 <strong>$810 \text{ 元}$</strong>。</li>
+          <li><strong>緊急備用金與耗材：</strong>緊急備用金與備用耗材小計 <strong>$150 \text{ 元}$</strong>。</li>
+        </ol>
+
+        <h3 id="行程與導航站點">2. 詳細行程 SOP 與單一獨立導航站點規劃</h3>
+        <ol>
+          <li><strong>站點 1【桃園龍潭】（出發點）</strong>｜02:30 啟程｜<strong>剩餘油量：</strong>$100\%$（<strong>出發前於隔壁加油站強制加滿 95 無鉛</strong>）</li>
+          <li><strong>站點 2【高雄甲仙老街 / 中油甲仙站】⛽</strong>｜07:00 抵達｜站間 $310 \text{ km}$｜<strong>進入南橫前最後大型補給點！強制加滿重置 $100\%$！</strong></li>
+          <li><strong>站點 3【中油桃源站】⛽</strong>｜07:45 抵達｜站間 $23 \text{ km}$｜<strong>西部山區最後加油站！務必再次補滿重置 $100\%$！</strong></li>
+          <li><strong>站點 4【梅山管制站 / 梅山遊客中心】📸</strong>｜08:15 抵達｜站間 $14 \text{ km}$｜<strong>剩餘油量：</strong>$86\%$（核對時間，進入南橫管制路段）</li>
+          <li><strong>站點 5【天池 / 長青祠】⛩️</strong>｜09:10 抵達｜站間 $25 \text{ km}$｜<strong>剩餘油量：</strong>$68\%$（短暫停留步道，遠眺高山雲海）</li>
+          <li><strong>站點 6【南橫埡口 / 大關山隧道】☁️</strong>｜10:10 抵達｜站間 $12 \text{ km}$｜<strong>剩餘油量：</strong>$53\%$（南橫最高點海拔 2,722m，穿越隧道欣賞東側雲海瀑布）</li>
+          <li><strong>站點 7【向陽國家森林遊樂區】🌲</strong>｜11:20 抵達｜站間 $16 \text{ km}$｜<strong>剩餘油量：</strong>$70\%$（下坡段，短暫休息補給）</li>
+          <li><strong>站點 8【中油池上站 / 台東池上老牌便當】🍙</strong>｜12:40 抵達｜站間 $41 \text{ km}$｜<strong>剩餘油量：</strong>$10\%$（順利完成南橫貫穿！補滿汽油並享用池上便當）</li>
+          <li><strong>站點 9【桃園龍潭】（終點）</strong>｜21:30 抵達｜站間 $300 \text{ km}$｜<strong>平安完成龍潭出發南橫大滿貫巡禮！</strong></li>
+        </ol>
+
+        <h3 id="沿途伴手禮">3. 🎁 南橫沿途推薦必買伴手禮清單表</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>區域/縣市</th><th>店家名稱</th><th>推薦必買名產</th><th>導航座標連結 (Google Maps)</th><th>營業時間</th><th>備註 / 採購建議</th></tr></thead>
+            <tbody>
+              <tr><td><strong>高雄甲仙</strong></td><td>三冠王芋冰城 / 小奇餅店</td><td>芋頭冰 / 芋頭餅 / 紫芋酥</td><td><a href="https://maps.google.com/?q=23.0315,120.5898" target="_blank">導航連結</a></td><td>07:30 – 20:30</td><td>南橫西側門戶必吃甜點</td></tr>
+              <tr><td><strong>台東海端</strong></td><td>利稻陳大姐</td><td>泡菜臭豆腐 / 手工花生糖</td><td><a href="https://maps.google.com/?q=23.1895,121.0267" target="_blank">導航連結</a></td><td>09:00 – 17:00</td><td>高山部落熱門歇腳點</td></tr>
+              <tr><td><strong>台東池上</strong></td><td>全美行 / 悟饕池上便當</td><td>正宗池上木盒便當</td><td><a href="https://maps.google.com/?q=23.1251,121.2188" target="_blank">導航連結</a></td><td>08:00 – 20:00</td><td>貫穿南橫後的最佳午餐</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="裝備備援與救援">4. 人身裝備、山區備援與救援資訊</h3>
+        <ul>
+          <li><strong>禦寒與防風裝備：</strong>埡口海拔高達 <strong>2,722 公尺</strong>，山頂氣溫較平地低約 $15^\circ\text{C} \sim 20^\circ\text{C}$。必須採用洋蔥式穿法（保暖中層 + 防風防水外套）、兩截式雨衣與防風厚手套。</li>
+          <li><strong>山區濃霧與落石：</strong>午後高山路段（天池至向陽）極易起大霧，能見度降低時請開啟頭燈並低速順騎。</li>
+          <li><strong>關鍵加油警訊：</strong><strong>桃源加油站至池上加油站之間，長達約 $80 \text{ km} \sim 90 \text{ km}$ 完全無加油站</strong>，請務必於桃源站強制加滿。</li>
+          <li><strong>緊急救援資訊：</strong>
+            <ul>
+              <li><strong>高雄市警局桃源分駐所：</strong><code>07-686-1100</code> (24h)</li>
+              <li><strong>台東縣警局向陽派出所 / 海端分駐所：</strong><code>089-931-114</code> (24h)</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="mymaps-csv">5. 桃園龍潭出發—南橫 Google 我的地圖（My Maps）匯入專用 CSV</h3>
+        <p>請複製以下內容並貼上至 <strong>Google 試算表</strong>（確保貼上後分為 A 欄 <code>地點名稱</code>、B 欄 <code>完整地址</code>、C 欄 <code>詳細說明</code>），匯入 Google 我的地圖時將 <strong><code>完整地址</code></strong> 設為定位欄位，<strong><code>地點名稱</code></strong> 設為標題欄位：</p>
+        <p>實務騎乘時仍須視當日實際天候、高山路況（尤其落石管制與高山濃霧）、車輛保養狀況進行即時調整。</p>
+        <p><a href="https://www.google.com/maps/d/edit?hl=zh-TW&mid=1KsFEKoQlBsQtOI8ClurgoI5P-B1V-So&ll=23.292148263763973%2C120.7034931965511&z=9" target="_blank">Google 路線規劃圖</a></p>
+        <pre><code>地點名稱,完整地址,詳細說明
+1. 龍潭中豐路麥當勞,桃園市龍潭區中豐路400號,預估抵達：02:30｜站間里程：0 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (出發點！隔壁加油站強制加滿95無鉛)
+2. 中油甲仙站,高雄市甲仙區林森路42號,預估抵達：07:00｜站間里程：310 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (進入南橫前大型補給點！強制加滿)
+3. 中油桃源站,高雄市桃源區沿林路2號,預估抵達：07:45｜站間里程：23 km｜自加滿已騎：23 km｜剩餘航程：77 km｜剩餘油量：100% (西部最後加油站！務必再次補滿重置)
+4. 梅山管制站,高雄市桃源區梅山巷,預估抵達：08:15｜站間里程：14 km｜自加滿已騎：14 km｜剩餘航程：86 km｜剩餘油量：86% (07:00開放通行｜檢查裝備與保暖)
+5. 天池長青祠,高雄市桃源區台20線臨105線135K,預估抵達：09:10｜站間里程：25 km｜自加滿已騎：39 km｜剩餘航程：61 km｜剩餘油量：68% (天池步道與高山雲海)
+6. 南橫埡口 (大關山隧道),台東縣海端鄉台20線147.5K,預估抵達：10:10｜站間里程：12 km｜自加滿已騎：51 km｜剩餘航程：49 km｜剩餘油量：53% (海拔2722m最高點｜雲海瀑布勝景)
+7. 向陽國家森林遊樂區,台東縣海端鄉向陽1號,預估抵達：11:20｜站間里程：16 km｜自加滿已騎：67 km｜剩餘航程：33 km｜剩餘油量：70% (東側管制端點前休息站)
+8. 中油池上站,台東縣池上鄉忠孝路269號,預估抵達：12:40｜站間里程：41 km｜自加滿已騎：108 km｜剩餘航程：0 km｜剩餘油量：10% (平安貫穿南橫！補滿汽油吃便當)
+9. 龍潭中豐路麥當勞 (終點),桃園市龍潭區中豐路400號,預估抵達：21:30｜站間里程：300 km｜自加滿已騎：0 km｜剩餘航程：100 km｜剩餘油量：100% (平安完成龍潭出發南橫大滿貫巡禮！)</code></pre>
+      </main>
+      
+    </div>
+
+    <footer class="report-footer">正式出發前請確認即時路況、天候、交管時間、營業時間與車況。</footer>
+  </div>
+  <script>
+    const toc = document.getElementById('toc-list');
+    document.querySelectorAll('.content h2[id], .content h3[id]').forEach((heading) => {
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent;
+      if (heading.tagName === 'H3') link.className = 'sub';
+      toc.appendChild(link);
+    });
+  </script>
+</body>
+</html>
